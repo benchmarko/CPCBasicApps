@@ -4,12 +4,14 @@
 
 cpcBasic.addItem("", function () { /*
 1 rem stardodg - Stardodger Game (2D Star Dodge)
-2 rem (c) Stewart Russell (SCR)
-3 rem https://scruss.com/wordpress/wp-content/uploads/2012/09/AmstradComputerUser198809-StarDodger1-BASIC.pdf
-4 rem Amstrad User, September 1988
-5 rem
-7 ' Basic Stardodger by SCR.
-8 '
+2 rem (c) Stewart C. Russell (SCR)
+3 rem https://scruss.com/blog/2012/09/08/2d-star-dodge-flies-again/
+4 rem https://scruss.com/wordpress/wp-content/uploads/2012/09/AmstradComputerUser198809-StarDodger1-BASIC.pdf
+5 rem Amstrad User, September 1988
+6 rem Modifications: Use space key; delay with call &bd19
+7 rem
+8 ' Basic Stardodger by SCR.
+9 '
 10 ' ** Initialise **
 20 MODE 1
 30 INK 0,0
@@ -25,7 +27,7 @@ cpcBasic.addItem("", function () { /*
 130 LOCATE 9,6
 140 PRINT"wondrous Nextscreen Gap."
 150 LOCATE 12,13
-160 PRINT"Use SHIFT to climb"
+160 PRINT"Use SPACE to climb"
 170 GOSUB 700
 180 ' ** Draw game screen **
 190 MODE 1
@@ -57,7 +59,8 @@ cpcBasic.addItem("", function () { /*
 450 dy=4 'set initial line dir to up
 460 ' ** Main game loop **
 470 DRAWR 4,dy
-480 IF INKEY(21)<>-1 THEN dy=4 ELSE dy=-4 'move up if shift pressed
+475 call &bd19
+480 IF INKEY(47)<>-1 THEN dy=4 ELSE dy=-4 'move up if shift pressed
 490 t=TESTR(2,dy/2)
 500 IF t=1 GOTO 550 'hit summat nasty
 510 IF t=3 GOTO 620 'completed the scr

@@ -5,17 +5,33 @@
 
 cpcBasic.addIndex("apps", function () { /*
 [
+	{
+    	"key": "demo/isgdemo",
+		"title": "Interrupt & Sound & Grafik Demo"
+	},
     {
     	"key": "demo/scpc6128",
 		"title": "Schneider CPC 6128 Demo"
-    },
+	},
+	{
+		"key": "games/solitair",
+		"title": "Solitaire"
+	},
 	{
 		"key": "games/spacewar",
-		"title": "Spacewar Game (Textual)"
+		"title": "Spacewar Game"
 	},
 	{
 		"key": "games/stardodg",
-		"title": "Stardodger Game (Textual)"
+		"title": "Stardodger Game"
+	},
+	{
+		"key": "music/asbtune",
+		"title": "A small BASIC tune"
+	},
+	{
+		"key": "music/rocking",
+		"title": "Rocking CPC"
 	}
 ]
 */ });
