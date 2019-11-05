@@ -14,6 +14,14 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Schneider CPC 6128 Demo"
 	},
 	{
+		"key": "games/garfunkl",
+		"title": "Garfunkel"
+	},
+	{
+		"key": "games/maze",
+		"title": "Maze"
+	},
+	{
 		"key": "games/solitair",
 		"title": "Solitaire"
 	},
@@ -28,6 +36,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "music/asbtune",
 		"title": "A small BASIC tune"
+	},
+	{
+		"key": "music/mexicana",
+		"title": "Mexicana"
 	},
 	{
 		"key": "music/rocking",

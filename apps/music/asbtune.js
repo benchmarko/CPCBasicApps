@@ -10,7 +10,7 @@ cpcBasic.addItem("", function () { /*
 10 RELEASE 7
 20 tempo=15::' Smaller = faster
 30 ENV 1,7,-1,tempo-5,4,-1,5:ENV 2,0,-3,1,7,-1,7,4,-1,50:ENV 3,0,-3,1,3,-1,1,3,-1,2:ENV 4,1,-10,1,5,1,7,5,-1,20
-40 READ b1:IF b1=-1 THEN RESTORE:GOTO 40
+40 READ b1:IF b1=-1 THEN RESTORE:call &bd19:GOTO 40
 50 READ b2,b3,c1,c2,c3,t1,t2,t3,t4,t5,s1,s2
 60 SOUND 1,s1,tempo*4,15,4:SOUND 2,b1,tempo*3,15,1:SOUND 4,b1*2,tempo*2,15,1:SOUND 4,t1,tempo*2,15,3
 70 SOUND 2,b1,tempo*1,15,1:SOUND 2,c1,tempo*2,15,2:SOUND 1,c2,tempo*4,15,2:SOUND 4,c3,tempo,15,2
