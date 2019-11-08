@@ -5,7 +5,8 @@
 cpcBasic.addItem("", function () { /*
 1 rem mexicana - Mexicana
 2 rem (c) Juergen Werner
-4 rem
+4 rem Modifications: wait for final sound
+5 rem
 10 GOTO 400:REM *** Programmstart ***
 20 REM  *****************************
 30 REM  * Dieses Programm darf ver- *
@@ -122,4 +123,6 @@ cpcBasic.addItem("", function () { /*
 1140 SOUND 1+16,159,20,0,1:SOUND 2+8,253,20,0,1
 1150 SOUND 1,0,20:SOUND 1,0,20
 1160 SOUND 1+16,119,20,0,1:SOUND 2+8,190,20,0,1
+1165 while sq(1)<>4:call &bd19:wend
+1166 end
 */ });

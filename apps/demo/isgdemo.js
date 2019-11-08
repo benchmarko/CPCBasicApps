@@ -5,7 +5,8 @@
 cpcBasic.addItem("", function () { /*
 1 rem isgdemo - Interrupt & Sound & Grafik Demo
 2 rem (c) Günter Woigk, Das Schneider CPC Systembuch, S. 418ff
-4 rem
+4 rem Modifications: some delay
+5 rem
 100 ' ***************************************************************
 110 ' **                                                           **
 120 ' **    Interrupt & Sound & Grafik --- Demo      vs. 29.5.86   **
@@ -162,14 +163,15 @@ cpcBasic.addItem("", function () { /*
 1630 PLOT FNx(0),FNy(0)
 1640 FOR i!=0 TO i2*2*PI STEP 2*PI/INT(3+20*RND)/14
 1650   DRAW FNx(i!),FNy(i!),zfa:zfa=zfa MOD 14+1:IF brk THEN 1580
+1655   call &bd19
 1660 NEXT
 1670 '                                  ' Abschließend Laufschrift:
 1680 '
 1690 t$=" *** reines Basic-Demo *** 100% Maschinencode-frei"
 1700 t$=SPACE$(16)+t$+t$+t$+t$+" ***"+SPACE$(16)
 1710 FOR i=1 TO LEN(t$)-16
-1720   LOCATE#3,3,12:PRINT #3,MID$(t$,i,16):IF brk THEN 1580
-1725  call &bd19
+1720   LOCATE#3,3,12:PRINT #3,MID$(t$,i,16):call &bd19:IF brk THEN 1580
+1725   t!=time+50:while time<t!:call &bd19:wend
 1730 NEXT: GOTO 1580
 1740 '
 1750 ' +------------------------------------------------------+

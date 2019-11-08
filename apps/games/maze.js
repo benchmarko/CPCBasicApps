@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 rem maze - Maze
 2 rem (c) Joerg Heise
+3 rem Modifications: delay, key test
 6 rem
 10 REM   <  Copyright by     Joerg Heise          >
 20 REM 
@@ -67,7 +68,7 @@ cpcBasic.addItem("", function () { /*
 560 GOTO 520
 570 GOSUB 920
 580 eingabe$=INKEY$
-590 IF INKEY(70)=0 THEN GOSUB 950:GOTO 490
+590 IF INKEY(70)=0 THEN GOSUB 950:while inkey(70)=0:call &bd19:wend:GOTO 490
 595 IF eingabe$=""THEN 580
 600 IF ASC(eingabe$)=242 THEN r=r-1:GOTO 670
 610 IF ASC(eingabe$)=243 THEN r=r+1:GOTO 670
@@ -110,16 +111,18 @@ cpcBasic.addItem("", function () { /*
 980 IF a(q,z) =1 THEN PRINT" ";:GOTO 1010
 990 IF q=x AND z=y THEN PRINT "*";:GOTO 1010
 1000 PRINT CHR$(143);
-1010 NEXT:PRINT:NEXT   
-1020 IF INKEY(70)=0 THEN RETURN ELSE 1020
+1010 NEXT:PRINT:NEXT
+1015 while inkey(70)=0:call &bd19:wend
+1020 call &bd19:IF INKEY(70)=0 THEN RETURN ELSE 1020
 1030 MODE 0:LOCATE 6,10:PEN 1:INK 1,13,18:PRINT"Herzlichen":LOCATE 4,12:PRINT"Glueckwunsch!!"   
 1040 GOSUB 1070
-1050 PEN 3:LOCATE 1,20:PRINT:INPUT"Nocheinmal";z$:IF LEFT$(z$,1)="j"THEN RUN     
+1050 PEN 3:LOCATE 1,20:PRINT:INPUT"Nocheinmal";z$:IF LEFT$(lower$(z$),1)="j"THEN RUN     
 1060 MODE 1:GOSUB 1070:END
 1070 RESTORE:FOR ton = 0 TO 29
 1080 READ h,k
 1090 SOUND 1,h,0,0,k,0,0
 1100 SOUND 4,h/4,0,0,k,0,0
+1105 if inkey$<>"" then 1120
 1110 NEXT
 1120 RETURN
 1130 DATA 253,2,253,2,253,2,253,2,253,2,253,3,284,4,319,1   

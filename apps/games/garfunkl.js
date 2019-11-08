@@ -5,16 +5,17 @@
 cpcBasic.addItem("", function () { /*
 1 rem garfunkl - Garfunkel
 2 rem (c) Roland Bendig
-6 rem
-1  '***********************************
-2  '*         GARFUNKEL               *
-3  '*            VON                  *
-4  '*                                 *
-5  '*           Fuer                  *
-6  '*      Schneider Aktiv            *
-7  '*          CPC 6128               *
-8  '***********************************
-10 GOSUB 10000
+3 rem Modifications: delays
+4 rem
+10  '***********************************
+11  '*         GARFUNKEL               *
+12  '*            VON                  *
+13  '*                                 *
+14  '*           Fuer                  *
+15  '*      Schneider Aktiv            *
+16  '*          CPC 6128               *
+17  '***********************************
+18 GOSUB 10000
 20 MODE 0:INK 0,0:BORDER 1,13:INK 2,16:INK 3,6,0
 60 f%=5:x=4:f=10:g=650:h=350
 70 WHILE ee%<g
@@ -36,9 +37,9 @@ cpcBasic.addItem("", function () { /*
 220 LOCATE 1,2
 230 PRINT MID$(z$,i,19);
 240 SOUND 5,i*20,7
-250 FOR g=1 TO 50:NEXT
+250 FOR g=1 TO 50/10:call &bd19:NEXT
 260 NEXT
-270 FOR u=1 TO 1000:NEXT
+270 FOR u=1 TO 1000/30:call &bd19:NEXT
 300 CLS
 310 z$="SPIELANLEITUNG !"
 320 Z$=SPACE$(19)+z$+SPACE$(25)
@@ -46,7 +47,7 @@ cpcBasic.addItem("", function () { /*
 340 LOCATE 1,3
 350 PRINT MID$(z$,i,19);
 360 SOUND 1,500-i*3,10,7
-370 FOR g=1 TO 50:NEXT
+370 FOR g=1 TO 50/10:call &bd19:NEXT
 380 NEXT
 390 LOCATE 4,6:PRINT"EINGABE UEBER"
 395 LOCATE 5,7:PRINT"CURSERFELD"
@@ -63,12 +64,13 @@ cpcBasic.addItem("", function () { /*
 444 IF a$="1" THEN w%=3 ELSE IF a$="2" THEN w%=2 ELSE IF a$="3" THEN w%=1 ELSE GOTO 442
 460 GOSUB 600
 470 WHILE leben:GOSUB 800
-475 WHILE fll%>0 AND timem>0:GOSUB 510:WEND
+475 WHILE fll%>0 AND timem>0:t!=time+245:GOSUB 510:WEND
 480 GOSUB 3000:WEND
 485 GOSUB 4000:RUN
 500 timem=timem-1:LOCATE 30,8:PRINT timem;"";:IF timem<10 THEN PRINT CHR$(7)
 505 RETURN
 510 FOR ii%=0 TO Dl%:jo%=(ii%+1) MOD n%
+511 t2!=time+34
 515 rr%=w% AND NOT INKEY(tr):fll%=fll%-rr%:e%=e%+rr%:MOVE e%,f%:IF rr% THEN DRAW e%,h%,1:SOUND 132,50,2,5,0,0,0
 520 rr%=w% AND NOT INKEY(tot):fll%=fll%-rr%:f%=f%+rr%:MOVE e%,f%:IF rr% THEN DRAW g%,f%,1:SOUND 132,55,2,5,0,0,0
 525 rr%=w% AND NOT INKEY(tl):fll%=fll%-rr%:g%=g%-RR%:MOVE G%,H%: IF RR% THEN DRAW G%,F%,1:SOUND 132,60,2,5,0,0,0
@@ -85,6 +87,7 @@ cpcBasic.addItem("", function () { /*
 580 MOVE a%,b%:DRAW c%,d%
 585 MOVE a%(jo%),b%(jo%):DRAW c%(jo%),d%(jo%),2
 590 a%(ii%)=a%:b%(ii%)=b%:c%(ii%)=c%:d%(ii%)=d%
+592 while time<t2!:call &bd19:WEND
 595 NEXT
 596 LOCATE 16,2:PRINT fll%;:INK 1,k1%:IF fll%<20 THEN PRINT CHR$(7)
 597 RETURN
@@ -146,7 +149,7 @@ cpcBasic.addItem("", function () { /*
 3020 p%=timem*100:IF p%>0 THEN GOSUB 3500 ELSE GOSUB 3800
 3030 LOCATE 29,24:PRINT sc;
 3040 IF sc>l THEN PRINT CHR$(7);:leben=leben+1:l=l+10000
-3050 FOR y=0 TO 1000:NEXT
+3050 FOR y=0 TO 1000/40:call &bd19:NEXT
 3100 RETURN
 3500 WHILE e%<g%
 3510 e%=e%+w%:f%=f%+w%:G%=G%-w%:h%=h%-w%
@@ -156,7 +159,7 @@ cpcBasic.addItem("", function () { /*
 3550 LOCATE 9,11:PRINT"SCORE"P%
 3560 IF top=0 THEN LOCATE 7,14:PRINT"+ BONUS"P%:P%=P%+P%
 3570 sc=sc+p%:GOSUB 2000
-3580 FOR i%=0 TO 3000:NEXT
+3580 FOR i%=0 TO 3000/50:call &bd19:NEXT
 3590 RETURN
 3800 leben=leben-1
 3810 FOR i%=0 TO 1000 STEP 3:SOUND 129,i%,10,5,0,0,0:SOUND 130,i%+20,10,5,0,0,0:NEXT
@@ -230,7 +233,7 @@ cpcBasic.addItem("", function () { /*
 29910 ap1=277-LEN(at$)*16:INK 2,24
 29920 LOCATE 1,13:PEN 2:PRINT at$;:PEN 1
 29930 ap2=ap1:ap3=280:ap4=206
-29940 FOR i=1 TO 7:ap5=0:SOUND 1,100,150,10,2,0:FOR j=1 TO LEN(at$)*8
+29940 FOR i=1 TO 7:ap5=0:SOUND 1,100,150 / 10,10,2,0:FOR j=1 TO LEN(at$)*8
 29950 IF TEST(ap5,ap4)=2 THEN PLOT ap1,ap3,1:PLOT ap1,ap3-2:PLOT ap1+2,ap3:PLOT ap1+2,ap3-3
 29955 ap1=ap1+4:ap5=ap5+2:NEXT
 29960 ap3=ap3-4:ap4=ap4-2:ap1=ap2:NEXT
@@ -241,8 +244,8 @@ cpcBasic.addItem("", function () { /*
 31060 FOR BN=1 TO 20
 31070 LOCATE 30,12
 31075 PRINT MID$(D$,BN,27);
-31080 SOUND 1,500-BN*3,10,7
-31085 FOR HG=1 TO 40:NEXT
+31080 SOUND 1,500-BN*3,10 / 2,7
+31085 FOR HG=1 TO 40/30:call &bd19:NEXT
 31090 NEXT
 31100 AA$(1)="4115000000000041100000000000100000000010"
 31200 AA$(2)="1000041150141010001001011150104104115010"
@@ -262,5 +265,5 @@ cpcBasic.addItem("", function () { /*
 32600 LOCATE 1,24:PRINT STRING$(40,CHR$(128))
 32700 PEN 1:FOR AU=6 TO 1 STEP-1:LOCATE 1,AU+17:PRINT TA$(AU):NEXT
 32800 LOCATE 1,17:PRINT STRING$(40,CHR$(128))
-32850 FOR KL=1 TO 4000:NEXT:RETURN
+32850 FOR KL=1 TO 4000/50:call &bd19:NEXT:RETURN
 */ });
