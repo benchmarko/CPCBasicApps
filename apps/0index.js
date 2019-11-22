@@ -6,6 +6,14 @@
 cpcBasic.addIndex("apps", function () { /*
 [
 	{
+    	"key": "basicode/basicode",
+		"title": "BasiCode Library"
+	},
+	{
+    	"key": "basicode/doctor",
+		"title": "Doctor"
+	},
+	{
     	"key": "demo/btilesim",
 		"title": "British Council Tile / Bus Fabric Sim"
 	},
