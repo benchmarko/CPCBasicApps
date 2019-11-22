@@ -5,7 +5,8 @@
 cpcBasic.addItem("", function () { /*
 1 rem lander - Lander
 2 rem (c) Georg Huonker
-6 rem
+6 rem Modifications: Delay
+7 rem
 100 '..................................
 110 '........L..A..N..D..E..R..........
 120 '..................................
@@ -66,8 +67,8 @@ cpcBasic.addItem("", function () { /*
 670 PRINT "Doch da entdecken Sie eine Lichtung."
 680 PRINT "Sprengen Sie dort die Mammutbaeume, Fe- lsbrocken und Buesche mit Hilfe ihrer   Bomben und versuchen Sie zu landen."     
 690 PRINT "     Gesteuert wird mit JOYSTICK"
-700 PEN 1:LOCATE 10,24:PRINT f$  
-710 PEN 0:LOCATE 10,24:PRINT f$ 
+700 call &bd19:PEN 1:LOCATE 10,24:PRINT f$  
+710 call &bd19:PEN 0:LOCATE 10,24:PRINT f$ 
 720 IF JOY(0)<>16 THEN GOTO 700
 730 FOR n=400 TO 0 STEP -2:SOUND 1,n*2+500,2:MOVE 0,n:DRAW 638,n,1:NEXT 
 740 ' AUFBAU SCREEN     
@@ -148,7 +149,7 @@ cpcBasic.addItem("", function () { /*
 1490 x=-16
 1500 x=x+vh
 1510 PLOT 1000,1000,1
-1520 jy=JOY(0)  
+1520 call &bd19:jy=JOY(0)  
 1530 IF jy=8 AND vh<16 THEN vh=vh+1:sof=sof-130:spe=spe+1:TAGOFF:LOCATE 29,24:PRINT spe:TAG   
 1540 IF jy=4 AND vh>8 THEN vh=vh-1:sof=sof+130:spe=spe-1:TAGOFF:LOCATE 29,24:PRINT spe:TAG  
 1550 IF (jy=2 OR jy=18) AND y>=128 THEN y=y-2   
@@ -195,8 +196,8 @@ cpcBasic.addItem("", function () { /*
 1960 FOR m=1 TO 250:NEXT  
 1970 hsc=MAX(sco,hsc)
 1980 TAGOFF
-1990 PEN 0:LOCATE 2,24:PRINT f$ 
-2000 PEN 1:LOCATE 2,24:PRINT f$  
+1990 call &bd19:PEN 0:LOCATE 2,24:PRINT f$ 
+2000 call &bd19:PEN 1:LOCATE 2,24:PRINT f$  
 2010 IF JOY(0)<>16 THEN GOTO 1990 ELSE GOTO 100  
 2020 ' DATAS FUER SPIELFELDAUFBAU
 2030 DATA 86,114,82,118,78,122,78,126,70,130,70,128,68,130

@@ -5,41 +5,42 @@
 cpcBasic.addItem("", function () { /*
 1 rem cpcorgan - CPC organ (CPC-Orgel)
 2 rem (c) Oliver Heggelbacher
-4 rem
+4 rem Modifications: make comments out of lines which are not reached; delays
+5 rem
 10 :
 20 REM  ~ = CTRL + "
 30 :
 40 GOTO 260
 50 :
-60  #########################
-70  #                       #
-80  #      CPC-Orgel        #
-90  #                       #
-100 #     (C) 1985 by       #
-110 #                       #    
-120 #    Andromeda Soft     #  
-130 #                       #
-140 #    geschrieben von:   #
-150 #                       #
-160 #  Oliver Heggelbacher  #
-170 #                       #  
-180 #     Steibensteg 8     #
-190 #                       #
-200 #     7778 Markdorf     #
-210 #                       #
-220 #########################   
-230 :
-240 :      Eingabe der Uhrzeit
-250 :
+60  '#########################
+70  '#                       #
+80  '#      CPC-Orgel        #
+90  '#                       #
+100 '#     (C) 1985 by       #
+110 '#                       #    
+120 '#    Andromeda Soft     #  
+130 '#                       #
+140 '#    geschrieben von:   #
+150 '#                       #
+160 '#  Oliver Heggelbacher  #
+170 '#                       #  
+180 '#     Steibensteg 8     #
+190 '#                       #
+200 '#     7778 Markdorf     #
+210 '#                       #
+220 '#########################   
+230 ':
+240 ':      Eingabe der Uhrzeit
+250 ':
 260 INK 0,19 : INK 1,0 : PAPER 0 : PEN 1 : MODE 2 : INPUT "Uhrzeit (Stunden,Minuten,Sekunden) ";st,mi,se      
 270 IF st>23 OR MI>59 OR se>59 OR st<0 OR mi<0 OR se<0 THEN 260   
 280 EVERY 50 GOSUB 2270
 290 GOTO 350
-300 :
-310 :     einlesen der Datas   
-320 :
-330 : und definieren der Sonderzeichen
-340 :
+300 ':
+310 ':     einlesen der Datas   
+320 ':
+330 ': und definieren der Sonderzeichen
+340 ':
 350 DIM n(12,7) : FOR t = 0 TO 11 : pf=0 : FOR i = 0 TO 7 : READ a : pf=pf+a : n(t,i)=a   
 360 NEXT i : READ s : IF pf=s THEN NEXT t  ELSE BORDER 0 : MODE 1 : PRINT "Zeile ";310+t*10;" wurde falsch eingegeben" : PRINT : END    
 370 DATA 3822,1911,956,478,239,119,60,30,7615
@@ -90,16 +91,16 @@ cpcBasic.addItem("", function () { /*
 820 x=6 : i=1     
 830 IF x<6 THEN i=1 : x=6 ELSE IF x>25 THEN i=-1 : SOUND 1,119,0,0,1
 840 x=x+i : INK 1,x
-850 FOR t = 1 TO 40 : NEXT t    
+850 FOR t = 1 TO 40 : NEXT t :call &bd19   
 860 IF INKEY$="" THEN 830 ELSE INK 1,22 : GOTO 950   
-870 :
-880 :
-890 :    Hauptprogramm
-900 :
-910 :
-920 ###
-930 ###   Zeichnen des Keyboards
-940 ###
+870 ':
+880 ':
+890 ':    Hauptprogramm
+900 ':
+910 ':
+920 '###
+930 '###   Zeichnen des Keyboards
+940 '###
 950 CLS : MODE 2
 960 WINDOW #1,1,80,1,16 : WINDOW #2,1,20,17,25 : WINDOW #3,21,40,17,25 : WINDOW  #4,41,80,17,25   
 970 WINDOW #5,71,78,2,2 : uhr=1    
@@ -154,11 +155,11 @@ cpcBasic.addItem("", function () { /*
 1460 IF n(b,c)<>0 THEN SOUND 128+j,n(b,c),0,0,2,2,ra      
 1470 j=j*2 : IF j>4 THEN j=1 
 1480 GOTO 1440
-1490 +++
-1500 +++      veraendern der   
-1510 +++
-1520 +++   Lautstaerken-Huellkurve  
-1530 +++
+1490 '+++
+1500 '+++      veraendern der   
+1510 '+++
+1520 '+++   Lautstaerken-Huellkurve  
+1530 '+++
 1540 FOR t = 1 TO 10
 1550 LOCATE #2,1,10 : PRINT #2
 1560 NEXT t
@@ -170,11 +171,11 @@ cpcBasic.addItem("", function () { /*
 1620 p=0 : FOR t = 1 TO 4 : p=p+hk(t,2)*hk(t,1) : NEXT t 
 1630 IF p>15 OR p<0 THEN GOSUB 2160 : GOTO 1580
 1640 GOTO 2230
-1650 %%%
-1660 %%%      veraendern der  
-1670 %%%
-1680 %%%      Ton-Huellkurve   
-1690 %%%
+1650 '%%%
+1660 '%%%      veraendern der  
+1670 '%%%
+1680 '%%%      Ton-Huellkurve   
+1690 '%%%
 1700 FOR t = 1 TO 10
 1710 LOCATE #3,1,10 : PRINT #3
 1720 NEXT t
@@ -186,27 +187,27 @@ cpcBasic.addItem("", function () { /*
 1780 LOCATE #4,2,8 : PRINT #4,"Wiederholung (J/N) "  
 1790 a$=INKEY$ : IF UPPER$(a$)="J" THEN w=4 ELSE IF UPPER$(a$)="N" THEN w=0 ELSE GOTO 1790
 1800 GOTO 2230
-1810 ###
-1820 ###    veraendern der Oktave 
-1830 ###
+1810 '###
+1820 '###    veraendern der Oktave 
+1830 '###
 1840 CLS #4 : PRINT #4,"Oktave veraendern"   
 1850 LOCATE #4,1,3 : PRINT #4,"Oktave (0-4) "; : GOSUB 2330 : o=eing
 1860 IF o<0 OR o>4 THEN GOSUB 2160 : GOTO 1840   
 1870 GOTO 2230
-1880 \\\
-1890 \\\    veraendern der
-1900 \\\
-1910 \\\  Geraeusch-Periode
-1920 \\\
+1880 '\\\
+1890 '\\\    veraendern der
+1900 '\\\
+1910 '\\\  Geraeusch-Periode
+1920 '\\\
 1930 CLS #4 : PRINT #4," Geraeusch-Periode veraendern"
 1940 LOCATE #4,2,3 : PRINT #4," Geraeusch-Periode (0-31) "; : GOSUB 2330 : ra=eing     
 1950 IF ra<0 OR ra>31 THEN GOSUB 2160 : GOTO 1930
 1960 GOTO 2230
-1970 ***
-1980 ***   Unterprogramm zur Eingabe
-1990 ***
-2000 ***      der Parameter    
-2010 ***                     
+1970 '***
+1980 '***   Unterprogramm zur Eingabe
+1990 '***
+2000 '***      der Parameter    
+2010 '***                     
 2020 LOCATE #4,1,3 : PRINT #4,t;". Abschnitt" 
 2030 FOR i = 4 TO 6   
 2040 LOCATE #4,19,i : PRINT #4,"            " : NEXT i
@@ -225,19 +226,19 @@ cpcBasic.addItem("", function () { /*
 2170 FOR t = 1 TO 1000 : NEXT t
 2180 LOCATE #4,2,8 : PRINT #4,"            "
 2190 RETURN
-2200 ^^^    
-2210 ^^^  Zurueck zum Hauptprogramm  
-2220 ^^^
+2200 '^^^    
+2210 '^^^  Zurueck zum Hauptprogramm  
+2220 '^^^
 2230 FOR t = 2 TO 4 : CLS #t : NEXT t : GOTO 1210
-2240 #
-2250 #   Uhrzeit anzeigen
-2260 #
+2240 '#
+2250 '#   Uhrzeit anzeigen
+2260 '#
 2270 se=se+1 : IF se>59 THEN se=0 : mi=mi+1 : IF mi>59 THEN mi=0 : st=st+1 : IF st>23 THEN st=0
 2280 IF uhr=1 THEN LOCATE #5,1,1 : PRINT #5,USING "##:##:##";st;mi;se;
 2290 RETURN
-2300 @@@
-2310 @@@  INPUT-Routine
-2320 @@@
+2300 '@@@
+2310 '@@@  INPUT-Routine
+2320 '@@@
 2330 eing$="" : x=0 : PRINT #4,"_";CHR$(8);
 2340 a$=INKEY$ : IF a$="" THEN 2340
 2350 IF a$=CHR$(127) THEN IF x>0 THEN x=x-1 : eing$=LEFT$(eing$,x) : PRINT #4,CHR$(8);"_ ";CHR$(8);CHR$(8); : GOTO 2340 ELSE GOTO 2340
