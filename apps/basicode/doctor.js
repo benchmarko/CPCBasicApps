@@ -3,9 +3,9 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-997 rem doctor - Doctor
-998 rem Andreas Garten
-999 chain merge "basicode"
+996 rem doctor - Doctor
+997 rem Andreas Garten
+998 chain merge "basicode"
 1000 A=255:GOTO 20:REM --GESUNDHEIT--
 1010 ZE=VE:SP=HO
 1020 FOR X=0 TO SP

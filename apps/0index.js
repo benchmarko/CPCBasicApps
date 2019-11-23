@@ -14,6 +14,22 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Doctor"
 	},
 	{
+    	"key": "basicode/friendsh",
+		"title": "Friendship"
+	},
+	{
+    	"key": "basicode/reaction",
+		"title": "Reaction"
+	},
+	{
+    	"key": "basicode/rsa1",
+		"title": "RSA 1"
+	},
+	{
+    	"key": "basicode/typen",
+		"title": "Typen"
+	},
+	{
     	"key": "demo/btilesim",
 		"title": "British Council Tile / Bus Fabric Sim"
 	},
@@ -68,6 +84,14 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "music/rocking",
 		"title": "Rocking CPC"
+	},
+	{
+		"key": "music/roxette",
+		"title": "Roxette"
+	},
+	{
+		"key": "music/touch",
+		"title": "Can't Touch This"
 	}
 ]
 */ });

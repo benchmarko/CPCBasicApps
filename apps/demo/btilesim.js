@@ -25,7 +25,7 @@ cpcBasic.addItem("", function () { /*
 160 DEF FNi=INT(RND*26)
 170 GOSUB 470
 180 GOSUB 270
-190 o$="":i$=INKEY$
+190 call &bd19:o$="":i$=INKEY$
 200 IF i$<>"" THEN GOSUB 380
 210 FOR i=1 TO 40
 220 w$=CHR$(14)+CHR$(FNp)+CHR$(15)+CHR$(FNp)
