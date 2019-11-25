@@ -6,14 +6,15 @@ cpcBasic.addItem("", function () { /*
 1 rem roxette - Roxette
 2 rem (c) Mr.Lou
 4 rem
+5 rem Modifications: delay
 10 GOSUB 90
 20 MODE 0:INK 0,0:BORDER 0:INK 1,17:INK 2,15:INK 3,3
 30 p=2:FOR n=0 TO 398 STEP 2:ORIGIN 0,n:DRAW 636,0,p
 40 p=p+1
 50 IF p=4 THEN p=2
-60 NEXT
+60 call &bd19:NEXT
 70 a$="                    HEJ ROBIN! JEG SYNES ALTS] IKKE AT DER SKAL V[RE MERE SOUND! S] DET BLIR' DER ALTS] IKKE, MEN LIGE FOR AT TESTE OM DET VIRKER, HAR JEG LIGE LAVET EN SCROLL-TEKST SPECIELT TIL DIG. ER DU NU IKKE GLAD?                            "
-80 FOR n=1 TO LEN(a$):LOCATE 1,24:PRINT MID$(a$,n,20):NEXT:GOTO 80
+80 FOR n=1 TO LEN(a$):LOCATE 1,24:PRINT MID$(a$,n,20):t!=time+40:while time<t!:call &bd19:wend:NEXT:GOTO 80
 90 ENT 1,2,-1,2,4,1,2,2,-1,2
 100 READ a,b,c,d,e
 110 IF a=-1 THEN RESTORE:GOTO 100

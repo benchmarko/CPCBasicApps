@@ -7,7 +7,7 @@ cpcBasic.addItem("", function () { /*
 2 rem (c) Schneider/Amstrad
 3 rem
 4 rem Modifications: put in one file, inserted some delays with call &bd19
-7 rem (TODO: line 570: RESTORE 1130 not data line; initial "Schneider"; fill; note movement) 
+7 rem (line 570: RESTORE 1130 not a DATA line; note movement) (TODO: initial "Schneider"; fill) 
 8 rem
 10 ON ERROR GOTO 100
 20 SYMBOL AFTER 256:mcentry=HIMEM-54:schpoke=&6A47-2435:MEMORY schpoke-1
@@ -43,12 +43,13 @@ cpcBasic.addItem("", function () { /*
 160 cx(1)=320:cy(1)=140
 170 r(1)=75:r(2)=40:r(3)=20:r(4)=12:r(5)=8
 180 firstime=(1=1)
+185 'goto 2250:'start with music
 270 MODE 1:INK 0,1:BORDER 1:INK 1,24
 281 LOCATE 12,19:PRINT"CTM644 / GT65 ?";
 300 CURSOR 1
 310 delay=TIME:CLEAR INPUT
 320 a$=INKEY$:IF UPPER$(a$)="G"THEN roldem=1:GOTO 340 ELSE IF UPPER$(a$)="C"THEN roldem=0:GOTO 340
-330 IF TIME-delay<3000 THEN 320 ELSE roldem=0
+330 IF a$="" and (TIME-delay<3000) THEN 320 ELSE roldem=0
 340 CURSOR 0
 344 'if you want to start here, uncomment next line
 345 'DEG:150 DIM sp(10),ctot(6),ltot(18),s(9),c(9),cx(5),cy(5),r(5),lc(5),period(12):cx(1)=320:cy(1)=140:r(1)=75:r(2)=40:r(3)=20:r(4)=12:r(5)=8:firstime=1:schpoke=&7000:poke schpoke+1,255
@@ -86,7 +87,7 @@ cpcBasic.addItem("", function () { /*
 425 SYMBOL 255,0,0,0,0,0,&X1100110,&X1100110,0
 426 PEN 1:LOCATE 9,15:PRINT"B E G R U S S T    S I E":LOCATE 13,17:PRINT"Z U    I H R E M "
 427 LOCATE 17,14:PRINT CHR$(255)
-570 ORIGIN 240,60:RESTORE 1140:'TTT
+570 ORIGIN 240,60:RESTORE 1130
 580 READ A,B,C,D:IF a=999 THEN GOTO 1530
 590 MOVE a,b:DRAW c,d,3
 600 GOTO 580
@@ -234,7 +235,7 @@ cpcBasic.addItem("", function () { /*
 2660 RELEASE 7
 2670 locx=locx+26:count=count+1:GOSUB 3500
 2680 WEND
-2690 READ a$:IF ASC(a$)=42 THEN GOTO 3640
+2690 READ a$:IF ASC(a$)=42 or inkey$<>"" THEN GOTO 3640
 2700 IF count=4 THEN locx=locx+24 ELSE locx=locx+48
 2710 count=0:IF locx<600 THEN 2810
 2720 locx=mx:locst=2
@@ -244,7 +245,7 @@ cpcBasic.addItem("", function () { /*
 2760 stavecole2=(stavecole2+2)MOD 8:i2=stavecole2
 2770 notecol=notecol MOD 8+2:stavecol=(stavecol+2)MOD 8
 2780 INK i1,backgrnd:INK i2,backgrnd:INK i3,backgrnd:INK i4,backgrnd
-2790 FRAME:CALL mcentry+28
+2790 locate#7,1,25:?#7,string$(9,chr$(10)); :FRAME:'CALL mcentry+28
 2800 INK i5,colstave:INK i6,colnote
 2810 GOTO 2570
 2820 'calculate note parms

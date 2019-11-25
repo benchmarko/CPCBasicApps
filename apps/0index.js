@@ -46,6 +46,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Data for logo in demo scpc6128"
 	},
 	{
+    	"key": "demo/sultans",
+		"title": "Sultan's Maze Demo Screen"
+	},
+	{
 		"key": "games/garfunkl",
 		"title": "Garfunkel"
 	},
@@ -72,6 +76,14 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "music/asbtune",
 		"title": "A small BASIC tune"
+	},
+	{
+		"key": "music/bach",
+		"title": "J. S. Bach (Wohl mir,dass ich Jesum habe)"
+	},
+	{
+		"key": "music/clarinet",
+		"title": "Clarinet (Klarinettenmuck'l)"
 	},
 	{
 		"key": "music/cpcorgan",

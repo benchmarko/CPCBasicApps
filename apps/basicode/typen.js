@@ -3,15 +3,17 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-996 rem typen - Typen
-997 rem Rene Derkx
+994 rem typen - Typen
+995 rem Rene Derkx
+996 rem http://www.basicode.de/download/neue.zip
+997 rem Modifications: call &bd19, print number, max HO=39
 998 chain merge "basicode"
 1000 A=50:GOTO 20:REM TYPEN
 1010 REM
 1020 REM ** FALCON INTRO **
 1030 REM
 1040 A=2:B=27:SR$="  FALCON":EF=5:S=0:VT=VE:FR=0:GOSUB 280
-1050 IF (A=15) AND (B=14) THEN GOTO 1110
+1050 call &bd19:IF (A=15) AND (B=14) THEN GOTO 1110
 1060 HO=A-1
 1070 VE=10:GOSUB 110:PRINT " THE FALCON"
 1080 HO=B:VE=12:GOSUB 110:PRINT "PRESENTS "
@@ -47,6 +49,7 @@ cpcBasic.addItem("", function () { /*
 1740 S=0:IF VE=.75 THEN GOTO 1810
 1750 GOSUB 100:VE=VT
 1760 READ A$:IF A$="*" THEN GOTO 1780
+1765 S=S mod 2
 1770 GOSUB 110:PRINT A$:GOSUB 5500:PRINT :GOSUB 5500:GOTO 1760
 1780 PRINT :PRINT "Press <return>";
 1790 GOSUB 210:IF IN<> 13 THEN GOTO 1790
@@ -110,15 +113,15 @@ cpcBasic.addItem("", function () { /*
 4040 IF WL=PC THEN GOTO 4060
 4050 NM$=QQ$+RIGHT$(NM$,WL-PC):PC=PC+1:GOTO 4110
 4060 NM$=QQ$
-4070 VE=10:FOR HO=M TO 40:GOSUB 110:PRINT " ":NEXT HO
+4070 VE=10:FOR HO=M TO 39:GOSUB 110:PRINT " ":NEXT HO
 4080 HO=MU-2:GOSUB 110:PRINT "!"
 4090 HO=39-WL:GOSUB 110:PRINT "          "
 4100 SC=SC+WL:GOSUB 4210:SD=20:GOSUB 450
 4110 RETURN 
 4200 REM
-4210 HO=0:VE=16:GOSUB 110:PRINT "SCORE : ";SC
-4220 HO=14:GOSUB 110:PRINT "POWER : ";PO
-4230 HO=30:GOSUB 110:PRINT "LEVEL : ";LE
+4210 HO=0:VE=16:GOSUB 110:PRINT "SCORE :";SC
+4220 HO=14:GOSUB 110:PRINT "POWER :";PO
+4230 HO=30:GOSUB 110:PRINT "LEVEL :";LE
 4240 RETURN 
 4300 REM
 4310 REM ** SOUND EFFECTS **
@@ -138,7 +141,7 @@ cpcBasic.addItem("", function () { /*
 4660 FOR K=7 TO 13 STEP 2:VE=K:GOSUB 110:PRINT "!:"
 4670 VE=K+1:GOSUB 110:PRINT ":!":NEXT K
 4680 MU=MU+3
-4690 LE=LE+1:VE=16:HO=30:GOSUB 110:PRINT "LEVEL : ";LE
+4690 LE=LE+1:VE=16:HO=30:GOSUB 110:PRINT "LEVEL :";LE
 4700 RETURN 
 4800 REM
 4810 REM ** END PAGE **
@@ -198,7 +201,12 @@ cpcBasic.addItem("", function () { /*
 25190 DATA "SEN DIE MET 2 OF 1 VINGERS TYPEN.   "
 25200 DATA "DE BEDOELING IS OM HET AFGEBEELDE   "
 25210 DATA "WOORD OVER TE TYPEN, VOORDAT HET    "
-25220 DATA "WOORD DE MUUR BEREIKT.              ","*"
+25220 DATA "WOORD DE MUUR BEREIKT.              "
+25221 data "With this program you can speed testing your types."
+25222 data "This now in the form of a kind of 'entertainment game'."
+25223 data "The program consists of multiple levels and is suitable for the ten-finger typers and for people typing with 2 or 1 fingers."
+25224 data "The purpose is to make it possible word to type about, before the word reach the wall."
+25225 data "*"
 25230 DATA "COMPUTER","FLOPPY DISK","JOYSTICK","DISKETTE"
 25240 DATA "MICROSOFT","EXTENDED","HARDWARE","CASSETTE"
 25250 DATA "BASICODE","STRUCTUUR","PRINTER","MONITOR"

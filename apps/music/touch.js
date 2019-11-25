@@ -6,6 +6,7 @@ cpcBasic.addItem("", function () { /*
 1 rem touch - Can't Touch This
 2 rem (c) Mr.Lou
 4 rem
+5 rem Modifications: delay
 10 ENV 1,6,-1,2:ENT 1,96,8,4:ENT 2,3,-1,2,6,1,2,3,-1,2
 20 KEY 0,"mode 2:ink 0,1:border 1:ink 1,24:pen 1:list"+CHR$(13)
 30 DIM a(1000),b(1000),c(1000)
@@ -22,7 +23,7 @@ cpcBasic.addItem("", function () { /*
 140 GOSUB 300
 150 MODE 1:INK 0,0:BORDER 0:INK 1,5:INK 2,8:INK 3,7
 160 PRINT "1M2R3.1L2O3U 2F3R1O2M 1M2T3C 2P3R1E2S3E1N2T3:":PRINT "1'2C3A1N2'3T 2T3O1U2C3H 2T3H1I2S3' 2B3Y 2M3C 2H3A1M2M3E1R"
-170 GOTO 170
+170 call &bd19:GOTO 170
 180 IF a(a)=0 THEN SOUND 1,0,24,0:GOTO 200
 190 SOUND 1,a(a),24,15
 200 a=a+1

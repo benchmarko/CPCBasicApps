@@ -3,8 +3,10 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-996 rem rsa1 - RSA 1
-997 rem Friedrich Dormeier
+994 rem rsa1 - RSA 1
+995 rem Friedrich Dormeier
+996 rem http://www.basicode.de/download/neue.zip
+997 rem Modifications:
 998 chain merge "basicode"
 1000 A=1000:GOTO 20:REM  RSA - TEIL 1
 1010 DIM T$(2)

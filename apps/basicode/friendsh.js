@@ -3,8 +3,10 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-996 rem friendsh - Friendship
-997 rem Walther van den Elshout / Detlev Winkel
+994 rem friendsh - Friendship
+995 rem Walther van den Elshout / Detlev Winkel
+996 rem http://www.basicode.de/download/neue.zip
+997 rem Modifications: jump over melodies with key; box size
 998 chain merge "basicode"
 1000 A=100:GOTO 20:REM FREUNDSCHAFT
 1010 DIM HD(75),DD(75),HN(62),DN(62):REM MUZIEK/MUSIK
@@ -81,10 +83,10 @@ cpcBasic.addItem("", function () { /*
 1720 FOR X=0 TO 75:READ HD(X),DD(X):NEXT X
 1730 FOR X=0 TO 61:READ HN(X),DN(X):NEXT X
 1740 REM
-1750 HO=0.17:VE=0.72:GOSUB 620:HO=0.84:GOSUB 630
+1750 HO=0.17:VE=0.72:GOSUB 620:HO=0.87:GOSUB 630
 1760 HO=0.17:GOSUB 620:VE=0.78:GOSUB 630
-1770 HO=0.84:GOSUB 620:VE=0.72:GOSUB 630
-1780 HO=0.17:VE=0.78:GOSUB 620:HO=0.84:GOSUB 630
+1770 HO=0.87:GOSUB 620:VE=0.72:GOSUB 630
+1780 HO=0.17:VE=0.78:GOSUB 620:HO=0.87:GOSUB 630
 1790 N$="Nederland - Deutschland"
 1800 SR$=N$:VE=0.735:HO=0.185:GOSUB 650
 1810 SD=6:GOSUB 450:CN=1
@@ -112,6 +114,7 @@ cpcBasic.addItem("", function () { /*
 2030 REM MELODIE 1 AFSPELEN/ABSPIELEN
 2040 REM
 2050 READ SP,SD:IF SP=0 THEN 2100
+2055 gosub 200:IF IN$<>"" then 2100
 2060 SD=SD*1.5:GOSUB 400:GOTO 2050
 2070 REM
 2080 REM ** NIEUW BEELD/NEUES BILD **
@@ -182,6 +185,7 @@ cpcBasic.addItem("", function () { /*
 2730 REM
 2740 FOR X=0 TO 75
 2750 SP=HD(X):SD=DD(X)*2:GOSUB 400
+2755 gosub 200:IF IN$<>"" then X=75
 2760 NEXT X
 2770 REM
 2780 REM *** WINDMOLEN/WINDMUEHLE ***
@@ -250,6 +254,7 @@ cpcBasic.addItem("", function () { /*
 3410 REM MELODIE 3 AFSPELEN/ABSPIELEN
 3420 REM
 3430 FOR X=0 TO 61:SP=HN(X):SD=DN(X)*2:GOSUB 400
+3435 gosub 200:IF IN$<>"" then X=61
 3440 NEXT X
 3450 REM
 3460 REM NAAM/NAME
@@ -272,12 +277,14 @@ cpcBasic.addItem("", function () { /*
 3630 FOR X=1 TO 15
 3640 FOR Y=1 TO 5
 3650 SP=HD(Z):SD=DD(Z):GOSUB 400
+3655 gosub 200:IF IN$<>"" then 3740
 3660 Z=Z+1
 3670 NEXT Y
 3680 Z=Z-5
 3690 FOR Y=1 TO 5
 3700 IF Z>62 THEN 3720
 3710 SP=HN(Z):SD=DN(Z):GOSUB 400
+3715 gosub 200:IF IN$<>"" then 3740
 3720 Z=Z+1
 3730 NEXT Y:NEXT X
 3740 REM

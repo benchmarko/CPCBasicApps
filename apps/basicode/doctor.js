@@ -3,8 +3,10 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-996 rem doctor - Doctor
-997 rem Andreas Garten
+994 rem doctor - Doctor
+995 rem Andreas Garten
+996 rem http://www.basicode.de/download/neue.zip
+997 rem Modifications:
 998 chain merge "basicode"
 1000 A=255:GOTO 20:REM --GESUNDHEIT--
 1010 ZE=VE:SP=HO

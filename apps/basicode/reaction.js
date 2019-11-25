@@ -3,8 +3,10 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-996 rem reaction - Reaction
-997 rem Ch.W. Brederode
+994 rem reaction - Reaction
+995 rem Ch.W. Brederode
+996 rem http://www.basicode.de/download/neue.zip
+997 rem Modifications: upper$, continue with return
 998 chain merge "basicode"
 1000 A=500:GOTO 20:REM ** FLITS ** / ** BLITZ **
 1010 DIM L$(8):AA=ASC("A"):SP=0:SV=0
@@ -106,14 +108,14 @@ cpcBasic.addItem("", function () { /*
 3750 LY=LY-1:SR$=Y$:GOSUB 650:GOTO 3670
 3760 Y$=Y$+IN$:LY=LY+1:SR$=Y$:GOSUB 650:GOTO 3670
 3770 REM ---BEOORDELING---
-3780 G=0:SD=SD+1:IF X$=Y$ THEN G=1:SD=SD-2:IF SD=0 THEN SD=1
+3780 G=0:SD=SD+1:IF X$=upper$(Y$) THEN G=1:SD=SD-2:IF SD=0 THEN SD=1
 3790 IF SD>40 THEN SD=40
 3800 HO=.4:VE=.6:SR$=Y$:GOSUB 650
 3810 IF G=1 THEN HO=.4:VE=.7:SR$="RICHTIG !":GOSUB 650:GOTO 3830
 3820 HO=0:VE=.7:SR$="SCHADE, es war "+X$:GOSUB 650
 3830 HO=.4:VE=.8:SR$="  << SPACE >> ":GOSUB 650
 3840 IF CN=1 THEN 3880
-3850 GOSUB 210:IF (IN<>32) AND (IN$<>"!") THEN 3850
+3850 GOSUB 210:IF (IN<>32) and (IN<>13) AND (IN$<>"!") THEN 3850
 3860 IF IN$="!" THEN GOSUB 100:GOTO 1180
 3870 CN=1:GOTO 3800
 3880 CN=0:ON K1 GOTO 3030,3060,3250

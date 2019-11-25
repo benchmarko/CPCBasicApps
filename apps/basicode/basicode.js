@@ -5,9 +5,10 @@
 cpcBasic.addItem("", function () { /*
 1 rem basicode - BasiCode Library
 2 rem (c) S.Simons, M.van der Meer
-3 rem
-4 BORDER 0:INK 0,0:INK 1,26
-5 RANDOMIZE TIME:RAD
+3 rem http://www.basicode.de/download/cpc.zip (BC3.ASC)
+4 rem Modifications: call &bbde; no hidden machine code
+5 BORDER 0:INK 0,0:INK 1,26
+6 RANDOMIZE TIME:RAD
 10 GOTO 999:REM BASICODE-3 SUBS V4.1 19-2 '89 (C) S.Simons, M.van der Meer
 20 CLS:CLEAR:IF PEEK(&AE64)=&6F THEN SCRMODE=&B7C3 ELSE SCRMODE=&B1C8
 21 poke SCRMODE,0: IF PEEK(SCRMODE)=0 OR PEEK(SCRMODE)=2 THEN MODE 1
@@ -161,8 +162,8 @@ cpcBasic.addItem("", function () { /*
 631 DRAW INT(HO*540),-INT(VE*400),ABS(CN-1):RETURN
 632 PRINT #1,OG$:SOUND 2,100,10,15:OG=0:RETURN
 650 GOSUB 601:TAG:MOVE INT(HO*540),-INT(VE*400)
-651 IF CN=0 THEN CALL &BBDE
-652 IF CN=1 THEN CALL &BBDE,1
+651 IF CN=0 THEN CALL &BBDE,1
+652 IF CN=1 THEN CALL &BBDE
 653 PRINT SR$;:TAGOFF:RETURN
 950 CLS:CLEAR:END
 981 '98x line not used:
