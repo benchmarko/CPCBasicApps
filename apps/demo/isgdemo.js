@@ -147,11 +147,12 @@ cpcBasic.addItem("", function () { /*
 1480 ' !  ******  Unterprogramm bei Break-Erkennung  *******  !
 1490 ' +------------------------------------------------------+
 1500 '
-1510 RUN           ' CPC 464: Neustart. Sorry, anders geht's nicht. Sonst gehen
-1520 '             ' irgendwie programmierte Interrupts verloren.
+1505 '1510 RUN           ' CPC 464: Neustart. Sorry, anders geht's nicht. Sonst gehen
+1506 '1520               ' irgendwie programmierte Interrupts verloren.
 1510 brk=1:RETURN  ' beim CPC 664 und 6128 gibt's keine Probleme. Die Musik-
 1520 '             ' Ausgabe muss nicht erneut initialisiert werden.
-1530 '1540 ' +------------------------------------------------------+
+1530 '
+1540 ' +------------------------------------------------------+
 1550 ' ! ******* das Hauptprogramm: Grafik-Animation *******  !
 1560 ' +------------------------------------------------------+
 1570 '

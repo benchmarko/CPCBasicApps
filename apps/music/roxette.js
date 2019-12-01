@@ -17,7 +17,7 @@ cpcBasic.addItem("", function () { /*
 80 FOR n=1 TO LEN(a$):LOCATE 1,24:PRINT MID$(a$,n,20):t!=time+40:while time<t!:call &bd19:wend:NEXT:GOTO 80
 90 ENT 1,2,-1,2,4,1,2,2,-1,2
 100 READ a,b,c,d,e
-110 IF a=-1 THEN RESTORE:GOTO 100
+110 IF a=-1 THEN RESTORE:call &bd19:GOTO 100
 120 IF a<>0 THEN SOUND 1,a,16,14,0,1 ELSE SOUND 1,0,16,0
 130 IF b<>0 THEN SOUND 2,b,16,14,0,1 ELSE SOUND 2,0,16,0
 140 IF c<>1 THEN SOUND 4,c,16,e,0,0,d ELSE SOUND 4,0,16,0

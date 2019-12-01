@@ -6,7 +6,8 @@ cpcBasic.addItem("", function () { /*
 1 rem bach - J. S. Bach (Wohl mir,dass ich Jesum habe)
 2 rem (c) Wolfgang Volz
 4 rem
-5 rem Modifications
+5 rem Modifications: call &bd19
+6 rem
 10 '**********************************
 20 '**Orgel im Strassburger Muenster** 
 30 '**            und               **
@@ -158,5 +159,5 @@ cpcBasic.addItem("", function () { /*
 1490 READ a,b,c,d
 1500 SOUND 1,a/h,b*s,9,1 
 1510 SOUND 2,c/h,d*s,10,1
-1520 GOTO 1520
+1520 call &bd19:GOTO 1520
 */ });

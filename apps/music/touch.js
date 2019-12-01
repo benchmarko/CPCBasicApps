@@ -6,10 +6,10 @@ cpcBasic.addItem("", function () { /*
 1 rem touch - Can't Touch This
 2 rem (c) Mr.Lou
 4 rem
-5 rem Modifications: delay
+5 rem Modifications: delay; array sized reduced
 10 ENV 1,6,-1,2:ENT 1,96,8,4:ENT 2,3,-1,2,6,1,2,3,-1,2
 20 KEY 0,"mode 2:ink 0,1:border 1:ink 1,24:pen 1:list"+CHR$(13)
-30 DIM a(1000),b(1000),c(1000)
+30 DIM a(17),b(33),c(33)
 40 a=1:b=1:c=1
 50 READ a(a):a=a+1
 60 IF a(a-1)<>-1 THEN 50

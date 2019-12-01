@@ -43,7 +43,12 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
     	"key": "demo/scpcdata",
-		"title": "Data for logo in demo scpc6128"
+		"title": "Data for logo in demo scpc6128",
+		"type": "data"
+	},
+	{
+    	"key": "demo/serpent",
+		"title": "Serpent"
 	},
 	{
     	"key": "demo/sultans",

@@ -5,8 +5,10 @@
 cpcBasic.addItem("", function () { /*
 1 rem mexicana - Mexicana
 2 rem (c) Juergen Werner
-4 rem Modifications: wait for final sound
+4 rem Modifications: wait for final sound; sync notes with graph; graph flipped; autostart
 5 rem
+6 rem
+8 defint a-z
 10 GOTO 400:REM *** Programmstart ***
 20 REM  *****************************
 30 REM  * Dieses Programm darf ver- *
@@ -36,7 +38,7 @@ cpcBasic.addItem("", function () { /*
 270 '
 280 ' Warte auf Taste   wenn c=1 then Cursor einschalten
 290 IF c=1 THEN CURSOR 1
-300 t$="":WHILE t$="":t$=INKEY$:WEND
+300 t!=time+1500:t$="":WHILE t$="" and time<t!:t$=INKEY$:WEND
 310 IF c=1 THEN CURSOR 0:c=0
 320 RETURN
 330 '
@@ -116,7 +118,8 @@ cpcBasic.addItem("", function () { /*
 1070 DATA -1,0
 1080 READ p,l
 1090 IF p=-1 THEN 1130
-1100 x=x+2:PLOT x,p
+1100 x=x+2:if p>0 then PLOT x,390-p
+1105 while sq(1) and 128:call &bd19:wend
 1110 SOUND 1,p,l
 1120 GOTO 1080
 1130 ENV 1,5,-1,1

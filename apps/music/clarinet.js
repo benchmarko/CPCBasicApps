@@ -6,7 +6,9 @@ cpcBasic.addItem("", function () { /*
 1 rem clarinet - Clarinet (Klarinettenmuck'l)
 2 rem (c) Juergen Werner
 4 rem
-5 rem Modifications
+5 rem Modifications: sync notes with graph; graph flipped, graph continued when reaching border; autostart
+6 rem
+8 defint a-z
 10 GOTO 400:REM *** Programmstart ***
 20 REM  *****************************
 30 REM  * Dieses Programm darf ver- *
@@ -36,7 +38,7 @@ cpcBasic.addItem("", function () { /*
 270 '
 280 ' Warte auf Taste   wenn c=1 then Cursor einschalten
 290 IF c=1 THEN CURSOR 1
-300 t$="":WHILE t$="":t$=INKEY$:WEND
+300 t!=time+1500:t$="":WHILE t$="" and time<t!:t$=INKEY$:WEND
 310 IF c=1 THEN CURSOR 0:c=0
 320 RETURN
 330 '
@@ -129,13 +131,26 @@ cpcBasic.addItem("", function () { /*
 1200 REM *** ende ***
 1210 DATA 142,20,159,20,127,20,159,20,142,20,127,20
 1220 DATA 119,40,0,3,119,40,0,3,119,40,0,40
-1230 READ p,l:PLOT 0,p*1.5:SOUND 1,p,l
+1230 move 0,0:'READ p,l:PLOT 0,p*1.5:SOUND 1,p,l
 1240 DATA -1,0
 1250 READ p,l
 1260 IF p=-1 THEN 1310
-1270 IF p=0 AND l=3 THEN 1290
-1280 x=x+l/10:DRAW x,p*1.5
+1270 'IF p=0 THEN 1290
+1280 x=x+l/10:if x>639 then x=0:move 0,0:LOCATE 1,2:PRINT"":LOCATE 1,2
+1285 if p>0 then DRAW x,380-p*1.5
+1287 while sq(1) and 128:call &bd19:wend
 1290 SOUND 1,p,l
 1300 GOTO 1250
 1310 END
+1510 '
+1540 ' test playback with hold
+1550 'READ p,l
+1560 'IF p=-1 THEN 1610
+1570 'SOUND 1+64,p,l:IF p=0 THEN 1590
+1580 'x=x+l/10:if x>639 then x=0:move 0,0:LOCATE 1,2:PRINT"":LOCATE 1,2
+1585 'DRAW x,380-p*1.5
+1590 'while sq(1) and 128:call &bd19:wend
+1595 'release 1
+1600 'GOTO 1550
+1610 'end
 */ });

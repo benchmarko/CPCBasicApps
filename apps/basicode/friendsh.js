@@ -478,5 +478,4 @@ cpcBasic.addItem("", function () { /*
 32190 REM
 32200 REM Erstausstrahlung: DS-Kultur/TROS-RADIO
 32210 REM :
-32180 REM +---------------------------+
 */ });
