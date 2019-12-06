@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-1 rem touch - Can't Touch This
+1 rem touch - U Can't Touch This (MC Hammer)
 2 rem (c) Mr.Lou
 4 rem
 5 rem Modifications: delay; array sized reduced

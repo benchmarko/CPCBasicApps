@@ -55,6 +55,14 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Sultan's Maze Demo Screen"
 	},
 	{
+		"key": "games/catch",
+		"title": "Catch"
+	},
+	{
+		"key": "games/cityland",
+		"title": "Citylander"
+	},
+	{
 		"key": "games/garfunkl",
 		"title": "Garfunkel"
 	},
@@ -79,12 +87,24 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Stardodger Game"
 	},
 	{
+    	"key": "games/sultan",
+		"title": "Sultan's Maze: Amsoft Logo"
+	},
+	{
+    	"key": "games/sultan2",
+		"title": "Sultan's Maze: Game"
+	},
+	{
 		"key": "music/asbtune",
 		"title": "A small BASIC tune"
 	},
 	{
 		"key": "music/bach",
 		"title": "J. S. Bach (Wohl mir,dass ich Jesum habe)"
+	},
+	{
+		"key": "music/cancan",
+		"title": "Can-Can (Infernal Galop, Jacques Offenbach)"
 	},
 	{
 		"key": "music/clarinet",
@@ -96,7 +116,7 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
 		"key": "music/mexicana",
-		"title": "Mexicana"
+		"title": "Dance Mexicana: Jarabe Tapatio"
 	},
 	{
 		"key": "music/rocking",
@@ -104,11 +124,11 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
 		"key": "music/roxette",
-		"title": "Roxette"
+		"title": "Roxette: Listen To Your Heart"
 	},
 	{
 		"key": "music/touch",
-		"title": "Can't Touch This"
+		"title": "U Can't Touch This (MC Hammer)"
 	}
 ]
 */ });

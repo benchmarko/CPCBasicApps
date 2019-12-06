@@ -3,11 +3,12 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-1 rem mexicana - Mexicana
+1 rem mexicana - Dance Mexicana: Jarabe Tapatio
 2 rem (c) Juergen Werner
 4 rem Modifications: wait for final sound; sync notes with graph; graph flipped; autostart
 5 rem
-6 rem
+6 rem On youtube: https://www.youtube.com/watch?v=EePDqgffT1A (Jarabe Tapatio baile tradicional de México)
+7 rem
 8 defint a-z
 10 GOTO 400:REM *** Programmstart ***
 20 REM  *****************************

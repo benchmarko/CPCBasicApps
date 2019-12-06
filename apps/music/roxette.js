@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-1 rem roxette - Roxette
+1 rem roxette - Roxette: Listen To Your Heart
 2 rem (c) Mr.Lou
 4 rem
 5 rem Modifications: delay

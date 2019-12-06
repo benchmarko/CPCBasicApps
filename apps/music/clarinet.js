@@ -8,7 +8,9 @@ cpcBasic.addItem("", function () { /*
 4 rem
 5 rem Modifications: sync notes with graph; graph flipped, graph continued when reaching border; autostart
 6 rem
-8 defint a-z
+7 rem On youtube: https://www.youtube.com/watch?v=2ho-nZ5x_mo (Klarinetten Muckl -Klarinettenmuckl)
+8 rem Or: https://youtu.be/aQfh9IBRSnQ?t=24 (Klarinettenmuckl, Clarinet and Piano)
+9 defint a-z
 10 GOTO 400:REM *** Programmstart ***
 20 REM  *****************************
 30 REM  * Dieses Programm darf ver- *
