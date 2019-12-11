@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-1 rem mexicana - Dance Mexicana: Jarabe Tapatio
+1 rem mexicana - Dance Mexicana (Jarabe Tapatio, Mexican Hat Dance)
 2 rem (c) Juergen Werner
 4 rem Modifications: wait for final sound; sync notes with graph; graph flipped; autostart
 5 rem

@@ -6,7 +6,7 @@ cpcBasic.addItem("", function () { /*
 1 rem cityland - Citylander
 2 rem (c) Jujstronic Software
 3 rem https://www.cpc-power.com/index.php?page=detail&onglet=dumps&num=16465
-4 rem Modifications: (TODO: KEY DEF to make F5="X" work; otherwise use big "X")
+4 rem Modifications: some delay; display hint on how to bomb
 5 rem
 10 ' **********************************
 20 ' *                                *
@@ -110,14 +110,18 @@ cpcBasic.addItem("", function () { /*
 1000 PAPER 0:PRINT" SCORE 0000    CITYLANDER    LIVES "+l$+" "
 1010 PAPER 2:FOR a=1 TO 80:PLOT RND*640,RND*240+144:NEXT
 1020 RANDOMIZE TIME
-1030 FOR a=1 TO 40:SOUND 130,180,20,,,1:LOCATE a,25:PRINT CHR$(254);
+1030 FOR a=1 TO 40:SOUND 130,180,20,,,1:call &bd19:LOCATE a,25:PRINT CHR$(254);
 1040 FOR b=24 TO RND*14+10 STEP-1:LOCATE a,b:PRINT CHR$(255):NEXT b,a
 1050 TAG:FOR a=0 TO 12 STEP 2
 1060 SOUND 129,FNh(a+1),100:SOUND 130,FNh(a+5),100:SOUND 132,FNh(a+8),100
+1065 t!=time+100
 1070 MOVE 0,a:PRINT" COPYRIGHT (c) 1985 JUJSTRONIC SOFTWARE ";
+1075 while time<t!:call &bd19:wend
 1080 NEXT a:TAGOFF
 1090 PEN 1:b=0:l=5:s=0
 1100 b$=CHR$(252):k$=CHR$(88)
+1105 '
+1106 after 200,1 gosub 1800
 1110 x=1:y=3:FOR a=1 TO 4:SOUND 12,2499,12,,,2:SOUND 33,2500,12,,,2:NEXT
 1120 s$=STR$(s):PAPER 0:LOCATE 13-LEN(s$),1:PRINT MID$(s$,2)
 1130 PAPER 2:LOCATE x,y:PRINT" ":LOCATE x+1,y:PRINT CHR$(253)
@@ -169,4 +173,6 @@ cpcBasic.addItem("", function () { /*
 1590 i$=INKEY$:IF I$="j"OR I$="J"THEN RUN
 1600 IF I$="n"OR I$="N"THEN CALL 0
 1610 BORDER RND*26:INK 1,RND*26:GOTO 1590
+1790 '
+1800 locate 1,25:?"Press small ENTER to bomb...";chr$(18):return
 */ });

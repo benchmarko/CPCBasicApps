@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-1 rem clarinet - Clarinet (Klarinettenmuck'l)
+1 rem clarinet - Clarinet (Klarinettenmuck'l, Jaroslav Skabrada)
 2 rem (c) Juergen Werner
 4 rem
 5 rem Modifications: sync notes with graph; graph flipped, graph continued when reaching border; autostart

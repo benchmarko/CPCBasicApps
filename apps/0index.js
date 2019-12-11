@@ -30,6 +30,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Typen"
 	},
 	{
+    	"key": "demo/100demo",
+		"title": "100% BASIC Demo"
+	},
+	{
     	"key": "demo/btilesim",
 		"title": "British Council Tile / Bus Fabric Sim"
 	},
@@ -99,8 +103,12 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "A small BASIC tune"
 	},
 	{
+		"key": "music/axelf",
+		"title": "Axel F (Harold Faltermeyer)"
+	},
+	{
 		"key": "music/bach",
-		"title": "J. S. Bach (Wohl mir,dass ich Jesum habe)"
+		"title": "Wohl mir,dass ich Jesum habe (J. S. Bach)"
 	},
 	{
 		"key": "music/cancan",
@@ -108,15 +116,23 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
 		"key": "music/clarinet",
-		"title": "Clarinet (Klarinettenmuck'l)"
+		"title": "Clarinet (Klarinettenmuck'l, Jaroslav Skabrada)"
 	},
 	{
 		"key": "music/cpcorgan",
 		"title": "CPC organ (CPC-Orgel)"
 	},
 	{
+		"key": "music/elise",
+		"title": "Für Elise (Ludwig van Beethoven)"
+	},
+		{
+		"key": "music/menuett",
+		"title": "Menuett / Minuet (James Hook)"
+	},
+	{
 		"key": "music/mexicana",
-		"title": "Dance Mexicana: Jarabe Tapatio"
+		"title": "Dance Mexicana (Jarabe Tapatio, Mexican Hat Dance)"
 	},
 	{
 		"key": "music/rocking",
@@ -125,6 +141,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "music/roxette",
 		"title": "Roxette: Listen To Your Heart"
+	},
+	{
+		"key": "music/ticotico",
+		"title": "Tico-Tico no Fubá (Zequinha de Abreu)"
 	},
 	{
 		"key": "music/touch",

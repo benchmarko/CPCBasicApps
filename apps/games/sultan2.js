@@ -5,6 +5,8 @@
 cpcBasic.addItem("", function () { /*
 10 REM sultan2 - Sultan's Maze for the Amstrad
 20 REM Copyright 1984 Gem Software
+21 'Modifications: some delay; use PRINT instead of MC setting SCR ACCESS; accept also "Y" on German keyboard
+22 '
 30 'MEMORY &A9FF
 35 DEFINT a-z:RANDOMIZE TIME:MODE 1:BORDER 0:PAPER 0:PEN 1:FOR i=0 TO 15:INK i,0,0:NEXT:INK 1,24,12:LOCATE 7,12:PRINT "Initialisation - Please Wait"
 40 RESTORE 3370:words=-1:x$=""
@@ -12,11 +14,11 @@ cpcBasic.addItem("", function () { /*
 60  READ x$:words=words+1
 70 WEND
 80 RESTORE 100:FOR i=&AA00 TO &AA14:READ a:POKE i,a:NEXT i
-90 ' (&aa00) xor a,a  jp &BC59
+90 ' (&aa00) xor a,a  jp &BC59 (SCR ACCESS: chr$(23)+chr$(0))
 100 DATA &af,&c3,&59,&bc
-110 ' (&aa04) ld a,1   jp &BC59
+110 ' (&aa04) ld a,1   jp &BC59 (SCR ACCESS: chr$(23)+chr$(1))
 120 DATA &3e,&01,&c3,&59,&bc
-130 ' (&aa09) ld hl,&C000  jp &BC05
+130 ' (&aa09) ld hl,&C000  jp &BC05 (SCR SET OFFSET)
 140 DATA &21,&00,&c0,&c3,&05,&bc
 150 ' (&aa0F) ld hl,&C004  jp &BC05
 160 DATA &21,&04,&c0,&c3,&05,&bc
@@ -88,17 +90,18 @@ cpcBasic.addItem("", function () { /*
 820  FOR i=1 TO 16
 830   PEN 0.5+12*RND:LOCATE 2+i,24:PRINT MID$(" Sultan's  Maze ",i,1);
 840   INK 13,15*RND:INK 14,15*RND:INK 15,15*RND
+845   call &bd19
 850  NEXT i
 860 WEND
 870 '
 880 MODE 1:BORDER 0:INK 0,0:INK 1,6:INK 2,18:PAPER 1:PEN 0
-890 WINDOW #0,1,40,1,5:CLS:CALL &AA00
+890 WINDOW #0,1,40,1,5:CLS:?chr$(23)+chr$(0);: 'CALL &AA00
 900 LOCATE 11,2:PRINT "** Sultan's Maze **";
 910 LOCATE 11,3:PRINT CHR$(164);" 1984 Gem Software";
 920 LOCATE 3,4:PRINT "Coding & Design by J. Line & C. Hunt"
 930 WINDOW #0,1,40,6,25:WINDOW #1,3,38,4,4:PAPER 0:PEN 2
 940 LOCATE 4,6:PRINT "Do You Want Instructions ? (Y/N) ";CHR$(143):GOSUB 6530
-950 IF INKEY(43)>-1 THEN CLS:GOSUB 6060     ELSE IF INKEY(46)=-1 THEN 950
+950 call &bd19:IF INKEY(43)>-1 or inkey(71)>-1 THEN CLS:GOSUB 6060     ELSE IF INKEY(46)=-1 THEN 950
 960 CLS:WINDOW #0,1,40,1,25:WINDOW #1,3,38,25,25:WINDOW #7,1,1,5,21:PAPER #1,0:PEN #1,1
 970 '
 980 GOSUB 2890 'maze
@@ -109,7 +112,7 @@ cpcBasic.addItem("", function () { /*
 1030 '
 1040 LOCATE 8,21:PRINT "Difficulty Level (1-9) ? ";CHR$(143);:GOSUB 6530
 1050 p$=INKEY$:IF p$<"1" OR p$>"9" THEN 1050 ELSE PRINT CHR$(8);p$:bp=ASC(p$)-48
-1060 w=970-bp*140-560*(bp>5):bv=(bp>5):FOR i=1 TO 1000:NEXT i
+1060 w=970-bp*140-560*(bp>5):bv=(bp>5):FOR i=1 TO 1000/100:call &bd19:NEXT i
 1070 dummy=REMAIN(0):dummy=REMAIN(1)
 1080 dummy=REMAIN(2):dummy=REMAIN(3)
 1090 EVERY w,0 GOSUB 4110 'move ghost
@@ -145,17 +148,17 @@ cpcBasic.addItem("", function () { /*
 1390 IF score>hiscore THEN LOCATE 2,7:PRINT"Well done !!  That's a new Hi-Score !!":FOR i=1 TO 6:FOR j=1 TO 10:SOUND 1,200-j*5,3:NEXT j:NEXT i:hiscore=score
 1400 LOCATE 12,9:PRINT"Hi-Score :- ";hiscore
 1410 LOCATE 9,21:PRINT"Another game (Y/N) ? ";CHR$(143);CHR$(8);
-1420 IF INKEY(46)>-1 THEN GOSUB 6530:PAPER 0:PEN 2:MODE 1:END ELSE IF INKEY(43)=-1 THEN 1420
+1420 call &bd19:IF INKEY(46)>-1 THEN GOSUB 6530:PAPER 0:PEN 2:MODE 1:END ELSE IF INKEY(43)=-1 and inkey(71)=-1 THEN 1420
 1430 PRINT "Yes":LOCATE 11,23:PRINT"Same maze (Y/N) ? ";CHR$(143);CHR$(8);:GOSUB 6530
-1440 IF INKEY(46)>-1 THEN PRINT "No":GOTO 980
+1440 call &bd19:IF INKEY(46)>-1 THEN PRINT "No":GOTO 980
 1450 IF INKEY(43)>-1 THEN PRINT "Yes":GOTO 990
 1460 GOTO 1440
 1470 '
 1480 'exhausted  
 1490 FOR i=1 TO 25
 1500  SOUND 1,100+10*i,10
-1510  CALL &AA0F:FOR z=1 TO 50:NEXT z
-1520  CALL &AA09:FOR z=1 TO 50:NEXT z
+1510  CALL &AA0F:FOR z=1 TO 50/10:call &bd19:NEXT z
+1520  CALL &AA09:FOR z=1 TO 50/10:call &bd19:NEXT z
 1530 NEXT i
 1540 CLS:PRINT "Too bad !! You died of exhaustion before        completing your task !!":score=0
 1550 RETURN
@@ -163,8 +166,8 @@ cpcBasic.addItem("", function () { /*
 1570 'dead
 1580 FOR i=1 TO 25
 1590 SOUND 1,100+200*RND,10
-1600  CALL &AA0F:FOR z=1 TO 50:NEXT z
-1610  CALL &AA09:FOR z=1 TO 50:NEXT z
+1600  CALL &AA0F:FOR z=1 TO 50/10:call &bd19:NEXT z
+1610  CALL &AA09:FOR z=1 TO 50/10:call &bd19:NEXT z
 1620 NEXT i
 1630 CLS:PRINT "Too bad !!  The Guardian's Ghost got you before you could complete your task !!":score=0
 1640 RETURN
@@ -271,10 +274,12 @@ cpcBasic.addItem("", function () { /*
 2650 LOCATE 25,25:PRINT"Press any key.";
 2660 LOCATE #7,1,17:PRINT #7,"Difficulty :";(970-w)/140-4*bv
 2670 FOR bi=1 TO w/6
+2675 t!=time+20
 2680  IF INKEY$<>"" THEN bi=w
 2690  IF p<>old.p OR q<>old.q THEN LOCATE 2+2*old.p,2+2*old.q:PRINT " ";:old.p=p:old.q=q:LOCATE 2+2*p,2+2*q:PEN 3:PRINT CHR$(225);:PEN 2
 2700  GOSUB 2800
 2710  IF p=bx AND q=by THEN bi=w
+2715 while time<t!:call &bd19:wend
 2720 NEXT bi
 2730 INK 3,24:GOSUB 3670
 2740 RETURN
@@ -424,7 +429,7 @@ cpcBasic.addItem("", function () { /*
 4180 IF ghost.in.sight=1 OR (bx=p AND by=q)   THEN GOSUB 5300:GOTO 4230  
 4190 IF ghost.drawn!=0 THEN GOTO 4230
 4200 IF face.drawn=1 THEN RESTORE 4680 ELSE RESTORE 4710
-4210 s!=ghost.drawn!:no.plane=1:CALL &AA04:GOSUB 4520:CALL &AA00
+4210 s!=ghost.drawn!:no.plane=1:?chr$(23)+chr$(1);:GOSUB 4520:?chr$(23)+chr$(0);: 'CALL &AA04:GOSUB 4520:CALL &AA00
 4220 no.plane=0:ghost.drawn!=0:face.drawn!=0
 4230 IF ABS (bx-p)<3 AND ABS (by-q)<3         THEN GOSUB 5850
 4240 RETURN
@@ -517,7 +522,7 @@ cpcBasic.addItem("", function () { /*
 5110  MOVE 321-bi,328:DRAW 319,71,0:DRAW 317+bi,328
 5120  MOVE 319-bi,328:DRAW 319,71,1:DRAW 319+bi,328
 5130 NEXT bi
-5140 FOR bi=1 TO 2000:NEXT bi
+5140 FOR bi=1 TO 2000/10:call &bd19:NEXT bi
 5150 GOSUB 3670 '3d 
 5160 no.plane=0:RETURN
 5170 '
@@ -534,7 +539,7 @@ cpcBasic.addItem("", function () { /*
 5280 '
 5290 'draw ghost subroutine
 5300 IF no.ghost THEN RETURN
-5310 ghosting=1:no.plane=1:CALL &AA04
+5310 ghosting=1:no.plane=1:?chr$(23)+chr$(1);: 'CALL &AA04
 5320 IF ghost.drawn!=0 THEN 5370
 5330 s!=ghost.drawn!
 5340 IF s!=10 OR face.drawn THEN RESTORE 4680 ELSE RESTORE 4710 
@@ -548,7 +553,7 @@ cpcBasic.addItem("", function () { /*
 5420 IF m[next.f+1] AND bm[p+q*12] OR 16=bm[p+(next.f=4)-(next.f=2)+12*(q+(next.f=1)-(next.f=3))] THEN 5410
 5430 IF s!=10 OR ((bf+f)=4 OR (bf+f)=6) AND bf<>f OR ((bf+next.f)=4 OR (bf+next.f)=6) AND bf<>next.f THEN face.drawn=1:RESTORE 4680 ELSE face.drawn=0:RESTORE 4710 
 5440 GOSUB 4520 'sketch
-5450 ghost.drawn!=s!:CALL &AA00:ghosting=0:no.plane=0:RETURN
+5450 ghost.drawn!=s!:?chr$(23)+chr$(0);:ghosting=0:no.plane=0:RETURN:' CALL &AA00
 5460 '
 5470 'control keys subroutine
 5480 no.ghost=1:no.plane=1:CLS
@@ -656,9 +661,9 @@ cpcBasic.addItem("", function () { /*
 6500 CLS:RETURN
 6510 '
 6520 'soak up keystrokes
-6530 WHILE INKEY$<>"":FOR i=1 TO 70:NEXT i:WEND
-6540 FOR i=1 TO 500:NEXT i
-6550 WHILE INKEY$<>"":FOR i=1 TO 70:NEXT i:WEND
+6530 WHILE INKEY$<>"":FOR i=1 TO 70/10:call &bd19:NEXT i:WEND
+6540 FOR i=1 TO 500/20:call &bd19:NEXT i
+6550 WHILE INKEY$<>"":FOR i=1 TO 70/10:call &bd19:NEXT i:WEND
 6560 RETURN
 6570 '
 6580 'on break return

@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-1 rem bach - J. S. Bach (Wohl mir,dass ich Jesum habe)
+1 rem bach - Wohl mir,dass ich Jesum habe (J. S. Bach)
 2 rem (c) Wolfgang Volz
 4 rem
 5 rem Modifications: call &bd19
