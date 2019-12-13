@@ -5,7 +5,8 @@
 cpcBasic.addItem("", function () { /*
 1 rem ticotico - Tico-Tico no Fubá (Zequinha de Abreu)
 2 rem
-4 rem
+4 rem Modifications: some delay
+5 rem
 100 gosub 860
 110 stop
 120 '
@@ -41,7 +42,8 @@ cpcBasic.addItem("", function () { /*
 1150 IF INKEY(47)>=0 THEN RETURN
 1160 NEXT i
 1170 GOTO 1060
-1180 WHILE SQ(2)>127:WEND:FOR i=1 TO 1000:NEXT:RUN 1060
+1180 WHILE SQ(2)>127:call &bd19:WEND: t!=time+132:while time<t!:call &bd19:wend: 'FOR i=1 TO 1000:NEXT:RUN 1060
+1185 RUN 1060
 1190 REM
 1200 REM 
 1210 REM
