@@ -38,6 +38,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "British Council Tile / Bus Fabric Sim"
 	},
 	{
+    	"key": "demo/gdemo",
+		"title": "Graphics Demo (Grafik Demo)"
+	},
+	{
     	"key": "demo/isgdemo",
 		"title": "Interrupt & Sound & Grafik Demo"
 	},
@@ -57,6 +61,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "demo/sultans",
 		"title": "Sultan's Maze Demo Screen"
+	},
+	{
+		"key": "games/cards",
+		"title": "Card Games: Blackjack (17 und 4) and Memory"
 	},
 	{
 		"key": "games/catch",
@@ -124,7 +132,7 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
 		"key": "music/elise",
-		"title": "Für Elise (Ludwig van Beethoven)"
+		"title": "Fuer Elise (Ludwig van Beethoven)"
 	},
 		{
 		"key": "music/menuett",
