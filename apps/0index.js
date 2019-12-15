@@ -30,6 +30,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Typen"
 	},
 	{
+    	"key": "demo/10print",
+		"title": "10 PRINT"
+	},
+	{
     	"key": "demo/100demo",
 		"title": "100% BASIC Demo"
 	},
@@ -91,6 +95,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Solitaire"
 	},
 	{
+		"key": "games/spacera",
+		"title": "Space Race"
+	},
+	{
 		"key": "games/spacewar",
 		"title": "Spacewar Game"
 	},
@@ -105,6 +113,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "games/sultan2",
 		"title": "Sultan's Maze: Game"
+	},
+	{
+    	"key": "games/titan",
+		"title": "Titan"
 	},
 	{
 		"key": "music/asbtune",

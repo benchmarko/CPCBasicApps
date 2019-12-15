@@ -59,6 +59,6 @@ cpcBasic.addItem("", function () { /*
 530 DATA 1,-39,-78,2,2,0,1,39,78,2,2,0,1,-39,-78,2,2,0,1,39,78,2,-49,-86
 540 DATA 1,69,0,2,0,2,1,-69,0,2,2,2,1,69,0,2,0,2,1,-69,0
 550 DATA 0,0,0
-560 t$="":t!=time+200*6:while time<t! and t$="":call &bd19:t$=inkey$:wend
+560 t!=time+200*6:while time<t! and inkey$="":wend
 570 CHAIN"!sultan2"
 */ });
