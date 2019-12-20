@@ -6,6 +6,8 @@ cpcBasic.addItem("", function () { /*
 1 rem spacera - Space Race
 2 rem (c) 1986 Peter Pekarek
 3 rem
+4 rem Modifications: scrolling MC replaced by ?chr$(11)
+5 rem
 10 REM ***************************
 20 REM *                         *
 30 REM *       SPACE RACE        *
@@ -25,12 +27,13 @@ cpcBasic.addItem("", function () { /*
 190 MODE 1:leben=5:punkte=0:t=1:m=0:a=224
 200 INK 3,t*2+1:EI:EVERY 250,0 GOSUB 1150
 210 PLOT 1,399,2:PLOT 460,399,2
+215 t1!=time+25:while time<t1!:call &bd19:wend
 220 DI:ON t GOSUB 730,800,730,860,730,920,730,1000,730,1070,730
 230 PEN 1:IF m=50 THEN SPEED INK 8,2:INK 3,t*2+1
 240 IF m=2 THEN SPEED INK 20,20:INK 3,t*2+1,(t-1)*2+1
 250 IF a<445 THEN IF INKEY(1)=0 OR JOY(0)=8 THEN a=a+8
 260 IF a>1 THEN IF INKEY(8)=0 OR JOY(0)=4 THEN a=a-8
-270 CALL mc
+270 locate #1,1,1:?#1,chr$(11): 'or: CALL mc
 280 IF TEST(a,8)=3 OR TEST(a+7,8)=3 OR TEST(a+14,8)=3 THEN leben=leben-1:GOTO 390
 290 IF TEST(a+8,8)=1 THEN LOCATE 32,1:PRINT CHR$(7):punkte=punkte+t*25
 300 TAG:MOVE a,16:PRINT CHR$(239);:TAGOFF
@@ -38,7 +41,8 @@ cpcBasic.addItem("", function () { /*
 320 IF m>=1000 THEN t=t+1:LOCATE 31,3:PRINT"TEIL"t:m=0:GOTO 210
 330 IF CINT(m/100)=m/100 THEN LOCATE 32,1:PRINT m
 340 m=m+2:punkte=punkte+2
-350 EI:GOTO 210
+350 EI
+355 GOTO 210
 360 REM ***************************
 370 REM *    ZUSAMMENSTOSS        *
 380 REM ***************************
@@ -76,7 +80,7 @@ cpcBasic.addItem("", function () { /*
 700 REM ***************************
 710 REM *   TEIL 1,3,5,7,9,11     *
 720 REM *************************** 
-730 IF t<>11 THEN PEN 3 ELSE PEN 2:re=REMAIN(0):IF m>=250 THEN CALL mc:GOTO 1200
+730 IF t<>11 THEN PEN 3 ELSE PEN 2:re=REMAIN(0):IF m>=250 THEN locate #1,1,1:?#1,chr$(11):GOTO 1200: 'or: CALL mc
 740 PRINT"|":LOCATE 29,1:PRINT"|"
 750 IF m>=250 THEN m=1000
 760 RETURN
@@ -129,7 +133,7 @@ cpcBasic.addItem("", function () { /*
 1230 punkte=punkte+2500
 1240 LOCATE 4,7:PRINT"PUNKTE :"punkte
 1250 LOCATE 4,9:PRINT"SCHIFFE:"leben
-1260 FOR i=1 TO 5000:NEXT
+1260 t2!=time+5000/3:while time<t2! and inkey$="":wend: 'FOR i=1 TO 5000:NEXT
 1270 LOCATE 4,20:PRINT"BEREIT <j>"
 1280 WHILE UPPER$(INKEY$)<>"J":WEND
 1290 MODE 1:m=0:t=1:GOTO 200
@@ -157,7 +161,8 @@ cpcBasic.addItem("", function () { /*
 1510 PRINT"^";:TAGOFF
 1520 LOCATE 3,23:PRINT"Ihre Position"
 1530 LOCATE 3,25:PRINT"in Abschnitt"T
-1540 FOR i=1 TO 2000:NEXT
+1535 while inkey$<>"":call &bd19:wend
+1540 t2!=time+2000/3:while time<t2! and inkey$="":wend: 'FOR i=1 TO 2000:NEXT
 1550 RETURN
 1560 REM ***************************
 1570 REM *    ENDE                 *
@@ -189,9 +194,10 @@ cpcBasic.addItem("", function () { /*
 1830 PLOT RND*640,RND*400,RND*2+1
 1840 NEXT
 1850 FOR i=30 TO 610 STEP 30
+1855 if inkey$="" then snd1=1 else snd1=0
 1860 FOR j=1 TO 400 STEP 20
 1870 IF j>i THEN k=j-i ELSE k=j
-1880 SOUND RND*2+1,k,1.3,6
+1880 if snd1=1 then SOUND RND*2+1,k,1.3,6
 1890 MOVE i,j
 1900 f=CINT(RND*2+1)
 1910 DRAWR-10,-10,f:DRAWR 20,0,f:DRAWR-10,10,f
@@ -200,7 +206,7 @@ cpcBasic.addItem("", function () { /*
 1940 PEN 3:PRINT:PRINT" S P A C E   R A C E "
 1950 WINDOW 5,36,23,25:CLS
 1960 PEN 1:PRINT:PRINT" "CHR$(164)" 1985           PETER PEKAREK"
-1970 FOR i=1 TO 4000:NEXT
+1970 t2!=time+4000/3:while time<t2! and inkey$="":wend: 'FOR i=1 TO 4000:NEXT
 1980 RETURN
 1990 REM ***************************
 2000 REM *        NAME             *
@@ -210,6 +216,6 @@ cpcBasic.addItem("", function () { /*
 2040 IF LEN(name$)>20 THEN 2020
 2050 name$=STRING$(21-LEN(name$),".")+UPPER$(name$)
 2060 PRINT:PRINT:PRINT SPC(10)"SPACE RACE"SPC(10):PRINT
-2070 FOR i=1 TO 4000:NEXT
+2070 t2!=time+4000/3:while time<t2! and inkey$="":wend: 'FOR i=1 TO 4000:NEXT
 2080 RETURN
 */ });

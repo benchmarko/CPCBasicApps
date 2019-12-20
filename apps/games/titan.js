@@ -6,8 +6,9 @@ cpcBasic.addItem("", function () { /*
 1 rem titan - Titan
 2 rem (C) 1985 by MS-SOFTWARE
 3 rem
-4 rem
-10 REM ** TITAN **                             (C) 1985 BY                             MS-SOFTWARE                             V3.0   9.6.
+4 rem Modifications: some delays
+5 rem
+10 REM ** TITAN ** (C) 1985 BY MS-SOFTWARE V3.0 9.6.
 20 ENV 1,1,15,1,110,-1,10:ENT -1,50,1,1,25,-2,1
 30 RANDOMIZE TIME
 40 ON BREAK GOSUB 950
@@ -45,6 +46,7 @@ cpcBasic.addItem("", function () { /*
 390 TAG:PLOT 640,400,3
 400 j=JOY(0)
 410 MOVE xp,yp:PRINT CHR$(a(zc));
+415 t!=time+30:while time<t!:call &bd19:wend
 420 IF j=4 THEN zc=zc+1: IF zc>8 THEN zc=zc-8
 430 IF j=8 THEN zc=zc-1:IF zc<1 THEN zc=zc+8
 440 xg=xg+(0.5*x(zc) AND j=1):yg=yg+(0.5*y(zc) AND j=1)
@@ -65,7 +67,7 @@ cpcBasic.addItem("", function () { /*
 590 FOR n=103 TO 110:MOVE xp,yp:PRINT CHR$(n);:SOUND 135,n*15,25,n MOD 7,,,n/10:FOR nn=1 TO 200:NEXT nn,n
 600 MOVE xp,yp:PRINT" ";:FOR n=7 TO 0 STEP -0.1:SOUND 7,0,10,n,,,18:NEXT:TAGOFF
 610 LOCATE 2,1:PRINT"SPIELENDE":LOCATE 2,3:PEN 2:PRINT"PUNKTE:"P:LOCATE 2,6:PEN 3:PRINT"NOCH EIN SPIEL? J/N"
-620 IF INKEY(45)>=0 THEN CLEAR:GOTO 60 ELSE IF INKEY(46)=-1 THEN 620
+620 IF INKEY(45)>=0 THEN CLEAR:GOTO 60 ELSE IF INKEY(46)=-1 THEN call &bd19:goto 620
 630 SYMBOL AFTER 32:MODE 1:BORDER 0:CALL &BB03:END
 640 IF YG<-2 THEN 580 ELSE FOR n=1 TO 5:FOR nn=1 TO 1000 STEP 30+10*n:SOUND 2,nn,1,7:NEXT nn,n
 650 TAGOFF:LOCATE 2,2:PRINT"SEHR GUT GELANDET:";:PEN 2:PRINT INT(FUEL)"PUNKTE":P=P+INT(FUEL):PEN 3
@@ -86,7 +88,7 @@ cpcBasic.addItem("", function () { /*
 790 A$="ms-Software":FOR n=420 TO 398 STEP -2:MOVE 290,n:PRINT a$;:NEXT
 800 FOR n=0 TO 27 STEP 0.5:INK 3,n:SOUND 2,n*50+100,3,7:INK 0,27-n:NEXT:INK 3,21
 810 TAGOFF:LOCATE 11,18:PEN 1:PRINT"Spielanleitung? J/N"
-820 IF INKEY(46)>=0 THEN 900 ELSE IF INKEY(45)=-1 THEN 820
+820 IF INKEY(46)>=0 THEN 900 ELSE IF INKEY(45)=-1 THEN call &bd19:goto 820
 830 co=3:GOSUB 940
 840 PEN 0:PAPER 3:LOCATE 1,11:PRINT"Versuche, Dein Raumschiff TITAN mit":PRINT:PRINT"moeglichst wenig Treibstoffverbrauch":PRINT:PRINT"auf dem Planeten zu landen."
 850 PRINT:PRINT"Das nach der Landung uebriggebliebene":PRINT:PRINT"Benzin wird Dir dann als Punkte":PRINT:PRINT"gewertet. Das Spiel ist zuende, wenn ":PRINT:PRINT"das Benzin zuende ist oder wenn Du":PRINT:PRINT"Dein Raumschiff zerstoert hast.  Taste"
@@ -96,7 +98,7 @@ cpcBasic.addItem("", function () { /*
 890 PRINT:PRINT"Alles fertig? Dann bitte Taste druecken.":CALL &BB18
 900 co=0:GOSUB 940:FOR n=1 TO 10:a$=INKEY$:NEXT
 910 PEN 3:PAPER 0:LOCATE 13,18:PRINT"Viel Glueck!!"
-920 FOR n=1 TO 2000:NEXT
+920 t!=time+2000/3:while time<t! and inkey$="":call &bd19:wend: 'FOR n=1 TO 2000:NEXT
 930 RETURN
 940 FOR n=1 TO 320 STEP 2:MOVE n,0:DRAW n,242,co:MOVE 640-n,0:DRAW 640-n,242:NEXT:RETURN
 945 ' *** Breakroutine ***

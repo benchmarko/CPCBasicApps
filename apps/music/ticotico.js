@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 rem ticotico - Tico-Tico no Fubá (Zequinha de Abreu)
 2 rem
+3 rem youtube: https://www.youtube.com/watch?v=8vJV3TAZT3A (TICO TICO no fubà)
 4 rem Modifications: some delay
 5 rem
 100 gosub 860
