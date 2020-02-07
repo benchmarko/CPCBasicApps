@@ -83,7 +83,7 @@ cpcBasic.addItem("", function () { /*
 680 GOTO 190
 700 LOCATE 8,25
 710 PRINT"Press any key to continue"
-720 WHILE INKEY$<>""
+720 WHILE INKEY$<>"" or inkey(47)>=0
 730 WEND
 740 WHILE INKEY$=""
 750 WEND

@@ -9,7 +9,7 @@ cpcBasic.addItem("", function () { /*
 5 rem https://www.cpc-power.com/index.php?page=detail&onglet=dumps&num=7049 (taken from here)
 4 rem (http://cpc-live.com/forum/index.php/topic,958.0.html)
 6 rem
-7 rem Modifications:
+7 rem Modifications: delays; hold "F" to speed up; set pen for CPC 664/6128 before use copychr$ or call &bb60
 8 rem
 10 REM CLEAR PATH
 20 GOSUB 440
@@ -19,17 +19,17 @@ cpcBasic.addItem("", function () { /*
 60 LOCATE 1,1:PAPER 5:PEN 10
 70 PRINT "     SCORE :        ";
 80 X=1:Y=3
-90 LOCATE 11,1
+90 t!=time+((inkey(53)>=0)+2)*25:while time<t!:call &bd19:wend:LOCATE 11,1
 100 PAPER 5:PEN 10:PRINT SCORE;
 110 PAPER 0
 120 TX=X+1:TY=Y
 130 IF TX=20 THEN TX=1:TY=Y+1
-140 IF TY=25 AND TX=10 THEN LOCATE 5,4:PEN 13:PRINT "LANDED SAFELY":SC=SC+200:FOR W=1 TO 1300:NEXT W:MODE 0:GOTO 50
+140 IF TY=25 AND TX=10 THEN LOCATE 5,4:PEN 13:PRINT "LANDED SAFELY":SC=SC+200:FOR W=1 TO 1300/10:call &bd19:NEXT W:MODE 0:GOTO 50
 150 XX=TX+1:YY=TY:IF XX=21 THEN XX=1:YY=YY+1
-160 GOSUB 580
+160 pen 3:GOSUB 580:pen 10
 170 IF DD=32 THEN GOTO 250
 180 PEN 8:LOCATE 5,4:PRINT "YOU CRASHED"
-190 IF INKEY$=" " THEN GOTO 190
+190 IF INKEY$=" " or inkey(47)>=0 THEN GOTO 190
 200 IF INKEY$<>" " THEN GOTO 200
 210 RUN
 220 SOUND 129,0:SOUND 130,0
@@ -46,7 +46,7 @@ cpcBasic.addItem("", function () { /*
 330 IF BY=-1 THEN GOTO 430
 340 IF BY=25 THEN LOCATE BX,BY:PRINT " ";:BY=-1:SOUND 130,0:SOUND 129,0:GOTO 430
 350 XX=BX:YY=BY+1
-360 GOSUB 580
+360 pen 3:GOSUB 580:pen 10:'TTT
 370 IF DD=32 THEN LOCATE BX,BY:PRINT " ";:LOCATE BX,BY+1:PEN 9:PRINT CHR$(252);:BY=BY+1:GOTO 430
 380 SOUND 129,0
 390 SOUND 130,0,100,3,0,0,RND(1)*4+10
@@ -69,7 +69,7 @@ cpcBasic.addItem("", function () { /*
 560 POKE MC+6,&C9
 570 RETURN
 580 LOCATE XX,YY
-590 CALL MC
+590 if PEEK(&BB60)<>&CF THEN DD=asc(copychr$(#0)):goto 610 else CALL MC
 600 DD=PEEK(TA)
 610 RETURN
 620 REM DRAW THE CITY-SCAPE

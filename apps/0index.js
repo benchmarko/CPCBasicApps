@@ -79,6 +79,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Citylander"
 	},
 	{
+		"key": "games/clearpa",
+		"title": "Clear Path"
+	},
+	{
 		"key": "games/garfunkl",
 		"title": "Garfunkel"
 	},
@@ -169,6 +173,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "music/touch",
 		"title": "U Can't Touch This (MC Hammer)"
+	},
+	{
+		"key": "test/eramtst",
+		"title": "Expansion RAM Test"
 	}
 ]
 */ });
