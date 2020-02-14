@@ -37,7 +37,7 @@ On a real CPC, the pre-calculation phase takes longer than 3 minutes. With CPCBa
 ### Graphics Demo
 
 [![Graphics Demo](./img/gdemo.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo)
-[![Graphics Demo](./img/gdemo2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo)
+[![Graphics Demo 2](./img/gdemo2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo2)
 
 Several nice graphics and animations. The original version uses assembler for sprite movements. CPCBasic is fast enough to do it all in BASIC.
 
@@ -102,4 +102,4 @@ If you improve some of the programs, please send me an update. Or upload them to
 
 --
 
-### **mv, 12/2019**
+### **mv, 02/2020**

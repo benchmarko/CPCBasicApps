@@ -43,7 +43,11 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
     	"key": "demo/gdemo",
-		"title": "Graphics Demo (Grafik Demo)"
+		"title": "Graphics Demo 1 (Grafik Demo)"
+	},
+	{
+    	"key": "demo/gdemo2",
+		"title": "Graphics Demo 2 (Grafik Demo)"
 	},
 	{
     	"key": "demo/isgdemo",
@@ -65,6 +69,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "demo/sultans",
 		"title": "Sultan's Maze Demo Screen"
+	},
+	{
+		"key": "games/canabalt",
+		"title": "canabalt - CPC Anabalt"
 	},
 	{
 		"key": "games/cards",
@@ -117,6 +125,14 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "games/sultan2",
 		"title": "Sultan's Maze: Game"
+	},
+	{
+    	"key": "games/sunburst",
+		"title": "Sunburst Contamination"
+	},
+	{
+    	"key": "games/tanks",
+		"title": "Tanks Alot!"
 	},
 	{
     	"key": "games/titan",
