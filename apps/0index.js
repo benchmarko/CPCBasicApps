@@ -72,7 +72,7 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
 		"key": "games/canabalt",
-		"title": "canabalt - CPC Anabalt"
+		"title": "CPC Anabalt"
 	},
 	{
 		"key": "games/cards",
@@ -101,6 +101,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "games/maze",
 		"title": "Maze"
+	},
+	{
+		"key": "games/scolor",
+		"title": "Shielding Color"
 	},
 	{
 		"key": "games/solitair",
