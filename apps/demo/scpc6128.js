@@ -7,7 +7,7 @@ cpcBasic.addItem("", function () { /*
 2 rem (c) Schneider/Amstrad
 3 rem
 4 rem Modifications: put in one file, inserted some delays with call &bd19
-7 rem (line 570: RESTORE 1130 not a DATA line; note movement) (TODO: initial "Schneider"; fill) 
+7 rem (line 570: RESTORE 1130 not a DATA line; note movement) (TODO: rounding for count to 2*PI: +0.0000000001) 
 8 rem
 10 ON ERROR GOTO 100
 20 SYMBOL AFTER 256:mcentry=HIMEM-54:schpoke=&6A47-2435:MEMORY schpoke-1
@@ -546,7 +546,10 @@ cpcBasic.addItem("", function () { /*
 6110 ORIGIN INT(RND*640),INT(RND*400):oi=i:i=INT(RND*13)+1
 6120 IF TEST(0,0)=i OR oi=i THEN 6110
 6130 ON point GOSUB 6260,6330,6310,6500
+6133 t!=time+6*25
 6135 MOVE 0,0:FILL i
+6137 t$="":WHILE TIME<t! and t$="": t$=inkey$:WEND
+6138 if t$<>"" then big=70
 6140 NEXT big
 6150 IF point<>4 THEN CALL mcentry,point+257
 6160 NEXT point
@@ -561,7 +564,7 @@ cpcBasic.addItem("", function () { /*
 6230 RETURN
 6240 '
 6260 MOVE 0,big\2,i
-6270 FOR n=0 TO 2*PI STEP PI/8:DRAW SIN(n)*big\2,COS(n)*big\2:NEXT n
+6270 FOR n=0 TO 2*PI +0.0000000001 STEP PI/8:DRAW SIN(n)*big\2,COS(n)*big\2:NEXT n
 6300 RETURN
 6310 MOVE big\2,big\2,i:DRAWR 0,-big:DRAWR-big,0:DRAWR 0,big:DRAWR big,0
 6320 RETURN

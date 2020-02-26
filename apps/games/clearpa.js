@@ -6,8 +6,8 @@ cpcBasic.addItem("", function () { /*
 1 rem clearpa - Clear Path
 2 rem The Amstrad Program Book, 1984 Peter Goode
 3 rem https://archive.org/details/Amstrad_Program_Book_The_1984_Phoenix_Publishing_Associates/mode/2up
-5 rem https://www.cpc-power.com/index.php?page=detail&onglet=dumps&num=7049 (taken from here)
-4 rem (http://cpc-live.com/forum/index.php/topic,958.0.html)
+4 rem https://www.cpc-power.com/index.php?page=detail&onglet=dumps&num=7049 (taken from here)
+5 rem (http://cpc-live.com/forum/index.php/topic,958.0.html)
 6 rem
 7 rem Modifications: delays; hold "F" to speed up; set pen for CPC 664/6128 before use copychr$ or call &bb60
 8 rem
