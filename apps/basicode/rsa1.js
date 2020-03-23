@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-994 rem rsa1 - RSA 1
+994 rem rsa1 - RSA 1 (Intro, Key)
 995 rem Friedrich Dormeier
 996 rem http://www.basicode.de/download/neue.zip
 997 rem Modifications:
@@ -89,7 +89,7 @@ cpcBasic.addItem("", function () { /*
 1780 PRINT "   2. ihr Produkt < 1 Million"
 1790 PRINT "(Genauigkeit der Zahlendarstellung)"
 1800 PRINT 
-1810 PRINT "Anzahl der darstellbaren Ziffern:";:L=0:INPUT L
+1810 PRINT "Anzahl der darstellbaren Ziffern (z.B. 6):";:L=0:INPUT L
 1820 L=INT (L/2):IF L<2 THEN GOSUB 3110:GOTO 1830
 1830 HO=2:VE=14:GOSUB 110
 1840 P$="":PRINT "Primzahl p (z.B.103):";:INPUT P$:LP=LEN (P$)
@@ -141,6 +141,7 @@ cpcBasic.addItem("", function () { /*
 2300 PRINT "Modul                         (M) =";M
 2310 PRINT "Eulersche Funkt.         (Phi(m)) =";PM
 2320 INPUT "Decodierschluessel (z.B. 157) (D) ";D
+2325 if D=0 then 2320
 2330 A=PM:B=D:C=0:E=1
 2340 Q=INT (A/B):R1=A-Q*B:R2=C-Q*E
 2350 A=B:B=R1:C=E:E=R2

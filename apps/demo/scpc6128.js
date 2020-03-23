@@ -49,7 +49,7 @@ cpcBasic.addItem("", function () { /*
 300 CURSOR 1
 310 delay=TIME:CLEAR INPUT
 320 a$=INKEY$:IF UPPER$(a$)="G"THEN roldem=1:GOTO 340 ELSE IF UPPER$(a$)="C"THEN roldem=0:GOTO 340
-330 IF a$="" and (TIME-delay<3000) THEN 320 ELSE roldem=0
+330 IF a$="" and (TIME-delay<1500) THEN 320 ELSE roldem=0
 340 CURSOR 0
 344 'if you want to start here, uncomment next line
 345 'DEG:150 DIM sp(10),ctot(6),ltot(18),s(9),c(9),cx(5),cy(5),r(5),lc(5),period(12):cx(1)=320:cy(1)=140:r(1)=75:r(2)=40:r(3)=20:r(4)=12:r(5)=8:firstime=1:schpoke=&7000:poke schpoke+1,255

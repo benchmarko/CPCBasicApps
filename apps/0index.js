@@ -10,20 +10,60 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "BasiCode Library"
 	},
 	{
+    	"key": "basicode/bchelp",
+		"title": "BC Help (BC Hilfe)"
+	},
+	{
+    	"key": "basicode/countries",
+		"title": "Countries and Cities (Landen)"
+	},
+	{
     	"key": "basicode/doctor",
 		"title": "Doctor"
+	},
+	{
+    	"key": "basicode/ellipses",
+		"title": "Ellipses (Ellipsen)"
 	},
 	{
     	"key": "basicode/friendsh",
 		"title": "Friendship"
 	},
 	{
+    	"key": "basicode/funcplot",
+		"title": "Function Plotting (Funktionsplotting)"
+	},
+	{
+    	"key": "basicode/imposfig",
+		"title": "Impossible Figures (Unmoegliche Figuren)"
+	},
+	{
+    	"key": "basicode/nonius",
+		"title": "Nonius (Vernier Scale)"
+	},
+	{
     	"key": "basicode/reaction",
 		"title": "Reaction"
 	},
 	{
+    	"key": "basicode/rotation",
+		"title": "Rotation"
+	},
+	{
     	"key": "basicode/rsa1",
-		"title": "RSA 1"
+		"title": "RSA 1 (Intro, Key)"
+	},
+	{
+    	"key": "basicode/rsa2",
+		"title": "RSA 2 (Encode)"
+	},
+	{
+    	"key": "basicode/rsa3",
+		"title": "RSA 3 (Decode)"
+	},
+		{
+    	"key": "basicode/tennis",
+		"title": "Tennis"
 	},
 	{
     	"key": "basicode/typen",
@@ -36,6 +76,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "demo/100demo",
 		"title": "100% BASIC Demo"
+	},
+	{
+    	"key": "demo/asciiart",
+		"title": "ASCII Art"
 	},
 	{
     	"key": "demo/btilesim",
@@ -52,6 +96,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "demo/isgdemo",
 		"title": "Interrupt & Sound & Grafik Demo"
+	},
+	{
+    	"key": "demo/mondrian",
+		"title": "Mondrian"
 	},
     {
     	"key": "demo/scpc6128",

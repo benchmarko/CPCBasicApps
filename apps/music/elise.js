@@ -9,7 +9,10 @@ cpcBasic.addItem("", function () { /*
 4 rem Modifications: sound playback and data rewritten (somehow shorter)
 5 rem
 1800 mode 1
-1810 ?"Fuer Elise (Ludwig van Beethoven)"
+1810 window #1,4,38,10,24
+1812 ?#1,"Fuer Elise (Ludwig van Beethoven)":?#1
+1814 ?#1,spc(4);"from the game Citylander":?#1
+1816 ?#1,spc(5);"by Jujstronic Software"
 1900 defint a-z:sp=25
 1910 FOR a=1 TO 5:READ h:SOUND 1,h,sp:NEXT    
 1920 DATA 95,100,95,100,95
