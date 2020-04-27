@@ -94,6 +94,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Graphics Demo 2 (Grafik Demo)"
 	},
 	{
+    	"key": "demo/house",
+		"title": "House: FILLing them"
+	},
+	{
     	"key": "demo/isgdemo",
 		"title": "Interrupt & Sound & Grafik Demo"
 	},
