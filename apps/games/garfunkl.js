@@ -4,7 +4,7 @@
 
 cpcBasic.addItem("", function () { /*
 1 rem garfunkl - Garfunkel
-2 rem (c) Roland Bendig
+2 rem (c) Roland Bendig, 04/1987
 3 rem Modifications: delays
 4 rem
 10  '***********************************

@@ -4,7 +4,7 @@
 
 cpcBasic.addItem("", function () { /*
 1 rem solitair - Solitaire
-2 rem (c) Uwe Ganter
+2 rem (c) Uwe Ganter, 1985
 3 rem
 4 rem
 10 '************************************

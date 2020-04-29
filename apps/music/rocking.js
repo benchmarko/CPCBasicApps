@@ -4,8 +4,10 @@
 
 cpcBasic.addItem("", function () { /*
 1 rem rocking - Rocking CPC
-2 rem (c) Manfred Lipowski
-3 rem
+2 rem (c) Manfred Lipowski, 02/1987
+3 rem (In der Wanne 165, 4620 Castrop-Rauxel 4)
+4 rem Schneider Magazin 7/87, page 94ff; (http://www.cpcwiki.eu/imgs/6/67/CPC_Magazin_1987-07_%28missing_pages_115-116%29.pdf)
+5 rem
 30 '
 40 '      Vorbereitung  !
 50 '
@@ -60,7 +62,7 @@ cpcBasic.addItem("", function () { /*
 540 DATA 758,506,758,451,758,426,638,426,638,379,638,358,586,379,568,338,568,319,506,338,506,301,506,284,379,253,758,760
 550 '
 560 '        Effekte...  !
-570 DI:SOUND ty,758,150,15,6,6:SOUND yt,506,150,15,6,6:SOUND 2,126,5,150,15,6,6:EI:GOTO 130
+570 DI:SOUND ty,758,150,15,6,6:SOUND yt,506,150,15,6,6:SOUND 2,126.5,150,15,6,6:EI:GOTO 130
 580 DI:SOUND 1,379,80,15,2,2:SOUND 4,253,80,15,2,2:SOUND 2,255,80,15,2,2:eff=1:luke=0:EI:RETURN
 590 DI:SOUND 1,379,80,15,2,3:SOUND 4,253,80,15,2,3:SOUND 2,255,80,15,2,3:eff=0:luke=0:vader=0:EI:RETURN
 600 '

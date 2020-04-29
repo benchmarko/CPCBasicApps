@@ -3,9 +3,13 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-1 rem house - FILLing them Ol (BASIC 10-Liners on a 464)
-3 rem https://www.linkedin.com/pulse/filling-them-ol-basic-10-liners-464-out-bush/
-4 rem 
+1 rem house - House for Sale
+2 rem by Simon Baker and Kevin Parker, Amstrad Computer User (ACU) 04/91
+3 rem https://www.cpcwiki.eu/index.php/File:ACU9104-015.jpg
+4 rem Adapted for CPC 464 by Out Bush: FILLing them Ol: (BASIC 10-Liners on a 464)
+5 rem https://www.linkedin.com/pulse/filling-them-ol-basic-10-liners-464-out-bush/
+6 rem https://www.cpcwiki.eu/forum/emulators/cpcbasic-unchained/msg186309/#msg186309
+7 rem
 10 MODE 0:DEFINT a-z:DEG:INK 1,0:INK 2,10:INK 3,3:ORIGIN 0,0,54,396,298,52:CLG 3:ORIGIN 0,0,0,640,0,398:MOVE 50,50:DRAW 50,300,1:DRAW 400,300:DRAW 400,50:DRAW 50,50:MOVE 50,300:s=XPOS:y=YPOS+2:DRAW 30,300,1:DRAW 80,350:DRAW 370,350:f=YPOS:DRAW 420,300
 20 x=(XPOS-s)\2+s:d=x+4:p=1:c=2:DRAW 400,300:GOSUB 90:MOVE 100,350:DRAW 100,390,1:INK 0,20:INK 4,9:MOVE 0,50:DRAW 638,50,1:p=2:x=0:s=0:f=48:d=638:c=4:GOSUB 90:BORDER 20:MOVE 100,390:DRAW 120,390,1:DRAW 120,350:s=352:f=388:x=104:d=116:c=3:GOSUB 90
 30 MOVE 380,50:DRAW 380,180,1:DRAW 300,180:DRAW 300,50:INK 5,25:s=52:f=178:x=304:d=378:c=5:GOSUB 90:MOVE 80,80:DRAW 80,170,1:DRAW 170,170:DRAW 170,80:DRAW 80,80:INK 6,26:s=82:f=168:x=84:d=166:c=6:GOSUB 90:MOVE 125,80:DRAW 125,170,1:MOVE 80,125

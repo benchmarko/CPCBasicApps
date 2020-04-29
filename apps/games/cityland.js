@@ -4,7 +4,7 @@
 
 cpcBasic.addItem("", function () { /*
 1 rem cityland - Citylander
-2 rem (c) Jujstronic Software
+2 rem (c) Jujstronic Software, 1985
 3 rem https://www.cpc-power.com/index.php?page=detail&onglet=dumps&num=16465
 4 rem Modifications: some delay; display hint on how to bomb
 5 rem

@@ -95,7 +95,7 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
     	"key": "demo/house",
-		"title": "House: FILLing them"
+		"title": "House for Sale"
 	},
 	{
     	"key": "demo/isgdemo",
