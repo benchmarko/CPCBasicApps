@@ -6,6 +6,41 @@
 cpcBasic.addIndex("apps", function () { /*
 [
 	{
+    	"key": "apps/amsynthe",
+		"title": "Amsynthe"
+	},
+	{
+    	"key": "apps/amsynthp",
+		"title": "Amsynthe Program"
+	},
+	{
+    	"key": "apps/doodle/doodle",
+		"title": "CPC Doodle"
+	},
+	{
+    	"key": "apps/doodle/2cv.drw",
+		"title": "2CV",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/doodle/doodle.drw",
+		"title": "Doodle Title",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/doodle/mallet.drw",
+		"title": "Mallet",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/mtext",
+		"title": "Multitext CPC"
+	},
+	{
+    	"key": "apps/sayit",
+		"title": "Sayit (Sags)"
+	},
+	{
     	"key": "basicode/basicode",
 		"title": "BasiCode Library"
 	},
@@ -112,7 +147,7 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "demo/scpcdata",
 		"title": "Data for logo in demo scpc6128",
-		"type": "data"
+		"meta": "D"
 	},
 	{
     	"key": "demo/serpent",
@@ -153,6 +188,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "games/maze",
 		"title": "Maze"
+	},
+	{
+		"key": "games/roguedes",
+		"title": "Rogue Descender"
 	},
 	{
 		"key": "games/scolor",

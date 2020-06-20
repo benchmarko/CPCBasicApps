@@ -1,0 +1,886 @@
+/* globals cpcBasic */
+
+"use strict";
+
+cpcBasic.addItem("", function () { /*
+1 rem amsynthp - Amsynthe (Program)
+2 rem
+3 rem Modifications: There was a typo in line 1780: "DRAWR x2%:y2%,15"
+4 rem Other issues: Unreachable code in 1920: "... THEN 4550:GOTO 1970"
+5 rem
+6 mode 2
+7 rem
+10 '#############################
+20 '#                           #
+30 '#  A M S Y N T H E   V 1.0  #
+40 '#                           #
+50 '#      PAR DOS REIS F.      #
+60 '#                           #
+70 '#############################
+80 ' Mis en memoire par XavSnap
+90 ' INITIALISATION VARIABLES
+100 '
+110 oct=2
+120 Prio=128
+130 xEntbrui=1
+140 xenvol=1
+150 ton=1
+160 vi=10
+170 xenvbru=1
+180 ON BREAK GOSUB 4240
+190 SPEED KEY 20,1
+200 t=0
+210 KEY 128,"GOSUB 4230"+CHR$(13)
+220 KEY 129,"GOTO 1690"+CHR$(13)
+230 DIM Pas(70):DIM duper(70):DIM e(15):DIM acc(154):DIM duracc(154):DIM nombpas(5,30)
+240 DIM t(14):DIM xtabenv(5,2,30):DIM tasom(30)
+250 '
+260 ' REDEFINITION DES TOUCHES
+270 '
+280 DATA 67,59,58,50,51,43,42
+290 RESTORE
+300 FOR a=56 TO 62:READ g:KEY DEF g,0,A:NEXT
+310 GOTO 1690
+320 '
+330 'VALEURS D'INITIALISATION
+335 'POUR LES DIFFERENTES OCTAVES
+340 '
+350 DATA 1911,1703,1517,1432,1276,1136,1012,3822,3405,3034,2863,2551,2273,2025
+360 DATA 478,426,379,358,319,284,253,956,851,758,716,638,568,506
+370 DATA 119,106,95,89,80,71,63,239,213,190,179, 159,142,127
+380 DATA 30,27,24,22,20,18,16,60,53,47,45,40,36,32
+390 gosu=1
+400 GOSUB 600: ' DEMARRE PERCUTIONS
+410 GOSUB 4140: ' DEMARRE ACCOMPAGNEMENT
+420 '
+430 ' INITIALISE LES NOTES DES TOUCHES SUIVANT L'OCTAVE CHOISIE
+440 '
+450 ON oct GOSUB 6750,6760,6770,6780
+460 FOR a=1 TO 14
+470 READ t(a)
+480 NEXT a
+490 '
+500 ' JEU AU CLAVIER
+510 '
+520 a$=INKEY$:IF a$="" THEN GOTO 520
+530 n=ASC(a$)-48:IF n<0 OR n>14 THEN GOTO 1630
+540 SOUND 1+Prio,t(n),0,volson,xenvol,ton
+550 IF a$=INKEY$ THEN 550
+560 GOTO 520
+570 '
+580 'SOUS PROGRAMME DE PERCUSSION
+585 '(APPEL RECURSIF)
+590 '
+600 co=co+1:IF co>np THEN co=1
+610 d=Pas(co)
+620 SOUND 2+128,0,0,nivbruit,xenvbru,xEntbrui,d
+630 AFTER vi*duper(co),0 GOSUB 600
+640 RETURN
+650 '############################
+660 '#                          #
+670 '# CREATION DES PERCUSSIONS #
+680 '#                          #
+690 '############################
+700 CLS
+710 SYMBOL AFTER 128
+720 SYMBOL 128,0,0,&18,&66,&81,255,255,255: ' CURSEUR GRAPHIQUE 1
+730 SYMBOL 129,0,0,0,0,0,&18,&66,&81: ' CURSEUR GRAPHIQUE 2
+740 '
+750 ' AFFICHAGE DU TABLEAU DES
+755 '       PERCUSSIONS
+760 '
+770 PRINT TAB(35);"PERCUSSIONS"
+780 FOR a=30 TO 0 STEP -2
+790 PRINT a
+800 NEXT a
+810 FOR a=0 TO 70 STEP 5:LOCATE a+3,18:PRINT a:NEXT
+820 FOR a=1 TO 70:FOR b=0 TO FIX(Pas(a)/2):LOCATE a+4,17-b:PRINT CHR$(143):NEXT b
+830 LOCATE a+4,18-b
+840 h=Pas(a):IF h/2=FIX(h/2) THEN PRINT CHR$(129) ELSE PRINT CHR$(128)
+850 IF duper(a)=0 THEN duper(a)=1
+860 NEXT
+870 LOCATE 1,19
+880 PRINT "duree:"
+890 ORIGIN 30,383,0,640,400,0
+900 DRAW 0,-254,15
+910 DRAWR 563,0:DRAWR 0,256:DRAWR -563,0
+920 WINDOW #1,31,79,19,25
+930 CLS #1
+940 PRINT #1,;"Rappel touches '1 a 9' Pour modifier duree tempo";
+950 PRINT #1,TAB (10)"''    'S'    pour sortir du diagramme.";
+960 PRINT #1,TAB (l0)"''    '";CHR$(240);" ";CHR$(241);" ";CHR$(242);" ";CHR$(243);"' modifier diagramme."
+970 '
+980 ' MODIFICATION HAUTEUR DES
+985 ' PERCUSSIONS
+990 '
+1000 co=1
+1010 durper=duper(1)
+1020 h=Pas(1)
+1030 IF h/2=CINT(h/2) THEN a$=CHR$(129) ELSE a$=CHR$(128)
+1040 LOCATE co+4,17-h/2:PRINT a$;
+1050 b$=INKEY$
+1060 c=VAL(b$):IF c>0 AND c<10 THEN durper=c:GOTO 1190
+1070 Pas(co)=h
+1080 duper(co)=durper
+1090 IF INKEY(1)=0 THEN co=co+1:IF co>70 THEN co=nP
+1100 IF INKEY(8)=0 THEN co=co-1:IF co<1 THEN co=1
+1110 durper=duper(co):IF durper=0 THEN durper=1
+1120 h=Pas(co)
+1130 np=MAX(co,nP)
+1140 IF b$="s" OR b$="S" THEN GOTO 1240
+1150 LOCATE co+4,17-h/2
+1160 IF h/2=CINT(h/2) THEN PRINT " " ELSE PRINT CHR$(143)
+1170 IF INKEY(2)=0 THEN h=h-1:IF h<0 THEN h=0
+1180 IF INKEY(0)=0 THEN h=h+1:IF h>31 THEN h=31
+1190 LOCATE 7,19:PRINT durper
+1200 GOTO 1030
+1210 '
+1220 ' ESSAI PERCUSSIONS OU MODIFICATIONS DES PARAMETRES
+1230 '
+1240 LOCATE 1,20
+1250 PRINT "1-Nombre de Pas          :";nP
+1260 PRINT "2-Vitesse du tempo       :";vi*2
+1270 PRINT "3-Niveau du bruit (1-15) :";nivbruit
+1280 PRINT "4-Enveloppe de volume No :";xenvbru
+1290 PRINT "5-Enveloppe de ton No    :";xEntbrui
+1300 CLS #1
+1310 PRINT #1,"Votre choix:'X' revenir au diagramme"
+1320 PRINT #1,TAB (13)"'M' menu ou 'p' essai percutions"
+1330 PRINT #1,TAB (13)"'1' Modification nombre de pas"
+1340 PRINT #1,TAB (13)"'2'    '    '    vitesse du tempo"
+1350 PRINT #1,TAB (13)"'3'    '    '    niveau du bruit"
+1360 PRINT #1,TAB (13)"'4'    '    '    enveloppe de volume"
+1370 PRINT #1,TAB (13)"'5'    '    '    enveloppe de ton"
+1380 b$=INKEY$:IF b$="" THEN 1380
+1390 IF b$="x" OR b$="X" OR b$="M" OR b$="P" OR b$="m" OR b$="p" OR (VAL(b$)>0 AND VAL(b$)<6) THEN 1400 ELSE 1380
+1400 IF b$="x" OR b$="X" THEN GOTO 930
+1410 IF b$="m" OR b$="M" THEN GOTO 1690
+1420 IF b$="p" OR b$="P" THEN GOSUB 600 ELSE 1440
+1430 b$=INKEY$:IF b$="" THEN GOTO 1430 ELSE a=REMAIN(0):GOTO 1390
+1440 LOCATE 1,19+VAL(b$)
+1450 ON VAL(b$) GOSUB 1470,1500,1540,1570,1600:REM APPEL MODIFICATION PARAMETRES
+1460 PRINT "   ":GOTO 1380
+1470 INPUT ;"1-Nombre de pas          : ",nP
+1480 IF np>70 THEN np=70:IF np<1 THEN nP=1
+1490 RETURN
+1500 INPUT ;"2-Vitesse du tempo       : ",vi
+1510 IF vi<2 THEN vi=2
+1520 vi=vi/2
+1530 RETURN
+1540 INPUT ;"3-Niveau du bruit (0-15) : ",nivbruit
+1550 IF nivbruit<0 OR nivbruit>15 THEN nivbruit=0
+1560 RETURN
+1570 INPUT ;"4-Enveloppe de volume No : ",xenvbru
+1580 IF xenvbru<0 OR xenvbru>15 THEN xenvbru=0
+1590 RETURN
+1600 INPUT ;"5-Enveloppe de ton No",xEntbrui
+1610 IF xEntbrui<0 OR xEntbrui>15 THEN xEntbrui=0
+1620 RETURN
+1630 IF a$="m" OR a$="M" THEN GOTO 1690 ELSE ON gosu GOSUB 5920,6050,6190,6360,6520,6680:GOTO 450
+1640 '############################
+1650 '#                          #
+1660 '#APPEL DES SOUS PROGRAMMES #
+1670 '#                          #
+1680 '############################
+1690 CLS
+1700 a=REMAIN(1)
+1710 a=REMAIN(0)
+1720 PRINT TAB(36);"MENU"
+1730 LOCATE 10,5:PRINT "1   Jouer un air"
+1740 LOCATE 10,7:PRINT "2   Creer percussions"
+1750 LOCATE 10,9:PRINT "3   Creer enveloppe de volume"
+1760 LOCATE 10,11:PRINT "4   Creer enveloppe de ton"
+1770 LOCATE 10,13:PRINT "5   Creer un accompagnement"
+1780 LOCATE 10,15:PRINT "6   Listings basic"
+1790 LOCATE 15,20:PRINT "Votre choix ? "
+1800 a$=INKEY$
+1810 ON VAL(a$) GOTO 4800,700,1880,4520,3380,6820
+1820 GOTO 1800
+1830 '###########################
+1840 '#                         #
+1850 '#   ENVELOPPE DE VOLUME   #
+1860 '#                         #
+1870 '###########################
+1880 CLS
+1890 PRINT TAB (26);"CREATION ENVELOPPE DE VOLUME"
+1900 xenvton=0
+1910 INPUT "Enveloppe de volume normale (O/N) ";a$
+1920 IF a$="n" OR a$="N" THEN 4550:GOTO 1970
+1930 LOCATE 1,2:PRINT "                                                                                      "
+1940 bornys%=383:bornyi%=128
+1950 LOCATE 1,2
+1960 Pay=16
+1970 IF a$="O" OR a$="N" THEN GOSUB 2090 ELSE GOSUB 2030
+1980 ENV num%,e(1),e(2),e(3),e(4),e(5),e(6),e(7),e(8),e(9),e(10),e(11),e(12),e(13),e(14),e(15)
+1990 GOTO 1690
+2000 '
+2010 ' AFFICHAGE DES ORDONNEES DU REPERE DES ENVELOPPES DE VOLUME
+2020 '
+2030 FOR a=15 TO 0 STEP -1
+2040 PRINT a
+2050 NEXT
+2060 '
+2070 'SOUS PROGRAMME DE GENERATION ENVELLOPES DE VOLUME ET DE TON
+2080 REM
+2090 ORIGIN 30,383,0,640,400,0:DRAWR 0,-260,15:DRAWR 609,0
+2100 FOR a=1 TO 15:e(a)=0:NEXT
+2110 LOCATE 1,20
+2120 INPUT "Longueur de l'enveloppe (1-999) ";longenv%
+2130 IF longenv%>999 OR longenv%<1 THEN LOCATE 33,20:PRINT "            ":GOTO 2110
+2140 LOCATE 1,21:INPUT "Numero de l'enveloppe (1-15)     ";num%
+2150 IF num%<1 OR num%>15 THEN LOCATE 34,21:PRINT "            ":GOTO 2140
+2160 LOCATE 60,22:PRINT "Section No :"
+2170 GOSUB 3010
+2180 WINDOW#1,1,48,22,25
+2190 GOSUB 2210
+2200 GOTO 2290
+2210 PRINT #1,;"Rappel : touches '";CHR$(240);CHR$(241);CHR$(242);CHR$(243);"' Pour curseur graphique.";
+2220 PRINT #1,SPC (18)"'S' enregistre une section."
+2230 PRINT #1,"Retour au menu si 5 sections."
+2240 PRINT #1," ''    si longueur totale atteinte."
+2250 RETURN
+2260 '
+2270 'CALCUL ET AFFICHAGE DES
+2275 ' ABSCISSES DU REPERE
+2280 '
+2290 Painc%=INT(70/longenv%)
+2300 xenvch=0
+2310 IF Painc%<5 THEN Painc%=5
+2320 paenv=longenv%*painc%/70
+2330 FOR a=0 TO 70 STEP Painc%
+2340 LOCATE a+4,19:PRINT CINT(xenvch)
+2350 xenvch=xenvch+Paenv
+2360 NEXT
+2370 Pax=70*8/longenv%
+2380 bornx%=Pax*longenv%+32
+2390 sec%=0
+2400 Precx%=32:x=32+Pax
+2410 IF xenvton=1 OR a$="n" THEN Precy%=(bornys%+bornyi%)/2::y=Precy%:GOTO 2460
+2420 y=128:Precy%=y
+2430 '
+2440 ' GESTION DU CURSEUR
+2450 '
+2460 ORIGIN 0,0,Precx%,bornx%,bornys%+2,bornyi%-2
+2470 reste%=longenv%
+2480 PLOT x,y,15:DRAWR 6,0,15:DRAWR -6,-6,15:DRAWR 0,6,15:FOR v=0 TO 100/longenv%:NEXT
+2490 PLOT x,y,0:DRAWR 6,0,0:DRAWR -6,-6,0:DRAWR 0,6,0
+2500 a$=INKEY$:IF a$="" THEN lon%=0:GOTO 2480
+2510 lon%=lon%+1
+2520 IF lon%>1 THEN lon%=lon%+longenv%/200
+2530 IF INKEY(0)=0 THEN y=y+Pay*lon%:IF y>bornys% THEN y=bornys%
+2540 IF INKEY(2)=0 THEN y=y-Pay*lon%:IF y<bornyi% THEN y=bornyi%
+2550 IF INKEY(1)=0 THEN x=x+pax*lon%:IF x>bornx% THEN x=bornx%
+2560 IF INKEY(8)=0 THEN x=x-pax*lon%:IF x<Precx%+Pax THEN x=Precx%+Pax
+2570 IF a$="s" OR a$="S" THEN GOTO 2620
+2580 GOTO 2480
+2590 '
+2600 ' CALCUL ET AFFICHAGE DES
+2605 '       'ESCALIERS'
+2610 '
+2620 PLOT precx%,precy%
+2630 X1%=CINT((x-precx%)/pax)
+2640 Y1%=CINT((y-precy%)/pay)
+2650 AMPAS%=FIX(Y1%/X1%)
+2660 IF AMPAS%=0 AND Y1%<>0 THEN AMPAS%=SGN(Y1%):NOMBPAS%=ABS(Y1%):DUREEPAS%=FIX(X1%/NOMBPAS%):GOTO 2690
+2670 IF Y1%=0 THEN DUREEPAS%=FIX(SQR(X1%)):IF dureepas%=0 THEN dureepas%=1:nombpas%=FIX(x1%/dureepas%): ELSE nombpas%=FIX(x1%/dureepas%)
+2680 IF AMPAS%<>0 THEN NOMBPAS%=FIX(ABS(y1%/ampas%)):dureepas%=1:IF nombpas%>reste% THEN nombpas%=reste%
+2690 IF xenvton=0 AND NOMBPAS%>127 THEN xERREUR%=1:GOTO 3220
+2700 IF AMPAS%>127 OR AMPAS%<-128 THEN xERREUR%=2:GOTO 3220
+2710 IF DUREEPAS%>255 THEN xERREUR%=3:GOTO 3220
+2720 IF xenvton=1 AND NOMBPAS%>239 THEN xERREUR%=4:GOTO 3220
+2730 X1%=DUREEPAS%*NOMBPAS%:xtabenv(sec%/3+1,1,num%+xenvton*15)=X1%:reste%=reste%-X1%
+2740 Y1%=AMPAS%*NOMBPAS%:xtabenv(sec%/3+1,2,num%+xenvton*15)=Y1%
+2750 e(sec%+1)=NOMBPAS%:nombPas(sec%/3+1,num%+xenvton*l5)=NOMBPAS%
+2760 e(sec%+2)=AMPAS%
+2770 e(sec%+3)=DUREEPAS%
+2780 IF Pay<4 AND Pax<2 THEN x2%=x1%*pax:y2%=y1%*Pay:DRAWR x2%,y2%,15:GOTO 2870
+2790 IF nombpas%<>0 THEN x2=Pax*x1%/nombpas%:y2=Pay*y1%/nombpas%: ELSE x2=Pax*x1%:y2=Pay*y1%
+2800 y3%=FIX(y2):x3%=FIX(x2)
+2810 IF nombPas%=0 THEN 2870
+2820 FOR a=1 TO e(1+sec%)-1
+2830 DRAWR 0,y3%,15:DRAWR x3%,0
+2840 y3%=FIX(y2-((YPOS-Precy%)-a*y2))
+2850 x3%=FIX(x2-((XPOS-Precx%)-a*x2))
+2860 NEXT
+2870 precx%=x1%*pax+Precx%:x=Precx%+Pax
+2880 precy%=y1%*pay+Precy%:y=Precy%
+2890 y3=precy%-YPOS:x3=Precx%-XPOS
+2900 DRAWR 0,y3,15:DRAWR x3,0
+2910 IF x>bornx%+1 THEN GOTO 2970
+2920 sec%=sec%+3:IF sec%>=15 THEN RETURN
+2930 se%=sec%/3+1
+2940 ON se% GOSUB 3010,3050,3090,3130,3170
+2950 IF INKEY$<>"" THEN GOTO 2930
+2960 GOTO 2460
+2970 RETURN
+2980 '
+2990 ' AFFICHAGE DU NUMERO DE LA
+2995 '       SECTION
+3000 '
+3010 ' AFFICHAGE 1
+3020 GCy=21:Idchar=1
+3030 GOSUB 9000
+3040 RETURN
+3050 ' AFFICHAGE 2
+3060 GCy=21:Idchar=2
+3070 GOSUB 9000
+3080 RETURN
+3090 ' AFFICHAGE 3
+3100 GCy=21:Idchar=3
+3110 GOSUB 9000
+3120 RETURN
+3130 ' AFFICHAGE 4
+3140 GCy=21:Idchar=4
+3150 GOSUB 9000
+3160 RETURN
+3170 LOCATE 54,22:PRINT "Derniere section :"
+3180 ' AFFICHAGE 5
+3190 GCy=21:Idchar=5
+3200 GOSUB 9000
+3210 RETURN
+3220 CLS #1
+3230 LOCATE 1,22:PRINT "ERREUR : ";
+3240 IF xERREUR%=1 THEN PRINT "Nombre de pas > 127"
+3250 IF xERREUR%=2 THEN PRINT "Amplitude du pas > 127 ou < -128"
+3260 IF xERREUR%=3 THEN PRINT "Duree du pas > 255"
+3270 IF xERREUR%=4 THEN PRINT "Nombre de pas > 239"
+3280 LOCATE 1,23:PRINT "Veuillez reiterer votre demande"
+3290 FOR a=0 TO 2000:NEXT
+3300 CLS #1
+3310 GOSUB 2210
+3320 GOTO 2460
+3330 '###########################
+3340 '#                         #
+3350 '# CREATION DE LA MELODIE  #
+3355 '#    D'ACCOMPAGNEMENT     #
+3360 '#                         #
+3370 '###########################
+3380 CLS
+3390 acpos=1
+3400 PRINT TAB(33);"ACCOMPAGNEMENT"
+3410 FOR a=-2 TO 4
+3420 x=494+16*a:y=70
+3430 xnote=a:GOSUB 4360
+3440 NEXT
+3450 ORIGIN 0,0
+3460 PLOT 392,46,5:DRAWR 176,0:DRAWR 0,46:DRAWR -176,0:DRAWR 0,-46
+3470 LOCATE 51,21:PRINT "NOTE :"
+3480 WINDOW #1,1,48,20,25
+3490 PRINT #1,"Rappel : touches '"+CHR$(242)+" "+CHR$(243)+"' Pour selection notes."
+3500 PRINT #1,SPC (9)"touches 1 - 7 et Q - U Pour melodie."
+3510 PRINT #1,SPC (9)"touche 'S' Pour sortir."
+3520 PRINT #1,SPC (9)"le report des notes est automatique."
+3530 '
+3540 ' DESSIN DES PORTEES
+3550 '
+3560 FOR r=0 TO 3
+3570 RESTORE 4180
+3580 y=382-r*72
+3590 ORIGIN 0,0
+3600 READ a
+3610 IF a=20 THEN y=y-2:GOTO 3600
+3620 IF a=21 THEN 3670
+3630 READ b
+3640 a=a*2+5:b=b*2+5
+3650 PLOT a,y:DRAW b,y
+3660 GOTO 3600
+3670 NEXT
+3680 lign=0
+3690 xnote=0
+3700 ORIGIN 0,371
+3710 FOR s=1 TO 4
+3720 FOR a=1 TO 5
+3730 DRAWR 639,0,15:MOVER -639,-8
+3740 NEXT
+3750 MOVER 0,-32
+3760 NEXT
+3770 '
+3780 ' REPORT DES NOTES JOUEES,               DU CLAVIER A L'ECRAN
+3790 '
+3800 a$=" ":GOTO 3820
+3810 a$=INKEY$:IF a$="" THEN GOTO 3810
+3820 IF a$="s" OR a$="S" THEN GOTO 3990
+3830 LOCATE 62+xnote*2,22:PRINT " "
+3840 IF INKEY(1)=0 THEN xnote=xnote+1:IF xnote>4 THEN xnote=4
+3850 IF INKEY(8)=0 THEN xnote=xnote-1:IF xnote<-2 THEN xnote=-2
+3860 a=ASC(a$)-48
+3870 LOCATE 62+xnote*2,22:PRINT "^"
+3880 IF a>0 AND a<8 THEN a=a+7:GOTO 3900
+3890 IF a>7 AND a<15 THEN a=a-7 ELSE GOTO 3810
+3900 x=32+acpos*16-lign*608:y=a*4+326-lign*72
+3910 GOSUB 4360
+3920 acc(acpos)=a
+3930 duracc(acpos)=1/(2^xnote)
+3940 acpos=acpos+1:IF acpos/38=FIX(acpos/38) THEN lign=lign+1:IF lign=4 THEN GOTO 3990
+3950 GOTO 3810
+3960 '
+3970 ' INITIALISATION DES VARIABLES DE L'ACCOMPAGNEMENT
+3980 '
+3990 CLS #1
+4000 accfin=acpos-1
+4010 INPUT #1,"Volume de depart (0-15)";accvol
+4020 IF accvol<0 OR accvol>15 THEN 4010
+4030 INPUT #1,"Duree de base (pour la noire)=";accdu
+4040 IF accdu<2 THEN 4030
+4050 accdu=accdu/2
+4060 INPUT #1,"Enveloppe de volume";accenvv
+4070 IF accenvv<0 OR accenvv>15 THEN 4060
+4080 INPUT #1,"Enveloppe de ton ";accenvt
+4090 IF accenvt<0 OR accenvt>15 THEN 4080
+4100 GOTO 1690
+4110 '
+4120 ' SOUS-PROGRAMME D'ACCOMPA                GNEMENT (APPEL RECURSIF)
+4130 '
+4140 accomp=accomp+1:IF accomp=accfin THEN accomp=1
+4150 AFTER duracc(accomp)*accdu,1 GOSUB 4140
+4160 SOUND 4+128,t(acc(accomp)),0,accvol,accenvv,accenvt
+4170 RETURN
+4180 DATA 5.5,8,20,5,6,8,8.5,20,4.5,5.5,8.5,9,20,4,5,8.5,9,20,4,4.5,8,8.5,20,4.5,5,7.5,8,20,5,5,6.5,7.5,20,5,7,20,5.5,6.5,20,5,6,20,4,6,20,3,6,20,2,4,6,6,20,1,3,6,6,20,.5,2.5,6.5,6.5,20,.5,2,4.5,9,20,0,1.5,3.5,9.5,20,0,1.5,3,3,7,7,9,10,20
+4190 DATA 0,1,3,3,7.5,7.5,10,10,20,.5,1.5,7.5,7.5,10,10,20,1,2,8,8,9.5,9.5,20,1.5,2.5,8,9,20,2,8,20,3,4,8,8,20,2.5,4,8,8,20,2,3.5,8,8,20,2.5,2.5,7.5,7.5,20,3,7,21
+4200 '
+4210 'REINITIALISATION DU CLAVIER
+4220 '
+4230 b=1:GOTO 4250
+4240 b=2
+4250 DATA 113,67,119,59,101,58,114,50,116,51,121,43,117,42
+4260 RESTORE 4250
+4270 FOR a=1 TO 7
+4280 READ t
+4290 READ G
+4300 KEY DEF G,0,t
+4310 NEXT
+4320 IF b=1 THEN RETURN  ELSE STOP
+4330 '
+4340 ' DESSIN D'UNE NOTE
+4350 '
+4360 ORIGIN x,y,0,640,400,0
+4370 IF xnote<>-2 THEN DRAWR 0,18,15:MOVER 1,0:DRAWR 0,-18,15
+4380 DRAWR -6,0,15:MOVER 1,2:DRAWR 3,0,15:MOVER 0,-4:DRAWR -4,0,15
+4390 ORIGIN x,y
+4400 IF xnote=-2 THEN MOVER 1,0:DRAWR -2,0:DRAWR 0,-2:DRAWR 1,2:DRAWR 0,2:DRAWR -2,0
+4410 IF xnote<=-1 THEN MOVER -1,0:DRAWR -2,0,0
+4420 IF xnote>=1 THEN MOVER 1,18:DRAWR 4,-4
+4430 IF xnote>=2 THEN MOVER -4,0:DRAWR 4,-4
+4440 IF xnote>=3 THEN MOVER -4,0:DRAWR 4,-4
+4450 IF xnote=4 THEN MOVER -4,0:DRAWR 4,-4
+4460 RETURN
+4470 '###########################
+4480 '#                         #
+4490 '#     CREATION D'UNE      #
+4495 '#    ENVELOPPE DE TON     #
+4500 '#                         #
+4510 '###########################
+4520 CLS
+4530 PRINT TAB (26);"CREATION EHVELOPPE DE TON"
+4540 xenvton=1
+4550 LOCATE 1,2
+4560 INPUT "Amplitude de la variation en y (1-999) ";amplton%
+4570 IF amplton%>999 OR amplton%<1 THEN LOCATE 39,2:PRINT "        ":GOTO 4550
+4580 LOCATE 1,2:PRINT "                                                                                                                                           ":LOCATE 1,2
+4590 IF amplton%<=8 THEN Paston%=FIX(8/amplton%):sup%=amplton%*Paston%: ELSE Paston%=1:sup%=8
+4600 hton=Paston%*amplton%/sup%
+4610 bornyi%=255-sup%*16
+4620 add%=9-sup%
+4630 bornys%=255+sup%*16
+4640 Pay=(bornys%-bornyi%)/(2*amplton%)
+4650 amplton=amplton%
+4660 FOR a=1 TO sup%*2+paston% STEP paston%
+4670 LOCATE 1,a+add%
+4680 PRINT FIX(amplton)
+4690 amplton=amplton-hton
+4700 NEXT
+4710 IF xenvton=0 THEN RETURN
+4720 GOSUB 2090
+4730 ENT num%,e(1),e(2),e(3),e(4),e(5),e(6),e(7),e(8),e(9),e(10),e(11),e(12),e(13),e(14),e(15)
+4740 GOTO 1690
+4750 '###########################
+4760 '#                         #
+4770 '#SOUS PROGRAMME  GERANT LA#
+4775 '# TOTALITE DES PARAMETRES #
+4780 '#                         #
+4790 '###########################
+4800 CLS
+4810 PRINT TAB (26)"JOUER UNE MELODIE AU CLAVIER"
+4820 ORIGIN 305,384,0,640,400,0
+4830 FOR b=0 TO 1
+4840 FOR a=1 TO 7
+4850 somenv%=0
+4860 FOR c=1 TO 5:somenv%=somenv%+xtabenv(c,1,a+b*15):NEXT
+4870 tasom(a+b*15)=somenv%
+4880 LOCATE 44+b*22,a*3+4:PRINT USING"###";somenv%
+4890 LOCATE 37+b*22,a*3+3:PRINT a:NEXT
+4900 FOR a=8 TO 15
+4910 somenv%=0
+4920 FOR c=1 TO 5:somenv%=somenv%+xtabenv(c,1,a+b*15):NEXT
+4930 tasom(a+b*15)=somenv%
+4940 LOCATE 55+b*22,(a-8)*3+4:PRINT USING "###";somenv%
+4950 LOCATE 48+b*22,(a-8)*3+3:PRINT USING "##";a:NEXT
+4960 NEXT
+4970 '
+4980 ' AFFICHAGE SIMPLIFIE DES         ENVELOPPES DE VOLUME ET DE TON
+4990 '
+5000 LOCATE 40,3:PRINT "VOLUME":LOCATE 64,3:PRINT "TON"
+5010 FOR b=1 TO 4
+5020 FOR a=1 TO 8
+5030 IF (a=1 AND b=1) OR (a=1 AND b=3) THEN c=0 ELSE c=15
+5040 DRAWR 0,-32,c:DRAWR 62,0:DRAWR 0,32:DRAWR -62,0:MOVER 0,-48
+5050 NEXT
+5060 MOVER 88,384
+5070 NEXT
+5080 FOR b=1 TO 30
+5090 IF tasom(b)=0 THEN GOTO 5320
+5100 IF b<8 THEN ORIGIN 305,352-b*48
+5110 IF b>7 AND b<16 THEN ORIGIN 305+88,352-(b-8)*48
+5120 IF b>15 AND b<23 THEN ORIGIN 305+2*88,352-(b-15)*48
+5130 IF b>22 THEN ORIGIN 305+3*88,352-(b-23)*48
+5140 '
+5150 ' CALCUL DES MULTIPLICATEURS          RELATIFS A CHAQUE ENIIELOPPE
+5160 '
+5170 somien=0
+5180 multy=0
+5190 multy2=0
+5200 FOR a=l TO 5
+5210 somien=xtabenv(a,2,b)+somien
+5220 multy=MAX(multy,somien)
+5230 multy2=MIN(multy2,somien)
+5240 NEXT
+5250 IF multy=0 AND multy2=0 THEN 5280
+5260 IF multy2<0 THEN po=ABS(30*multy2/(multy-multy2)):MOVER 0,Po
+5270 multy=30/(multy+ABS(multy2))
+5280 multy=61/tasom(b)
+5290 FOR a=1 TO 5
+5300 DRAWR xtabenv(a,1,b)*multi,xtabenv(a,2,b)*multy,15
+5310 NEXT a
+5320 NEXT b
+5330 SYMBOL AFTER 128
+5340 SYMBOL 130,&18,&24,&42,255,255,&24,&24,&7E:REM DEF CURSEUR VOLUME
+5350 LOCATE 1,2
+5360 FOR a=15 TO 0 STEP -1
+5370 PRINT USING"##";a
+5380 NEXT
+5390 ORIGIN 0,384:DRAWR 16,0,15:DRAWR 0,-258,15:DRAWR -16,0,15:DRAWR 0,258,15
+5400 DRAWR 33,0,15:DRAWR 0,-258,15:DRAWR -16,0,15
+5410 FOR a=0 TO 15
+5420 ORIGIN 16,368-a*16
+5430 IF a/5=FIX(a/5) THEN DRAWR 8,0,15 ELSE DRAWR 4,0,15
+5440 NEXT
+5450 FOR a=15 TO 0 STEP -1
+5460 LOCATE 6,2+(15-a)
+5470 PRINT USING"##";a
+5480 NEXT
+5490 ORIGIN 40,384:DRAWR 16,0,15:DRAWR 0,-258,15:DRAWR -16,0,15:DRAWR 0,258,15
+5500 DRAWR 33,0,15:DRAWR 0,-258,15:DRAWR -16,0,15
+5510 FOR a=0 TO 15
+5520 ORIGIN 56,368-a*l6
+5530 IF a/5=FIX(a/5) THEN DRAWR 8,0,15 ELSE DRAWR 4,0,15
+5540 NEXT:WINDOW #2,11,36,2,17
+5550 PRINT #2,"Rappel:-Appel d'une optiondifferente par touches:"+CHR$(242)+" "+CHR$(243);
+5569 PRINT #2,TAB (8)"-Modification d'un",
+5570 PRINT #2,"Parametre par touches:"+CHR$(240)+" "+CHR$(241)
+5580 PRINT #2,TAB (8)"-Vous Pouvez jouer"
+5590 PRINT #2,"sur touches 1 a 7 et Q a Uvos melodies"
+5600 PRINT #2,TAB (8)"-Appuyer sur 'M'"
+5610 PRINT #2,"Pour revenir au menu"
+5620 WINDOW #1,2,35,20,25
+5630 '
+5640 ' APPEL MODIFICATION                 PARAMETRES
+5650 '
+5660 GOSUB 6050
+5670 GOSUB 6190
+5680 GOSUB 6360
+5690 GOSUB 6520
+5700 GOSUB 6680
+5710 GOSUB 5730
+5720 GOTO 390
+5730 PRINT #1,"Volume Percussions"
+5740 PRINT #1,"Volume clavier"
+5750 PRINT #1,"Prioritee sur 2nde touche "
+5760 PRINT #1,"Selection octave No"
+5770 ORIGIN 0,0
+5780 PLOT 6,88:DRAWR -2,0:DRAWR 0,10:DRAWR 52,0:DRAWR 0,26:DRAWR 3,-6:DRAWR -6,0:DRAWR 3,6:DRAWR 2,-4:DRAWR -4,0
+5790 PLOT 6,72:DRAWR -6,0:DRAWR 0,30:DRAWR 16,0:DRAWR 0,22:DRAWR 3,-6:DRAWR -6,0:DRAWR 3,6:DRAWR 2,-4:DRAWR -4,0
+5800 PLOT 208,54:DRAWR 4,0:DRAWR 0,24:DRAWR 8,0:DRAWR 0,8:DRAWR 4,0:MOVER -4,-8:DRAWR 0,-8:DRAWR 4,0
+5810 PLOT 160,40:DRAWR 52,0:DRAWR 0,-8:DRAWR 8,0:DRAWR 0,24:DRAWR 4,0
+5820 FOR a=1 TO 3
+5830 MOVER -4,0:DRAWR 0,-16:DRAWR 4,0
+5840 NEXT
+5850 FOR a=1 TO 4:LOCATE 32,21+a:PRINT a:NEXT
+5860 LOCATE 33,20:PRINT "OUI":LOCATE 33,21:PRINT "NON"
+5870 gosu=1
+5880 PRINT CHR$(23)+CHR$(1)
+5890 PLOT 7,64:DRAWR 113,0:DRAWR 0,16:DRAWR -113,0:DRAWR 0,-16
+5900 PRINT CHR$(23)+CHR$(0)
+5910 RETURN
+5920 LOCATE 4,17-volson:PRINT " "
+5930 IF a$=CHR$(240) THEN volson=volson+1:IF volson>15 THEN volson=15
+5940 IF a$=CHR$(241) THEN volson=volson-1:IF volson<0 THEN volson=0
+5950 LOCATE 4,17-volson
+5960 PRINT CHR$(130)
+5970 IF a$=CHR$(243) THEN a$="":GOSUB 5870:GOTO 6000
+5980 IF a$=CHR$(242) THEN a$="":GOSUB 5870:GOTO 6620
+5990 RETURN
+6000 gosu=2
+6010 PRINT CHR$(23)+CHR$(1)
+6020 PLOT 7,80:DRAWR 145,0:DRAWR 0,16:DRAWR -145,0:DRAWR 0,-16
+6030 PRINT CHR$(23)+CHR$(0)
+6040 RETURN
+6050 LOCATE 9,17-nivbruit:PRINT " "
+6060 IF a$=CHR$(240) THEN nivbruit=nivbruit+1:IF nivbruit>15 THEN nivbruit=15
+6070 IF a$=CHR$(241) THEN nivbruit=nivbruit-1:IF nivbruit<0 THEN nivbruit=0
+6080 LOCATE 9,17-nivbruit
+6090 PRINT CHR$(130)
+6100 IF a$=CHR$(242) THEN a$="":GOSUB 6000:GOTO 5870
+6110 IF a$=CHR$(243) THEN a$="":GOSUB 6000:GOTO 6130
+6120 RETURN
+6130 gosu=3
+6140 LOCATE 1,1
+6150 PRINT CHR$(23)+CHR$(1)
+6160 PLOT 304,350:DRAWR 63,0:DRAWR 0,20:DRAWR -63,0:DRAWR 0,-18
+6170 PRINT CHR$(23)+CHR$(0)
+6180 RETURN
+6190 IF xenvol<8 THEN LOCATE 37,xenvol*3+3
+6200 IF xenvol>7 THEN LOCATE 47,(xenvol-8)*3+3
+6210 PRINT " "
+6220 IF a$=CHR$(241) THEN xenvol=xenvol+1:IF xenvol>15 THEN xenvol=15
+6230 IF a$=CHR$(240) THEN xenvol=xenvol-1:IF xenvol<0 THEN xenvol=0
+6240 IF xenvol<8 THEN LOCATE 37,xenvol*3+3
+6250 IF xenvol>7 THEN LOCATE 47,(xenvol-8)*3+3
+6260 PRINT CHR$(123)
+6270 IF a$=CHR$(242) THEN a$="":GOSUB 6140:GOTO 6000
+6280 IF a$=CHR$(243) THEN a$="":GOSUB 6140:GOTO 6300
+6290 RETURN
+6300 gosu=4
+6310 LOCATE 1,1
+6320 PRINT CHR$(23)+CHR$(1)
+6330 PLOT 496,350:DRAWR 40,0:DRAWR 0,20:DRAWR -40,0:DRAWR 0,-18
+6340 PRINT CHR$(23)+CHR$(0)
+6350 RETURN 
+6360 IF ton<8 THEN LOCATE 59,ton*3+3
+6370 IF ton>7 THEN LOCATE 69,(ton-8)*3+3
+6380 PRINT " "
+6390 IF a$=CHR$(241) THEN ton=ton+1:IF ton>15 THEN ton=15
+6400 IF a$=CHR$(240) THEN ton=ton-1:IF ton<0 THEN ton=0
+6410 IF ton<8 THEN LOCATE 59,ton*3+3
+6420 IF ton>7 THEN LOCATE 69,(ton-8)*3+3
+6430 PRINT CHR$(123)
+6440 IF a$=CHR$(242) THEN a$="":GOSUB 6310:GOTO 6130
+6450 IF a$=CHR$(242) THEN a$="":GOSUB 6310:GOTO 6470
+6460 RETURN
+6470 gosu=5
+6480 PRINT CHR$(23)+CHR$(1)
+6490 PLOT 6,48:DRAWR 202,0:DRAWR 0,16:DRAWR -202,0:DRAWR 0,-16
+6500 PRINT CHR$(23)+CHR$(0)
+6510 RETURN
+6520 IF prio=128 THEN LOCATE 30,20
+6530 IF Prio=0 THEN LOCATE 30,21
+6540 PRINT "  "
+6550 IF a$=CHR$(240) THEN prio=128
+6560 IF a$=CHR$(241) THEN prio=0
+6570 IF prio=128 THEN LOCATE 30,20:PRINT CHR$(154)+CHR$(243)
+6580 IF prio=0 THEN LOCATE 30,21:PRINT CHR$(154)+CHR$(243)
+6590 IF a$=CHR$(242) THEN a$="":GOSUB 6480:GOTO 6300
+6600 IF a$=CHR$(243) THEN a$="":GOSUB 6480:GOTO 6620
+6610 RETURN
+6620 gosu=6
+6630 LOCATE 1,1
+6640 PRINT CHR$(23)+CHR$(1)
+6650 PLOT 6,32:DRAWR 154,0:DRAWR 0,16:DRAWR -154,0:DRAWR 0,-16
+6660 PRINT CHR$(23)+CHR$(0)
+6670 RETURN
+6680 LOCATE 30,21+oct:PRINT "  "
+6690 IF a$=CHR$(240) AND oct>1 THEN oct=oct-1
+6700 IF a$=CHR$(241) AND oct<4 THEN oct=oct+1
+6710 LOCATE 30,21+oct:PRINT CHR$(154)+CHR$(243)
+6720 IF a$=CHR$(242) THEN a$="":GOSUB 6630:GOTO 6470
+6730 IF a$=CHR$(243) THEN a$="":GOSUB 6630:GOTO 5870
+6740 RETURN
+6750 RESTORE 350:RETURN
+6760 RESTORE 360:RETURN
+6770 RESTORE 370:RETURN
+6780 RESTORE 380:RETURN
+6790 FOR a=32 TO 255
+6800 PRINT CHR$(a);
+6810 NEXT
+6820 '##########################
+6830 '#                        #
+6840 '# AFFICHAGE DES LISTINGS #
+6845 '#          BASIC         #
+6850 '#                        #
+6860 '##########################
+6870 CLS
+6880 GOSUB 4210
+6890 LOCATE 26,1:PRINT "AFFICHAGE DU LISTING BASIC"
+6900 LOCATE 10,6:PRINT "1       Listing des Percutions"
+6910 LOCATE 10,9:PRINT "2       Listing des enveloppes de volume"
+6920 LOCATE 10,12:PRINT "3       Listing des enveloppes de ton"
+6930 LOCATE 10,15:PRINT "4       Listing de l'accompagnement"
+6940 a$=INKEY$:IF a$="" THEN 6940
+6950 a=VAL(a$)
+6960 ON a GOTO 6970,7620,7920,7960
+6970 CLS
+6980 LOCATE 26,1:PRINT "LISTING DES PERCUTIONS"
+6990 PRINT
+7000 WINDOW #1,1,90,3,25:WINDOW SWAP 0,1
+7010 PRINT "10000 REM Initialisation des deux tableaux Pour les Percussions."
+7020 x=nP:GOSUB 7850
+7030 PRINT "10010 DIM pas(";a$;"):' Tableaux de la hauteur du son"
+7040 PRINT "10020 DIM duper(";a$;"):' Tableaux de la duree du son"
+7050 PRINT "10030 FOR a=1 TO";nP
+7060 PRINT "10040 READ Pas(a)"
+7070 PRINT "10050 NEXT"
+7080 PRINT "10060 FOR a=1 TO";nP
+7090 PRINT "10070 READ duper(a)"
+7100 PRINT "10080 NEXT"
+7110 PRINT "10090 co=0          :' Compteur des pas"
+7120 PRINT "10100 GOSUB 10130   :' Appel du sous Programme"
+7130 PRINT "10110 GOTO 10100    :' Attente"
+7140 PRINT " 10120 REM Sous Programme de Percussion"
+7150 PRINT "10130 co=co+1:IF co >";nP;"THEN co=1"
+7160 PRINT "10140 hauteur=Pas(co)"
+7170 x=nivbruit:GOSUB 7850:b$=a$
+7180 x=xenvbru:GOSUB 7850:c$=a$
+7190 x=xEntbrui:GOSUB 7850
+7200 PRINT "10150 SOUND 130,0,0,";b$;",";c$;",";a$;",hauteur"
+7210 PRINT "10160 AFTER ";:PRINT USING "##";vi;:PRINT "*duper(co),0 GOSUB 10130"
+7220 PRINT "10170 RETURN"
+7230 PRINT
+7240 PRINT "Rappel : touche 'S' Pour sortir du Programme"
+7250 PRINT SPC (9);"touche 'M' Pour revenir au menu"
+7260 PRINT SPC (9);"touche 'C' Pour avoir la suite du listing"
+7270 WINDOW SWAP 0,1
+7280 LOCATE 1,23
+7290 a$=INKEY$:IF a$="" THEN 7290
+7300 IF a$="s" OR a$="S" THEN STOP
+7310 IF a$="m" OR a$="M" THEN 280
+7320 IF a$<>"c" AND a$<>"C" THEN 7290
+7330 WINDOW SWAP 0,1:CLS #0
+7340 PRINT "10180 REM Valeurs numeriques des deux tableaux"
+7350 PRINT "10190 DATA "
+7360 FOR a=1 TO nP-1
+7370 a$=STR$(Pas(a))
+7380 a$=MID$(a$,2)
+7390 PRINT a$+",";
+7400 NEXT
+7410 a$=STR$(Pas(np))
+7420 a$=MID$(a$,2)
+7430 PRINT a$
+7440 PRINT "10200 DATA ";
+7450 FOR a=1 TO np
+7460 a$=STR$(duper(a))
+7470 a$=MID$(a$,2)
+7480 PRINT a$+",";
+7490 NEXT
+7500 a$=STR$(duper(nP))
+7510 a$=MID$(a$,2)
+7520 PRINT a$
+7530 PRINT
+7540 PRINT "Rappel : touche 'S' pour sortir du programme"
+7550 PRINT SPC (9);"touche 'M' pour revenir au menu"
+7560 WINDOW SWAP 0,1
+7570 LOCATE 1,23
+7580 a$=INKEY$:IF a$="" THEN 7580
+7590 IF a$="S" OR a$="s" THEN STOP
+7600 IF a$="m" OR a$="M" THEN GOTO 290
+7610 GOTO 7580
+7620 CLS
+7630 LOCATE 26,1:PRINT "LISTING ENVELOPPE DE VOLUME"
+7640 xenvton=0
+7650 LOCATE 1,5
+7660 basicnum=10990+1000*xenvton
+7670 num=0
+7680 num=num+1:IF num=16 THEN 7880
+7690 IF nombpas(1,num+xenvton*15)=0 THEN 7680
+7700 basicnum=basicnum+10:PRINT basicnum;
+7710 IF xenvton=0 THEN PRINT "ENV"; ELSE PRINT "ENT";
+7720 PRINT num;
+7730 FOR A=1 TO 5
+7740 IF nombpas(a,num+xenvton*15)=0 THEN PRINT:GOTO 7680
+7750 PRINT ",";
+7760 Po1=nombpas(a,num+xenvton*15)
+7770 Po2=xtabenv(a,2,num+xenvton*15)/po1
+7780 Po3=xtabenv(a,1,num+xenvton*15)/po1
+7790 x=Po1:GOSUB 7850:PRINT a$;",";
+7800 x=Po2:GOSUB 7850:PRINT a$;",";
+7810 x=Po3:GOSUB 7850:PRINT a$;
+7820 NEXT
+7830 PRINT
+7840 GOTO 7680
+7850 a$=STR$(x)
+7860 a$=MID$(a$,2)
+7870 RETURN
+7880 PRINT
+7890 PRINT "Rappel : touche 'S' Pour sortir du Programme"
+7900 PRINT SPC (9);"touche 'M' Pour revenir au menu"
+7910 GOTO 7580
+7920 CLS
+7930 LOCATE 26,1:PRINT "LISTING ENVELOPPE DE TON"
+7940 xenvton=1
+7950 GOTO 7650
+7960 CLS
+7970 LOCATE 26,1:PRINT "LISTING DE L' ACCOMPAGNEMENT"
+7980 WINDOW #1,1,80,3,25:WINDOW SWAP 1,0
+7990 PRINT "13000 DIM acc(";accfin;")    : 'Tableaux des notes jouees"
+8000 PRINT "13010 DIM duracc(";accfin;")    : 'Tableaux des durees des notes"
+8010 PRINT "13020 DiM t(14)      : 'Tableaux des deux octaves"
+8020 PRINT "13030 FOR a=1 TO 14  : 'Chargement des differentes notes"
+8030 PRINT "13040 READ t(a)"
+8040 PRINT "13050 NEXT"
+8050 PRINT "13060 FOR a=1 TO";accfin;" : 'Chargement des durees des notes"
+8060 PRINT "13070 READ duracc(a)"
+8070 PRINT "13080 NEXT"
+8080 PRINT "13090 FOR a=1 TO";accfin;" : 'Chargement des durees des notes"
+8090 PRINT "13100 READ acc(a)"
+8100 PRINT "13110 NEXT"
+8110 PRINT "13120 GOSUB 13150    :'Appel du sous Programme"
+8120 PRINT "13130 GOTO 13130     :'Attente"
+8130 PRINT "13140 REM Sous Programme d'accompagnement"
+8140 PRINT "13150 accomp=accomp+1:IF accomp=";accfin;"THEN accomp=1"
+8150 PRINT "13160 AFTER ";:PRINT USING "##";accdu;:PRINT "*duracc(accomp),1 GOSUB 13150"
+8160 x=accenvt:GOSUB 7850:c$=a$
+8170 x=accvol:GOSUB 7850:b$=a$
+8180 x=accenvv:GOSUB 7850
+8190 PRINT "13170 SOUND 132,t(acc(accomp)),0,";b$;",";a$;",";c$
+8200 PRINT "13180 RETURN"
+8210 PRINT "Rappel : touche 'S' Pour sortir du programme"
+8220 PRINT SPC (9);"touche 'M' Pour revenir au menu"
+8230 PRINT SPC (9);"touche 'C' Pour avoir la suite du listing"
+8240 WINDOW SWAP 0,1
+8250 LOCATE 1,23
+8260 a$=INKEY$:IF a$="" THEN 8260
+8270 IF a$="s" OR a$="S" THEN STOP
+8280 IF a$="m" OR a$="M" THEN 280
+8290 IF a$<>"c" AND a$<>"C" THEN 8260
+8300 WINDOW SWAP 0,1:CLS #0
+8310 PRINT "13190 DATA ";
+8320 FOR a=1 TO 14
+8330 x=t(a):GOSUB 7850
+8340 PRINT a$;
+8350 IF a<>14 THEN PRINT ",";
+8360 NEXT 
+8370 PRINT
+8380 PRINT "13200 DATA ";
+8390 FOR a=1 TO accfin
+8400 x=duracc(a):GOSUB 7850
+8410 PRINT a$;
+8420 IF a<>accfin THEN PRINT",";
+8430 NEXT
+8440 PRINT
+8450 PRINT "13210 DATA ";
+8460 FOR a=1 TO accfin
+8470 x=acc(a):GOSUB 7850
+8480 PRINT a$;
+8490 IF a<>accfin THEN PRINT ",";
+8500 NEXT
+8510 PRINT
+8520 GOTO 7530
+9000 ' AFFICHAGE CHIFFRE.
+9010 ' 1,2,3,4,5 triple hauteur double largeur
+9020 IF Idchar=1 THEN RESTORE 9040: ELSE IF Idchar=2 THEN RESTORE 9050: ELSE IF Idchar=3 THEN RESTORE 9060: ELSE IF Idchar=4 THEN RESTORE 9070: ELSE IF Idchar=5 THEN RESTORE 9080
+9025 FOR k=0 TO 2
+9030 LOCATE 73,21+k:FOR i=1 TO 3:READ car:PRINT CHR$(car);:NEXT:NEXT:RETURN
+9040 DATA 194,156,32,32,149,32,32,149,32
+9050 DATA 150,154,156,150,154,153,147,154,153
+9060 DATA 150,154,156,32,146,157,147,154,153
+9070 DATA 149,32,32,147,159,152,32,149,32
+9080 DATA 150,154,156,147,154,156,147,154,153
+*/ });

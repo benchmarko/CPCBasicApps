@@ -138,11 +138,15 @@ Check [2D Star Dodge flies again!](https://scruss.com/blog/2012/09/08/2d-star-do
 
 ## Some 10-Liner Games
 
-From the [BASIC 10-Liner Contest 2019](https://gkanold.wixsite.com/homeputerium/kopie-von-games-list-2019-2)
+The games from 2019 are from the [BASIC 10-Liner Contest 2019](https://gkanold.wixsite.com/homeputerium/kopie-von-games-list-2019-2).
 
 ### CPCanabalt
 
 [![CPCanabalt](./img/canabalt.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/canabalt&sound=true) (c) Logiker, 2019
+
+### Rogue Descender
+
+[![Rogue Descender](./img/roguedes.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/roguedes) (c) Graham Briggs
 
 ### Shielding Color
 
@@ -151,6 +155,22 @@ From the [BASIC 10-Liner Contest 2019](https://gkanold.wixsite.com/homeputerium/
 ### Tanks Alot
 
 [![Tanks Alot!](./img/tanks.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/tanks&sound=true) (c) Ross "Out Bush" Simpson, 2019
+
+## Some Apps Highlights
+
+### Amsynthé
+
+[![Amsynthé](./img/amsynthe.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/amsynthe&sound=true) (c) Hebdogiciel, 1986
+
+### CPC Doodle
+
+[![CPC Doodle](./img/doodle.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/doodle/doodle)
+[![CPC Doodle](./img/doodle2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/doodle/doodle) (c) Markus Hohmann (Devilmarkus), 2018
+
+### Multitext CPC
+
+[![Multitext CPC](./img/mtext.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/mtext)
+[![Multitext CPC](./img/mtext2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/mtext) (c) Rainbow Arts, 1985
 
 ## Some Music Highlights
 
@@ -187,7 +207,9 @@ Johann Sebastian Bach: "Wohl mir,dass ich Jesum habe"
 ## Some BasiCode programs
 
 These programs use the [BasiCode](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/basicode) library which allows to write BASIC programs which run on systems with different BASIC dialects.
-Check the [BasiCode](https://www.basicode.de/) page by Thomas Rademacher.
+Check the [BasiCode](http://www.basicode.de/) page by Thomas Rademacher.
+There is a is a tutorial with PDF documentation in  [BC3 Kurs](http://www.basicode.de/download/BC3_KURS.zip).
+
 There is also an excellent [BASICODE Interpreter](https://robhagemans.github.io/basicode/) by Rob Hagemans. It runs in the browser and has a lot of sample programs.
 
 ### Countries
