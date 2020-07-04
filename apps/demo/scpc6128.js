@@ -26,7 +26,7 @@ cpcBasic.addItem("", function () { /*
 115 DATA 21,0,C0,11,0,40,42,4B,AF,DD,BE,1,20,1,EB,DD,7E,0,C6,2,CD,5B,BD,ED,B0,C3,5B,BD
 120 DATA CD,B,BC,11,80,2,19,CD,5,BC,C9,E,FF,CD,15,B9,EB,DD,66,1,DD,6E,0,73,23,72,C9
 125 'LOAD"ritdemo"
-130 OPENIN "scpcdata":p=schpoke
+130 OPENIN "scpc6128.dat":p=schpoke 'schlogo
 131 WHILE NOT EOF
 132 INPUT#9,i$
 133 FOR x=1 TO LEN(i$)/2

@@ -145,8 +145,8 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Schneider CPC 6128 Demo"
 	},
 	{
-    	"key": "demo/scpcdata",
-		"title": "Data for logo in demo scpc6128",
+    	"key": "demo/scpc6128.dat",
+		"title": "Data for logo in demo scpc6128 (schlogo)",
 		"meta": "D"
 	},
 	{
@@ -178,6 +178,14 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Clear Path"
 	},
 	{
+		"key": "games/duel",
+		"title": "Duel (Duell)"
+	},
+	{
+		"key": "games/emperor",
+		"title": "Emperor (Kaiser)"
+	},
+	{
 		"key": "games/garfunkl",
 		"title": "Garfunkel"
 	},
@@ -188,6 +196,15 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "games/maze",
 		"title": "Maze"
+	},
+	{
+		"key": "games/mchess",
+		"title": "Micro Chess"
+	},
+	{
+		"key": "games/mchess.dat",
+		"title": "Micro Chess Data",
+		"meta": "D"
 	},
 	{
 		"key": "games/roguedes",

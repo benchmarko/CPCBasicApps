@@ -6,7 +6,7 @@ cpcBasic.addItem("", function () { /*
 994 rem bchelp - BC Help (BC Hilfe)
 995 rem
 996 rem http://www.basicode.de/download/neue.zip
-997 rem Modifications:
+997 rem Modifications: 1351 if a=0 (e.g. return)
 998 chain merge "basicode"
 1000 A=100:GOTO 20:REM      ## BASICODE-Hilfsprogramm ##
 1010 GOSUB 100:HA=HO:VA=VE
@@ -29,6 +29,7 @@ cpcBasic.addItem("", function () { /*
 1310 PRINT "11-Auffuehrung der erlaubten"
 1312 PRINT "   Befehle"
 1350 INPUT A
+1351 if a=0 then 1350
 1360 IF A<= 3 THEN MA=(A*1000+2000)
 1370 IF A>= 4 THEN MA=(A*1000+3000)
 1380 ON A GOTO 3000,4000,5000,7000,8000,9000,10000

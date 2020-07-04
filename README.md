@@ -103,10 +103,20 @@ The tune [Fuer Elise](https://benchmarko.github.io/CPCBasic/cpcbasic.html?databa
 
 A lander clone from [The Amstrad Program Book](https://archive.org/details/Amstrad_Program_Book_The_1984_Phoenix_Publishing_Associates/mode/2up) by Peter Goode, improved by [Im Wald](http://cpc-live.com/forum/index.php/topic,958.msg8133.html#msg8133).
 
+### Duel
+
+[![Duel](./img/duel.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/duel&sound=true) (c) Bernhard Morell
+
 ### Garfunkel
 
 [![Garfunkel](./img/garfunkl.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/garfunkl&sound=true)
 [![Garfunkel](./img/garfunkl2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/garfunkl&sound=true) (c) Roland Bendig, 1987
+
+### Mini Chess
+
+[![ini Chess](./img/mchess.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/mchess) (c) Matthias Uphoff, 1986
+
+German Documentation can be found at [Software Experiment 6](http://cpctech.cpc-live.com/docs/dse/softex06.html).
 
 ### Sultan's Maze
 
@@ -226,7 +236,8 @@ Ask the doctor ("Der kleine Hausarzt") in German language.
 
 ### Ellipses
 
-[![Ellipses](./img/ellipses.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/ellipses) (c) Jaap Wieles
+[![Ellipses](./img/ellipses.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/ellipses)
+[![Ellipses](./img/ellipses2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/ellipses) (c) Jaap Wieles
 
 ### Friendship
 
@@ -234,7 +245,8 @@ Ask the doctor ("Der kleine Hausarzt") in German language.
 
 ### Impossible Figures
 
-[![Impossible Figures](./img/imposfig.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/imposfig) (c) Thomas Schäfer, 1991
+[![Impossible Figures](./img/imposfig.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/imposfig)
+[![Impossible Figures](./img/imposfig2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/imposfig) (c) Thomas Schäfer, 1991
 
 ### Nonius
 
@@ -254,4 +266,4 @@ If you improve some of the programs, please send me an update. Or upload them to
 
 --
 
-### **mv, 04/2020**
+### **mv, 07/2020**

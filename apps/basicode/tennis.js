@@ -6,13 +6,13 @@ cpcBasic.addItem("", function () { /*
 994 rem tennis - Tennis
 995 rem Abdon Pijpelink
 996 rem http://www.basicode.de/download/neue.zip
-997 rem
+997 rem Modifications: delay in 3110, 4130, 1010 SN=5; 1040 default keys lowercase; control via INKEY$ is not good, also on real CPC
 998 chain merge "basicode"
 1000 A=500:GOTO 20:REM TENNIS
-1010 MY=VE-1:SN=0:BA=10
+1010 MY=VE-1:SN=5:BA=10
 1020 MX=3*INT (HO/3)-1
 1030 DIM R(3)
-1040 A$="Q":B$="A":C$="O":D$="L"
+1040 A$="q":B$="a":C$="o":D$="l" 'A$="Q":B$="A":C$="O":D$="L"
 1050 REM  *** BEGINTEKENING ***
 1060 CC(0)=2:CC(1)=6:GOSUB 600
 1070 CN=0
@@ -183,7 +183,7 @@ cpcBasic.addItem("", function () { /*
 3090 IF (IN$=B$) OR (IN$=D$) THEN GOSUB 4700
 3095 NEXT NN
 3100 GOSUB 3200:REM  COMPUTER
-3110 FOR SL=0 TO SN:NEXT SL
+3110 FOR SL=0 TO SN:call &bd19:NEXT SL
 3120 GOSUB 7010:REM  BEWEEG BAL
 3130 GOTO 3070
 3200 IF BY<R(2) THEN GOTO 3400
@@ -216,7 +216,7 @@ cpcBasic.addItem("", function () { /*
 4110 IF (IN$=D$) OR (IN$=B$) THEN GOSUB 4700
 4115 NEXT NN
 4120 GOSUB 7010:REM  BEWEEG BAL
-4130 FOR SL=0 TO SN:NEXT SL
+4130 FOR SL=0 TO SN:call &bd19:NEXT SL
 4140 GOTO 4080
 4500 IF (IN$=A$) AND (R(1)<= 5) THEN RETURN 
 4510 IF (IN$=C$) AND (R(2)<= 5) THEN RETURN 
