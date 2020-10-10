@@ -56,11 +56,11 @@ Some more nice graphics and animations, mainly done by changing colors.
 
 The complete demo.
 
-The [Can-Can sound](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/cancan&sound=true) can also be played separately.
+The [Can-Can sound](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/cancan) can also be played separately.
 
 ### House for Sale
 
-[![House](./img/house.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/house&sound=true) (c) Simon Baker, Kevin Parker, 1991
+[![House](./img/house.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/house) (c) Simon Baker, Kevin Parker, 1991
 
 Just 9 lines of code, adapted for CPC 464 (no *FILL* command) by Out Bush.
 Check the blog [FILLing them Ol'​ BASIC 10-Liners on a 464](https://www.linkedin.com/pulse/filling-them-ol-basic-10-liners-464-out-bush/).
@@ -93,24 +93,24 @@ Some card games: Blackjack ("17 und 4") and Memory.
 
 ### Citylander
 
-[![Citylander](./img/cityland.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/cityland&sound=true) (c) Jujstronic Software, 1985
+[![Citylander](./img/cityland.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/cityland) (c) Jujstronic Software, 1985
 
-The tune [Fuer Elise](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/elise&sound=true) by Ludwig van Beethoven can also be played separately.
+The tune [Fuer Elise](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/elise) by Ludwig van Beethoven can also be played separately.
 
 ### Clear Path
 
-[![Clear Path](./img/clearpa.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/clearpa&sound=true) (c) Peter Goode, 1984
+[![Clear Path](./img/clearpa.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/clearpa) (c) Peter Goode, 1984
 
 A lander clone from [The Amstrad Program Book](https://archive.org/details/Amstrad_Program_Book_The_1984_Phoenix_Publishing_Associates/mode/2up) by Peter Goode, improved by [Im Wald](http://cpc-live.com/forum/index.php/topic,958.msg8133.html#msg8133).
 
 ### Duel
 
-[![Duel](./img/duel.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/duel&sound=true) (c) Bernhard Morell
+[![Duel](./img/duel.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/duel) (c) Bernhard Morell
 
 ### Garfunkel
 
-[![Garfunkel](./img/garfunkl.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/garfunkl&sound=true)
-[![Garfunkel](./img/garfunkl2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/garfunkl&sound=true) (c) Roland Bendig, 1987
+[![Garfunkel](./img/garfunkl.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/garfunkl)
+[![Garfunkel](./img/garfunkl2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/garfunkl) (c) Roland Bendig, 1987
 
 ### Mini Chess
 
@@ -120,8 +120,8 @@ German Documentation can be found at [Software Experiment 6](http://cpctech.cpc-
 
 ### Sultan's Maze
 
-[![Sultan's Maze](./img/sultan.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/sultan&sound=true)
-[![Sultan's Maze](./img/sultan2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/sultan2&sound=true)
+[![Sultan's Maze](./img/sultan.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/sultan)
+[![Sultan's Maze](./img/sultan2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/sultan2)
 (c) Gem Software, 1984
 
 On a real CPC, the game is rather slow, so I never played it. With CPCBasic it has a good speed now...
@@ -152,7 +152,7 @@ The games from 2019 are from the [BASIC 10-Liner Contest 2019](https://gkanold.w
 
 ### CPCanabalt
 
-[![CPCanabalt](./img/canabalt.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/canabalt&sound=true) (c) Logiker, 2019
+[![CPCanabalt](./img/canabalt.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/canabalt) (c) Logiker, 2019
 
 ### Rogue Descender
 
@@ -160,17 +160,17 @@ The games from 2019 are from the [BASIC 10-Liner Contest 2019](https://gkanold.w
 
 ### Shielding Color
 
-[![Shielding Color](./img/scolor.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/scolor&sound=true) (c) Antonio "acorpascuenca" Corpas Cuenca, 2019
+[![Shielding Color](./img/scolor.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/scolor) (c) Antonio "acorpascuenca" Corpas Cuenca, 2019
 
 ### Tanks Alot
 
-[![Tanks Alot!](./img/tanks.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/tanks&sound=true) (c) Ross "Out Bush" Simpson, 2019
+[![Tanks Alot!](./img/tanks.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/tanks) (c) Ross "Out Bush" Simpson, 2019
 
 ## Some Apps Highlights
 
 ### Amsynthé
 
-[![Amsynthé](./img/amsynthe.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/amsynthe&sound=true) (c) Hebdogiciel, 1986
+[![Amsynthé](./img/amsynthe.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/amsynthe) (c) Hebdogiciel, 1986
 
 ### CPC Doodle
 
@@ -186,33 +186,33 @@ The games from 2019 are from the [BASIC 10-Liner Contest 2019](https://gkanold.w
 
 ### A small BASIC tune
 
-[![A small BASIC tune](./img/asbtune.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/asbtune&sound=true) (c) Roald (Mr.Lou) Strauss, 2018
+[![A small BASIC tune](./img/asbtune.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/asbtune) (c) Roald (Mr.Lou) Strauss, 2018
 
 A fantastic tune! One of my favorites.
 
 ### Axel F
 
-[![Axel F](./img/axelf.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/axelf&sound=true) by Harold Faltermeyer
+[![Axel F](./img/axelf.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/axelf) by Harold Faltermeyer
 
 ### Bach
 
-[![Bach](./img/bach.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/bach&sound=true) (c) Wolfgang Volz
+[![Bach](./img/bach.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/bach) (c) Wolfgang Volz
 
 Johann Sebastian Bach: "Wohl mir,dass ich Jesum habe"
 
 ### Elise
 
-[![Fuer Elise](./img/elise.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/elise&sound=true) (c) Jujstronic Software, 1985
+[![Fuer Elise](./img/elise.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/elise) (c) Jujstronic Software, 1985
 
 "Fuer Elise" by Ludwig van Beethoven. Taken from the game Citylander by Jujstronic Software. I have optimized the code a bit.
 
 ### Rocking CPC
 
-[![Rocking CPC](./img/rocking.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/rocking&sound=true) (c) Manfred Lipowski, 1987
+[![Rocking CPC](./img/rocking.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/rocking) (c) Manfred Lipowski, 1987
 
 ### Tico Tico
 
-[![Tico Tico](./img/ticotico.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/ticotico&sound=true)
+[![Tico Tico](./img/ticotico.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/ticotico)
 
 ## Some BasiCode programs
 
@@ -241,7 +241,7 @@ Ask the doctor ("Der kleine Hausarzt") in German language.
 
 ### Friendship
 
-[![Friendship](./img/friendsh.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/friendsh&sound=true) (c) Walther van den Elshout / Detlev Winkel, 1991
+[![Friendship](./img/friendsh.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/friendsh) (c) Walther van den Elshout / Detlev Winkel, 1991
 
 ### Impossible Figures
 

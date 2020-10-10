@@ -113,12 +113,28 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "100% BASIC Demo"
 	},
 	{
+    	"key": "demo/art1",
+		"title": "Art 1: Screens Unlimited"
+	},
+	{
     	"key": "demo/asciiart",
 		"title": "ASCII Art"
 	},
 	{
+    	"key": "demo/basgame1",
+		"title": "BASIC Game 1 / BASIC World (unfinished)"
+	},
+	{
+    	"key": "demo/basgame2",
+		"title": "BASIC Game 2 (unfinished)"
+	},
+	{
     	"key": "demo/btilesim",
 		"title": "British Council Tile / Bus Fabric Sim"
+	},
+	{
+    	"key": "demo/flags",
+		"title": "Flags of the World"
 	},
 	{
     	"key": "demo/gdemo",
@@ -139,6 +155,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "demo/mondrian",
 		"title": "Mondrian"
+	},
+	{
+		"key": "demo/rayclip",
+		"title": "Ray Eclipse"
 	},
     {
     	"key": "demo/scpc6128",
@@ -178,6 +198,14 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Clear Path"
 	},
 	{
+		"key": "games/crib",
+		"title": "Cribbage (v1)"
+	},
+	{
+		"key": "games/cribbage",
+		"title": "Cribbage (v2)"
+	},
+	{
 		"key": "games/duel",
 		"title": "Duel (Duell)"
 	},
@@ -205,6 +233,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"key": "games/mchess.dat",
 		"title": "Micro Chess Data",
 		"meta": "D"
+	},
+		{
+		"key": "games/patience",
+		"title": "Patience: The Card Game"
 	},
 	{
 		"key": "games/roguedes",
