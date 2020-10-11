@@ -34,6 +34,35 @@ Excellent BASIC demo.
 
 On a real CPC, the pre-calculation phase takes longer than 3 minutes. With CPCBasic you will ask, which pre-calculating phase?
 
+### Art: Screens Unlimited
+
+[![Art: Screens Unlimited](./img/art.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/art)
+[![Art: Screens Unlimited](./img/art2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/art)
+
+(c) ?
+
+A lot of landscapes.
+
+### ASCII Art
+
+### BASIC World
+
+[![BASIC World](./img/basworld.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/basworld) (c) Roald (Mr.Lou) Strauss
+
+Title screen of an unfinished game with a nice tune.
+
+### British Council Tile Simulation
+
+[![British Council Tile](./img/btilesim.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/btilesim)
+[![British Council Tile](./img/btilesim2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/btilesim) (c) Rob Manuel, 2018
+
+Check [Rob Manuel’s British Council Tile / Bus Fabric Sim](https://scruss.com/blog/2018/06/10/rob-manuels-british-council-tile-bus-fabric-sim/) on Stewart C. Russell's blog.
+
+### Flags
+
+[![Flags](./img/flags.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/flags)
+[![Flags](./img/flags2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/flags) (c) Richard Fairhurst
+
 ### Graphics Demo 1
 
 [![Graphics Demo](./img/gdemo1.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo)
@@ -48,6 +77,34 @@ Several nice graphics and animations, some with morphing effects. The original v
 
 Some more nice graphics and animations, mainly done by changing colors.
 
+### House for Sale
+
+[![House](./img/house.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/house) (c) Simon Baker, Kevin Parker, 1991
+
+Just 9 lines of code, adapted for CPC 464 (no *FILL* command) by Out Bush.
+Check the blog [FILLing them Ol'​ BASIC 10-Liners on a 464](https://www.linkedin.com/pulse/filling-them-ol-basic-10-liners-464-out-bush/).
+
+### IGS Demo
+
+### Mondrian
+
+[![Mondrian](./img/mondrian.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/mondrian) (c) SRS, 2019
+
+Check [The Joy of Programming: Mondrian Painting](https://www.youtube.com/watch?v=FUp3SffxPzw) and
+[CPCwiki](https://www.cpcwiki.eu/forum/programming/mondrian-next-try-to-get-a-topic/)
+
+### No Smoking (Screen)
+
+[![No Smoking](./img/nosmoke.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/nosmoke) (c) ?
+
+### Popsi (Screen)
+
+[![Popsi](./img/popsi.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/popsi) (c) ?
+
+### Ray Eclipse
+
+[![Ray Eclipse](./img/rayclip.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/rayclip) (c) Alan Scully
+
 ### Schneider CPC 6128 Demo
 
 [![Schneider CPC 6128 Demo](./img/scpc6128.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/scpc6128)
@@ -58,28 +115,15 @@ The complete demo.
 
 The [Can-Can sound](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/cancan) can also be played separately.
 
-### House for Sale
-
-[![House](./img/house.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/house) (c) Simon Baker, Kevin Parker, 1991
-
-Just 9 lines of code, adapted for CPC 464 (no *FILL* command) by Out Bush.
-Check the blog [FILLing them Ol'​ BASIC 10-Liners on a 464](https://www.linkedin.com/pulse/filling-them-ol-basic-10-liners-464-out-bush/).
-
-### British Council Tile Simulation
-
-[![British Council Tile](./img/btilesim.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/btilesim)
-[![British Council Tile](./img/btilesim2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/btilesim) (c) Rob Manuel, 2018
-
-Check [Rob Manuel’s British Council Tile / Bus Fabric Sim](https://scruss.com/blog/2018/06/10/rob-manuels-british-council-tile-bus-fabric-sim/) on Stewart C. Russell's blog.
-
-### Mondrian
-
-[![Mondrian](./img/mondrian.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/mondrian) (c) SRS, 2019
-
-Check [The Joy of Programming: Mondrian Painting](https://www.youtube.com/watch?v=FUp3SffxPzw) and
-[CPCwiki](https://www.cpcwiki.eu/forum/programming/mondrian-next-try-to-get-a-topic/)
+### Serpent
 
 ## Some Games Highlights
+
+### BASIC Game 2
+
+[![BASIC Game 2](./img/basgame2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/basgame2) (c) Roald (Mr.Lou) Strauss
+
+Unfinished BASIC game 2.
 
 ### Card Games
 
@@ -103,32 +147,58 @@ The tune [Fuer Elise](https://benchmarko.github.io/CPCBasic/cpcbasic.html?databa
 
 A lander clone from [The Amstrad Program Book](https://archive.org/details/Amstrad_Program_Book_The_1984_Phoenix_Publishing_Associates/mode/2up) by Peter Goode, improved by [Im Wald](http://cpc-live.com/forum/index.php/topic,958.msg8133.html#msg8133).
 
+### Crib (Cribbage v1)
+
+[![Crib](./img/crib.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/crib) (c) ?
+
+### Cribbage (v2)
+
+[![Cribbage](./img/cribbage.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/cribbage) (c) Nick Herrick, 1986
+
 ### Duel
 
 [![Duel](./img/duel.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/duel) (c) Bernhard Morell
+
+### Emperor (Kaiser)
+
+[![Emperor](./img/emperor.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/emperor) (c) ?
+
+To select an action during the game, use joystick or numpad numbers.
 
 ### Garfunkel
 
 [![Garfunkel](./img/garfunkl.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/garfunkl)
 [![Garfunkel](./img/garfunkl2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/garfunkl) (c) Roland Bendig, 1987
 
+### Lander
+
+[![Lander](./img/lander.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/lander)
+[![Lander](./img/lander2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/lander) (c) Georg Huonker, 1985
+
+### Maze
+
+[![Maze](./img/maze.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/maze)
+[![Maze](./img/maze2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/maze) (c) Joerg Heise
+
 ### Mini Chess
 
-[![ini Chess](./img/mchess.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/mchess) (c) Matthias Uphoff, 1986
+[![Mini Chess](./img/mchess.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/mchess) (c) Matthias Uphoff, 1986
 
 German Documentation can be found at [Software Experiment 6](http://cpctech.cpc-live.com/docs/dse/softex06.html).
 
-### Sultan's Maze
+### Patience: The Card Game
 
-[![Sultan's Maze](./img/sultan.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/sultan)
-[![Sultan's Maze](./img/sultan2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/sultan2)
-(c) Gem Software, 1984
+[![Patience](./img/patience.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/patience)
+[![Patience](./img/patience2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/patience) (c) Clive Blackmore
 
-On a real CPC, the game is rather slow, so I never played it. With CPCBasic it has a good speed now...
+### Solitair
+
+[![Solitair](./img/solitair.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/solitair) (c) Uwe Ganter, 1985
 
 ### Space Race
 
-[![Space Race](./img/spacera.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/spacera) (c) Peter Pekarek, 1986
+[![Space Race](./img/spacera.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/spacera)
+[![Space Race](./img/spacera2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/spacera) (c) Peter Pekarek, 1986
 
 ### Space War
 
@@ -145,6 +215,24 @@ Minimalistic fun!
 Minimalistic fun! You really need the SPACE key only.
 
 Check [2D Star Dodge flies again!](https://scruss.com/blog/2012/09/08/2d-star-dodge-flies-again/) on Stewart C. Russell's blog.
+
+### Sultan's Maze
+
+[![Sultan's Maze](./img/sultan.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/sultan)
+[![Sultan's Maze](./img/sultan2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/sultan2)
+(c) Gem Software, 1984
+
+On a real CPC, the game is rather slow, so I never played it. With CPCBasic it has a good speed now...
+
+### Sunburst Contamination
+
+[![Sunburst Contamination](./img/sunburst.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/sunburst)
+
+### Titan
+
+[![Titan](./img/titan.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/titan)
+[![Titan](./img/titan2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/titan)
+(c) MS-Software, 1985
 
 ## Some 10-Liner Games
 
@@ -182,6 +270,12 @@ The games from 2019 are from the [BASIC 10-Liner Contest 2019](https://gkanold.w
 [![Multitext CPC](./img/mtext.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/mtext)
 [![Multitext CPC](./img/mtext2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/mtext) (c) Rainbow Arts, 1985
 
+### Sayit (Sag's)
+
+[![Sayit](./img/sayit.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/sayit) (c) Wolfgang Rauneker, 1986
+
+Write a number in English, German or Bavarian
+
 ## Some Music Highlights
 
 ### A small BASIC tune
@@ -200,19 +294,63 @@ A fantastic tune! One of my favorites.
 
 Johann Sebastian Bach: "Wohl mir,dass ich Jesum habe"
 
+### Cancan
+
+[![Cancan](./img/cancan.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/cancan)
+
+Can Can (Infernal Galop) by Jacques Offenbach.
+The Schneider CPC 6128 Demo Music.
+
+### Clarinet
+
+[![Clarinet](./img/clarinet.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/clarinet) (c) Juergen Werner
+
+Clarinet (Klarinettenmuck'l, Jaroslav Skabrada)
+
+### CPC Organ
+
+[![CPC Organ](./img/cpcorgan.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/cpcorgan)
+[![CPC Organ](./img/cpcorgan2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/cpcorgan) (c) Oliver Heggelbacher
+
+CPC Organ (CPC-Orgel) (an app)
+
 ### Elise
 
 [![Fuer Elise](./img/elise.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/elise) (c) Jujstronic Software, 1985
 
 "Fuer Elise" by Ludwig van Beethoven. Taken from the game Citylander by Jujstronic Software. I have optimized the code a bit.
 
+### Menuett
+
+[![Menuett](./img/menuett.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/menuett) (c) mIC-Software
+
+Menuett (Minuet) by James Hook
+
+### Mexicana
+
+[![Mexicana](./img/mexicana.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/mexicana) (c) Juergen Werner
+
+Dance Mexicana (Jarabe Tapatio, Mexican Hat Dance)
+
 ### Rocking CPC
 
 [![Rocking CPC](./img/rocking.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/rocking) (c) Manfred Lipowski, 1987
 
+### Roxette
+
+[![Roxette](./img/roxette.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/roxette) (c) Roald (Mr.Lou) Strauss
+
+Roxette: Listen To Your Heart
+
 ### Tico Tico
 
 [![Tico Tico](./img/ticotico.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/ticotico)
+
+### Touch
+
+[![Touch](./img/touch.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/touch) (c) Roald (Mr.Lou) Strauss
+
+U Can't Touch This (MC Hammer)
 
 ## Some BasiCode programs
 
@@ -221,6 +359,10 @@ Check the [BasiCode](http://www.basicode.de/) page by Thomas Rademacher.
 There is a is a tutorial with PDF documentation in  [BC3 Kurs](http://www.basicode.de/download/BC3_KURS.zip).
 
 There is also an excellent [BASICODE Interpreter](https://robhagemans.github.io/basicode/) by Rob Hagemans. It runs in the browser and has a lot of sample programs.
+
+### BC Help (BC Hilfe)
+
+[![BC Help](./img/bchelp.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/bchelp) (c) Hannes Frank
 
 ### Countries
 
@@ -243,6 +385,10 @@ Ask the doctor ("Der kleine Hausarzt") in German language.
 
 [![Friendship](./img/friendsh.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/friendsh) (c) Walther van den Elshout / Detlev Winkel, 1991
 
+### Function Plotting
+
+[![Function Plotting](./img/funcplot.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/funcplot) (c) Hannes Frank
+
 ### Impossible Figures
 
 [![Impossible Figures](./img/imposfig.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/imposfig)
@@ -254,16 +400,37 @@ Ask the doctor ("Der kleine Hausarzt") in German language.
 
 Do you know how to use a Vernier scale? With this program you can practice it. Explanations are in Dutch language.
 
+### Reaction
+
+[![Reaction](./img/reaction.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/reaction) (c) Ch.W. Brederode, 1989
+
+Translated by Ronald Knak.
+
+### Rotation
+
+[![Rotation](./img/rotation.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/rotation) (c) Thomas Rademacher, 2003
+
+### RSA 1, 2, 3
+
+[![RSA 1](./img/rsa1.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/rsa1) (c) Friedrich Dormeier, 1991
+
+- [RSA 1](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/rsa1)
+- [RSA 2](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/rsa2)
+- [RSA 3](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/rsa3)
+
 ### Tennis
 
 [![Tennis](./img/tennis.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/tennis) (c) Abdon Pijpelink
 
-## Misc
+### Typen
 
-...and a lot more to explore which is not (yet) listed here.
+[![Typen](./img/typen.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/typen)
+[![Typen](./img/typen2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/typen) (c) Rene Derkx, 1990
+
+## Misc
 
 If you improve some of the programs, please send me an update. Or upload them to GitHub. Also, if you want to include some new programs...
 
 --
 
-### **mv, 07/2020**
+### **mv, 10/2020**

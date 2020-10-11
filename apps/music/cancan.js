@@ -11,6 +11,10 @@ cpcBasic.addItem("", function () { /*
 6 rem Or: https://www.youtube.com/watch?v=oiFHt_ITVaM (Line Rider - Can Can (Galop Infernal - Offenbach) ;)
 7 rem
 2310 mode 1
+2312 window #1,9,38,10,24
+2313 ?#1,spc(0);"Can Can (Infernal Galop)":?#1
+2314 ?#1,spc(9);"by":?#1
+2315 ?#1,spc(3);"Jacques Offenbach"
 2320 defint a-z
 2330 DIM period(12)
 2480 unit=4

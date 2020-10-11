@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-1 rem art1 - Art 1: Screens Unlimited
+1 rem art - Art: Screens Unlimited
 2 rem
 3 rem https://www.cpcwiki.eu/forum/programming/basic-files/ (BASIC02.DSK)
 4 rem TODO: call &7800

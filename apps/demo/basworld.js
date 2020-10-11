@@ -3,10 +3,11 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-1 rem basgame1 - BASIC Game 1 / BASIC World (unfinished)
+1 rem basworld - BASIC World Demo
 2 rem (c) Roald (Mr.Lou) Strauss
 3 rem https://www.cpcwiki.eu/forum/programming/abandoned-basic-game-project/
-4 rem
+4 rem Modifications: extra CALL &BD1C,1 in line 255; delay
+5 rem
 10 spr$(1)="d ":spr$(2)="e ":spr$(3)="hf":spr$(4)=" g"
 20 'spr$(1)=" g":spr$(2)="ij":spr$(3)=" k":spr$(4)=" l"
 30 KEY 0,"paper 0:symbol after 32:mode 2:ink 0,1:border 1:ink 1,24:pen 1:list"+chr$(13)+""
@@ -32,6 +33,7 @@ cpcBasic.addItem("", function () { /*
 230 LOCATE 1,25:PRINT "abababababababababababababababababababababababababababababababababababababababab";
 240 LOCATE 1,1:PRINT "abababababababababababababababababababababababababababababababababababababababab";
 250 FOR n=2 TO 24:LOCATE 1,n:PRINT "ab";:LOCATE 79,n:PRINT "ab";:NEXT
+255 CALL &BD1C,1:' (for CPCBaisc: to interpret current screen content in differen mode)
 260 ENV 1,15,-1,30:ENV 2,0,-4,1,10,-1,30:ENV 3,0,-6,1,7,-1,30:ENV 4,0,-7,1,6,-1,30:ENT -15,0,-8,6,0,16,6,0,-8,6
 270 ENV 5,0,-8,1,2,1,4,4,-1,15,5,-1,25:ENV 6,0,-9,1,1,0,50:ENV 7,0,-10,1,1,0,50:ENV 8,0,-11,1,1,0,50
 280 ENT -1,0,0,3,0,-49,3,0,-31,3,0,31,3,0,49,5:ENT -2,0,0,3,0,-45,3,0,-49,3,0,49,3,0,45,5:ENT -3,0,0,3,0,-74,3,0,-45,3,0,45,3,0,74,5:ENT -4,0,0,3,0,45,3,0,95,3,0,-95,3,0,-45,5:ENT -5,0,0,3,0,95,3,0,99,3,0,-99,3,0,-95,5
@@ -60,6 +62,7 @@ cpcBasic.addItem("", function () { /*
 480 last=now:now=TIME:looptime=looptime+now-last:ON SQ(4) GOSUB 540
 490 WHILE looptime>steps:LOCATE xx,24:PRINT spr$(sp):sp=sp+1:looptime=looptime-steps:IF sp=5 THEN sp=1:xx=xx+1
 500 WEND
+505 call &bd19
 510 GOTO 480
 520 a$=INKEY$:IF a$="" THEN 520
 530 SOUND 1,tone%(ASC(a$)),0,15,9,4:GOTO 520

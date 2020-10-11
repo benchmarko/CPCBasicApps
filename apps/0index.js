@@ -113,20 +113,16 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "100% BASIC Demo"
 	},
 	{
-    	"key": "demo/art1",
-		"title": "Art 1: Screens Unlimited"
+    	"key": "demo/art",
+		"title": "Art: Screens Unlimited"
 	},
 	{
     	"key": "demo/asciiart",
 		"title": "ASCII Art"
 	},
 	{
-    	"key": "demo/basgame1",
-		"title": "BASIC Game 1 / BASIC World (unfinished)"
-	},
-	{
-    	"key": "demo/basgame2",
-		"title": "BASIC Game 2 (unfinished)"
+    	"key": "demo/basworld",
+		"title": "BASIC World Demo"
 	},
 	{
     	"key": "demo/btilesim",
@@ -157,6 +153,14 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Mondrian"
 	},
 	{
+    	"key": "demo/nosmoke",
+		"title": "No Smoking (Screen)"
+	},
+	{
+    	"key": "demo/popsi",
+		"title": "Popsi (Screen)"
+	},
+	{
 		"key": "demo/rayclip",
 		"title": "Ray Eclipse"
 	},
@@ -176,6 +180,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "demo/sultans",
 		"title": "Sultan's Maze Demo Screen"
+	},
+	{
+    	"key": "games/basgame2",
+		"title": "BASIC Game 2"
 	},
 	{
 		"key": "games/canabalt",

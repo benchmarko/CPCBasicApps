@@ -9,7 +9,7 @@ cpcBasic.addItem("", function () { /*
 4 rem https://www.cpcwiki.eu/forum/programming/basic-cribbage-bas/
 5 rem https://en.wikipedia.org/wiki/Cribbage
 6 rem (doc: https://en.wikipedia.org/wiki/Cribbage  https://de.wikipedia.org/wiki/Cribbage)
-7 rem Modifications: TODO
+7 rem Modifications: some delays with call &bd19
 8 rem
 10 MODE 1:INK 0,13:INK 1,26:INK 2,6:INK 3,0:BORDER 13:GOSUB 3990 
 20 MOVE 0,280,1:DRAWR 0,119:DRAWR 639,0:DRAWR 0,-119:DRAWR -639,0
@@ -52,7 +52,7 @@ cpcBasic.addItem("", function () { /*
 390 GOSUB 670:REM SHUFFLE
 400 PEN 1,0:pct=52:IF game=0 THEN GOSUB 540:REM CUT FOR DEAL
 410 game=0:RANDOMIZE TIME:REM DEAL CARDS
-420 FOR x=11 TO 27 STEP 4:LOCATE x,9:SOUND 7,700,5,15:PAPER 1:PEN 2:PRINT blank$:FOR w=1 TO 35:NEXT w:LOCATE x,21:SOUND 7,950,5,15:PRINT blank$:FOR w=1 TO 100:NEXT:NEXT x:PAPER 0:PEN 1
+420 FOR x=11 TO 27 STEP 4:LOCATE x,9:SOUND 7,700,5,15:PAPER 1:PEN 2:PRINT blank$:FOR w=1 TO 35/10:call &bd19:NEXT w:LOCATE x,21:SOUND 7,950,5,15:PRINT blank$:FOR w=1 TO 100:NEXT:NEXT x:PAPER 0:PEN 1
 430 FOR deal=1 TO 5:GOSUB 490:NEXT deal
 440 FOR n=1 TO 5:cc(n)=cd(n):NEXT
 450 FOR deal=1 TO 5:GOSUB 490:NEXT deal
@@ -68,12 +68,12 @@ cpcBasic.addItem("", function () { /*
 550 comp=INT(RND(1)*52)+1:you=INT(RND(1)*52)+1
 560 comp=pack(comp):you=pack(you)
 570 ca=INT(comp/20):cb=comp MOD 20:ya=INT(you/20):yb=you MOD 20
-580 LOCATE 5,10:PAPER 1:PRINT card$(ca,cb):SOUND 7,200,10,15:FOR w=1 TO 1000:NEXT:LOCATE 35,10:PRINT card$(ya,yb):PAPER 0:PEN 1:SOUND 7,300,10,15:FOR w=1 TO 1000:NEXT
-590 IF yb=cb THEN LOCATE 14,10:PRINT"CUT AGAIN     ":FOR n=1 TO 2500:NEXT:GOTO 540
+580 LOCATE 5,10:PAPER 1:PRINT card$(ca,cb):SOUND 7,200,10,15:FOR w=1 TO 1000/10:call &bd19:NEXT:LOCATE 35,10:PRINT card$(ya,yb):PAPER 0:PEN 1:SOUND 7,300,10,15:FOR w=1 TO 1000/10:call &bd19:NEXT
+590 IF yb=cb THEN LOCATE 14,10:PRINT"CUT AGAIN     ":FOR n=1 TO 2500/10:call &bd19:NEXT:GOTO 540
 600 IF cb>yb THEN LOCATE 14,10:PRINT"COMPUTER DEALS  ":dlr=2:turn=1
 610 IF yb>cb THEN LOCATE 14,10:PRINT"YOU ARE DEALER ":dlr=1:turn=2
 620 SOUND 7,250,10,15
-630 FOR n=1 TO 2500:NEXT:LOCATE 14,10:PRINT SPACE$(17):LOCATE 5,10:PRINT ers$:LOCATE 35,10:PRINT ers$
+630 FOR n=1 TO 2500/10:call &bd19:NEXT:LOCATE 14,10:PRINT SPACE$(17):LOCATE 5,10:PRINT ers$:LOCATE 35,10:PRINT ers$
 640 IF dlr=2 THEN tscr(1)=3:total(1)=total(1)+tscr(1):GOSUB 710:PEN 1,0:PAPER 0
 650 IF dlr=1 THEN tscr(2)=3:total(2)=total(2)+tscr(2):GOSUB 810:PEN 1,0:PAPER 0
 660 RETURN
@@ -88,7 +88,7 @@ cpcBasic.addItem("", function () { /*
 750 s=t:t=t+cdr
 760 IF t>35 THEN cdr=-1:cy=cy+1:t=s
 770 PAPER 2:PEN 0,0:LOCATE s,qy:PRINT CHR$(144):LOCATE t,cy:PEN 1,1:PRINT CHR$(230):SOUND 7,700,5,15 
-780 FOR w=1 TO 120:NEXT
+780 FOR w=1 TO 120/10:call &bd19:NEXT
 790 cnt=cnt+1:IF cnt=nd THEN cx=t:PAPER 0:PEN 1,0:RETURN
 800 PAPER 0:PEN 1,0:GOTO 740
 810 IF tscr(2)=0 THEN RETURN
@@ -98,7 +98,7 @@ cpcBasic.addItem("", function () { /*
 850 s=t:t=t+pdr:zy=py
 860 IF t>35 THEN pdr=-1:py=py-1:t=s
 870 PAPER 3:PEN 0,0:LOCATE s,zy:PRINT CHR$(144):LOCATE t,py:PEN 1,1:PRINT CHR$(230):SOUND 7,700,5,15 
-880 FOR w=1 TO 120:NEXT
+880 FOR w=1 TO 120/10:call &bd19:NEXT
 890 cnt=cnt+1:IF cnt=nd THEN px=t:PAPER 0:PEN 1:RETURN
 900 PAPER 0:PEN 1,0:GOTO 840
 910 z$="":FOR n=1 TO 6:z$=z$+CHR$(154):NEXT:tl$=CHR$(150)+z$+CHR$(156):bl$=CHR$(147)+z$+CHR$(153):ml$=CHR$(149)+SPACE$(6)+CHR$(149):bkl$=CHR$(10):FOR n=1 TO 8:bkl$=bkl$+CHR$(8):NEXT
@@ -133,7 +133,7 @@ cpcBasic.addItem("", function () { /*
 1200 turn=turn+1:IF turn>2 THEN turn=1
 1210 IF flag=1 THEN FOR w=1 TO nmb:play(w)=0:splay(w)=0:NEXT:nmb=1:GOTO 1150
 1220 PEN 3,0:PEN 2,0:PEN 1,0:GOTO 1160
-1230 FOR w=1 TO 1500:NEXT
+1230 FOR w=1 TO 1500/10:call &bd19:NEXT
 1240 PAPER 0:PEN 1,0:FOR y=9 TO 25:LOCATE prx,y:PRINT SPACE$(8):NEXT
 1250 PAPER 0:PEN 1:LOCATE 16,16:PRINT SPACE$(11)
 1260 IF dlr=2 THEN FOR n=1 TO 3:LOCATE 11+(n*4),21:p=pdec(n) MOD 20:q=INT(pdec(n)/20):PRINT card$(q,p):NEXT:GOSUB 2820
@@ -213,7 +213,7 @@ cpcBasic.addItem("", function () { /*
 2000 IF phand(ptr)=0 THEN ptr=ptr+1:IF ptr>3 THEN ptr=1
 2010 IF phand(ptr)=0 THEN ptr=ptr+1:IF ptr>3 THEN ptr=1
 2020 LOCATE 12+(ptr*4),20:PRINT CHR$(245)
-2030 CLEAR INPUT
+2030 call &bd19:call &bd19:CLEAR INPUT
 2040 IF INKEY(1)<>-1 THEN lptr=ptr:ptr=ptr+1:IF ptr>3 THEN ptr=1
 2050 IF INKEY(8)<>-1 THEN lptr=ptr:ptr=ptr-1:IF ptr<1 THEN ptr=3
 2060 IF INKEY(9)<>-1 THEN lptr=ptr:GOTO 2140
@@ -232,8 +232,8 @@ cpcBasic.addItem("", function () { /*
 2190 PAPER 0:PEN 1:LOCATE (lptr*4)+11,21:PRINT ers$
 2200 LOCATE prx+2+poff,21:PRINT card$(p,q):poff=poff+1
 2210 count=count+qq:pyes=1:nmb=nmb+1
-2220 SOUND 7,800,15,15:FOR w=1 TO 1000:NEXT:CLEAR INPUT:RETURN
-2230 cyes=0:pyes=0:SOUND 7,700,15,15:q=0:k=0:l=0:m=0:FOR w=1 TO 1000:NEXT w
+2220 SOUND 7,800,15,15:FOR w=1 TO 1000/10:call &bd19:NEXT:CLEAR INPUT:RETURN
+2230 cyes=0:pyes=0:SOUND 7,700,15,15:q=0:k=0:l=0:m=0:FOR w=1 TO 1000/10:call &bd19:NEXT w
 2240 IF chand(1)+chand(2)+chand(3)=0 THEN cant(2)=1:wont(2)=1:GOTO 2410
 2250 k=chand(1) MOD 20:l=chand(2) MOD 20:m=chand(3) MOD 20
 2260 IF play(nmb-1)=k AND k<>0 THEN q=k:p=INT(chand(1)/20):wc=1
