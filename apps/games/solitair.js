@@ -4,8 +4,8 @@
 
 cpcBasic.addItem("", function () { /*
 1 rem solitair - Solitaire
-2 rem (c) Uwe Ganter, 1985
-3 rem
+2 rem (c) Uwe Ganter, 1985 (ComputerKontakt 4/85)
+3 rem https://www.cpcwiki.eu/imgs/f/f9/ComputerKontakt1000059.jpg
 4 rem
 10 '************************************
 20 '*****    S O L I T A I R E     *****

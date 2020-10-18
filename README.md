@@ -28,11 +28,13 @@ CPC version of the program:
 ### 100% BASIC Demo
 
 [![100% BASIC Demo](./img/100demo.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/100demo)
-[![100% BASIC Demo](./img/100demo2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/100demo) (c) Markus Hohmann (Devilmarkus)
+[![100% BASIC Demo](./img/100demo2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/100demo) (c) Markus Hohmann
 
 Excellent BASIC demo.
 
 On a real CPC, the pre-calculation phase takes longer than 3 minutes. With CPCBasic you will ask, which pre-calculating phase?
+
+### Amstrad CPC 6128 Demo
 
 ### Art: Screens Unlimited
 
@@ -66,16 +68,18 @@ Check [Rob Manuel’s British Council Tile / Bus Fabric Sim](https://scruss.com/
 ### Graphics Demo 1
 
 [![Graphics Demo](./img/gdemo1.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo)
-[![Graphics Demo 2](./img/gdemo1_2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo) "Windows" and "Pac-Man"
+[![Graphics Demo 2](./img/gdemo1_2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo)
 
 Several nice graphics and animations, some with morphing effects. The original version uses assembler for sprite movements. CPCBasic is fast enough to do it all in BASIC.
+Here we have "Windows" and "Pac-Man".
 
 ### Graphics Demo 2
 
 [![Graphics Demo](./img/gdemo2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo2)
-[![Graphics Demo 2](./img/gdemo2_2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo2) "Blinker" and "R2D2"
+[![Graphics Demo 2](./img/gdemo2_2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo2)
 
 Some more nice graphics and animations, mainly done by changing colors.
+Here we have "Blinker" and "R2D2".
 
 ### House for Sale
 
@@ -84,7 +88,11 @@ Some more nice graphics and animations, mainly done by changing colors.
 Just 9 lines of code, adapted for CPC 464 (no *FILL* command) by Out Bush.
 Check the blog [FILLing them Ol'​ BASIC 10-Liners on a 464](https://www.linkedin.com/pulse/filling-them-ol-basic-10-liners-464-out-bush/).
 
-### IGS Demo
+### ISG Demo
+
+[![ISG Demo](./img/isgdemo.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/isgdemo) (c) Günter Woigk, 1986
+
+Interrupt & Sound & Grafik (ISG) Demo
 
 ### Mondrian
 
@@ -117,6 +125,8 @@ The [Can-Can sound](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database
 
 ### Serpent
 
+[![Serpent](./img/serpent.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/serpent) (c) T Magee, 1987
+
 ## Some Games Highlights
 
 ### BASIC Game 2
@@ -124,6 +134,10 @@ The [Can-Can sound](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database
 [![BASIC Game 2](./img/basgame2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/basgame2) (c) Roald (Mr.Lou) Strauss
 
 Unfinished BASIC game 2.
+
+### Canyons of Cannons
+
+### Car Drive (Autofahren)
 
 ### Card Games
 
@@ -146,6 +160,10 @@ The tune [Fuer Elise](https://benchmarko.github.io/CPCBasic/cpcbasic.html?databa
 [![Clear Path](./img/clearpa.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/clearpa) (c) Peter Goode, 1984
 
 A lander clone from [The Amstrad Program Book](https://archive.org/details/Amstrad_Program_Book_The_1984_Phoenix_Publishing_Associates/mode/2up) by Peter Goode, improved by [Im Wald](http://cpc-live.com/forum/index.php/topic,958.msg8133.html#msg8133).
+
+### Connect 4 (Tower: 4 Gewinnt)
+
+### Copter Patrol
 
 ### Crib (Cribbage v1)
 
@@ -170,6 +188,12 @@ To select an action during the game, use joystick or numpad numbers.
 [![Garfunkel](./img/garfunkl.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/garfunkl)
 [![Garfunkel](./img/garfunkl2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/garfunkl) (c) Roland Bendig, 1987
 
+### Goldrush (Goldrausch)
+
+### Jack-Pot
+
+### Klondike
+
 ### Lander
 
 [![Lander](./img/lander.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/lander)
@@ -191,6 +215,8 @@ German Documentation can be found at [Software Experiment 6](http://cpctech.cpc-
 [![Patience](./img/patience.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/patience)
 [![Patience](./img/patience2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/patience) (c) Clive Blackmore
 
+### President (Praesident)
+
 ### Solitair
 
 [![Solitair](./img/solitair.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/solitair) (c) Uwe Ganter, 1985
@@ -199,6 +225,8 @@ German Documentation can be found at [Software Experiment 6](http://cpctech.cpc-
 
 [![Space Race](./img/spacera.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/spacera)
 [![Space Race](./img/spacera2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/spacera) (c) Peter Pekarek, 1986
+
+### Space Base
 
 ### Space War
 
@@ -234,6 +262,10 @@ On a real CPC, the game is rather slow, so I never played it. With CPCBasic it h
 [![Titan](./img/titan2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/titan)
 (c) MS-Software, 1985
 
+### Tower of Hanoi (Türme von Hanoi; Pagoden von Peking)
+
+### Yahtzee (Kniffel)
+
 ## Some 10-Liner Games
 
 The games from 2019 are from the [BASIC 10-Liner Contest 2019](https://gkanold.wixsite.com/homeputerium/kopie-von-games-list-2019-2).
@@ -263,7 +295,9 @@ The games from 2019 are from the [BASIC 10-Liner Contest 2019](https://gkanold.w
 ### CPC Doodle
 
 [![CPC Doodle](./img/doodle.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/doodle/doodle)
-[![CPC Doodle](./img/doodle2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/doodle/doodle) (c) Markus Hohmann (Devilmarkus), 2018
+[![CPC Doodle](./img/doodle2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/doodle/doodle) (c) Markus Hohmann, 2018
+
+### Lifespan (Lebenserwartung)
 
 ### Multitext CPC
 
@@ -275,6 +309,10 @@ The games from 2019 are from the [BASIC 10-Liner Contest 2019](https://gkanold.w
 [![Sayit](./img/sayit.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/sayit) (c) Wolfgang Rauneker, 1986
 
 Write a number in English, German or Bavarian
+
+### Symbol Generator
+
+### Time Tester
 
 ## Some Music Highlights
 

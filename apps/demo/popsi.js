@@ -4,8 +4,8 @@
 
 cpcBasic.addItem("", function () { /*
 1 rem popsi - Popsi (Screen)
-2 rem https://www.cpcwiki.eu/forum/programming/basic-files/ (BASIC02.DSK)
-3 rem
+2 rem (c)
+3 rem https://www.cpcwiki.eu/forum/programming/basic-files/ (BASIC02.DSK)
 4 ' POPSI
 5 '
 6 ' SCULL PD LIBRARY 1990

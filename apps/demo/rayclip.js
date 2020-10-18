@@ -6,7 +6,7 @@ cpcBasic.addItem("", function () { /*
 1 rem rayclip - Ray Eclipse
 2 rem (c) Alan Scully
 3 rem https://www.cpcwiki.eu/forum/programming/basic-files/ (BASIC02.DSK)
-4 rem
+4 rem Modifications: delay in 130
 6 rem
 7 ' RAY ECLIPSE
 8 ' ALAN SCULLY for
@@ -23,5 +23,5 @@ cpcBasic.addItem("", function () { /*
 100 RETURN
 110 DATA 3,9,11,15,21,24,23,22,19,12,10,4,1,7,8      
 120 ' COLOUR SWITCH
-130 WHILE 1:D=d MOD 13+1:FOR E=1 TO 13:INK E,COL((D+E)MOD 13):NEXT:call &bd19:WEND
+130 WHILE 1:D=d MOD 13+1:FOR E=1 TO 13:INK E,COL((D+E)MOD 13):NEXT:t!=time+12:while time<t!:call &bd19:wend:WEND
 */ });

@@ -33,12 +33,24 @@ cpcBasic.addIndex("apps", function () { /*
 		"meta": "D"
 	},
 	{
+    	"key": "apps/lifespan",
+		"title": "Lifespan (Lebenserwartung)"
+	},
+	{
     	"key": "apps/mtext",
 		"title": "Multitext CPC"
 	},
 	{
     	"key": "apps/sayit",
 		"title": "Sayit (Sags)"
+	},
+	{
+    	"key": "apps/sygen",
+		"title": "Symbol Generator"
+	},
+	{
+    	"key": "apps/timetest",
+		"title": "Time Tester"
 	},
 	{
     	"key": "basicode/basicode",
@@ -111,6 +123,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "demo/100demo",
 		"title": "100% BASIC Demo"
+	},
+	{
+    	"key": "demo/acpc6128",
+		"title": "Amstrad CPC 6128 Demo"
 	},
 	{
     	"key": "demo/art",
@@ -190,6 +206,14 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "CPC Anabalt"
 	},
 	{
+		"key": "games/canyons",
+		"title": "Canyons of Cannons"
+	},
+	{
+		"key": "games/cardrive",
+		"title": "Car Drive (Autofahren)"
+	},
+	{
 		"key": "games/cards",
 		"title": "Card Games: Blackjack (17 und 4) and Memory"
 	},
@@ -204,6 +228,14 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "games/clearpa",
 		"title": "Clear Path"
+	},
+	{
+		"key": "games/connect4",
+		"title": "Connect 4 (Tower: 4 Gewinnt)"
+	},
+	{
+		"key": "games/copter",
+		"title": "Copter Patrol"
 	},
 	{
 		"key": "games/crib",
@@ -226,6 +258,18 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Garfunkel"
 	},
 	{
+		"key": "games/goldrush",
+		"title": "Goldrush (Goldrausch)"
+	},
+	{
+		"key": "games/jackpot",
+		"title": "Jack-Pot"
+	},
+	{
+		"key": "games/klondike",
+		"title": "Klondike"
+	},
+	{
 		"key": "games/lander",
 		"title": "Lander"
 	},
@@ -242,9 +286,13 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Micro Chess Data",
 		"meta": "D"
 	},
-		{
+	{
 		"key": "games/patience",
 		"title": "Patience: The Card Game"
+	},
+	{
+		"key": "games/preside",
+		"title": "President (Praesident)"
 	},
 	{
 		"key": "games/roguedes",
@@ -257,6 +305,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "games/solitair",
 		"title": "Solitaire"
+	},
+	{
+		"key": "games/spaceba",
+		"title": "Space Base"
 	},
 	{
 		"key": "games/spacera",
@@ -289,6 +341,14 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "games/titan",
 		"title": "Titan"
+	},
+	{
+    	"key": "games/tower",
+		"title": "Tower"
+	},
+	{
+		"key": "games/yahtzee",
+		"title": "Yahtzee (Kniffel)"
 	},
 	{
 		"key": "music/asbtune",

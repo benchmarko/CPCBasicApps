@@ -33,7 +33,7 @@ cpcBasic.addItem("", function () { /*
 230 LOCATE 1,25:PRINT "abababababababababababababababababababababababababababababababababababababababab";
 240 LOCATE 1,1:PRINT "abababababababababababababababababababababababababababababababababababababababab";
 250 FOR n=2 TO 24:LOCATE 1,n:PRINT "ab";:LOCATE 79,n:PRINT "ab";:NEXT
-255 CALL &BD1C,1:' (for CPCBaisc: to interpret current screen content in differen mode)
+255 CALL &BD1C,1:' (for CPCBasic: to interpret current screen content in differen mode)
 260 ENV 1,15,-1,30:ENV 2,0,-4,1,10,-1,30:ENV 3,0,-6,1,7,-1,30:ENV 4,0,-7,1,6,-1,30:ENT -15,0,-8,6,0,16,6,0,-8,6
 270 ENV 5,0,-8,1,2,1,4,4,-1,15,5,-1,25:ENV 6,0,-9,1,1,0,50:ENV 7,0,-10,1,1,0,50:ENV 8,0,-11,1,1,0,50
 280 ENT -1,0,0,3,0,-49,3,0,-31,3,0,31,3,0,49,5:ENT -2,0,0,3,0,-45,3,0,-49,3,0,49,3,0,45,5:ENT -3,0,0,3,0,-74,3,0,-45,3,0,45,3,0,74,5:ENT -4,0,0,3,0,45,3,0,95,3,0,-95,3,0,-45,5:ENT -5,0,0,3,0,95,3,0,99,3,0,-99,3,0,-95,5

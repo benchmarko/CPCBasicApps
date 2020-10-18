@@ -4,7 +4,7 @@
 
 cpcBasic.addItem("", function () { /*
 1 rem nosmoke - No Smoking (Screen)
-2 rem
+2 rem (c)
 3 rem https://www.cpcwiki.eu/forum/programming/basic-files/ (BASIC02.DSK)
 4 rem
 5 ' NO SMOKING SIGN
@@ -33,5 +33,4 @@ cpcBasic.addItem("", function () { /*
 230 INK 2,14:INK 3,6:INK 1,26
 240 SPEED INK 50,20
 250 CALL &BB18
-
 */ });
