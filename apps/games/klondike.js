@@ -5,7 +5,8 @@
 cpcBasic.addItem("", function () { /*
 1 rem klondike - Klondike
 2 rem (c)
-3 rem 
+4 rem Modifications: delays
+5 rem
 7 GOSUB 105 
 9 DEFINT a-z
 10 DIM a(23,23)
@@ -59,7 +60,7 @@ cpcBasic.addItem("", function () { /*
 59 n1=n:m1=m
 60 REM *** Subr. unmoeglicher Zug ***
 61 DI:LOCATE 2,24:PEN 2:PAPER 3:PRINT"nicht moeglich":EI
-62 FOR n=1 TO 500:NEXT
+62 FOR n=1 TO 500/10:call &bd19:NEXT
 63 DI:LOCATE 2,24:PAPER 0:PRINT"              ";:EI 
 64 IF (n+m)/2=INT((n+m)/2) THEN PEN 2:PAPER 3 ELSE PAPER 3:PEN 2 
 65 RETURN
@@ -72,7 +73,7 @@ cpcBasic.addItem("", function () { /*
 72 FOR n=1 TO 50
 73 READ a,b
 74 SOUND 1,a,b,4:SOUND 2,a/2,b,2:NEXT
-76 FOR n=1 TO 2000:NEXT:RUN
+76 FOR n=1 TO 2000/10:call &bd19:NEXT:RUN
 77 REM *** Datas fuer Spielfeld ***
 78 DATA 0,0,0,0,0,0,0,0,0,-64,-96,-112,-48,-16,0,0,0,0,0,0,0,0,0
 79 DATA 0,0,0,0,0,0,-64,-96,-112,-240,4,7,7,-120,-112,-48,-16,0,0,0,0,0,0,

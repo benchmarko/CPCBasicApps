@@ -6,9 +6,8 @@ cpcBasic.addItem("", function () { /*
 1 rem scpc6128 - Schneider CPC 6128 Demo
 2 rem (c) Schneider/Amstrad, 1985
 3 rem
-4 rem Modifications: put in one file, delays with call &bd19; note movement; line 570: rounding to 2*PI: +0.0000000001
-7 rem (TODO: simulate CALL mcentry to save/restore screens) 
-8 rem
+4 rem Modifications: put in one file, delays with call &bd19; note movement; line 570: rounding to 2*PI: +0.0000000001; ASM converted to BASIC
+5 rem
 10 ON ERROR GOTO 100
 20 SYMBOL AFTER 256:mcentry=HIMEM-54:schpoke=&6A47-2435:MEMORY schpoke-1
 22 SYMBOL AFTER 130:GOSUB 10000
@@ -147,7 +146,8 @@ um das Programm zu stoppen":GOTO 110
 1780 IF TIME-t<900 and inkey$="" THEN call &bd19:goto 1780
 1790 INK 0,13:INK 1,2:INK 2,6:INK 3,18:BORDER 13:MODE 1
 1800 st=1
-1810 IF firstime THEN firstime=(1=0):GOSUB 1890:CALL mcentry,&105 ELSE INK 1,13:INK 2,13:INK 3,13:FRAME:CALL mcentry,5:INK 1,2:INK 2,6:INK 3,18
+1810 'IF firstime THEN firstime=(1=0):GOSUB 1890:CALL mcentry,&105 ELSE INK 1,13:INK 2,13:INK 3,13:FRAME:CALL mcentry,5:INK 1,2:INK 2,6:INK 3,18
+1815 IF firstime THEN firstime=(1=0):GOSUB 1890:af=&105:gosub 15000 ELSE INK 1,13:INK 2,13:INK 3,13:FRAME:af=5:gosub 15000:INK 1,2:INK 2,6:INK 3,18
 1820 LOCATE 1,1
 1830 EVERY 25,1 GOSUB 2070
 1840 EVERY 15,2 GOSUB 2110
@@ -554,12 +554,12 @@ um das Programm zu stoppen":GOTO 110
 6137 t$="":WHILE TIME<t! and t$="": t$=inkey$:WEND
 6138 if t$<>"" then big=70
 6140 NEXT big
-6150 IF point<>4 THEN CALL mcentry,point+257
+6150 IF point<>4 THEN af=point+257:gosub 15000: 'CALL mcentry,point+257
 6160 NEXT point
 6170 '
 6180 t=TIME:WHILE t+200>TIME and inkey$="":call &bd19:WEND
 6190 FOR s=4 TO 2 STEP-1
-6192 FOR i=0 TO 13:INK i,0:NEXT:FRAME:CALL mcentry,s
+6192 FOR i=0 TO 13:INK i,0:NEXT:FRAME:af=s:gosub 15000: 'CALL mcentry,s
 6194 FOR i=0 TO 13:INK i,i*2:NEXT
 6200 t=TIME:WHILE t+400>TIME and inkey$="":call &bd19:WEND
 6210 NEXT s
@@ -592,4 +592,45 @@ um das Programm zu stoppen":GOTO 110
 10040 SYMBOL &E5,102,0,102,102,102,102,60,0
 10050 SYMBOL &E6,60,102,102,124,102,102,252,192
 10060 RETURN
+14990 '
+15000 if version>0 then call mcentry,af:return
+15005 'CPCBasic: verison=0 => do it in BASIC...
+15010 if af>=&100 then src=&c000:dest=&4000 else src=&4000:dest=&c000
+15020 out &7f00,&c2+(af and &ff)
+15030 for i=0 to &3fff:poke i+dest,peek(i+src):next
+15040 out &7f00,&c0
+15050 return
+19980 '
+19990 'disassembly of &a64f-a67b (relocatable)
+20000 'org #a645 (mcentry)
+20001 'ld hl,#c000
+20002 'ld de,#4000
+20003 'ld b,d
+20004 'ld c,e
+20005 'xor a
+20006 'cp (ix+#01)
+20007 'jr nz,la654
+20008 'ex de,hl
+20009 '.la654
+20010 'ld a,(ix+#00)
+20011 'add #02
+20012 'call #bd5b ;KL RAM SELECT
+20013 'ldir
+20014 'jp #bd5b ;KL RAM SELECT (restore)
+20015 'call #bc0b ;SCR GET LOCATION   (.la661=mcentry+28)
+20016 'ld de,#0280
+20017 'add hl,de
+20018 'call #bc05 ;SCR SET OFFSET
+20019 'ret
+20020 'ld c,#ff  (.la66c)
+20021 'call #b915 ;KL PROBE ROM
+20022 'ex de,hl
+20023 'ld h,(ix+#01)
+20024 'ld l,(ix+#00)
+20025 'ld (hl),e
+20026 'inc hl
+20027 'ld (hl),d
+20028 'ret
+20029 ';a67b+1
+20030 '
 */ });

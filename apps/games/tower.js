@@ -5,7 +5,8 @@
 cpcBasic.addItem("", function () { /*
 1 rem tower - Tower of Hanoi (Türme von Hanoi; Pagoden von Peking)
 2 rem (c)
-3 rem
+3 rem Modifications: delay
+4 rem
 10 '=== initialisierung === 
 20 MODE 1:CLEAR:DEFINT a-z:CLS:ZONE 40
 30 DIM z(8),d$(7),m$(7),sl$(1),f(8,3),fd1$(1),fd2$(1),jahr$(11)
@@ -41,7 +42,7 @@ cpcBasic.addItem("", function () { /*
 1070 y=g*2+2:GOSUB 5010:NEXT:'===zu pagondenteilen
 1080 PRINT#1,,"  wieviele pagodenteile ? (2-7)"
 1090 a$=LOWER$(INKEY$):IF a$=""THEN 1090
-1100 CLS#1:IF a$<"2" OR a$>"7"THEN PRINT#1,," Hoefliche Verzeihung,ist das nicht     versehen ?-Wiederholen bitte !";:FOR a=1 TO 4000:NEXT:CLS#1:GOTO 1080
+1100 CLS#1:IF a$<"2" OR a$>"7"THEN PRINT#1,," Hoefliche Verzeihung,ist das nicht     versehen ?-Wiederholen bitte !";:t!=time+500:while time<t!:call &bd19:wend:CLS#1:GOTO 1080
 1110 FOR a=2 TO 16:LOCATE 3,a:PRINT du$;:NEXT
 1120 n=VAL(a$):schritte=2^n-1
 1130 x=2:FOR g=n TO 1 STEP -1:y=(7-n+g)*2+2:GOSUB 5010:NEXT
@@ -55,20 +56,20 @@ cpcBasic.addItem("", function () { /*
 2030 PRINT#1,". Ich frage:"
 2040 PRINT#1,"  Welche Etage habe ich die Ehre fuer     dich zu versetzen ? ( 1 -"n")"; 
 2050 a$=INKEY$:IF a$="" THEN 2050 ELSE g=ASC(a$)-48
-2060 CLS#1:IF g<1 OR g>n THEN PRINT#1,,"Grosse Trauer ! - Diese Etage ist nicht vorhanden,erbitte demuetig neue Wahl !";:FOR a=1 TO 4000:NEXT:CLS#1:GOTO 2010
+2060 CLS#1:IF g<1 OR g>n THEN PRINT#1,,"Grosse Trauer ! - Diese Etage ist nicht vorhanden,erbitte demuetig neue Wahl !";:t!=time+500:while time<t!:call &bd19:wend:CLS#1:GOTO 2010
 2070 p1=1
 2080 FOR e=7 TO 7-n STEP -1:pr=f(g,p1)
 2090 IF pr<>e OR pr=0 THEN NEXT :p1=p1+1:GOTO 2080
-2100 IF f(g-1,p1)>0 THEN PRINT#1,," Meisterlicher Denker, es befindet sich noch eine Etage darueber - neue Wahl..";:FOR a=1 TO 4000:NEXT:CLS#1:GOTO 2010
+2100 IF f(g-1,p1)>0 THEN PRINT#1,," Meisterlicher Denker, es befindet sich noch eine Etage darueber - neue Wahl..";:t!=time+500:while time<t!:call &bd19:wend:CLS#1:GOTO 2010
 2110 x=(p1-1)*12+2:y1=e*2+1:f(g,p1)=0
 2120 '=== Etage aufwaerts ===
 2130 FOR y=y1 TO 3 STEP -1:LOCATE x,y+1:PRINT du$;:GOSUB 5010:NEXT
 2140 PRINT#1,,"Welchen Platz hat dein meisterliches    Gehirn fuer die Etage ersonnrn ? (a - c)";
 2150 a$=UPPER$(INKEY$):IF a$="" THEN 2150
 2160 p2=ASC(a$)-64
-2170 CLS#1:IF p2<1 OR p2>3 THEN PRINT#1," O konfuzius ! Dein verehrter Geist hat nur A oder B oder C zur Verfuegung !"," Ich bin sehr verwirrt...";:FOR a=1 TO 6000:NEXT:CLS#1:GOTO 2140 
+2170 CLS#1:IF p2<1 OR p2>3 THEN PRINT#1," O konfuzius ! Dein verehrter Geist hat nur A oder B oder C zur Verfuegung !"," Ich bin sehr verwirrt...";:t!=time+700:while time<t!:call &bd19:wend:CLS#1:GOTO 2140 
 2180 FOR i=1 TO n+1:IF f(i,p2)<>0 THEN e=i:i=n+1
-2190 NEXT:IF e<g THEN PRINT#1," Jammer meiner Ahnen ! Deine Gedanken  bekuemmern mein Herz.Du kannst die  Etage nur auf eine groessere setzen !";:FOR a=1 TO 6000:NEXT:CLS#1:GOTO 2150
+2190 NEXT:IF e<g THEN PRINT#1," Jammer meiner Ahnen ! Deine Gedanken  bekuemmern mein Herz.Du kannst die  Etage nur auf eine groessere setzen !";:t!=time+700:while time<t!:call &bd19:wend:CLS#1:GOTO 2150
 2200 '=== etage waagrecht ===
 2210 q=f(e,p2)
 2220 f(g,p2)=q-1:xend=(p2-p1)*12+x:xstart=x:y=3:xstep=SGN(p2-p1)
@@ -82,7 +83,7 @@ cpcBasic.addItem("", function () { /*
 2300 '=== pruefung auf ende ===
 2310 FOR g=1 TO n:IF f(g,3)>0 THEN ez=ez+1
 2320 NEXT g:IF ez<n AND schritte>0 THEN 2010
-2330 BORDER 8,3:FOR a=1 TO 2000:NEXT:CLS :GOSUB 7310:WINDOW 3,38,6,20:CLS:ZONE 36 
+2330 BORDER 8,3:t!=time+250:while time<t!:call &bd19:wend:CLS :GOSUB 7310:WINDOW 3,38,6,20:CLS:ZONE 36 
 2340 IF ez<n THEN  3120:'=== zu verloren
 3000 '=== spielende ===
 3010 ' === gewonnen  ===
@@ -129,7 +130,7 @@ cpcBasic.addItem("", function () { /*
 5050 IF g=1 THEN LOCATE x,y-2:PRINT d$(0)
 5060 RETURN 
 6000 '=== aufbau ueberschrift ===
-6010 WINDOW SWAP 0,2:PAPER 0:PEN 3:FOR a=1 TO 40:LOCATE 1,1:PRINT RIGHT$(sl$(1),a);:FOR b=1 TO 50:NEXT:LOCATE 41-a,3:PRINT LEFT$(sl$(0),a);:FOR b=1 TO 50:NEXT b,a 
+6010 WINDOW SWAP 0,2:PAPER 0:PEN 3:FOR a=1 TO 40:LOCATE 1,1:PRINT RIGHT$(sl$(1),a);:FOR b=1 TO 50/20:call &bd19:NEXT:LOCATE 41-a,3:PRINT LEFT$(sl$(0),a);:FOR b=1 TO 50/20:call &bd19:NEXT b,a 
 6020 PEN 2:LOCATE 3,2:PRINT "die";:PEN 1:FOR a=182 TO 188:PRINT CHR$(a)+" ";:NEXT:PEN 2:PRINT " von  ";:PEN 1:PRINT CHR$(182)+" "+CHR$(187)+" "+CHR$(190)+" "+CHR$(189)+" "CHR$(188)+" "+CHR$(184);
 6030 INK 3,21:WINDOW SWAP 0,2:PEN 1:RETURN 
 7000 '=== ANWEISUNGEN ===

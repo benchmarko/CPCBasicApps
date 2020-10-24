@@ -4,8 +4,8 @@
 
 cpcBasic.addItem("", function () { /*
 1 rem goldrush - Goldrush (Goldrausch)
-2 rem
-3 rem Modifications: TODO
+2 rem (c) Jörg Walkowiak, 1984 (Data Becker: Adventures und wie man sie auf dem CPC 464 programmiert)
+3 rem Modifications: typos in 1480, 12020; missing line 9900 inserted (from C64 version, maybe not called)
 4 REM GOLDRAUSCH
 5 CLEAR:DEFINT a-z:ON ERROR GOTO 1780
 10 MODE 1:PAPER 0:INK 0,0:BORDER 0:INK 1,25:PEN 2:INK 2,24
@@ -195,7 +195,7 @@ cpcBasic.addItem("", function () { /*
 1320 PRINT".":PEN 3
 1330 WINDOW SWAP 1,0
 1340 IF wertung=wmax THEN 4800
-1350 IF spieler=15 THEN m$(0)="Leider war dort der Baer.":FOR i=1 TO 1000:NEXT:GOTO 4500
+1350 IF spieler=15 THEN m$(0)="Leider war dort der Baer.":FOR i=1 TO 1000/10:call &bd19:NEXT:GOTO 4500
 1360 IF lw<=0 THEN licht=0
 1370 IF ex=zug THEN IF spieler=20 THEN m$(0)="rrrumms ! - Auch mich hats zerrissen.":GOTO 4500
 1380 IF spieler>18 THEN IF ob(23)<>-1 THEN licht=0
@@ -210,7 +210,7 @@ cpcBasic.addItem("", function () { /*
 1460 IF eingabe$="U"THEN IF durchgang(spieler,6)<>0 THEN spieler=durchgang(spieler,6):GOTO 1475
 1470 PRINT"DAHIN FUEHRT KEIN WEG !":GOTO 1081
 1475 PRINT"O.K.":GOTO 1080
-1480 IF LEN(eingabe$,3)>8 THEN 2000
+1480 IF LEN(eingabe$)>8 THEN 2000
 1499 '
 1500 IF LEFT$(eingabe$,3)<>"INV"THEN 1560
 1510 PRINT"Ich trage folgendes bei mir:"
@@ -433,6 +433,7 @@ cpcBasic.addItem("", function () { /*
 9010 IF o=16 THEN IF spieler=4 THEN PRINT"Die Kette zerspringt.":fl(1)=-1:GOTO 1080
 9020 IF o=45 THEN PRINT"Wie und wozu ?":GOTO 1080
 9030 IF o=21 THEN PRINT"Wie und wozu ?":GOTO 1080
+9900 if o=16 and ob(18)=-1 and sp=4 then print "Die Kette zerspringt.":fl(1)=-1:goto 1080
 9999 PRINT"Ich verstehe nicht, was Du meinst.":GOTO 1080
 10000 IF o=16 THEN IF spieler=4 THEN IF ob(18)=-1 THEN PRINT"Die Kette zerspringt.":fl(1)=-1:GOTO 1080
 10010 IF o=16 THEN IF spieler=4 THEN IF ob(18)<>-1 THEN PRINT"Womit ?":GOTO 1080
@@ -448,7 +449,7 @@ cpcBasic.addItem("", function () { /*
 11040 IF o=43 THEN PRINT ok$;" - der Docht glimmt.":GOTO 1080
 11098 PRINT"Ich verstehe Dich nicht.":GOTO 1080
 12000 IF o=23 THEN IF fl(6)AND ob(23)=-1 THEN lm=60:fl(6)=0:lw=0:PRINT ok$:GOTO 1080
-12020 IF o=5 THEN spieler=17 THEN fl(6)=-1:PRINT"Die Flasche ist voll.":GOTO 1080
+12020 IF o=5 THEN if spieler=17 THEN fl(6)=-1:PRINT"Die Flasche ist voll.":GOTO 1080
 12030 IF o=43 THEN IF ob(o)=-1 THEN PRINT"Der Docht glimmt.":GOTO 1080
 12998 PRINT"Ich verstehe nicht, was Du meinst.":GOTO 1080
 13000 IF o=13 THEN IF spieler=5 THEN spieler=12:PRINT ok$:GOTO 1080

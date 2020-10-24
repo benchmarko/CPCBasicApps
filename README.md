@@ -36,22 +36,27 @@ On a real CPC, the pre-calculation phase takes longer than 3 minutes. With CPCBa
 
 ### Amstrad CPC 6128 Demo
 
+[![Amstrad CPC 6128 Demo](./img/acpc6128.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/acpc6128)
+[![Amstrad CPC 6128 Demo](./img/acpc6128_2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/acpc6128) (c) Amstrad, 1985
+
 ### Art: Screens Unlimited
 
 [![Art: Screens Unlimited](./img/art.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/art)
-[![Art: Screens Unlimited](./img/art2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/art)
+[![Art: Screens Unlimited](./img/art2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/art) (c)
 
-(c) ?
-
-A lot of landscapes.
+Nice landscapes.
 
 ### ASCII Art
+
+[![ASCII Art](./img/asciiart.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/asciiart) (c)
 
 ### BASIC World
 
 [![BASIC World](./img/basworld.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/basworld) (c) Roald (Mr.Lou) Strauss
 
 Title screen of an unfinished game with a nice tune.
+
+### Boogle
 
 ### British Council Tile Simulation
 
@@ -103,11 +108,11 @@ Check [The Joy of Programming: Mondrian Painting](https://www.youtube.com/watch?
 
 ### No Smoking (Screen)
 
-[![No Smoking](./img/nosmoke.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/nosmoke) (c) ?
+[![No Smoking](./img/nosmoke.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/nosmoke) (c)
 
 ### Popsi (Screen)
 
-[![Popsi](./img/popsi.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/popsi) (c) ?
+[![Popsi](./img/popsi.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/popsi) (c)
 
 ### Ray Eclipse
 
@@ -137,11 +142,15 @@ Unfinished BASIC game 2.
 
 ### Canyons of Cannons
 
+[![Canyons of Cannons](./img/canyons.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/canyons) (c) Ingo Pax, 1985
+
 ### Car Drive (Autofahren)
+
+[![Car Drive (Autofahren)](./img/cardrive.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/cardrive) (c)
 
 ### Card Games
 
-[![Cards](./img/cards.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/cards)
+[![Cards](./img/cards.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/cards) (c)
 
 Some card games: Blackjack ("17 und 4") and Memory.
 
@@ -163,11 +172,17 @@ A lander clone from [The Amstrad Program Book](https://archive.org/details/Amstr
 
 ### Connect 4 (Tower: 4 Gewinnt)
 
+[![Connect 4](./img/connect4.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/connect4)
+[![Connect 4](./img/connect4_2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/connect4) (c) O. Zabel
+
 ### Copter Patrol
+
+[![Copter Patrol](./img/copter.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/copter)
+[![Copter Patrol](./img/copter2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/copter) (c)
 
 ### Crib (Cribbage v1)
 
-[![Crib](./img/crib.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/crib) (c) ?
+[![Crib](./img/crib.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/crib) (c)
 
 ### Cribbage (v2)
 
@@ -179,7 +194,7 @@ A lander clone from [The Amstrad Program Book](https://archive.org/details/Amstr
 
 ### Emperor (Kaiser)
 
-[![Emperor](./img/emperor.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/emperor) (c) ?
+[![Emperor](./img/emperor.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/emperor) (c)
 
 To select an action during the game, use joystick or numpad numbers.
 
@@ -190,9 +205,18 @@ To select an action during the game, use joystick or numpad numbers.
 
 ### Goldrush (Goldrausch)
 
+[![Goldrush (Goldrausch)](./img/goldrush.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/goldrush)
+[![Goldrush (Goldrausch)](./img/goldrush2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/goldrush) (c) Jörg Walkowiak, 1984
+
+### Inka Sogra
+
 ### Jack-Pot
 
+[![Jack-Pot](./img/jackpot.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/jackpot) (c) P.S.I., 1985
+
 ### Klondike
+
+[![Klondike](./img/klondike.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/klondike) (c)
 
 ### Lander
 
@@ -217,6 +241,8 @@ German Documentation can be found at [Software Experiment 6](http://cpctech.cpc-
 
 ### President (Praesident)
 
+[![President (Praesident)](./img/preside.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/preside) (c)
+
 ### Solitair
 
 [![Solitair](./img/solitair.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/solitair) (c) Uwe Ganter, 1985
@@ -227,6 +253,9 @@ German Documentation can be found at [Software Experiment 6](http://cpctech.cpc-
 [![Space Race](./img/spacera2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/spacera) (c) Peter Pekarek, 1986
 
 ### Space Base
+
+[![Space Base](./img/spaceba.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/spaceba)
+[![Space Base](./img/spaceba2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/spaceba) (c) Robin Nixon, 1986
 
 ### Space War
 
@@ -254,7 +283,7 @@ On a real CPC, the game is rather slow, so I never played it. With CPCBasic it h
 
 ### Sunburst Contamination
 
-[![Sunburst Contamination](./img/sunburst.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/sunburst)
+[![Sunburst Contamination](./img/sunburst.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/sunburst) (c)
 
 ### Titan
 
@@ -264,7 +293,15 @@ On a real CPC, the game is rather slow, so I never played it. With CPCBasic it h
 
 ### Tower of Hanoi (Türme von Hanoi; Pagoden von Peking)
 
+[![Tower of Hanoi](./img/tower.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/tower)
+[![Tower of Hanoi](./img/tower2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/tower) (c)
+
 ### Yahtzee (Kniffel)
+
+[![Yahtzee (Kniffel)](./img/yahtzee.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/yahtzee)
+[![Yahtzee (Kniffel)](./img/yahtzee2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/yahtzee) (c) J. E. Muschik
+
+### Yahtzee 2 (Kniffel)
 
 ## Some 10-Liner Games
 
@@ -312,7 +349,12 @@ Write a number in English, German or Bavarian
 
 ### Symbol Generator
 
+[![Symbol Generator](./img/sygen.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/sygen) (c) SkulleateR
+
 ### Time Tester
+
+[![Time Tester](./img/timetest.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/timetest)
+[![Time Tester](./img/timetest2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/timetest) (c)
 
 ## Some Music Highlights
 

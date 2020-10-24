@@ -6,6 +6,7 @@ cpcBasic.addItem("", function () { /*
 1 rem preside - President (Praesident)
 2 rem (c)
 3 rem
+4 rem Modifications: skip text with key
 8 REM Praesident
 10 CLEAR:DEFINT a-z:GOSUB 2000:d=0:d1=0:p1=0:z=0
 15 GOSUB 2210:RANDOMIZE TIME
@@ -94,8 +95,9 @@ cpcBasic.addItem("", function () { /*
 2150 CALL &BB18:p=95:s=2800:h=3000:e=h-s:y=3:a=h/y:i=5:q=1 
 2160 RETURN
 2170 READ j,k,anw$:LOCATE j,k:FOR w=1 TO LEN(anw$):a$=MID$(anw$,w,1):PRINT a$;:IF a$=" " THEN c1=5 ELSE c1=c
-2180 SOUND 2,31,c1,5:SOUND 2,0,c1/2,0
-2190 IF (SQ(2) AND 128)=128 THEN 2190 ELSE NEXT w 
+2175 if skip=0 then if inkey$<>"" then skip=1
+2180 if skip=0 then SOUND 2,31,c1,5:SOUND 2,0,c1/2,0
+2190 IF (SQ(2) AND 128)=128 THEN call &bd19:goto 2190 ELSE NEXT w 
 2200 FOR w=1 TO 200:NEXT:RETURN 
 2210 MODE 1:RESTORE 2290:LOCATE 1,1
 2220 READ j,k,anw$:LOCATE j,k:PRINT anw$;

@@ -46,7 +46,7 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
     	"key": "apps/sygen",
-		"title": "Symbol Generator"
+		"title": "Symbol Generator 2x2"
 	},
 	{
     	"key": "apps/timetest",
@@ -139,6 +139,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "demo/basworld",
 		"title": "BASIC World Demo"
+	},
+	{
+    	"key": "demo/boogle",
+		"title": "Boogle"
 	},
 	{
     	"key": "demo/btilesim",
@@ -262,6 +266,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Goldrush (Goldrausch)"
 	},
 	{
+		"key": "games/inka",
+		"title": "Inka Sogra"
+	},
+	{
 		"key": "games/jackpot",
 		"title": "Jack-Pot"
 	},
@@ -349,6 +357,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "games/yahtzee",
 		"title": "Yahtzee (Kniffel)"
+	},
+	{
+		"key": "games/yahtzee2",
+		"title": "Yahtzee 2 (Kniffel)"
 	},
 	{
 		"key": "music/asbtune",

@@ -7,13 +7,16 @@ cpcBasic.addItem("", function () { /*
 2 rem (c) K.H. Denham, 1986
 3 rem https://www.cpcwiki.eu/index.php/CWTA_Issue_14_-_February_1986_-_Type-Ins
 4 rem
+5 rem Modifications: delays; converted ASM to BASIC; accept Y or J for Yes
+6 rem
 10 REM TIMETESTER by K.H.Denham
 20 REM (c) Computing with the Amstrad
 30 REM
-500 MODE 1:IF HIMEM<>39999 THEN SYMBOL AFTER 240:MEMORY 39999
+500 MODE 1:'IF HIMEM<>39999 THEN SYMBOL AFTER 240:MEMORY 39999
+505 ch=65:SYMBOL AFTER ch:hm=HIMEM+(256-ch)*8
 1000 REM initialise,set up m/code,etc
 1010 SPEED INK 30,20:DIM TIM(3,3),SHAPE(36,8),MAZE(1),HI(5),NAME$(5),GRADE$(5):RESTORE 1030:FOR x=1 TO 36:FOR y=1 TO 8:READ shape(x,y):NEXT:NEXT:WINDOW#1,24,39,4,23
-1020 FOR x=&9C40 TO &9CCF:READ a$:POKE x,VAL("&"+a$):NEXT
+1020 'FOR x=&9C40 TO &9CCF:READ a$:POKE x,VAL("&"+a$):NEXT
 1030 DATA 24,17,3,6,-6,-1,-21,-22
 1040 DATA 29,4,4,4,-5,2,-28,-10
 1050 DATA 29,-4,4,-4,-5,-2,-28,10
@@ -57,27 +60,31 @@ cpcBasic.addItem("", function () { /*
 2010 INK 0,1:INK 1,26:BORDER 1:PAPER 0:PEN 1:CLS
 2020 ORIGIN 0,0:PLOT 30,397,1:DRAWR 592,0:DRAWR 0,-340:DRAWR -592,0:DRAWR 0,340
 2030 LI=6:GOSUB 15000:LOCATE 6,11:PRINT"Do you want instructions? (Y/N)"
-2040 IF INKEY(43)<>-1 THEN 2050 ELSE IF INKEY(46)<>-1 THEN 3000 ELSE 2040
+2040 'call &bd19:IF INKEY(43)<>-1 or inkey(71)<>-1 THEN 2050 ELSE IF INKEY(46)<>-1 THEN 3000 ELSE 2040
+2045 t$=inkey$:if t$="" then 2045 else t$=upper$(t$):if t$="Y" or t$="J" then 2050 else if t$="N" then 3000 else 2045
 2050 CLS:ZONE 17:WINDOW 1,40,4,25:PRINT#2,"     CPC TIMETESTER - INSTRUCTIONS";TAB(6) STRING$(29,"=")
 2060 PRINT"  Timetester is a program to teach","  clock reading. It draws a clock face","  and depending on the level chosen"
 2070 PRINT"  asks for the time in different ways:",,"  LEVEL 1 - You choose from four";TAB(13) "answers in the form TEN";TAB(13) "PAST FIVE, QUARTER TO";TAB(13) "SIX, etc."
 2080 PRINT,"  LEVEL 2 - You choose from four";TAB(13)"answers in the form 3.05,";TAB(13) "10.20, etc."
 2090 PRINT,"  LEVEL 3 - You are asked to type in";TAB(13)"the time in the form 3.05,";TAB(13)"10.20, etc without seeing ";TAB(13)"any answers displayed"
 2100 PRINT ,,,TAB(8)"PRESS ENTER TO CONTINUE"
-2110 IF INKEY(18)=-1 AND INKEY(6)=-1 THEN 2110
+2110 'call &bd19:IF INKEY(18)=-1 AND INKEY(6)=-1 THEN 2110
+2115 t$=inkey$:if t$="" then 2115
 2120 FOR X=1 TO 21:LOCATE 1,22:PRINT CHR$(10):NEXT
 2130 LOCATE 3,1:PRINT"After twelve clock faces have been","  shown you are given your score and","  rating. These depend on the level and","  your speed and accuracy. Only the","  time spent between the answer being","  asked for and your answer being"
 2140 PRINT"  entered is counted, so spend as long","  as you like looking at the clock and","  answers at other times, especially","  any you have got wrong! A table of"
 2150 PRINT"  the five highest scores is provided.",,,"  When selecting the level of play you","  are also asked whether you require","  the optional hidden-maze game feature."
 2160 LOCATE 8,19:PRINT"PRESS ENTER TO CONTINUE"
-2170 IF INKEY(18)=-1 AND INKEY(6)=-1 THEN 2170
+2170 'call &bd19:IF INKEY(18)=-1 AND INKEY(6)=-1 THEN 2170
+2175 t$=inkey$:if t$="" then 2175
 2180 FOR X=1 TO 19:LOCATE 1,22:PRINT CHR$(10):NEXT
 2190 LOCATE 3,2:PRINT"If you choose this option then each","  time during the game that you get"
 2200 PRINT"  six answers right in a row you play a","  hidden maze game.",,,"  You and your opponent (controlled by","  the computer) start at the opposite","  sides of an invisible maze in which","  the paths can only be found by trial"
 2210 PRINT"  and error. You use the cursor keys or","  a joystick to guide your man out of","  the maze in as short a time as","  possible and before you get caught."
 2220 LOCATE 8,18:PRINT"PRESS ENTER TO CONTINUE"
-2230 IF INKEY(18)=-1 AND INKEY(6)=-1 THEN 2230
-2240 FOR X=1 TO 25:LOCATE#2,1,25:PRINT#2,CHR$(10):FOR y=1 TO 40:NEXT:NEXT
+2230 'call &bd19:IF INKEY(18)=-1 AND INKEY(6)=-1 THEN 2230
+2235 t$=inkey$:if t$="" then 2235
+2240 FOR X=1 TO 25:LOCATE#2,1,25:PRINT#2,CHR$(10):FOR y=1 TO 40/10:call &bd19:NEXT:NEXT
 2250 WINDOW 1,40,1,25
 3000 REM new game
 3010 BORDER 5:INK 0,26:INK 2,5:PAPER 2:CLS:INK 1,0
@@ -87,10 +94,12 @@ cpcBasic.addItem("", function () { /*
 3050 IF INKEY$<>"" THEN 3050
 3060 K$=INKEY$:IF K$<"1" OR k$>"3" THEN 3060 ELSE level=VAL(k$):RANDOMIZE TIME:score=0:goes=0
 3070 LOCATE 7,12:PRINT"With maze game feature? (Y/N)":PLOT -112,-81:DRAWR 0,16:DRAWR 464,0
-3080 IF INKEY(43)<>-1 THEN game=1 ELSE IF INKEY(46)<>-1  THEN game=0 ELSE 3080
+3080 'call &bd19:IF INKEY(43)<>-1 or inkey(71)<>-1 THEN game=1 ELSE IF INKEY(46)<>-1  THEN game=0 ELSE 3080
+3085 t$=inkey$:if t$="" then 3085 else t$=upper$(t$):if t$="Y" or t$="J" then game=1 else if t$="N" then game=0 else 3085
 4000 REM draw screen
 4010 ORIGIN 184,208:inrow=0:hand1=0:hand2=0:BORDER 20:INK 0,20:INK 1,1:PAPER 0:PEN 1:CLS:CLG
-4020 CALL 40000:LOCATE 3,2:PRINT"TIMETESTER LEVEL";LEVEL:LOCATE 25,2:PRINT"CORRECT :":IF game=1 THEN LOCATE 25,3:PRINT"IN A ROW:"
+4020 gosub 18000: 'CALL 40000
+4025 LOCATE 3,2:PRINT"TIMETESTER LEVEL";LEVEL:LOCATE 25,2:PRINT"CORRECT :":IF game=1 THEN LOCATE 25,3:PRINT"IN A ROW:"
 4030 GOSUB 14000:kd=1:DEG:PLOT 0,0,1:RESTORE 4100:GOSUB 4070:TAG
 4040 RESTORE 4050:FOR x=1 TO 12:READ a,b:PLOT a,b:PRINT MID$(STR$(x),2);:NEXT
 4050 DATA 74,120,118,68,132,4,118,-58,74,-110,-6,-132,-92,-110,-136,-58,-150,4,-144,68,-98,120,-16,142
@@ -163,7 +172,7 @@ cpcBasic.addItem("", function () { /*
 9090 IF score2>=50000 THEN z$="MASTER TIMETELLER" ELSE IF SCORE2<50000 AND SCORE2>=30000 THEN z$="EXPERT TIMETELLER" ELSE IF SCORE2<30000 AND SCORE2>=15000 THEN z$="TIMETELLER GRADE2" ELSE IF score2<15000 THEN z$="NOVICE TIMETELLER"
 9100 RESTORE 13000:GOSUB 13300:PLOT -16,-145,3:DRAWR 0,16:DRAWR 272,0:PEN 1:PAPER 3:LOCATE 13,13:PRINT Z$:IF score2>=50000 THEN GOSUB 16000
 9110 PEN 0:PAPER 2:IF SCORE2<=HI(5) THEN INK 3,6:GOTO 10100 ELSE LOCATE 10,20:PRINT"PRESS ENTER TO CONTINUE"
-9120 IF INKEY(18)=-1 AND INKEY(6)=-1 THEN 9120
+9120 call &bd19:IF INKEY(18)=-1 AND INKEY(6)=-1 THEN 9120
 10000 REM HI-SCORE ROUTINE
 10010 INK 3,15:INK 0,26:INK 1,24:WHILE INKEY$<>"":R$=INKEY$:WEND:WINDOW#4,4,38,6,20:PAPER#4,2:PEN#4,0:CLS#4:RESTORE 13000:GOSUB 13300:LOCATE#4,1,3
 10020 IF SCORE2=54000 THEN PRINT#4," Congratulations! You've just made","    the maximum possible score":GOSUB 16000:GOTO 10040:ELSE IF score2>hi(1) THEN PRINT#4," Congratulations! You've just made","         a new hi-score!":GOTO 10040
@@ -176,7 +185,7 @@ cpcBasic.addItem("", function () { /*
 10090 INK 3,24:FOR X%=1 TO 5:LOCATE#4,1,X%*2+2:PEN#4,1:PRINT#4,MID$(STR$(X%),2);:PEN#4,3:PRINT#4," ";NAME$(X%);TAB(12) HI(X%);TAB(19) GRADE$(X%):NEXT
 10100 PEN#4,0:LOCATE#4,5,15:PRINT#4,"PRESS ENTER TO PLAY AGAIN"
 10110 EVERY 40 GOSUB 10130
-10120 IF INKEY(18)=-1 AND INKEY(6)=-1 THEN 10120 ELSE T=REMAIN(0):FOR X=1 TO 25:LOCATE 1,1:PRINT CHR$(11):FOR Y=1 TO 50:NEXT:NEXT:GOTO 3000
+10120 call &bd19:IF INKEY(18)=-1 AND INKEY(6)=-1 THEN 10120 ELSE T=REMAIN(0):FOR X=1 TO 25:LOCATE 1,1:PRINT CHR$(11):FOR Y=1 TO 50/10:call &bd19:NEXT:NEXT:GOTO 3000
 10130 R=R+1:IF R>26 THEN R=6 ELSE IF R=9 THEN R=10
 10140 INK 0,R:RETURN
 11000 REM maze game
@@ -190,7 +199,7 @@ cpcBasic.addItem("", function () { /*
 11080 DATUM=INT(TIME/300)
 11090 lose=0:Y=10:X=0:R=10:V=20:BORDER 18
 11100 LOCATE x+3,y+2:PRINT CHR$(248):LOCATE v+3,r+2:PRINT CHR$(225):EVERY 55 GOSUB 11190
-11110 FOR loop=1 TO 25:LOCATE 1,loop:PRINT"  ":NEXT
+11110 call &bd19:FOR loop=1 TO 25:LOCATE 1,loop:PRINT"  ":NEXT
 11120 Z=X:T=Y:IF INKEY(8)<>-1 OR INKEY(74)<>-1 THEN x=x-1 ELSE IF INKEY(1)<>-1 OR INKEY(75)<>-1 THEN x=x+1 ELSE IF INKEY(2)<>-1 OR INKEY(73)<>-1 THEN y=y+1 ELSE IF INKEY(0)<>-1 OR INKEY(72)<>-1 THEN y=y-1
 11130 IF x<1 THEN x=1 ELSE IF x>19 AND y<>10 THEN x=19 ELSE IF y>19 THEN y=19 ELSE IF y<1 THEN y=1
 11140 IF lose=1 OR  r=y AND v=x THEN 11270
@@ -209,7 +218,7 @@ cpcBasic.addItem("", function () { /*
 11270 REM LOSE
 11280 GOSUB 11320:GOSUB 13210:LOCATE v+3,r+2:PRINT CHR$(225):BORDER 6:PRINT#6,"You were caught":GOSUB 13210:GOTO 11290
 11290 PRINT#6,,,,"in";datum1-datum;"seconds.",,,,,,,,"PRESS ENTER KEY"
-11300 IF INKEY(18)=-1 AND INKEY(6)=-1 THEN 11300
+11300 call &bd19:IF INKEY(18)=-1 AND INKEY(6)=-1 THEN 11300
 11310 IF GOES=12 THEN 9020 ELSE 4000
 11320 ELAP=REMAIN(0):elap=REMAIN(1):DATUM1=INT(TIME/300):CLS#6:PEN 3:INK 3,6,26:RETURN
 12000 REM print five past three etc
@@ -237,7 +246,7 @@ cpcBasic.addItem("", function () { /*
 15000 REM double height
 15010 y=288+16*(6-li):ORIGIN 207,y:PLOT 0,0,0:RESTORE 15060:FOR z=1 TO 6:READ x,y:DRAWR x,y:NEXT
 15020 LOCATE 14,li:z$="CPC TIMETESTER":FOR x=1 TO 14
-15030 POKE 40099,ASC(MID$(z$,x)):CALL 40094
+15030 ch=ASC(MID$(z$,x)):gosub 18510: 'POKE 40099,ASC(MID$(z$,x)):CALL 40094
 15040 PRINT CHR$(254);CHR$(8);CHR$(10);CHR$(255);CHR$(11);:NEXT
 15050 RETURN
 15060 DATA 0,32,226,0,0,-32,-228,0,0,33,229,0
@@ -246,4 +255,96 @@ cpcBasic.addItem("", function () { /*
 16020 NEXT:NEXT:RETURN
 16030 DATA 49,478,25,42,379,25,28,239,25,1,0,1,49,379,25,42,506,25,28,301,25,1,0,1,17,379,15,10,506,15,1,0,1,17,478,15,10,379,15,1,0,1,17,379,15,10,506,15,1,0,1
 16040 DATA 49,319,25,42,253,25,28,159,25,1,0,1,17,319,15,10,253,15,1,0,1,17,379,15,10,506,15,1,0,1,17,319,15,10,253,15,1,0,1,49,253,50,42,169,50,28,201,50,1,0,1
+17980 '
+17990 'ASM (&9c49-&9c9d) converted to BASIC: print frame
+18000 w=5
+18010 ?chr$(&96);string$(&15,&9a);chr$(&9e);string$(&10,&9a);chr$(&9c);
+18020 window #w,1,1,2,23:?#w,string$(22,&95);
+18030 window #w,&17,&17,2,23:?#w,string$(22,&95);
+18040 window #w,&28,&28,2,23:?#w,string$(22,&95);
+18050 locate 1,24
+18060 ?chr$(&93);string$(&15,&9a);chr$(&9b);string$(&10,&9a);chr$(&99);
+18070 return
+18080 '
+18490 'duplicate character matrix if ch to chr 254 and 255:
+18510 ad1=hm-(256-ch)*8:'+(256-ch)*8
+18520 ad2=hm-(256-254)*8 :'char 254, and 255 after that
+18530 for i=0 to 7
+18540 by=peek(ad1):ad1=ad1+1
+18550 poke ad2,by:poke ad2+1,by:ad2=ad2+2
+18560 next
+18570 return
+18580 '
+19980 '
+19990 'disassembly of &9c40-&9ccf
+20000 'org #9c40 ;(40000)
+20001 'ld a,#96
+20002 'call #bb5a ;TXT OUTPUT
+20003 'ld b,#15
+20004 'call l9c89
+20005 'ld a,#9e
+20006 'call #bb5a
+20007 'ld b,#10
+20008 'call l9c89
+20009 'ld a,#9c
+20010 'call #bb5a
+20011 'ld b,#16
+20012 'ld d,#01
+20013 '.l9c5d
+20014 'inc d
+20015 'ld a,#01
+20016 'call l9c91
+20017 'ld a,#17
+20018 'call l9c91
+20019 'ld a,#28
+20020 'call l9c91
+20021 'djnz l9c5d
+20022 'ld a,#93
+20023 'call #bb5a
+20024 'ld b,#15
+20025 'call l9c89
+20026 'ld a,#9b
+20027 'call #bb5a
+20028 'ld b,#10
+20029 'call l9c89
+20030 'ld a,#99
+20031 'call #bb5a
+20032 'ret
+20033 '.l9c89
+20034 'ld a,#9a
+20035 '.l9c8b
+20036 'call #bb5a
+20037 'djnz l9c8b
+20038 'ret
+20039 '.l9c91
+20040 'call #bb6f ;TXT SET COLUMN
+20041 'ld a,d
+20042 'call #bb72 ;TXT SET ROW
+20043 'ld a,#95
+20044 'call #bb5a
+20045 'ret
+20046 'call #b906 ;KL L ROM ENABLE (&9c9e=40094)
+20047 'push af
+20048 'ld a,#00 ;(#00 at &9ca3=40099)
+20049 'call #bba5
+20050 'ld ix,#9032
+20051 'ld b,#08
+20052 '.l9cad
+20053 'ld a,(hl)
+20054 'ld (ix+#00),a
+20055 'ld (ix+#01),a
+20056 'inc hl
+20057 'inc ix
+20058 'inc ix
+20059 'djnz l9cad
+20060 'pop af
+20061 'call #b90c ;KL L ROM RESTORE
+20062 'ld a,#fe
+20063 'ld hl,#9032
+20064 'call #bba8 ;TXT SET MATRIX
+20065 'ld a,#ff
+20066 'ld hl,#903a
+20067 'call #bba8 ;TXT SET MATRIX
+20068 'ret
+20069 '
 */ });

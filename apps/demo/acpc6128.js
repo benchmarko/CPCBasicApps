@@ -6,6 +6,8 @@ cpcBasic.addItem("", function () { /*
 1 rem acpc6128 - Amstrad CPC 6128 Demo
 2 rem (c) Amstrad, 1985
 3 rem
+4 rem Modifications: delays with call &bd19; note movement; line 570: rounding to 2*PI: +0.0000000001; ASM converted to BASIC
+5 rem
 10 ON ERROR GOTO 100
 20 mcentry=HIMEM-54:MEMORY &6A47
 25 IF mcentry<40977 THEN MODE 1:LOCATE 7,18:PRINT"Not Enough Memory Available
@@ -16,14 +18,15 @@ cpcBasic.addItem("", function () { /*
 60 a%=0:CALL mcentry+39,@a%
 70 MODE 1:LOCATE 7,18
 80 version=(a%\256)+256*(a% MOD 256)
-90 IF version<&102 THEN GOTO 100 ELSE PRINT"Press CTRL SHIFT ESC together                
+90 IF version<&102 and version<>0 THEN GOTO 100 ELSE PRINT"Press CTRL SHIFT ESC together                
 to stop program.":GOTO 110
 100 MODE 1:LOCATE 7,18:PRINT"Incompatible BASIC installed
 ":END
 110 ON BREAK CONT
+111 t=time+50:while t<time and inkey$="":call &bd19:wend
 115 DATA 21,0,C0,11,0,40,42,4B,AF,DD,BE,1,20,1,EB,DD,7E,0,C6,2,CD,5B,BD,ED,B0,C3,5B,BD
 120 DATA CD,B,BC,11,80,2,19,CD,5,BC,C9,E,FF,CD,15,B9,EB,DD,66,1,DD,6E,0,73,23,72,C9
-130 LOAD"ritdemo"
+130 'LOAD"ritdemo"
 140 DEG
 150 DIM sp(10),ctot(6),ltot(18),s(9),c(9),cx(5),cy(5),r(5),lc(5),period(12)
 160 cx(1)=320:cy(1)=140
@@ -35,7 +38,7 @@ to stop program.":GOTO 110
 300 CURSOR 1
 310 delay=TIME:CLEAR INPUT
 320 a$=INKEY$:IF UPPER$(a$)="Y"THEN roldem=1:GOTO 340 ELSE IF UPPER$(a$)="N"THEN roldem=0:GOTO 340
-330 IF TIME-delay<3000 THEN 320 ELSE roldem=0
+330 IF a$="" and (TIME-delay<3000/2) THEN 320 ELSE roldem=0
 340 CURSOR 0
 350 ' AMSTRAD LOGO
 360 DEG
@@ -47,7 +50,7 @@ to stop program.":GOTO 110
 420 AFTER 5 GOSUB 790
 430 RESTORE 890
 440 READ a,b,c,d:GOTO 470
-450 READ e,f:IF e=999 THEN e=REMAIN(0):GOTO 550
+450 call &bd19:READ e,f:IF e=999 THEN e=REMAIN(0):GOTO 550
 460 IF e<0 THEN a=c:b=d:c=-e:d=-f:ELSE READ c,d:a=e:b=f
 470 xd=c-a:yd=d-b
 480 dist=SQR(xd*xd+yd*yd):numsteps=MAX(dist\8,1)
@@ -63,7 +66,7 @@ to stop program.":GOTO 110
 580 READ A,B,C,D:IF a=999 THEN GOTO 610
 590 MOVE a,b:DRAW c,d,3
 600 GOTO 580
-610 GOSUB 1460
+610 t!=time+1000:while time<t! and inkey$="":call &bd19:wend:GOSUB 1460
 620 LOCATE 1,25:ORIGIN 0,0,0,640,0,400
 630 FOR a=1 TO 12
 640 FOR b%=0 TO 320 STEP 2
@@ -86,6 +89,7 @@ to stop program.":GOTO 110
 810 t=ATN((x-320)/(y+248))
 820 xst=320+55*SIN(t):yst=55*COS(t)-248
 830 MOVE xst,yst:DRAW x,y,2,3
+835 call &bd19
 840 MASK 31
 850 MOVE xst,yst:DRAW x,y,1,2
 860 MASK 255
@@ -147,6 +151,7 @@ to stop program.":GOTO 110
 1370 FOR a=1 TO 9
 1380 DRAW 50*S(a),b+50*C(a),2
 1390 NEXT
+1395 call &bd19
 1400 NEXT
 1410 FOR a=-70 TO 70 STEP 5
 1420 b=50*SIN(a):c=50*COS(a)-20
@@ -158,11 +163,12 @@ to stop program.":GOTO 110
 1480 FOR a=1 TO 9
 1490 DRAW 60*s(a),b+60*c(a),0
 1500 NEXT
+1505 call &bd19
 1510 NEXT
 1520 ORIGIN 0,0,0,640,0,200:CLG 0
 1530 RETURN
 1540 MODE 0:LOCATE 5,12:INK 1,19:PRINT"AN EXAMPLE OF":LOCATE 8,14:PRINT"GRAPHICS":t=TIME
-1550 IF TIME-t<900 THEN 1550 ELSE 1560
+1550 IF TIME-t<900 and inkey$="" THEN call &bd19:goto 1550 ELSE 1560
 1560 MODE 1:INK 0,0:BORDER 0:INK 1,24:INK 2,6:INK 3,2
 1570 i=1:RAD
 1580 ORIGIN 320,200
@@ -173,7 +179,7 @@ to stop program.":GOTO 110
 1630 NEXT
 1640 EVERY 5 GOSUB 1680
 1650 T=TIME
-1660 IF TIME-T<2100 THEN 1660
+1660 IF TIME-T<2100 and inkey$="" THEN call &bd19:goto 1660
 1670 R=REMAIN(0):GOTO 1710
 1680 IF i=1 THEN FRAME:INK 1,24:INK 2,6:INK 3,2:i=2:RETURN
 1690 IF I=2 THEN FRAME:INK 1,6:INK 2,2:INK 3,24:I=3:RETURN
@@ -185,17 +191,18 @@ to stop program.":GOTO 110
 1750 PEN 1
 1760 st=1
 1770 t=TIME
-1780 IF TIME-t<900 THEN 1780
+1780 IF TIME-t<900 and inkey$="" THEN call &bd19:goto 1780
 1790 INK 0,13:INK 1,2:INK 2,6:INK 3,18:BORDER 13:MODE 1
 1800 st=1
-1810 IF firstime THEN firstime=(1=0):GOSUB 1890:CALL mcentry,&105 ELSE INK 1,13:INK 2,13:INK 3,13:FRAME:CALL mcentry,5:INK 1,2:INK 2,6:INK 3,18
+1810 'IF firstime THEN firstime=(1=0):GOSUB 1890:CALL mcentry,&105 ELSE INK 1,13:INK 2,13:INK 3,13:FRAME:CALL mcentry,5:INK 1,2:INK 2,6:INK 3,18
+1815 IF firstime THEN firstime=(1=0):GOSUB 1890:af=&105:gosub 15000 ELSE INK 1,13:INK 2,13:INK 3,13:FRAME:af=5:gosub 15000:INK 1,2:INK 2,6:INK 3,18
 1820 LOCATE 1,1
 1830 EVERY 25,1 GOSUB 2070
 1840 EVERY 15,2 GOSUB 2110
 1850 EVERY 5,3 GOSUB 2150
 1860 f=0
 1870 AFTER 500 GOSUB 2190
-1880 IF f=0 THEN 1880 ELSE 1882
+1880 IF f=0 and inkey$="" THEN call &bd19:goto 1880 ELSE 1882
 1882 GOSUB 6060' blocky demo
 1884 GOTO 2220
 1890 'draw circle plus 3,4 or 6 around it
@@ -233,7 +240,7 @@ to stop program.":GOTO 110
 2210 RETURN
 2220 'sound demo
 2230 BORDER 24:INK 0,24:INK 1,0:MODE 0:LOCATE 5,12:PEN 1:PRINT"AN EXAMPLE OF":LOCATE 9,14:PRINT"SOUND":t=TIME
-2240 IF TIME-t<900 THEN 2240
+2240 IF TIME-t<900 and inkey$="" THEN call &bd19:goto 2240
 2250 INK 0,26:INK 1,0:BORDER 26:MODE 0
 2260 colnote=2:colstave=8:backgrnd=26
 2270 stavecol=7:notecol=8
@@ -274,11 +281,11 @@ to stop program.":GOTO 110
 2620 IF VAL(LEFT$(chan$,1))THEN note$=MID$(a$,spoint,4):spoint=spoint+4:GOSUB 2820:SOUND 65,period,0,0,envel
 2630 IF VAL(MID$(chan$,2,1))THEN note$=MID$(a$,spoint,4):spoint=spoint+4:GOSUB 2820:SOUND 66,period,0,0,envel
 2640 note$=MID$(a$,spoint,4):spoint=spoint+4:GOSUB 2820:SOUND 68,period,0,0,envel
-2650 IF SQ(4)>127 THEN 2650
+2650 IF SQ(4)>127 THEN call &bd19:goto 2650
 2660 RELEASE 7
 2670 locx=locx+26:count=count+1:GOSUB 3500
 2680 WEND
-2690 READ a$:IF ASC(a$)=42 THEN GOTO 3640
+2690 READ a$:IF ASC(a$)=42 or inkey$<>"" THEN GOTO 3640
 2700 IF count=4 THEN locx=locx+24 ELSE locx=locx+48
 2710 count=0:IF locx<600 THEN 2810
 2720 locx=mx:locst=2
@@ -288,7 +295,7 @@ to stop program.":GOTO 110
 2760 stavecole2=(stavecole2+2)MOD 8:i2=stavecole2
 2770 notecol=notecol MOD 8+2:stavecol=(stavecol+2)MOD 8
 2780 INK i1,backgrnd:INK i2,backgrnd:INK i3,backgrnd:INK i4,backgrnd
-2790 FRAME:CALL mcentry+28
+2790 locate#7,1,25:?#7,string$(9,chr$(10)); :FRAME: 'CALL mcentry+28
 2800 INK i5,colstave:INK i6,colnote
 2810 GOTO 2570
 2820 'calculate note parms
@@ -374,15 +381,15 @@ to stop program.":GOTO 110
 3620 locst=locst+2
 3630 RETURN
 3640 T=TIME
-3650 IF TIME-T<1000 THEN 3650
+3650 IF TIME-T<1000 and inkey$="" THEN call &bd19:goto 3650
 3660 'spreadsheet
 3670 MODE 0:BORDER 13:INK 0,13:INK 1,0:PEN 1:LOCATE 1,12:PRINT"EXAMPLES OF BUSINESS":LOCATE 5,14:PRINT"APPLICATIONS"
 3680 T=TIME
-3690 IF TIME-T<900 THEN 3690
+3690 IF TIME-T<900 and inkey$="" THEN call &bd19:goto 3690
 3700 LOCATE 1,12:PRINT CHR$(18):LOCATE 1,14:PRINT CHR$(18):LOCATE 6,12:BORDER 15:INK 0,15:INK 1,2:PRINT"SPREADSHEET"
 3710 gt=0:FOR x=1 TO 6:ctot(x)=0:NEXT:FOR x=1 TO 18:ltot(x)=0:NEXT
 3720 T=TIME
-3730 IF TIME-t<900 THEN 3730
+3730 IF TIME-t<900 and inkey$="" THEN call &bd19:goto 3730
 3740 MODE 2
 3750 c$="January\February\March\April\May\June\"
 3760 MOVE 0,380:DRAWR 640,0,1
@@ -440,10 +447,10 @@ to stop program.":GOTO 110
 4280 NEXT y
 4290 LOCATE 70,22:PRINT USING"######.##";gt
 4300 T=TIME
-4310 IF TIME-T<1200 THEN 4310
+4310 IF TIME-T<1200 and inkey$="" THEN call &bd19:goto 4310
 4320 'print a bar chart
 4330 MODE 0:BORDER 4:INK 0,4:INK 1,26:LOCATE 6,12:PRINT"BAR CHARTS":t=TIME
-4340 IF TIME-t<900 THEN 4340
+4340 IF TIME-t<900 and inkey$="" THEN call &bd19:goto 4340
 4350 DEG:t60=TAN(60):s30=SIN(30):c30=COS(30)
 4360 MODE 1:BORDER 13:INK 0,13:INK 1,17:INK 2,8:INK 3,4:TAG
 4370 wdth=35:dpth=20:off=202-INT(dpth*s30/2)
@@ -473,7 +480,7 @@ to stop program.":GOTO 110
 4610 MOVE xst,200:DRAW 640,200,3
 4620 GOTO 4530
 4630 T=TIME
-4640 IF TIME-T<1500 THEN 4640 ELSE 4700
+4640 IF TIME-T<1500 and inkey$="" THEN call &bd19:goto 4640 ELSE 4700
 4650 FOR y1=y+2 TO y+dpth*s30 STEP 2
 4660 MOVE xst+(y1-y)*T60,off+y1
 4670 DRAWR wdth,0,3
@@ -481,7 +488,7 @@ to stop program.":GOTO 110
 4690 RETURN
 4700 'word processor
 4710 MODE 0:BORDER 21:INK 0,21:INK 1,6:LOCATE 4,12:PRINT"WORD PROCESSING":t=TIME
-4720 IF TIME-t<900 THEN 4720
+4720 IF TIME-t<900 and inkey$="" THEN call &bd19:goto 4720
 4730 MODE 2:xflag=0
 4740 MOVE 640,376:DRAW 8,376,1
 4750 MOVE 8,376:DRAW 8,0
@@ -507,15 +514,15 @@ to stop program.":GOTO 110
 4950 t=TIME
 4960 t1=TIME-t
 4970 LOCATE 45,10
-4980 IF T1>1000 THEN 5010
+4980 IF T1>1000 or inkey$<>"" THEN 5010
 4990 IF(t1 MOD 20)<10 THEN PRINT CHR$(24)+"operator"+CHR$(24)ELSE PRINT"operator"
-5000 GOTO 4960
+5000 call &bd19:GOTO 4960
 5010 t=TIME
 5020 t1=TIME-t
 5030 LOCATE 45,10
-5040 IF T1>1000 THEN 5070
+5040 IF T1>1000 or inkey$<>"" THEN 5070
 5050 IF(t1 MOD 20)<10 THEN PRINT CHR$(24)+"user"+CHR$(24)ELSE PRINT"user    "
-5060 GOTO 5020
+5060 call &bd19:GOTO 5020
 5070 i$="":RESTORE 5600:xflag=1
 5080 FOR y=10 TO 16
 5090 GOSUB 5360
@@ -528,7 +535,7 @@ to stop program.":GOTO 110
 5160 GOSUB 5200
 5170 NEXT
 5180 T=TIME
-5190 IF TIME-T<600 THEN 5190 ELSE 5650
+5190 IF TIME-T<600 and inkey$="" THEN call &bd19:goto 5190 ELSE 5650
 5200 GOSUB 5360:ns=0
 5210 IF INSTR(l$,CHR$(1))<>0 THEN PRINT LEFT$(l$,INSTR(l$,CHR$(1))-1);SPC(33-LEN(l$));:RETURN
 5220 IF LEN(l$)=32 THEN PRINT l$:RETURN
@@ -578,7 +585,7 @@ to stop program.":GOTO 110
 5660 T=TIME
 5670 I=TIME-T
 5680 SPEED INK 25-(I\100),25-(I\100)
-5690 IF I<2000 THEN 5670
+5690 IF I<2000 and inkey$="" THEN call &bd19:goto 5670
 5700 IF roldem=1 THEN CALL &6A82 ELSE CALL &6A7F
 5710 GOTO 350
 6060 RAD:MODE 0
@@ -589,22 +596,25 @@ to stop program.":GOTO 110
 6110 ORIGIN INT(RND*640),INT(RND*400):oi=i:i=INT(RND*13)+1
 6120 IF TEST(0,0)=i OR oi=i THEN 6110
 6130 ON point GOSUB 6260,6330,6310,6500
+6133 t!=time+6*25
 6135 MOVE 0,0:FILL i
+6137 t$="":WHILE TIME<t! and t$="": t$=inkey$:WEND
+6138 if t$<>"" then big=70
 6140 NEXT big
-6150 IF point<>4 THEN CALL mcentry,point+257
+6150 IF point<>4 THEN af=point+257:gosub 15000: 'CALL mcentry,point+257
 6160 NEXT point
 6170 '
-6180 t=TIME:WHILE t+200>TIME:WEND
+6180 t=TIME:WHILE t+200>TIME and inkey$="":call &bd19:WEND
 6190 FOR s=4 TO 2 STEP-1
-6192 FOR i=0 TO 13:INK i,0:NEXT:FRAME:CALL mcentry,s
+6192 FOR i=0 TO 13:INK i,0:NEXT:FRAME:af=s:gosub 15000: 'CALL mcentry,s
 6194 FOR i=0 TO 13:INK i,i*2:NEXT
-6200 t=TIME:WHILE t+400>TIME:WEND
+6200 t=TIME:WHILE t+400>TIME and inkey$="":call &bd19:WEND
 6210 NEXT s
-6220 t=TIME:WHILE t+400>TIME:WEND
+6220 t=TIME:WHILE t+400>TIME and inkey$="":call &bd19:WEND
 6230 RETURN
 6240 '
 6260 MOVE 0,big\2,i
-6270 FOR n=0 TO 2*PI STEP PI/8:DRAW SIN(n)*big\2,COS(n)*big\2:NEXT n
+6270 FOR n=0 TO 2*PI +0.0000000001 STEP PI/8:DRAW SIN(n)*big\2,COS(n)*big\2:NEXT n
 6300 RETURN
 6310 MOVE big\2,big\2,i:DRAWR 0,-big:DRAWR-big,0:DRAWR 0,big:DRAWR big,0
 6320 RETURN
@@ -622,4 +632,45 @@ to stop program.":GOTO 110
 6590 MOVE-4,0:DRAW px(n)\3-4,py(n)\3,-(i=0)
 6600 NEXT:MOVE 0,0:GRAPHICS PEN i
 6620 RETURN
+14990 '
+15000 if version>0 then call mcentry,af:return
+15005 'CPCBasic: verison=0 => do it in BASIC...
+15010 if af>=&100 then src=&c000:dest=&4000 else src=&4000:dest=&c000
+15020 out &7f00,&c2+(af and &ff)
+15030 for i=0 to &3fff:poke i+dest,peek(i+src):next
+15040 out &7f00,&c0
+15050 return
+19980 '
+19990 'disassembly of &a64f-a67b (relocatable)
+20000 'org #a645 (mcentry)
+20001 'ld hl,#c000
+20002 'ld de,#4000
+20003 'ld b,d
+20004 'ld c,e
+20005 'xor a
+20006 'cp (ix+#01)
+20007 'jr nz,la654
+20008 'ex de,hl
+20009 '.la654
+20010 'ld a,(ix+#00)
+20011 'add #02
+20012 'call #bd5b ;KL RAM SELECT
+20013 'ldir
+20014 'jp #bd5b ;KL RAM SELECT (restore)
+20015 'call #bc0b ;SCR GET LOCATION   (.la661=mcentry+28)
+20016 'ld de,#0280
+20017 'add hl,de
+20018 'call #bc05 ;SCR SET OFFSET
+20019 'ret
+20020 'ld c,#ff  (.la66c)
+20021 'call #b915 ;KL PROBE ROM
+20022 'ex de,hl
+20023 'ld h,(ix+#01)
+20024 'ld l,(ix+#00)
+20025 'ld (hl),e
+20026 'inc hl
+20027 'ld (hl),d
+20028 'ret
+20029 ';a67b+1
+20030 '
 */ });

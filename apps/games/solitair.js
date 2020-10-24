@@ -98,7 +98,7 @@ cpcBasic.addItem("", function () { /*
 890 '>>>>>>>>>> ungueltiger zug! <<<<<<<<<<
 900 '
 910 LOCATE 4,25:PRINT CHR$(24);" UNGUELTIGER ZUG ";CHR$(24)
-920 SOUND 2,1000,40,7:FOR t=1 TO 1000:NEXT:LOCATE 4,25:PRINT SPC(17):GOTO 420
+920 SOUND 2,1000,40,7:FOR t=1 TO 1000/15:call &bd19:NEXT:LOCATE 4,25:PRINT SPC(17):GOTO 420
 930 '
 940 '>>>>>>>>>> anleitung <<<<<<<<<<
 950 '
@@ -121,7 +121,7 @@ cpcBasic.addItem("", function () { /*
 1120 CLS:d=1:n$="CPC 464":GOSUB 1200:GOTO 160
 1130 LOCATE #1,2,3:PRINT#1,">>DEMO-SPIEL<<"
 1140 RESTORE 1590:FOR i=1 TO 31:READ x,y,x1,y1
-1150 t!=time+468:while time<t! and inkey$="":wend:'FOR j=1 TO 1500:NEXT
+1150 t!=time+468:while time<t! and inkey$="":wend: 'FOR j=1 TO 1500:NEXT
 1160 SOUND 1,150,10,7:GOSUB 1250
 1170 NEXT:CLS #2:LOCATE #2,2,5:PRINT#2,"Jetzt musst Du",," es versuchen!"
 1180 PRINT#2,,,," Dein Name:";CHR$(7):LOCATE #2,1,11:INPUT #2," ",n$

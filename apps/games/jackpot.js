@@ -6,7 +6,8 @@ cpcBasic.addItem("", function () { /*
 1 rem jackpot - Jack-Pot
 2 rem © P.S.I. (1985)
 3 rem https://www.cpc-power.com/index.php?page=detail&num=6754 , https://amstrad.eu/jack-pot/
-4 rem 
+4 rem Modifications: delay; input F=fast 
+5 rem
 10 REM JACK-POT
 20 REM ——————————–
 30 SYMBOL AFTER 128:GOSUB 2000
@@ -27,6 +28,7 @@ cpcBasic.addItem("", function () { /*
 290 Z=INT(RND*3)+1
 300 PEN Z:LOCATE 14+I*3,13:PRINT CHR$(128+D(I)*4)CHR$(129+D(I)*4)
 310 LOCATE 14+I*3,14:PRINT CHR$(130+D(I)*4)CHR$(131+D(I)*4)
+315 if F$<>"F" then call &bd19
 320 NEXT I
 330 IF T(1) OR T(2) OR T(3) THEN 250 
 380 REM ——————————-
@@ -45,7 +47,7 @@ cpcBasic.addItem("", function () { /*
 510 PEN 2:LOCATE 24,25:PRINT C;"F   "; 
 520 IF C>CAP THEN 600
 530 PRINT CHR$(7)
-540 IF INKEY$="" THEN 540 
+540 F$=INKEY$: if F$="" THEN 540 ELSE F$=upper$(F$) 'IF INKEY$="" THEN 540 
 550 IF C=0 THEN 800
 560 GOTO 200
 580 REM ——————————-
@@ -66,6 +68,7 @@ cpcBasic.addItem("", function () { /*
 1010 PAPER 0:LOCATE 35,I:PRINT"   "
 1020 PAPER 1:LOCATE 35,I+1:PRINT"   "
 1030 LOCATE 35,I+2:PRINT"   "
+1035 if F$<>"F" then call &bd19:call &bd19
 1040 NEXT I
 1050 PAPER 0:RETURN
 1480 REM ——————————
@@ -74,6 +77,7 @@ cpcBasic.addItem("", function () { /*
 1510 PAPER 0:LOCATE 35,I+2:PRINT" ";:PAPER 1:PRINT" ";:PAPER 0:PRINT" "
 1520 PAPER 1:LOCATE 35,I+1:PRINT"   "
 1530 LOCATE 35,I:PRINT"   " 
+1535 call &bd19:call &bd19
 1540 NEXT I
 1550 PAPER 0:RETURN
 1980 REM ——————————

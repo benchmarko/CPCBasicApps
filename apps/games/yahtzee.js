@@ -6,9 +6,11 @@ cpcBasic.addItem("", function () { /*
 1 rem yahtzee - Yahtzee (Kniffel)
 2 rem (c) J. E. Muschik
 3 rem
-4 rem Modification: put in one file; TODO: typo
-5 rem
-6 rem Part 1
+4 rem Modification: put in one file; typo in 2040; skip intro music in 250;
+6 rem Bug fixes: xx(3) (=number of 3's) inserted in 6 MAX conditions; 2720: yy=yy+1; 2520: jm; 1320: PRINT#1
+7 rem (other version: https://www.cpc-power.com/index.php?page=detail&num=11927 BASIC 1.1, mode 1 version)
+8 rem
+9 rem Part 1
 130 REM ***PROGRAMM-INIT
 140 KEY 139,"MODE 2:PAPER 0:PEN 1:INK 0,20:INK 1,0:BORDER 10:LIST"+CHR$(13)
 150 MODE 1:SPEED WRITE 1
@@ -17,12 +19,14 @@ cpcBasic.addItem("", function () { /*
 180 RANDOMIZE TIME
 190 DEF FNp$(xx,yy)=CHR$(31)+CHR$(yy)+CHR$(xx)
 200 INK 0,1:INK 1,15,24:BORDER 24,15:PRINT FNp$(12,9);"Color Monitor (J/N)";
-210 PRINT FNp$(12,31);SPACE$(10);:LOCATE 31,12:LINE INPUT mon$:mon$=UPPER$(mon$)  :IF mon$="Y" OR mon$="N"THEN MODE 2 ELSE GOTO 210
+210 PRINT FNp$(12,31);SPACE$(10);:LOCATE 31,12:LINE INPUT mon$:mon$=UPPER$(mon$)  :IF mon$="Y" or mon$="J" OR mon$="N"THEN MODE 2 ELSE GOTO 210
+215 if mon$="J" then mon$="Y"
 220 DIM wuerfel%(5,2):WINDOW #0,18,64,9,17
-230 INK 0,0:BORDER 0:INK 1,0
+230 if mon$="Y" then ink 0,1:ink 1,15:border 2 else ink 0,0:ink 1,26:border 0: 'INK 0,0:BORDER 0:INK 1,0
 240 FOR spv=0 TO 390 STEP 70:FOR sph=0 TO 640 STEP 74:wwt=INT(RND*6)+1
-250 GOSUB 490:GOSUB 580:NEXT :NEXT:CLS #0
-260 FOR i=1 TO 12 : GOSUB 490:NEXT
+250 if skip=0 then if inkey$="" then GOSUB 490 else skip=1
+255 GOSUB 580:NEXT :NEXT:CLS #0
+260 if skip=0 then FOR i=1 TO 12 : GOSUB 490:NEXT
 270 PRINT FNp$(2,8);"C P C 4 6 4  -  K N I F F E L"
 280 PRINT FNp$(4,20);"(c)  by"
 290 PRINT FNp$(6,17);"J. E. Muschik"
@@ -30,7 +34,7 @@ cpcBasic.addItem("", function () { /*
 310 IF mon$="Y" THEN INK 0,1:INK 1,15:BORDER 2 ELSE INK 0,0:INK 1,26:BORDER 0
 330 CLEAR:goto 740: 'CHAIN MERGE"!KNIFFEL2",740
 340 REM *** joyst-input
-350 IF cor%=0 THEN 360 ELSE IF INKEY(79)>-1 THEN jyw=99:GOTO 480
+350 call &bd19: IF cor%=0 THEN 360 ELSE IF INKEY(79)>-1 THEN jyw=99:GOTO 480
 360 IF maus(am)=0 THEN 420
 370 wl=maus(am)-1
 380 jyw=JOY(wl)
@@ -127,7 +131,7 @@ cpcBasic.addItem("", function () { /*
 1290 NEXT
 1300 PRINT#1,FNp$(1,33);"Gesamtwertung":PRINT#1,FNp$(2,33);"============="
 1310 FOR i=1 TO anzman:PRINT#1,FNp$(3+i,1);"Mannschaft"i"(";
-1320 FOR j=1 TO anzsp:PRINT#1,spnam$(i,j);",";:NEXT:PRINT CHR$(8);")"; 
+1320 FOR j=1 TO anzsp:PRINT#1,spnam$(i,j);",";:NEXT:PRINT#1,CHR$(8);")"; 
 1330 PRINT#1,FNp$(3+i,66);"zalt";:PRINT#1,FNp$(3+i,72);USING"##.##";geld(i)/10;:PRINT#1,FNp$(3+i,78);"DM";
 1340 NEXT
 1350 IF LEN (INKEY$)>0 THEN 1350
@@ -141,8 +145,8 @@ cpcBasic.addItem("", function () { /*
 1430 wurf=wurf+1
 1440 GOSUB 340:IF jyw>0 THEN 1440
 1450 cl=5:GOSUB 3040
-1460 IF wurf=1 THEN 1480 ELSE cor%=1
-1470 IF jyw<99 THEN 1480 ELSE PRINT FNp$(1,5);"Korrektur...";:FOR vz=0 TO 1000:NEXT:      wurf=wurf-1:PRINT FNp$(1,5);SPACE$(12);:GOTO 1610
+1460 call &bd19:IF wurf=1 THEN 1480 ELSE cor%=1
+1470 IF jyw<99 THEN 1480 ELSE PRINT FNp$(1,5);"Korrektur...";:FOR vz=0 TO 1000/10:call &bd19:NEXT:      wurf=wurf-1:PRINT FNp$(1,5);SPACE$(12);:GOTO 1610
 1480 PRINT FNp$(1,cl);CHR$(241);:cl=cl+1:IF cl<16 THEN 1460
 1490 PRINT FNp$(1,5);SPACE$(11);:GOSUB 340:IF jyw=16 THEN 1510 ELSE cl=5:GOTO 1460
 1500 GOTO 1460
@@ -171,7 +175,7 @@ cpcBasic.addItem("", function () { /*
 1730 SPEED INK INT(RND*20)+1,INT(RND*20)+1:BORDER INT(RND*27),INT(RND*27):INK 0,INT(RND*27),INT(RND*27):INK 1,INT(RND*27),INT(RND*27)
 1740 READ ton,tim:IF ton=0 AND tim=0 THEN 1760 ELSE SOUND 2,ton,tim,7:SOUND 2,ton,5,0:GOTO 1730
 1750 DATA 239,100,179,100,179,50,142,100,142,50,119,150,142,200,0,0
-1760 FOR tim=0 TO 2000:NEXT
+1760 FOR tim=0 TO 2000/20:call &bd19:NEXT
 1770 IF mon$="Y" THEN INK 0,1:INK 1,15 :BORDER 2 ELSE INK 0,0:INK 1,26:BORDER 0
 1780 RETURN
 1790 IF wurf=3 THEN RETURN
@@ -180,7 +184,7 @@ cpcBasic.addItem("", function () { /*
 1820 GRPHZ(0)=40 
 1830 TAG:lp1=5
 1840 MOVE 464,grphz(lp1):PRINT CHR$(243);  
-1850 FOR i=1 TO 300:NEXT:lp2=lp1
+1850 FOR i=1 TO 300/30:call &bd19:NEXT:lp2=lp1
 1860 GOSUB 340
 1870 IF jyw=1 THEN lp1=lp1+1:GOTO 1940
 1880 IF jyw=2 THEN 1890 ELSE GOTO 1900
@@ -199,7 +203,7 @@ cpcBasic.addItem("", function () { /*
 2010 RESTORE 2000:CLS#1
 2020 j=1
 2030 FOR i=3 TO 25:READ tx$
-2040 IF LEFT$(tx$,1)="." THEN tx$=RIGHT$(tx$,LEN(tx$-1):PRINT#1,FNp$(i,15);STRING$(anzsp*8,".");
+2040 IF LEFT$(tx$,1)="." THEN tx$=RIGHT$(tx$,LEN(tx$)-1):PRINT#1,FNp$(i,15);STRING$(anzsp*8,".");
 2050 IF LEN (tx$)<2 THEN 2060 ELSE lin(j)=i:j=j+1
 2060 PRINT#1,FNp$(i,1);tx$:NEXT
 2070 MOVE 110,400:DRAW 110,24
@@ -231,7 +235,7 @@ cpcBasic.addItem("", function () { /*
 2330 FOR pr=1 TO anzsp:IF lst(am,pr,i)=-1 THEN 2350 ELSE NEXT:IF i=1 OR i=17 THEN r=-r
 2340 i=i+r:GOTO 2330
 2350 im=i:jm=j:PRINT#1,FNp$(lin(i),13);CHR$(243);
-2360 FOR k=1 TO 200:NEXT
+2360 FOR k=1 TO 200/20:call &bd19:NEXT
 2370 GOSUB 340:IF jyw=99 THEN PRINT#1,FNp$(lin(im),13);CHR$(32):RETURN ELSE IF jyw=8 THEN 2450
 2380 IF jyw=2 THEN i=i+1:r=1:GOTO 2410
 2390 IF jyw=1 THEN i=i-1:r=-1:GOTO 2410  
@@ -243,11 +247,11 @@ cpcBasic.addItem("", function () { /*
 2450 PRINT#1,FNp$(lin(im),13);CHR$(32):j=1
 2460 IF lst(am,j,i)=-1 THEN 2480 ELSE j=j+1:IF j>anzsp THEN j=1
 2470 GOTO 2460
-2480 jm=j:PRINT#1,FNp$(lin(i),7+j*8);CHR$(243);:FOR k=1 TO 300:NEXT
+2480 jm=j:PRINT#1,FNp$(lin(i),7+j*8);CHR$(243);:FOR k=1 TO 300/20:call &bd19:NEXT
 2490 GOSUB 340:IF jyw=99 THEN 2550 ELSE IF jyw=16 OR jyw=32 THEN 2500 ELSE GOTO 2510
 2500 IF lst(am,j,i)=-1 THEN 2580 ELSE SOUND 2,478:GOTO 2520
 2510 GOSUB 340:IF jyw=99 THEN 2550 ELSE IF jyw=4 THEN 2520 ELSE GOTO 2530
-2520 j=0:PRINT#1,FNp$(lin(i),7+j*8);CHR$(32);:GOTO 2330
+2520 j=0:PRINT#1,FNp$(lin(i),7+jm*8);CHR$(32);:GOTO 2330
 2530 GOSUB 340:IF jyw=99 THEN 2550 ELSE IF jyw=8 THEN j=j+1:GOTO 2560
 2540 GOTO 2460
 2550 PRINT#1,FNp$(lin(i),7+jm*8);CHR$(32);:RETURN
@@ -266,14 +270,14 @@ cpcBasic.addItem("", function () { /*
 2680 FOR k=0 TO 4:yy=wuerfel%(k,1):xx(YY)=xx(YY)+1:NEXT
 2690 ON i-8 GOSUB 2710,2730,2760,2780,2800,2850,2890
 2700 lst(am,j,i)=aug:GOTO 2950
-2710 IF MAX(xx(1),xx(2),xx(4),xx(5),xx(6))<2 THEN aug=0
+2710 IF MAX(xx(1),xx(2),xx(3),xx(4),xx(5),xx(6))<2 THEN aug=0
 2720 RETURN
-2730 yy=0:FOR k=1 TO 6:IF xx(k)>3 THEN 2750 ELSE IF xx(k)>1 THEN y=yy+1
+2730 yy=0:FOR k=1 TO 6:IF xx(k)>3 THEN 2750 ELSE IF xx(k)>1 THEN yy=yy+1
 2740 NEXT:IF yy<2 THEN aug=0
 2750 RETURN
-2760 IF MAX(xx(1),xx(2),xx(4),xx(5),xx(6))<3 THEN aug=0
+2760 IF MAX(xx(1),xx(2),xx(3),xx(4),xx(5),xx(6))<3 THEN aug=0
 2770 RETURN
-2780 IF MAX(xx(1),xx(2),xx(4),xx(5),xx(6))<4 THEN aug=0 
+2780 IF MAX(xx(1),xx(2),xx(3),xx(4),xx(5),xx(6))<4 THEN aug=0 
 2790 RETURN
 2800 FOR k=1 TO 4:IF xx(k)>0 THEN NEXT:aug=30:GOTO 2840
 2810 FOR k=2 TO 5:IF xx(k)>0 THEN NEXT:aug=30:GOTO 2840  
@@ -284,10 +288,10 @@ cpcBasic.addItem("", function () { /*
 2860 FOR k=2 TO 6:IF xx(k)=1 THEN NEXT:aug=40:GOTO 2880   
 2870 aug=0
 2880 RETURN
-2890 IF MAX(xx(1),xx(2),xx(4),xx(5),xx(6))=5 THEN 2930
-2900 IF MAX(xx(1),xx(2),xx(4),xx(5),xx(6))<>3  THEN aug=0:GOTO 2940
+2890 IF MAX(xx(1),xx(2),xx(3),xx(4),xx(5),xx(6))=5 THEN 2930
+2900 IF MAX(xx(1),xx(2),xx(3),xx(4),xx(5),xx(6))<>3  THEN aug=0:GOTO 2940
 2910 FOR k=1 TO 6:IF xx(k)=3 THEN xx(k)=0 ELSE NEXT
-2920 IF MAX(xx(1),xx(2),xx(4),xx(5),xx(6))<>2  THEN aug=0:GOTO 2940  
+2920 IF MAX(xx(1),xx(2),xx(3),xx(4),xx(5),xx(6))<>2  THEN aug=0:GOTO 2940  
 2930 aug=25
 2940 RETURN
 2950 PRINT#1,FNp$(lin(i),7+j*8);USING"#######";lst(am,j,i)
