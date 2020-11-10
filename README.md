@@ -58,6 +58,8 @@ Title screen of an unfinished game with a nice tune.
 
 ### Boogle
 
+[![Boogle](./img/boogle.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/boogle) (c)
+
 ### British Council Tile Simulation
 
 [![British Council Tile](./img/btilesim.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/btilesim)
@@ -73,7 +75,7 @@ Check [Rob Manuel’s British Council Tile / Bus Fabric Sim](https://scruss.com/
 ### Graphics Demo 1
 
 [![Graphics Demo](./img/gdemo1.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo)
-[![Graphics Demo 2](./img/gdemo1_2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo)
+[![Graphics Demo 2](./img/gdemo1_2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo) (c)
 
 Several nice graphics and animations, some with morphing effects. The original version uses assembler for sprite movements. CPCBasic is fast enough to do it all in BASIC.
 Here we have "Windows" and "Pac-Man".
@@ -81,10 +83,15 @@ Here we have "Windows" and "Pac-Man".
 ### Graphics Demo 2
 
 [![Graphics Demo](./img/gdemo2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo2)
-[![Graphics Demo 2](./img/gdemo2_2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo2)
+[![Graphics Demo 2](./img/gdemo2_2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo2) (c)
 
 Some more nice graphics and animations, mainly done by changing colors.
 Here we have "Blinker" and "R2D2".
+
+### Grafix Demo
+
+[![Grafix Demo](./img/grafix.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/grafix)
+[![Grafix Demo](./img/grafix2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/grafix) (c) Dino, 1990
 
 ### House for Sale
 
@@ -124,7 +131,7 @@ Check [The Joy of Programming: Mondrian Painting](https://www.youtube.com/watch?
 [![Schneider CPC 6128 Demo](./img/scpc6128m.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/scpc6128)
 (c) Schneider/Amstrad, 1985
 
-The complete demo.
+The complete demo. Additional data file for Schneider logo: scpc6128.dat.
 
 The [Can-Can sound](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/cancan) can also be played separately.
 
@@ -178,7 +185,13 @@ A lander clone from [The Amstrad Program Book](https://archive.org/details/Amstr
 ### Copter Patrol
 
 [![Copter Patrol](./img/copter.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/copter)
-[![Copter Patrol](./img/copter2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/copter) (c)
+[![Copter Patrol](./img/copter2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/copter) (c) Christian Moeller, 1985
+
+### CPCanabalt
+
+[![CPCanabalt](./img/canabalt.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/canabalt) (c) Logiker, 2019
+
+From the [BASIC 10-Liner Contest 2019](https://gkanold.wixsite.com/homeputerium/kopie-von-games-list-2019-2).
 
 ### Crib (Cribbage v1)
 
@@ -210,9 +223,12 @@ To select an action during the game, use joystick or numpad numbers.
 
 ### Inka Sogra
 
+[![Inka Sogra](./img/inka.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/inka)
+[![Inka Sogra](./img/inka2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/inka) (c) F. Meurer
+
 ### Jack-Pot
 
-[![Jack-Pot](./img/jackpot.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/jackpot) (c) P.S.I., 1985
+[![Jack-Pot](./img/jackpot.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/jackpot) (c) Jean-François SEHAN, 1985
 
 ### Klondike
 
@@ -232,6 +248,7 @@ To select an action during the game, use joystick or numpad numbers.
 
 [![Mini Chess](./img/mchess.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/mchess) (c) Matthias Uphoff, 1986
 
+Additional file with learned positions: mchess.dat.
 German Documentation can be found at [Software Experiment 6](http://cpctech.cpc-live.com/docs/dse/softex06.html).
 
 ### Patience: The Card Game
@@ -242,6 +259,18 @@ German Documentation can be found at [Software Experiment 6](http://cpctech.cpc-
 ### President (Praesident)
 
 [![President (Praesident)](./img/preside.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/preside) (c)
+
+### Rogue Descender
+
+[![Rogue Descender](./img/roguedes.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/roguedes) (c) Graham Briggs
+
+BASIC 10-liner.
+
+### Shielding Color
+
+[![Shielding Color](./img/scolor.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/scolor) (c) Antonio "acorpascuenca" Corpas Cuenca, 2019
+
+From the [BASIC 10-Liner Contest 2019](https://gkanold.wixsite.com/homeputerium/kopie-von-games-list-2019-2).
 
 ### Solitair
 
@@ -279,11 +308,17 @@ Check [2D Star Dodge flies again!](https://scruss.com/blog/2012/09/08/2d-star-do
 [![Sultan's Maze](./img/sultan2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/sultan2)
 (c) Gem Software, 1984
 
-On a real CPC, the game is rather slow, so I never played it. With CPCBasic it has a good speed now...
+On a real CPC, the game is rather slow, so I never played it. With CPCBasic it has a good speed now.
 
 ### Sunburst Contamination
 
 [![Sunburst Contamination](./img/sunburst.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/sunburst) (c)
+
+### Tanks Alot
+
+[![Tanks Alot!](./img/tanks.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/tanks) (c) Ross "Out Bush" Simpson, 2019
+
+From the [BASIC 10-Liner Contest 2019](https://gkanold.wixsite.com/homeputerium/kopie-von-games-list-2019-2).
 
 ### Titan
 
@@ -299,29 +334,14 @@ On a real CPC, the game is rather slow, so I never played it. With CPCBasic it h
 ### Yahtzee (Kniffel)
 
 [![Yahtzee (Kniffel)](./img/yahtzee.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/yahtzee)
-[![Yahtzee (Kniffel)](./img/yahtzee2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/yahtzee) (c) J. E. Muschik
+[![Yahtzee (Kniffel)](./img/yahtzee2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/yahtzee) (c) J. E. Muschik, 1985
 
 ### Yahtzee 2 (Kniffel)
 
-## Some 10-Liner Games
+[![Yahtzee 2 (Kniffel)](./img/yahtzee2_1.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/yahtzee2)
+[![Yahtzee 2 (Kniffel)](./img/yahtzee2_2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/yahtzee2) (c) Veb Mikroelektronik Muehlhausen
 
-The games from 2019 are from the [BASIC 10-Liner Contest 2019](https://gkanold.wixsite.com/homeputerium/kopie-von-games-list-2019-2).
-
-### CPCanabalt
-
-[![CPCanabalt](./img/canabalt.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/canabalt) (c) Logiker, 2019
-
-### Rogue Descender
-
-[![Rogue Descender](./img/roguedes.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/roguedes) (c) Graham Briggs
-
-### Shielding Color
-
-[![Shielding Color](./img/scolor.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/scolor) (c) Antonio "acorpascuenca" Corpas Cuenca, 2019
-
-### Tanks Alot
-
-[![Tanks Alot!](./img/tanks.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/tanks) (c) Ross "Out Bush" Simpson, 2019
+This version is based on Yahtzee 1 and uses MODE 1 and BASIC 1.1
 
 ## Some Apps Highlights
 
@@ -334,7 +354,11 @@ The games from 2019 are from the [BASIC 10-Liner Contest 2019](https://gkanold.w
 [![CPC Doodle](./img/doodle.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/doodle/doodle)
 [![CPC Doodle](./img/doodle2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/doodle/doodle) (c) Markus Hohmann, 2018
 
+Additional files: Three example drawings 2cv.drw, doodle.drw and mallet.drw.
+
 ### Lifespan (Lebenserwartung)
+
+[![Lifespan](./img/lifespan.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/lifespan) (c)
 
 ### Multitext CPC
 
@@ -350,6 +374,10 @@ Write a number in English, German or Bavarian
 ### Symbol Generator
 
 [![Symbol Generator](./img/sygen.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/sygen) (c) SkulleateR
+
+## Tarot Reader
+
+[![Tarot Reader](./img/tarot.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/tarot) (c) TODO
 
 ### Time Tester
 
@@ -432,6 +460,10 @@ Roxette: Listen To Your Heart
 
 U Can't Touch This (MC Hammer)
 
+### (Test) Separate Music Readme
+
+[Music collection](./apps/music/README.md)
+
 ## Some BasiCode programs
 
 These programs use the [BasiCode](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/basicode) library which allows to write BASIC programs which run on systems with different BASIC dialects.
@@ -460,6 +492,11 @@ Ask the doctor ("Der kleine Hausarzt") in German language.
 
 [![Ellipses](./img/ellipses.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/ellipses)
 [![Ellipses](./img/ellipses2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/ellipses) (c) Jaap Wieles
+
+### Figures
+
+[![Figures](./img/figures.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/figures)
+[![Figures](./img/figures2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=basicode/figures) (c) Roland van Vugt, 1986
 
 ### Friendship
 
@@ -513,4 +550,4 @@ If you improve some of the programs, please send me an update. Or upload them to
 
 --
 
-### **mv, 10/2020**
+### **mv, 11/2020**
