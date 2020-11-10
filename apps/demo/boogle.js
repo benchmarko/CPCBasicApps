@@ -5,6 +5,8 @@
 cpcBasic.addItem("", function () { /*
 1 rem boogle - Boogle
 2 rem
+3 rem Modifications: delay
+4 rem
 10 MODE 0:BORDER 0
 20 GRAPHICS PAPER 0
 30 FOR D=165 TO 65000
@@ -18,8 +20,10 @@ cpcBasic.addItem("", function () { /*
 110 FOR F=1 TO 100
 120 DRAW F*COS(F*D),F*SIN(F*D),(F MOD 15)+1
 130 NEXT F
-140 FOR X=1 TO 1000
+140 FOR X=1 TO 1000/10
 150 INK (X MOD 15)+1,(X MOD 4)+2
+155 call &bd19
 160 NEXT X
+165 call &bd19
 170 NEXT D
 */ });

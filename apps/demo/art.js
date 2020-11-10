@@ -558,4 +558,13 @@ cpcBasic.addItem("", function () { /*
 5480 FOR n=1 TO 16:PRINT#9,qnk(n):NEXT n:CLOSEOUT
 5490 hd$=".srn":t$=ft$+hd$:SAVE t$,b,49152,16384
 5500 RETURN
+19990 '
+20000 'org #7800
+20010 'ld a,(ix+#00)
+20020 'call #bc35 ;SCR GET INK
+20030 'ld l,(ix+#02)
+20040 'ld h,(ix+#03)
+20050 'ld (hl),b
+20060 'ret
+20070 '
 */ });

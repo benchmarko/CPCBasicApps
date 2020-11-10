@@ -4,7 +4,7 @@
 
 cpcBasic.addItem("", function () { /*
 1 rem jackpot - Jack-Pot
-2 rem © P.S.I. (1985)
+2 rem (c) Jean-François SEHAN, 1985 / © P.S.I. (1985)
 3 rem https://www.cpc-power.com/index.php?page=detail&num=6754 , https://amstrad.eu/jack-pot/
 4 rem Modifications: delay; input F=fast 
 5 rem

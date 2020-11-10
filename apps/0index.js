@@ -49,8 +49,12 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Symbol Generator 2x2"
 	},
 	{
-    	"key": "apps/timetest",
+    	"key": "apps/tarot",
 		"title": "Time Tester"
+	},
+	{
+    	"key": "apps/timetest",
+		"title": "Tarot Reader"
 	},
 	{
     	"key": "basicode/basicode",
@@ -71,6 +75,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "basicode/ellipses",
 		"title": "Ellipses (Ellipsen)"
+	},
+	{
+    	"key": "basicode/figures",
+		"title": "Figures (Figuren)"
 	},
 	{
     	"key": "basicode/friendsh",
@@ -159,6 +167,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "demo/gdemo2",
 		"title": "Graphics Demo 2 (Grafik Demo)"
+	},
+	{
+    	"key": "demo/grafix",
+		"title": "Grafix Demo"
 	},
 	{
     	"key": "demo/house",

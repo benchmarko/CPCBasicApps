@@ -3,6 +3,9 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
+1 rem sayit - Sayit (Sags)
+2 rem (c) Wolfgang Rauneker, 1986
+3 rem
 10 '
 20 '           SAGS
 30 '      Copyright 1986 by

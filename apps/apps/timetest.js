@@ -266,7 +266,7 @@ cpcBasic.addItem("", function () { /*
 18060 ?chr$(&93);string$(&15,&9a);chr$(&9b);string$(&10,&9a);chr$(&99);
 18070 return
 18080 '
-18490 'duplicate character matrix if ch to chr 254 and 255:
+18490 'duplicate character matrix of ch to chr 254 and 255:
 18510 ad1=hm-(256-ch)*8:'+(256-ch)*8
 18520 ad2=hm-(256-254)*8 :'char 254, and 255 after that
 18530 for i=0 to 7

@@ -4,10 +4,11 @@
 
 cpcBasic.addItem("", function () { /*
 1 rem inka - Inka Sogra
-2 rem (c)
-3 rem
-4 rem
-5 clear:gosub 10010
+2 rem (c) F. Meurer
+3 rem Modifications: delay
+4 rem Just part of the program? TODO: Convert ASM code if needed
+5 rem
+6 clear:gosub 10010
 9 FOR x=43776 TO 43815:READ a:POKE x,a:NEXT x:DATA &f3,&21,0,&c0,&7e,&2f,&77,&23,&23,&23,&7c,&7a,&c2,4,171,&fb,201,&f3,33,0,&c0,17,0,64,&18,7,&f3,33,0,64,17,0,&c0,1,0,64,&ed,&b0,&fb,201
 10 a$=" ":hisc=0:ti2=0:hi$="GONZO":EVERY 2 GOSUB 980
 20 DI:me=3:lev=80
@@ -22,7 +23,7 @@ cpcBasic.addItem("", function () { /*
 110 IF b$="b" OR b$="a" OR b$="n" THEN PEN 3 
 120 PRINT b$;:PEN 1:NEXT:NEXT:CALL 43793
 130 EI:x=39:y=24:ti=TIME:LOCATE 1,25:PRINT"LEVEL "(80-lev)/20+1:LOCATE 12,25:PRINT"MEN "me
-140 FOR s=1 TO lev:NEXT:a=JOY(0):IF a=0 THEN LOCATE x,y:PRINT"i":GOTO 140
+140 FOR s=1 TO lev/10:call &bd19:NEXT:a=JOY(0):IF a=0 THEN LOCATE x,y:PRINT"i":GOTO 140
 150 IF a=16 THEN 140
 160 jmp=0:IF a>16 THEN a=a-16:jmp=1
 170 SOUND 2,119,2,7,0,1
@@ -107,13 +108,14 @@ cpcBasic.addItem("", function () { /*
 1020 IF so=3 THEN so=319
 1030 IF so=4 THEN so=284
 1040 SOUND 1,so,20:RETURN
-2000 T=JOY(0):IF T=0 THEN 2000 ELSE PRINT T:GOTO 2000
+2000 call &bd19:T=JOY(0):IF T=0 THEN 2000 ELSE PRINT T:GOTO 2000
 9990 '
 10010 MODE 1:'CLEAR
 10040 BORDER 0:m(1)=26:m(2)=24:m(3)=6:INK 0,0:INK 1,26:INK 2,24:INK 3,6
 10041 IF PEEK(&4000)<>255 THEN SYMBOL AFTER 32
 10070 MEMORY &3FFF:POKE &4000,255
 10130 ENT 1,50,20,1:ENT 2,100,2,5:ENT 3,50,30,1:ENT 4,5,10,1
+10145 'goto 10440
 10210 SYMBOL 97,0,0,0,0,60,226,255,255
 10220 SYMBOL 98,66,165,153,133,141,66,102,24
 10230 SYMBOL 99,0,8,28,14,54,4,8,4
@@ -150,4 +152,35 @@ cpcBasic.addItem("", function () { /*
 10560 NEXT
 10570 RETURN
 10580 '
+19980 '
+19990 'disassembly of &ab00-&ab27
+20000 'org #ab00 (43776)
+20001 'di
+20002 'ld hl,#c000
+20003 '.lab04
+20004 'ld a,(hl)
+20005 'cpl
+20006 'ld (hl),a
+20007 'inc hl
+20008 'inc hl
+20009 'inc hl
+20010 'ld a,h
+20011 'ld a,d
+20012 'jp nz,lab04
+20013 'ei
+20014 'ret
+20015 'di (.lab11 = 43793)
+20016 'ld hl,#c000
+20017 'ld de,#4000
+20018 'jr lab21
+20019 'di (.lab1a = 43802)
+20020 'ld hl,#4000
+20021 'ld de,#c000
+20022 '.lab21
+20023 'ld bc,#4000
+20024 'ldir
+20025 'ei
+20026 'ret
+20027 ';(.lab27)
+20028 '
 */ });

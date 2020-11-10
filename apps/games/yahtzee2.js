@@ -4,10 +4,9 @@
 
 cpcBasic.addItem("", function () { /*
 1 rem yahtzee2 - Yahtzee 2 (Kniffel)
-2 rem (c) 
+2 rem (c) Veb Mikroelektronik Muehlhausen
 3 rem https://www.cpc-power.com/index.php?page=detail&num=11927
-4 rem Modification: put in one file; typo in 1790
-5 rem
+4 rem Modification: put in one file; typo in 1790; skip intro music
 6 rem This version is based on Yahtzee 1 and uses MODE 1 and BASIC 1.1
 8 gosub 5000:'part1
 9 rem part2
@@ -23,8 +22,9 @@ cpcBasic.addItem("", function () { /*
 100 DIM wuerfel%(5,2):WINDOW #0,5,36,9,17
 110  INK 1,26:BORDER 0
 120 FOR spv=0 TO 390 STEP 70:FOR sph=0 TO 640 STEP 74:wwt=INT(RND*6)+1
-130 GOSUB 330:GOSUB 430:NEXT:NEXT:CLS #0
-140 FOR i=1 TO 12:GOSUB 330:NEXT
+130 if skip=0 then if inkey$="" then GOSUB 330 else skip=1
+135 GOSUB 430:NEXT:NEXT:CLS #0
+140 if skip=0 then FOR i=1 TO 12:GOSUB 330:NEXT
 150 INK 0,1:BORDER 2 
 160 GOTO 570
 180 IF cor%=0 GOTO 190 ELSE IF jyw=99 THEN 310
@@ -302,7 +302,7 @@ cpcBasic.addItem("", function () { /*
 5130 LOCATE 8,17: PRINT "veb"
 5140 LOCATE 10,19:PRINT "mikroelektronik"
 5150 LOCATE 24,21:PRINT "m"CHR$(255)"hlhausen"
-5160 FOR n=0 TO 26 STEP 2:INK 1,n:FOR i=0 TO 200 :NEXT:NEXT:INK 1,24
+5160 FOR n=0 TO 26 STEP 2:INK 1,n:FOR i=0 TO 200/20:call &bd19 :NEXT:NEXT:INK 1,24
 5170 WINDOW 7,40,22,25:PRINT:PRINT
 5180 'RUN"kniffel1.bas"
 5190 return

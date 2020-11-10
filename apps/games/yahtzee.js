@@ -4,10 +4,10 @@
 
 cpcBasic.addItem("", function () { /*
 1 rem yahtzee - Yahtzee (Kniffel)
-2 rem (c) J. E. Muschik
-3 rem
-4 rem Modification: put in one file; typo in 2040; skip intro music in 250;
-6 rem Bug fixes: xx(3) (=number of 3's) inserted in 6 MAX conditions; 2720: yy=yy+1; 2520: jm; 1320: PRINT#1
+2 rem (c) J. E. Muschik, 1985 / HC Mein Home-Computer, 1985
+3 rem https://cpcrulez.fr/GamesTest/kniffel-mein_home-computer.htm
+4 rem Modification: put in one file; delays; skip intro music in 250;
+6 rem Corrected my typos from 1985: 1320: PRINT#1; 2040: LEN(tx$)-1);  2520: jm; 2710,2760,2780,2890,2900,2920: xx(3) (=number of 3's) was missing in 6 MAX conditions; 2720: yy=yy+1
 7 rem (other version: https://www.cpc-power.com/index.php?page=detail&num=11927 BASIC 1.1, mode 1 version)
 8 rem
 9 rem Part 1

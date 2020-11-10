@@ -4,9 +4,12 @@
 
 cpcBasic.addItem("", function () { /*
 1 rem copter - Copter Patrol
-2 rem
-3 rem Modifications: delay; skip intro text and music
-4 rem
+2 rem (c) Christian Moeller, 1985 / Tronic-Verlag, 1985
+3 rem https://www.cpc-power.com/index.php?page=detail&num=13251
+4 rem https://cpcrulez.fr/GamesTest/copter-patrol.htm
+5 rem 
+6 rem Modifications: delay; allow to skip intro text and music
+7 rem
 160 GOTO 5000  
 200 EVERY 50,3 GOSUB 1500:EVERY 60,2 GOSUB 2770:EVERY 100,1 GOSUB 2920 
 210 RETURN
@@ -287,7 +290,7 @@ cpcBasic.addItem("", function () { /*
 5030 READ i,j,anw$,col:IF j=25 THEN d=6:GOSUB 5280
 5040 IF i=1 AND j=7 THEN anw$=name$
 5050 LOCATE i,j:PEN col:FOR a=1 TO LEN(anw$):PRINT MID$(anw$,a,1);:if skip=0 then if inkey$="" then SOUND 2,30,d,5 else skip=1
-5060 IF (SQ(2) AND 128)=128 THEN 5060
+5060 IF (SQ(2) AND 128)=128 THEN call &bd19:goto 5060
 5070 NEXT a:FOR b=1 TO 50/20:call &bd19:NEXT:IF j=5 THEN GOSUB 5300:GOTO 5030:ELSE IF j=25 THEN GOTO 5310 ELSE GOTO 5030
 5080 DATA 7,2,"---------------------------",2 
 5090 DATA 1,4,"Identifizierung:-",3
