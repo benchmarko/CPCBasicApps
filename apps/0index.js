@@ -50,11 +50,11 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
     	"key": "apps/tarot",
-		"title": "Time Tester"
+		"title": "Tarot Reader"
 	},
 	{
     	"key": "apps/timetest",
-		"title": "Tarot Reader"
+		"title": "Time Tester"
 	},
 	{
     	"key": "basicode/basicode",
@@ -155,6 +155,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "demo/btilesim",
 		"title": "British Council Tile / Bus Fabric Sim"
+	},
+	{
+    	"key": "demo/circlewr",
+		"title": "Circle Writer"
 	},
 	{
     	"key": "demo/flags",

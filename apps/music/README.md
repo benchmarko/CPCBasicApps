@@ -18,7 +18,7 @@ A fantastic tune! One of my favorites.
 
 ### Axel F
 
-[![Axel F](/img/axelf.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/axelf) by Harold Faltermeyer
+[![Axel F](../../img/axelf.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=music/axelf) by Harold Faltermeyer
 
 ### Bach
 

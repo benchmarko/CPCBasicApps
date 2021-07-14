@@ -28,7 +28,7 @@ CPC version of the program:
 ### 100% BASIC Demo
 
 [![100% BASIC Demo](./img/100demo.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/100demo)
-[![100% BASIC Demo](./img/100demo2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/100demo) (c) Markus Hohmann
+[![100% BASIC Demo](./img/100demo2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/100demo&input=%0d) (c) Markus Hohmann
 
 Excellent BASIC demo.
 
@@ -41,8 +41,8 @@ On a real CPC, the pre-calculation phase takes longer than 3 minutes. With CPCBa
 
 ### Art: Screens Unlimited
 
-[![Art: Screens Unlimited](./img/art.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/art)
-[![Art: Screens Unlimited](./img/art2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/art) (c)
+[![Art: Screens Unlimited](./img/art.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/art&input=11)
+[![Art: Screens Unlimited](./img/art2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/art&input=2) (c)
 
 Nice landscapes.
 
@@ -67,23 +67,27 @@ Title screen of an unfinished game with a nice tune.
 
 Check [Rob Manuel’s British Council Tile / Bus Fabric Sim](https://scruss.com/blog/2018/06/10/rob-manuels-british-council-tile-bus-fabric-sim/) on Stewart C. Russell's blog.
 
+### Circle Writer
+
+[![Circle Writer](./img/circlewr.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/circlewr) (c) COMTEC, 19xx
+
 ### Flags
 
-[![Flags](./img/flags.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/flags)
-[![Flags](./img/flags2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/flags) (c) Richard Fairhurst
+[![Flags](./img/flags.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/flags&input=1%0d)
+[![Flags](./img/flags2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/flags&input=2%0d) (c) Richard Fairhurst
 
 ### Graphics Demo 1
 
-[![Graphics Demo](./img/gdemo1.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo)
-[![Graphics Demo 2](./img/gdemo1_2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo) (c)
+[![Graphics Demo](./img/gdemo1.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo&input=A)
+[![Graphics Demo 2](./img/gdemo1_2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo&input=E) (c)
 
 Several nice graphics and animations, some with morphing effects. The original version uses assembler for sprite movements. CPCBasic is fast enough to do it all in BASIC.
 Here we have "Windows" and "Pac-Man".
 
 ### Graphics Demo 2
 
-[![Graphics Demo](./img/gdemo2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo2)
-[![Graphics Demo 2](./img/gdemo2_2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo2) (c)
+[![Graphics Demo](./img/gdemo2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo2&input=C)
+[![Graphics Demo 2](./img/gdemo2_2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/gdemo2&input=F) (c)
 
 Some more nice graphics and animations, mainly done by changing colors.
 Here we have "Blinker" and "R2D2".
@@ -108,10 +112,9 @@ Interrupt & Sound & Grafik (ISG) Demo
 
 ### Mondrian
 
-[![Mondrian](./img/mondrian.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/mondrian) (c) SRS, 2019
+[![Mondrian](./img/mondrian.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=demo/mondrian) (c) Out Bush, 2019
 
-Check [The Joy of Programming: Mondrian Painting](https://www.youtube.com/watch?v=FUp3SffxPzw) and
-[CPCwiki](https://www.cpcwiki.eu/forum/programming/mondrian-next-try-to-get-a-topic/)
+An improved version that creates more Mondrian-like paintings. For details, check the [CPCwiki](https://www.cpcwiki.eu/forum/programming/mondrian-next-try-to-get-a-topic/). The first version by SRS is based on [The Joy of Programming: Mondrian Painting](https://www.youtube.com/watch?v=FUp3SffxPzw).
 
 ### No Smoking (Screen)
 
@@ -180,12 +183,12 @@ A lander clone from [The Amstrad Program Book](https://archive.org/details/Amstr
 ### Connect 4 (Tower: 4 Gewinnt)
 
 [![Connect 4](./img/connect4.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/connect4)
-[![Connect 4](./img/connect4_2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/connect4) (c) O. Zabel
+[![Connect 4](./img/connect4_2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/connect4&input=%0d2330) (c) O. Zabel
 
 ### Copter Patrol
 
 [![Copter Patrol](./img/copter.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/copter)
-[![Copter Patrol](./img/copter2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/copter) (c) Christian Moeller, 1985
+[![Copter Patrol](./img/copter2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=games/copter&input=%20me%0d%0d%20) (c) Christian Moeller, 1985
 
 ### CPCanabalt
 
@@ -352,7 +355,7 @@ This version is based on Yahtzee 1 and uses MODE 1 and BASIC 1.1
 ### CPC Doodle
 
 [![CPC Doodle](./img/doodle.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/doodle/doodle)
-[![CPC Doodle](./img/doodle2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/doodle/doodle) (c) Markus Hohmann, 2018
+[![CPC Doodle](./img/doodle2.png)](https://benchmarko.github.io/CPCBasic/cpcbasic.html?database=apps&example=apps/doodle/doodle&input=nl2cv%0d) (c) Markus Hohmann, 2018
 
 Additional files: Three example drawings 2cv.drw, doodle.drw and mallet.drw.
 
@@ -550,4 +553,4 @@ If you improve some of the programs, please send me an update. Or upload them to
 
 --
 
-### **mv, 11/2020**
+### **mv, 07/2021**

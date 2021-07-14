@@ -4,7 +4,8 @@
 
 cpcBasic.addItem("", function () { /*
 10 rem mondrian - Mondrian
-20 rem (c) SRS, 2019
+20 rem (c) Out Bush, 2019
+25 rem Improved version that creates more Mondrian-like paintings
 30 rem https://www.cpcwiki.eu/forum/programming/mondrian-next-try-to-get-a-topic/
 40 rem https://www.youtube.com/watch?v=FUp3SffxPzw
 50 rem
