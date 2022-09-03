@@ -6,7 +6,7 @@ cpcBasic.addItem("", function () { /*
 1 rem yahtzee2 - Yahtzee 2 (Kniffel)
 2 rem (c) Veb Mikroelektronik Muehlhausen
 3 rem https://www.cpc-power.com/index.php?page=detail&num=11927
-4 rem Modification: put in one file; typo in 1790; skip intro music
+4 rem Modification: put in one file; typo in 1790; skip intro music; 210 delay
 6 rem This version is based on Yahtzee 1 and uses MODE 1 and BASIC 1.1
 8 gosub 5000:'part1
 9 rem part2
@@ -30,7 +30,7 @@ cpcBasic.addItem("", function () { /*
 180 IF cor%=0 GOTO 190 ELSE IF jyw=99 THEN 310
 190 IF maus(am)=0 GOTO 250
 200 wl=maus(am)-1
-210 jyw=JOY(wl)
+210 c.t!=time+50:while time<c.t!:call &bd19:wend:jyw=JOY(wl)
 220 IF jyw=32 THEN jyw=16
 230 IF jyw=1 OR jyw=2 OR jyw=4 OR jyw=8 OR jyw=16 GOTO 310 ELSE jyw=0
 240 GOTO 310

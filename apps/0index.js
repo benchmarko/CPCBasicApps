@@ -266,6 +266,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Cribbage (v2)"
 	},
 	{
+		"key": "games/dambust",
+		"title": "Dambusters"
+	},
+	{
 		"key": "games/duel",
 		"title": "Duel (Duell)"
 	},
