@@ -6,6 +6,111 @@
 cpcBasic.addIndex("apps", function () { /*
 [
 	{
+    	"key": "apps/advent/advedit",
+		"title": "apps/adventure Editor"
+	},
+	{
+    	"key": "apps/advent/advint",
+		"title": "apps/adventure Interpreter"
+	},
+	{
+    	"key": "apps/advent/home.adv",
+		"title": "Our Home Adventure",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/advent/goldrush.adv",
+		"title": "Goldrush Adventure",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/advent/tunnel.adv",
+		"title": "Forest Tunnel Adventure",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/animator/anibas",
+		"title": "apps/animator BASIC Viewer"
+	},
+	{
+    	"key": "apps/animator/animator",
+		"title": "apps/animator"
+	},
+	{
+    	"key": "apps/animator/biplane.anc",
+		"title": "Biplane Model",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/animator/biplane.and",
+		"title": "Biplane Animation",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/animator/blimp.anc",
+		"title": "Blimp Model",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/animator/blimp.and",
+		"title": "Blimp Animation",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/animator/box3d.anc",
+		"title": "Box 3D Model",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/animator/box3d.and",
+		"title": "Box 3D Animation",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/animator/copymate.anc",
+		"title": "Copymate Model",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/animator/copymate.and",
+		"title": "Copymate Animation",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/animator/me109.anc",
+		"title": "ME-109 Model",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/animator/me109.and",
+		"title": "ME-109 Animation",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/animator/rg1.anc",
+		"title": "RG-1 Model",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/animator/rg1.and",
+		"title": "RG-1 Animation",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/archi/archidr",
+		"title": "Little Architect Draw (BASIC)"
+	},
+	{
+    	"key": "apps/archi/archi1.bil",
+		"title": "Drawing Set 1",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/archi/archi2.bil",
+		"title": "Drawing Set 2",
+		"meta": "D"
+	},
+	{
     	"key": "apps/amsynthe",
 		"title": "Amsynthe"
 	},
@@ -13,6 +118,10 @@ cpcBasic.addIndex("apps", function () { /*
     	"key": "apps/amsynthp",
 		"title": "Amsynthe Program"
 	},
+	{
+		"key": "apps/blkedit",
+		"title": "Block Editor"
+    },
 	{
     	"key": "apps/doodle/doodle",
 		"title": "CPC Doodle"
@@ -33,8 +142,16 @@ cpcBasic.addIndex("apps", function () { /*
 		"meta": "D"
 	},
 	{
+		"key": "apps/geogra",
+		"title": "Geographics (Erkunde)"
+	},
+	{
     	"key": "apps/lifespan",
 		"title": "Lifespan (Lebenserwartung)"
+	},
+	{
+		"key": "apps/morse",
+		"title": "Morse Code (Morsen)"
 	},
 	{
     	"key": "apps/mtext",
@@ -49,12 +166,26 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Symbol Generator 2x2"
 	},
 	{
-    	"key": "apps/tarot",
-		"title": "Tarot Reader"
-	},
-	{
     	"key": "apps/timetest",
 		"title": "Time Tester"
+	},
+	{
+		"key": "apps/vidi/vidi",
+		"title": "VIDI - Der Videofilmverwalter"
+	},
+	{
+		"key": "apps/vidi/v2000.fil",
+		"title": "VIDI - Video 2000 Sammlung",
+		"meta": "D"
+	},
+	{
+		"key": "apps/vidi/vhs.fil",
+		"title": "VIDI - VHS Sammlung",
+		"meta": "D"
+	},
+	{
+		"key": "apps/vocabula",
+		"title": "Vocabulary Test (Vokabeltest)"
 	},
 	{
     	"key": "basicode/basicode",
@@ -286,12 +417,24 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Goldrush (Goldrausch)"
 	},
 	{
+		"key": "games/hopper",
+		"title": "Hopper (Hüpfer)"
+	},
+	{
+		"key": "games/hopper2",
+		"title": "Hopper: Main Part (Hüpfer)"
+	},
+	{
 		"key": "games/inka",
 		"title": "Inka Sogra"
 	},
 	{
 		"key": "games/jackpot",
 		"title": "Jack-Pot"
+	},
+	{
+		"key": "games/joker",
+		"title": "Black Joker (Der Schwarze Joker)"
 	},
 	{
 		"key": "games/klondike",
@@ -331,6 +474,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Shielding Color"
 	},
 	{
+		"key": "games/shot",
+		"title": "Shot Game (Textual)"
+	},
+	{
 		"key": "games/solitair",
 		"title": "Solitaire"
 	},
@@ -351,6 +498,15 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Stardodger Game"
 	},
 	{
+		"key": "games/states",
+		"title": "States of the Earth"
+	},
+	{
+		"key": "games/statesfx",
+		"title": "States of the Earth",
+		"meta": "D"
+	},
+	{
     	"key": "games/sultan",
 		"title": "Sultan's Maze: Amsoft Logo"
 	},
@@ -367,6 +523,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Tanks Alot!"
 	},
 	{
+    	"key": "games/tarot",
+		"title": "Tarot Reader"
+	},
+	{
     	"key": "games/titan",
 		"title": "Titan"
 	},
@@ -381,6 +541,58 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "games/yahtzee2",
 		"title": "Yahtzee 2 (Kniffel)"
+	},
+	{
+    	"key": "math/anageo",
+		"title": "Analytical Geometry"
+	},
+	{
+    	"key": "math/complex",
+		"title": "Complex numbers (Komplexe Zahlen)"
+	},
+	{
+    	"key": "math/derivat",
+		"title": "Derivatives of Polynomials (Ableitungen eines Polynoms)"
+	},
+	{
+    	"key": "math/division",
+		"title": "Division of long numbers (Division langer Zahlen)"
+	},
+	{
+    	"key": "math/euler",
+		"title": "Compute e with 1000 digits"
+	},
+	{
+    	"key": "math/factorials",
+		"title": "Big Factorials (Berechnung grosser Fakultaeten)"
+    },
+	{
+		"key": "math/fractals",
+		"title": "Fractals"
+	},
+	{
+    	"key": "math/fractions",
+		"title": "Fractions (Bruchrechnen)"
+	},
+	{
+    	"key": "math/funcarea",
+		"title": "Functional Area"
+	},
+	{
+    	"key": "math/funcspec",
+		"title": "Functional Spectrum"
+	},
+	{
+    	"key": "math/ninedig2",
+		"title": "Nine Digits 2 (tokenized BASIC)"
+	},
+	{
+    	"key": "math/quadfunc",
+		"title": "Quadratic Function (Quadratische Funktion)"
+	},
+	{
+    	"key": "math/regress",
+		"title": "Regression (Ausgleich)"
 	},
 	{
 		"key": "music/asbtune",
@@ -435,8 +647,173 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "U Can't Touch This (MC Hammer)"
 	},
 	{
+		"key": "test/1st",
+		"title": "First Test Program (empty)"
+	},
+	{
+    	"key": "test/art",
+		"title": "Computer Art"
+	},
+	{
+		"key": "test/basbankm",
+		"title": "Basic Bank Manager"
+	},
+	{
+    	"key": "test/blocky",
+		"title": "Blocky CPC Demo"
+	},
+	{
+		"key": "test/bmbench3",
+		"title": "BM Benchmark 3"
+	},
+	{
+    	"key": "test/charset",
+		"title": "Character set"
+	},
+	{
+    	"key": "test/circles",
+		"title": "Drawing circles"
+    },
+	{
+		"key": "test/circlewr",
+		"title": "Circle Writer"
+    },
+	{
+    	"key": "test/colors",
+		"title": "Colors CPC Demo"
+	},
+	{
+    	"key": "test/cpc464ch",
+		"title": "CPC 464 Character Art"
+	},
+	{
+    	"key": "test/cpcbasic",
+		"title": "CPC Basic"
+	},
+	{
+    	"key": "test/cpclib",
+		"title": "CPC Lib"
+	},
+	{
+    	"key": "test/cpcmhz",
+		"title": "CPC Mhz"
+	},
+	{
+		"key": "test/crypto1",
+		"title": "Cryptology 1"
+	},
+	{
+		"key": "test/energy0",
+		"title": "Energy Collectors 0 (Game)"
+	},
+	{
+		"key": "test/energy1",
+		"title": "Energy Collectors 1 (Game)"
+	},
+	{
+		"key": "test/energysa",
+		"title": "Energy Savers (Game)"
+	},
+	{
 		"key": "test/eramtst",
 		"title": "Expansion RAM Test"
+	},
+	{
+    	"key": "test/fancy",
+		"title": "Test copychr$"
+	},
+	{
+    	"key": "test/fill",
+		"title": "Test Fill"
+	},
+	{
+    	"key": "test/graphics",
+		"title": "Graphics CPC Demo"
+	},
+	{
+		"key": "test/keyboard",
+		"title": "Keyboard Test"
+	},
+	{
+		"key": "test/labyrinth",
+		"title": "Labyrinth"
+	},
+	{
+		"key": "test/landscape",
+		"title": "Landscape"
+	},
+	{
+		"key": "test/linemask",
+		"title": "Line Mask"
+	},
+	{
+		"key": "test/mouse",
+		"title": "Mouse escaping from a maze"
+	},
+	{
+		"key": "test/mousepa",
+		"title": "Mouse Painting"
+	},
+	{
+		"key": "test/piechart",
+		"title": "Pie Chart"
+	},
+	{
+		"key": "test/pixeltst",
+		"title": "Pixel Test (Mode 0)"
+	},
+	{
+		"key": "test/ramtest",
+		"title": "RAM Test"
+	},
+	{
+    	"key": "test/rastercircle",
+		"title": "Raster Circle"
+	},
+	{
+		"key": "test/rectangles",
+		"title": "Rectangles Test"
+	},
+	{
+		"key": "test/reftime",
+		"title": "Reference Timings"
+	},
+	{
+		"key": "test/rotatio",
+		"title": "Rotatio"
+	},
+	{
+		"key": "test/scrtest",
+		"title": "Screen Memory Test"
+	},
+	{
+		"key": "test/seconds",
+		"title": "Seconds Test"
+	},
+	{
+		"key": "test/scrudu",
+		"title": "Scrudu (Gedichte)"
+	},
+	{
+		"key": "test/scrudu.vok",
+		"title": "Scrudu Vocabulary",
+		"meta": "D"
+	},
+	{
+		"key": "test/simple",
+		"title": "Simple Labyrinth"
+	},
+	{
+		"key": "test/soundtest1",
+		"title": "Sound Test 1"
+	},
+	{
+		"key": "test/sphere",
+		"title": "Sphere"
+	},
+	{
+		"key": "test/stars",
+		"title": "Stars Test 1 and 2"
 	}
 ]
 */ });
