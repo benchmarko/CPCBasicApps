@@ -9,11 +9,12 @@ cpcBasic.addItem("", function () { /*
 4 rem
 100 REM Huepfer.Lader
 110 ENV 1,1,10,2,10,-1,5
-120 MODE 0:mi=10:w=3:RESTORE 500:GOSUB 170
+120 MODE 0:mi=10:w=3:RESTORE 500:GOSUB 165
 130 t$="":WHILE t$<>"J" AND t$<>"N":t$=UPPER$(INKEY$):WEND
-140 IF t$="J" THEN MODE 1:RESTORE 520:mi=20:w=1:GOSUB 170
-150 RESTORE 700:GOSUB 170
+140 IF t$="J" THEN MODE 1:RESTORE 520:mi=20:w=1:GOSUB 165:t$="x":while t$<>"":t$=inkey$:wend:call &bb18
+150 RESTORE 700:GOSUB 165
 160 PEN 1:RUN"!HOPPER2" :'"!HUEPFER2.BAS"
+165 skip=0
 170 READ t$:IF t$="" THEN RETURN
 180 LOCATE mi-LEN(t$)/2,VPOS(#0)+w:READ p:PEN p
 190 FOR i=1 TO LEN(t$):PRINT MID$(t$,i,1);

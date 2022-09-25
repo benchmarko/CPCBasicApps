@@ -30,8 +30,9 @@ cpcBasic.addItem("", function () { /*
 350 FOR lp=1 TO 360 STEP 10:col=col+1:IF col>3 THEN col=1   
 360 MOVE 100*COS(lp),100*SIN(lp),col
 370 PRINT"MESSAGE";:NEXT lp
-380 INK 1,26:call &bd19:INK 1,0:INK 2,26:call &bd19:INK 2,0
-390 INK 3,26:call &bd19:INK 3,0:if inkey$="" then GOTO 380 else run
+380 INK 1,26:gosub 395:INK 1,0:INK 2,26:gosub 395:INK 2,0
+390 INK 3,26:gosub 395:INK 3,0:if inkey$="" then GOTO 380 else run
+395 t!=time+25:while time<t!:call &bd19:wend:return
 400 '
 409 'Diamant
 410 INK 11,26:FOR t=0 TO 15:INK t,t:NEXT:INK 11,26
@@ -88,6 +89,6 @@ cpcBasic.addItem("", function () { /*
 1250 PAPER 1:PEN 2:LOCATE 18,6:PRINT CHR$(231);" ";STRING$(6,CHR$(133)):LOCATE 18,2:PRINT CHR$(214);" ";CHR$(143);" ";CHR$(215)
 1260 PAPER 0:LOCATE 16,4:PRINT"  ":LOCATE 16,5:PRINT"  ":LOCATE 20,17:PRINT CHR$(238):PAPER 3:LOCATE 17,8:PRINT STRING$(7,CHR$(154)):a$=CHR$(140)+CHR$(140):b$=" ":PEN 2:LOCATE 17,9:PRINT a$;b$;a$;b$;b$:LOCATE 17,10:PRINT b$;b$;a$;b$;a$   
 1270 PLOT 248,342,0:TAG:PRINT CHR$(238);:TAGOFF
-1280 if inkey$="" then call &bd19:GOTO 1280 else run
+1280 if inkey$="" then GOTO 1280 else clg 0:run
 1290 '
 */ });

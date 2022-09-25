@@ -1,11 +1,11 @@
 # CPCBasic Apps Collection
 
-CPCBasicApps is a collection of CPC BASIC apps.
+[CPCBasicApps](https://benchmarko.github.io/CPCBasicApps/) is a collection of CPC BASIC apps.
 They can be run on a Amstrad CPC 464/664/6128, in an emulator or with
 [CPCBasic](https://benchmarko.github.io/CPCBasic/) or
 [CPCBasicTS](https://benchmarko.github.io/CPCBasicTS/).
 
-(TODO: If you start the programs from this collection, a compiled [CPCBasicTS](https://github.com/benchmarko/CPCBasicApps/dist/index.html) is used.
+(TODO: If you start the programs from this collection, a compiled [CPCBasicTS](https://benchmarko.github.io/CPCBasicApps/dist/index.html) is used.
  Local link: [CPCBasicTS](./dist/index.html) )
 
 Links:

@@ -10,59 +10,66 @@ Links:
 
 ## Some Math Highlights
 
-TODO...
-
 ### anageo - Analytical Geometry
 
-[![Analytical Geometry](./img/anageo.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=math/anageo)
+[![Analytical Geometry](./img/anageo.png)](../dist/index.html?database=apps&example=math/anageo)
+[![Analytical Geometry](./img/anageo2.png)](../dist/index.html?database=apps&example=math/anageo)
 
 ### complex - Complex numbers (Komplexe Zahlen)
 
-[![Complex numbers (Komplexe Zahlen)](./img/complex.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=math/complex)
+[![Complex numbers (Komplexe Zahlen)](./img/complex.png)](../dist/index.html?database=apps&example=math/complex)
 
 ### derivat - Derivatives of Polynomials (Ableitungen eines Polynoms)
 
-[![Derivatives of Polynomials (Ableitungen eines Polynoms)](./img/derivat.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=math/derivat)
+[![Derivatives of Polynomials (Ableitungen eines Polynoms)](./img/derivat.png)](../dist/index.html?database=apps&example=math/derivat)
 
 ### division - Division of long numbers (Division langer Zahlen)
 
-[![Division of long numbers (Division langer Zahlen)](./img/division.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=math/division)
+[![Division of long numbers (Division langer Zahlen)](./img/division.png)](../dist/index.html?database=apps&example=math/division)
 
 ### euler - Compute e with 1000 digits
 
-[![Compute e with 1000 digits](./img/euler.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=math/euler)
+[![Compute e with 1000 digits](./img/euler.png)](../dist/index.html?database=apps&example=math/euler)
 
 ### factorials - Big Factorials (Berechnung grosser Fakultaeten)
 
-[![Big Factorials (Berechnung grosser Fakultaeten)](./img/factorials.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=math/factorials)
+[![Big Factorials (Berechnung grosser Fakultaeten)](./img/factorials.png)](../dist/index.html?database=apps&example=math/factorials)
 
 ### Fractals
 
-[![Fractals](./img/fractals.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=math/fractals) (c) A. Mueller & CPC Internat., 1992
+[![Fractals](./img/fractals.png)](../dist/index.html?database=apps&example=math/fractals) (c) A. Mueller & CPC Internat., 1992
 
 ### fractions - Fractions (Bruchrechnen)
 
-[![Fractions (Bruchrechnen)](./img/fractions.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=math/fractions)
+[![Fractions (Bruchrechnen)](./img/fractions.png)](../dist/index.html?database=apps&example=math/fractions)
+[![Fractions (Bruchrechnen)](./img/fractions2.png)](../dist/index.html?database=apps&example=math/fractions)
 
 ### funcarea - Functional Area
 
-[![Functional Area](./img/funcarea.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=math/funcarea)
+[![Functional Area](./img/funcarea.png)](../dist/index.html?database=apps&example=math/funcarea)
 
 ### funcspec - Functional Spectrum
 
-[![Functional Spectrum](./img/funcspec.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=math/funcspec)
+[![Functional Spectrum](./img/funcspec.png)](../dist/index.html?database=apps&example=math/funcspec)
+[![Functional Spectrum](./img/funcspec2.png)](../dist/index.html?database=apps&example=math/funcspec)
 
 ### ninedig2 - Nine Digits 2 (tokenized BASIC)
 
-[![Nine Digits 2](./img/ninedig2.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=math/ninedig2)
+[![Nine Digits 2](./img/ninedig2.png)](../dist/index.html?database=apps&example=math/ninedig2)
 
 ### Quadratic Function
 
-[![Quadratic Function](./img/quadfunc.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=quadfunc) TODO
+[![Quadratic Function](./img/quadfunc.png)](../dist/index.html?database=apps&example=quadfunc)
+[![Quadratic Function](./img/quadfunc2.png)](../dist/index.html?database=apps&example=quadfunc) TODO
+
+### raytrace - Raytracing
+
+[![Raytracing](./img/raytrace.png)](../dist/index.html?database=apps&example=math/raytrace)
 
 ### regress - Regression (Ausgleich)
 
-[![Regression (Ausgleich)](./img/regress.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=math/regress)
+[![Regression (Ausgleich)](./img/regress.png)](../dist/index.html?database=apps&example=math/regress)
+[![Regression (Ausgleich)](./img/regress2.png)](../dist/index.html?database=apps&example=math/regress)
 
 --
 

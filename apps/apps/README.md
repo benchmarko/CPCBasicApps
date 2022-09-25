@@ -14,11 +14,11 @@ Links:
 
 Adventure Editor
 
-[![Adventure Editor](./img/advedit.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/advent/advedit) (c)
+[![Adventure Editor](./img/advedit.png)](../dist/index.html?database=apps&example=apps/advent/advedit) (c)
 
 Adventure Interpreter
 
-[![Adventure Interpreter](./img/advint.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/advent/advint) (c)
+[![Adventure Interpreter](./img/advint.png)](../dist/index.html?database=apps&example=apps/advent/advint) (c)
 
 Additional files:
 
@@ -28,16 +28,16 @@ Additional files:
 
 ### Amsynthé
 
-[![Amsynthé](./img/amsynthe.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/amsynthe) (c) Hebdogiciel, 1986
+[![Amsynthé](./img/amsynthe.png)](../dist/index.html?database=apps&example=apps/amsynthe) (c) Hebdogiciel, 1986
 
 ### Animator
 
-[![Animator](./img/animator.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/animator/animator) (c)
+[![Animator](./img/animator.png)](../dist/index.html?database=apps&example=apps/animator/animator) (c)
 
 (TODO: Make it working with CPCBasic)
 
-[![Animator BASIC Viewer: Box 3D](./img/anibas.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/animator/anibas)
-[![Animator BASIC Viewer: Blimp](./img/anibas2.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/animator/anibas) (c)
+[![Animator BASIC Viewer: Box 3D](./img/anibas.png)](../dist/index.html?database=apps&example=apps/animator/anibas)
+[![Animator BASIC Viewer: Blimp](./img/anibas2.png)](../dist/index.html?database=apps&example=apps/animator/anibas) (c)
 
 Additional files:
 
@@ -58,8 +58,8 @@ Additional files:
 
 Little Architect Draw (BASIC viewer)
 
-[![Little Architect Draw](./img/archidr.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/archi/archidr)
-[![Little Architect Draw](./img/archidr2.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/archi/archidr) (c)
+[![Little Architect Draw](./img/archidr.png)](../dist/index.html?database=apps&example=apps/archi/archidr)
+[![Little Architect Draw](./img/archidr2.png)](../dist/index.html?database=apps&example=apps/archi/archidr) (c)
 
 Additional files:
 
@@ -68,12 +68,12 @@ Additional files:
 
 ### blkedit - Block Editor
 
-[![Block Editor](./img/blkedit.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/blkedit)
+[![Block Editor](./img/blkedit.png)](../dist/index.html?database=apps&example=apps/blkedit)
 
 ### CPC Doodle
 
-[![CPC Doodle](./img/doodle.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/doodle/doodle)
-[![CPC Doodle](./img/doodle2.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/doodle/doodle&input=nl2cv%0d) (c) Markus Hohmann, 2018
+[![CPC Doodle](./img/doodle.png)](../dist/index.html?database=apps&example=apps/doodle/doodle)
+[![CPC Doodle](./img/doodle2.png)](../dist/index.html?database=apps&example=apps/doodle/doodle&input=nl2cv%0d) (c) Markus Hohmann, 2018
 
 Additional files: Three example drawings:
 
@@ -81,42 +81,46 @@ Additional files: Three example drawings:
 - doodle.drw
 - mallet.drw
 
+### eliza - Eliza (Boss)
+
+[![elize](./img/eliza.png)](../dist/index.html?database=apps&example=apps/eliza)
+
 ### geogra - Geographics (Erkunde)
 
-[![geogra](./img/geogra.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/geogra) TODO
+[![geogra](./img/geogra.png)](../dist/index.html?database=apps&example=apps/geogra) TODO
 
 ### Lifespan (Lebenserwartung)
 
-[![Lifespan](./img/lifespan.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/lifespan) (c)
+[![Lifespan](./img/lifespan.png)](../dist/index.html?database=apps&example=apps/lifespan) (c)
 
 ### morse - Morse Code (Morsen)
 
-[![Morse Code (Morsen)](./img/morse.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/morse)
+[![Morse Code (Morsen)](./img/morse.png)](../dist/index.html?database=apps&example=apps/morse)
 
 ### Multitext CPC
 
-[![Multitext CPC](./img/mtext.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/mtext)
-[![Multitext CPC](./img/mtext2.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/mtext) (c) Rainbow Arts, 1985
+[![Multitext CPC](./img/mtext.png)](../dist/index.html?database=apps&example=apps/mtext)
+[![Multitext CPC](./img/mtext2.png)](../dist/index.html?database=apps&example=apps/mtext) (c) Rainbow Arts, 1985
 
 ### Sayit (Sag's)
 
-[![Sayit](./img/sayit.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/sayit) (c) Wolfgang Rauneker, 1986
+[![Sayit](./img/sayit.png)](../dist/index.html?database=apps&example=apps/sayit) (c) Wolfgang Rauneker, 1986
 
 Write a number in English, German or Bavarian
 
 ### Symbol Generator
 
-[![Symbol Generator](./img/sygen.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/sygen) (c) SkulleateR
+[![Symbol Generator](./img/sygen.png)](../dist/index.html?database=apps&example=apps/sygen) (c) SkulleateR
 
 ### Time Tester
 
-[![Time Tester](./img/timetest.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/timetest)
-[![Time Tester](./img/timetest2.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/timetest) (c)
+[![Time Tester](./img/timetest.png)](../dist/index.html?database=apps&example=apps/timetest)
+[![Time Tester](./img/timetest2.png)](../dist/index.html?database=apps&example=apps/timetest) (c)
 
 ### VIDI
 
-[![VIDI](./img/vidi.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/vidi/vidi)
-[![VIDI](./img/vidi2.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/vidi/vidi) (c)
+[![VIDI](./img/vidi.png)](../dist/index.html?database=apps&example=apps/vidi/vidi)
+[![VIDI](./img/vidi2.png)](../dist/index.html?database=apps&example=apps/vidi/vidi) (c)
 
 Additional files:
 
@@ -125,7 +129,7 @@ Additional files:
 
 ### vocabula - Vocabulary Test (Vokabeltest)
 
-[![vocabula - Vocabulary Test (Vokabeltest)](./img/vocabula.png)](https://benchmarko.github.io/CPCBasic/index.html?database=apps&example=apps/vocabula)
+[![vocabula - Vocabulary Test (Vokabeltest)](./img/vocabula.png)](../dist/index.html?database=apps&example=apps/vocabula)
 
 --
 

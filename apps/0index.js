@@ -142,6 +142,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"meta": "D"
 	},
 	{
+		"key": "apps/eliza",
+		"title": "Eliza (Boss)"
+	},
+	{
 		"key": "apps/geogra",
 		"title": "Geographics (Erkunde)"
 	},
@@ -405,6 +409,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Duel (Duell)"
 	},
 	{
+		"key": "games/dungeons",
+		"title": "Dungeons (8 Bit Dungeons)"
+	},
+	{
 		"key": "games/emperor",
 		"title": "Emperor (Kaiser)"
 	},
@@ -589,6 +597,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "math/quadfunc",
 		"title": "Quadratic Function (Quadratische Funktion)"
+	},
+	{
+    	"key": "math/raytrace",
+		"title": "Raytracing"
 	},
 	{
     	"key": "math/regress",

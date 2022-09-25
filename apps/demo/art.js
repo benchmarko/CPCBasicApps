@@ -6,7 +6,7 @@ cpcBasic.addItem("", function () { /*
 1 rem art - Art: Screens Unlimited
 2 rem
 3 rem https://www.cpcwiki.eu/forum/programming/basic-files/ (BASIC02.DSK)
-4 rem TODO: call &7800
+4 rem changes: line in 2280->2270 to avoid endless loop; TODO: call &7800
 5 rem
 10 DEFINT a-z:pai=0
 20 RANDOMIZE TIME:DIM qnk(16):ccc=48:nk%=0:lt$="-A"
@@ -235,7 +235,7 @@ cpcBasic.addItem("", function () { /*
 2250 LOCATE #2,9,16:PRINT#2,"7) - COASTAL SCENE"
 2260 LOCATE #2,5,18:PAPER#2,0:PEN #2,2:PRINT #2," ENTER NUMBER TO CHOOSE "
 2270 a$=INKEY$:IF a$="" THEN 2270
-2280 IF ASC(a$)<49 OR ASC(a$) >55 THEN 2280
+2280 IF ASC(a$)<49 OR ASC(a$) >55 THEN 2270
 2290 ch=VAL(a$):IF ch<1 OR ch>7 THEN 2270
 2300 RETURN
 2310 GOSUB 2210:MODE 0:BORDER 3:ON ch GOSUB 950,950,1000,1030,1010,1080,950:IF ch=7 THEN GOTO 3340
