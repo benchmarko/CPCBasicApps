@@ -7,7 +7,7 @@ cpcBasic.addItem("", function () { /*
 2 rem (c) Olaf Hartwig, 1985
 3 REM Kuenstliche Intelligenz auf dem CPC
 4 REM Titel: Eliza Vorgesetzter
-5 : 'Modifications: line3045: avoid endless loop when only one answer to choose
+5 : 'Modifications: line 3045: avoid endless loop when only one answer to choose
 6 MODE 2
 7 WIDTH 60
 10 :

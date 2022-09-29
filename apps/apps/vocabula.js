@@ -6,8 +6,8 @@ cpcBasic.addItem("", function () { /*
 1 rem vocabula - Vocabulary Test (Vokabeltest)
 2 rem (c) Prof.Dr.W.Voss, 1984  (Das Schulbuch zum CPC 464, p.196 ff)
 3 rem Extended my Marco Vieth to have English and French; and some noise if answer is wrong (verison 3)
-4 rem Modifications: 630: Syntax error in INPUT;
-5 rem TODO: delay, accept lower case input
+4 rem Modifications: 630: Syntax error in INPUT; delay in 1030; convert input to uppercase in 600,960; 615 check also for "N"
+5 rem
 6 rem
 100 REM VOKABELTEST
 110 MODE 2
@@ -57,8 +57,9 @@ cpcBasic.addItem("", function () { /*
 570 INPUT"                        ";A
 580 GOSUB 920
 590 PRINT:PRINT"NOCHMAL ?  (J/N) ";TAB(23);"(DANN ENTER TASTE DRUECKEN)"
-600 LOCATE 18,5:INPUT A$
+600 LOCATE 18,5:INPUT A$:a$=upper$(a$)
 610 IF A$="J" THEN CLS:ZZ=Z :CLEAR:GOTO 280
+615 if a$<>"N" then 600
 620 PRINT:PRINT"ENDE DER AUSGABE":END
 630 PRINT:PRINT:PRINT:PRINT TAB(22)"(DANN ENTER TASTE DRUECKEN)"; :?tab(18);:input "NOCHMAL ?  (J/N) ";A$ :'INPUT TAB(18); "NOCHMAL ?  (J/N) ";A$  
 640 IF A$="J"THEN CLS:GOTO 470 
@@ -84,14 +85,14 @@ cpcBasic.addItem("", function () { /*
 930 K=0
 940 I=1
 950 R=INT(RND(1)*N+1)
-960 PRINT D$(R,1);:INPUT"      ANTWORT    :  ";W$
+960 PRINT D$(R,1);:INPUT"      ANTWORT    :  ";W$:w$=upper$(w$)
 970 IF W$=D$(R,2) THEN K=K+1:PRINT:PRINT:PRINT TAB(10)"SEHR GUT  ! ":GOTO 1010
 980 PRINT:PRINT:PRINT"DAS WAR LEIDER FALSCH."
 990 GOSUB 1210
 1000 PRINT:PRINT"RICHTIG MUSS ES HEISSEN :  ";D$(R,2)
 1010 PRINT:PRINT:PRINT:I=I+1
 1020 IF I<=A THEN 950
-1030 FOR M=1 TO 3000:NEXT M
+1030 FOR M=1 TO 3000/30:call &bd19:NEXT M
 1040 CLS
 1050 KA=(K/A)*100:KA=INT(KA)
 1060 Q=37:GOSUB 1150

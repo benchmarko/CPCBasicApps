@@ -527,6 +527,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Sunburst Contamination"
 	},
 	{
+    	"key": "games/swamp",
+		"title": "Swamp"
+	},
+	{
     	"key": "games/tanks",
 		"title": "Tanks Alot!"
 	},
