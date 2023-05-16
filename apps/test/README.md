@@ -26,6 +26,10 @@ Links:
 
 [![BM Benchmark 3](./img/bmbench3.png)](../../dist/index.html?database=apps&example=test/bmbench3) (c)
 
+### BM Benchmark 8
+
+[![BM Benchmark 8](./img/bmbench8.png)](../../dist/index.html?database=apps&example=test/bmbench8) (c)
+
 ### Character set
 
 [![Character set](./img/charset.png)](../../dist/index.html?database=apps&example=test/charset) (c)
@@ -60,6 +64,10 @@ c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 ### CPC MHz
 
 [![CPC MHz](./img/cpcmhz.png)](../../dist/index.html?database=apps&example=test/cpcmhz) (c)
+
+### crtctest - CRTC Test (TODO)
+
+[![CRTC Test](./img/crtctest.png)](../../dist/index.html?database=apps&example=test/crtctest)
 
 ### crypto1 - Cryptology 1
 

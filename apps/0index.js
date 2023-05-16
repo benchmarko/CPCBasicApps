@@ -141,6 +141,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Mallet",
 		"meta": "D"
 	},
+		{
+		"key": "apps/drumkit",
+		"title": "Amstrad Drumkit"
+	},
 	{
 		"key": "apps/eliza",
 		"title": "Eliza (Boss)"
@@ -283,6 +287,10 @@ cpcBasic.addIndex("apps", function () { /*
     	"key": "demo/basworld",
 		"title": "BASIC World Demo"
 	},
+		{
+    	"key": "demo/blitter",
+		"title": "Blitter"
+	},
 	{
     	"key": "demo/boogle",
 		"title": "Boogle"
@@ -351,6 +359,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "demo/sultans",
 		"title": "Sultan's Maze Demo Screen"
+	},
+	{
+    	"key": "games/3dfour",
+		"title": "3D-Four In A Row"
 	},
 	{
     	"key": "games/basgame2",
@@ -683,6 +695,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "BM Benchmark 3"
 	},
 	{
+		"key": "test/bmbench8",
+		"title": "BM Benchmark 8"
+	},
+	{
     	"key": "test/charset",
 		"title": "Character set"
 	},
@@ -713,6 +729,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "test/cpcmhz",
 		"title": "CPC Mhz"
+	},
+	{
+		"key": "test/crtctest",
+		"title": "CRTC Test"
 	},
 	{
 		"key": "test/crypto1",

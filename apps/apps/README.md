@@ -105,6 +105,10 @@ Additional files: Three example drawings:
 - doodle.drw
 - mallet.drw
 
+### drumkit - Amstrad Drumkit (TODO)
+
+[![Amstrad Drumkit](./img/drumkit.png)](../../dist/index.html?database=apps&example=apps/drumkit) (c) J. Keneally, 1985
+
 ### eliza - Eliza (Boss)
 
 [![elize](./img/eliza.png)](../../dist/index.html?database=apps&example=apps/eliza) (c) Olaf Hartwig, 1985

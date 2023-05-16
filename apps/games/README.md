@@ -10,6 +10,10 @@ Links:
 
 ## Some Games Highlights
 
+### 3D-Four In A Row (TODO)
+
+[![3D-Four In A Row](./img/3dfour.png)](../../dist/index.html?database=apps&example=games/3dfour) (c) Dudley Brooke, 1987
+
 ### BASIC Game 2
 
 [![BASIC Game 2](./img/basgame2.png)](../../dist/index.html?database=apps&example=games/basgame2) (c) Roald (Mr.Lou) Strauss

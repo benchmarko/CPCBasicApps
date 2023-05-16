@@ -53,6 +53,10 @@ Nice landscapes.
 
 Title screen of an unfinished game with a nice tune.
 
+### Blitter (TODO)
+
+[![Blitter](./img/blitter.png)](../../dist/index.html?database=apps&example=demo/blitter) (c) Paul Bond
+
 ### Boogle
 
 [![Boogle](./img/boogle.png)](../../dist/index.html?database=apps&example=demo/boogle) (c)
