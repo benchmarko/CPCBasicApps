@@ -71,6 +71,11 @@ Links:
 [![Regression (Ausgleich)](./img/regress.png)](../../dist/index.html?database=apps&example=math/regress)
 [![Regression (Ausgleich)](./img/regress2.png)](../../dist/index.html?database=apps&example=math/regress)
 
+### striart - String Art
+
+[![String Art](./img/striart.png)](../../dist/index.html?database=apps&example=math/striart)
+[![String Art](./img/striart2.png)](../../dist/index.html?database=apps&example=math/striart)
+
 --
 
 ### **mv, 09/2022**

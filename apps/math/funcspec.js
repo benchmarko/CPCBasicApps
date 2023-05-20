@@ -54,10 +54,10 @@ cpcBasic.addItem("", function () { /*
 450 NEXT z
 460 PEN 1
 462 call &bd19:j=joy(0):t$=inkey$:if j=0 and t$="" then 462
-463 if (j and 1) or t$=chr$(240) then locate 1,1:PRINT CHR$(11);CHR$(11);:yoff=yoff-1:locate 1,1:z=1:gosub 480:goto 462
-464 if (j and 2) or t$=chr$(241) then LOCATE 1,25:?:?:yoff=yoff+1:LOCATE 1,25:z=25:gosub 480:goto 462
-465 if (j and 4) or t$=chr$(242) then xoff=xoff-1:goto 405
-466 if (j and 8) or t$=chr$(243) then xoff=xoff+1:goto 405
+463 if (j and 1) or t$=chr$(240) then LOCATE 1,25:?:?:yoff=yoff+1:LOCATE 1,25:z=25:gosub 480:goto 462
+464 if (j and 2) or t$=chr$(241) then locate 1,1:PRINT CHR$(11);CHR$(11);:yoff=yoff-1:locate 1,1:z=1:gosub 480:goto 462
+465 if (j and 4) or t$=chr$(242) then xoff=xoff+1:goto 405
+466 if (j and 8) or t$=chr$(243) then xoff=xoff-1:goto 405
 468 return
 469 '
 470 FOR s=1 TO cols

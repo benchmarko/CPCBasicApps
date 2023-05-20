@@ -623,6 +623,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Regression (Ausgleich)"
 	},
 	{
+    	"key": "math/striart",
+		"title": "String Art"
+	},
+	{
 		"key": "music/asbtune",
 		"title": "A small BASIC tune"
 	},
