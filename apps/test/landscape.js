@@ -19,7 +19,7 @@ cpcBasic.addItem("", function () { /*
 127 goto 122
 128 '
 130 MODE m
-131 locate 1,1:pen 3:?"Mode";m:pen 1
+131 locate 1,1:pen 3:print"Mode";m:pen 1
 132 after 100 gosub 1200
 134 PRINT CHR$(23)+CHR$(0);
 135 col=2:if m=2 then col=1
@@ -55,7 +55,7 @@ cpcBasic.addItem("", function () { /*
 505 la=FNr(10)+15*(5-ba):w(1)=PI/2:f=1:c=0:x=FNr(20)+14
 510 c(ba)=x:x1=190*ba-45:y1=2+ba*10:x2=x1:y2=la
 515 col=ba and 3:if m=2 then col=1
-516 '?col
+516 'print col
 520 PLOT x1,y1,col:DRAW x2,y2:x(1)=x2:y(1)=y2
 530 FOR et=1 TO 6:c=f:f=0:FOR n=1 TO c
 540 w=(FNr(45)+5)*PI/180:f=f+1:w=w(n)-w
@@ -91,7 +91,7 @@ cpcBasic.addItem("", function () { /*
 1010 GOSUB 950:MOVE x1,y1:FILL f
 1090 RETURN
 1190 '
-1200 r=remain(0):LOCATE 1,1:?space$(7);:return
+1200 r=remain(0):LOCATE 1,1:print space$(7);:return
 1220 '
 9000 'cpclib will be merged...
 9010 chain merge "cpclib"

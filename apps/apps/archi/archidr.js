@@ -20,7 +20,7 @@ cpcBasic.addItem("", function () { /*
 150 t$="archi1":gosub 520:'load a drawing set
 160 '
 170 MODE m
-180 PRINT"ArchiDraw - Little ";: ?"Architect Drawing"
+180 PRINT"ArchiDraw - Little ";: PRINT"Architect Drawing"
 190 PRINT"(c) Marco Vieth"
 200 PRINT
 210 PRINT"Drawing set: ";d$
@@ -67,13 +67,13 @@ cpcBasic.addItem("", function () { /*
 620 return
 630 '
 640 REM animation delay
-650 ?:?"Animation delay:";
+650 PRINT:PRINT"Animation delay:";
 660 input dt
 670 return
 680 '
 690 REM end
 700 mode 2
-710 ?"Bye"
+710 PRINT"Bye"
 720 stop
 730 return
 740 '

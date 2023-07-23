@@ -19,7 +19,7 @@ cpcBasic.addItem("", function () { /*
 55 goto 50
 57 '
 60 mode m
-62 locate 1,1:pen 3:?"Mode";m:pen 1
+62 locate 1,1:pen 3:print"Mode";m:pen 1
 70 after 100,1 gosub 800
 80 origin 320,200
 100 f=1-radius
@@ -57,7 +57,7 @@ cpcBasic.addItem("", function () { /*
 526 c1=c1+1
 530 return
 700 '
-800 r=remain(1):LOCATE 1,1:?space$(7);:return
+800 r=remain(1):LOCATE 1,1:print space$(7);:return
 810 '
 940 'colors
 950 data 24, 20, 6, 26, 0, 2, 8, 10

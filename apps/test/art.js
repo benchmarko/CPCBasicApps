@@ -25,7 +25,7 @@ cpcBasic.addItem("", function () { /*
 178 goto 173
 182 '
 183 MODE m
-186 locate 1,1:pen 3:?"Mode";m:pen 1
+186 locate 1,1:pen 3:print"Mode";m:pen 1
 187 after 100 gosub 500
 189 pWidth=2^(2-min(m,2))
 190 FOR i=0 TO h
@@ -51,7 +51,7 @@ cpcBasic.addItem("", function () { /*
 330 'a(i,1)=entsprechende Phasen
 340 'a(i,2)=entsprechende Farben
 350 '
-500 r=remain(0):LOCATE 1,1:?space$(7);:return
+500 r=remain(0):LOCATE 1,1:print space$(7);:return
 510 '
 9000 'cpclib will be merged...
 9010 chain merge "cpclib"

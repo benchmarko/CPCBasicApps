@@ -27,7 +27,7 @@ cpcBasic.addItem("", function () { /*
 290 PRINT"  ";
 300 FOR j=0 TO 5:su=0:FOR i=0 TO 25:su=su+z(j,i):NEXT i:PRINT su,:NEXT j
 305 t!=time+900:while time<t! and inkey$="":wend
-307 ?:?
+307 print:print
 310 '
 320 '
 330 'Vergleichstabelle der Haeufigkeit der Einzelbuchstaben bezogen auf 100-Woerter Texte:
@@ -72,7 +72,7 @@ cpcBasic.addItem("", function () { /*
 750 '
 760 'MODE 2
 770 PRINT TAB(20)"Kryptoanalyse - Kryptologie"
-775 ?
+775 print
 780 PRINT"Haeufigkeit von Buchstaben(gruppen) im Deutschen:"
 790 FOR i=0 TO ma:PRINT a(i)",";:NEXT:PRINT
 800 FOR i=0 TO mb:PRINT b(i)",";:NEXT:PRINT
@@ -81,7 +81,7 @@ cpcBasic.addItem("", function () { /*
 830 FOR i=0 TO me:PRINT e(i)",";:NEXT:PRINT
 840 '
 850 '
-855 ?:call &bb18
+855 print:call &bb18
 860 '
 870 'Reihenfolge der Haeufikeiten fuer Buchstaben und Buchstabengruppen im Deutschen:
 880 '

@@ -18,7 +18,7 @@ cpcBasic.addItem("", function () { /*
 150 goto 140
 155 '
 160 MODE m
-163 locate 1,1:pen 3:?"Mode";m:pen 1
+163 locate 1,1:pen 3:print"Mode";m:pen 1
 165 after 100 gosub 700
 170 'Laengenkreise
 180 FOR a=0 TO 180 STEP 15
@@ -63,7 +63,7 @@ cpcBasic.addItem("", function () { /*
 540 bx=320+r*xa:by=200+r*za
 550 RETURN
 560 '
-700 rm=remain(0):LOCATE 1,1:?space$(7);:return
+700 rm=remain(0):LOCATE 1,1:print space$(7);:return
 710 '
 9000 'cpclib will be merged...
 9010 chain merge "cpclib"

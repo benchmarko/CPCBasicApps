@@ -9,9 +9,9 @@ cpcBasic.addItem("", function () { /*
 4 rem
 5 mode 1
 6 window #1,10,38,10,24
-7 ?#1,spc(1);"A small BASIC tune":?#1
-8 ?#1,spc(9);"by":?#1
-9 ?#1,"Roald (Mr.Lou) Strauss"
+7 print#1,spc(1);"A small BASIC tune":print#1
+8 print#1,spc(9);"by":print#1
+9 print#1,"Roald (Mr.Lou) Strauss"
 10 RELEASE 7
 20 tempo=15::' Smaller = faster
 30 ENV 1,7,-1,tempo-5,4,-1,5:ENV 2,0,-3,1,7,-1,7,4,-1,50:ENV 3,0,-3,1,3,-1,1,3,-1,2:ENV 4,1,-10,1,5,1,7,5,-1,20

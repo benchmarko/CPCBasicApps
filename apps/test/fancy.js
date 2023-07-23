@@ -23,7 +23,7 @@ cpcBasic.addItem("", function () { /*
 180 '
 190 MODE m:xd=2^(2-min(m,2)):yd=((m=3)+2):rows=50/yd
 200 PEN 1:PAPER 0
-205 locate 1,rows:?"Mode";m;
+205 locate 1,rows:print"Mode";m;
 210 c$=CHR$(&CD)+CHR$(&60)+CHR$(&BB)+CHR$(&32)+CHR$(0)+CHR$(0)+CHR$(&C9): 'call &BB60 (TXT RD CHAR)
 220 fancy$="F"+CHR$(15)+CHR$(2)+"a"+CHR$(15)+CHR$(3)+"n"+CHR$(15)+CHR$(1)+CHR$(24)+"cy"+CHR$(24)+" s"+CHR$(14)+CHR$(2)+"t"+CHR$(14)+CHR$(3)+"u"+CHR$(14)+CHR$(0)+"ff"+"!"
 230 LOCATE 1,1:PRINT fancy$;" ";
@@ -52,7 +52,7 @@ cpcBasic.addItem("", function () { /*
 460 LOCATE 1,5:PRINT CHR$(18);
 470 lp=lp+1:if lp>3 then lp=0:return
 480 GOTO 280
-490
+490 '
 500 'recognize characters in line r
 510 a$="":FOR i=1 TO 12*2+1:LOCATE i,r:
 520 IF useCopychr then t$=COPYCHR$(#0) else GOSUB 580

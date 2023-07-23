@@ -5,7 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 rem swamp
 2 rem (c) David Muir
-3 rem Modificaitons: delay in 210
+3 rem Modifications: delay in 210
 4 rem
 10 REM 
 20 REM SWAMP

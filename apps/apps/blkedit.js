@@ -9,7 +9,7 @@ cpcBasic.addItem("", function () { /*
 26 rem and sample from http://www.cpcwiki.eu/forum/programming/silly-programming-ideas-turning-text-into-graphics/msg33246/#msg33246
 27 '
 30 GOSUB 110
-35 gosub 2000:x%=x%+5:locate 1,25:?"Use Cursor,Space,I";:ch$=""
+35 gosub 2000:x%=x%+5:locate 1,25:PRINT"Use Cursor,Space,I";:ch$=""
 40 WHILE ch$<>chr$(13):'INKEY(18)=-1
 50 GOSUB 310
 60 GOSUB 410
@@ -138,12 +138,12 @@ cpcBasic.addItem("", function () { /*
 1800 'dump
 1810 lnum=5000:l$=""
 1820 for y%=1 to 25
-1830 l$="":'?l1;"DATA ";
+1830 l$="":'print l1;"DATA ";
 1840 for x%=1 to 20
 1850 l$=l$+right$(str$(grid%(y%,x%)),2)
 1860 if x%<20 then l$=l$+","
 1870 next x%
-1880 ?using"####";lnum;:?" DATA ";l$
+1880 PRINT using"####";lnum;:PRINT" DATA ";l$
 1885 lnum=lnum+10
 1890 next y%
 1900 return

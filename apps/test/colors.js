@@ -21,11 +21,11 @@ cpcBasic.addItem("", function () { /*
 1794 goto 1790
 1795 '
 1800 MODE m
-1805 locate 1,1:pen 3:?"Mode";m:pen 1
+1805 locate 1,1:pen 3:print"Mode";m:pen 1
 1806 t!=time
 1810 GOSUB 1900
 1815 t!=time-t!:c.iv%=50-t!/50:if c.iv%>0 then c.c=3:gosub 9020:'waitOrKey
-1820 LOCATE 1,1:?space$(7);
+1820 LOCATE 1,1:print space$(7);
 1830 EVERY 25,1 GOSUB 2070
 1840 EVERY 15,2 GOSUB 2110
 1850 EVERY 5,3 GOSUB 2150

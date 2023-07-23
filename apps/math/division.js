@@ -14,7 +14,7 @@ cpcBasic.addItem("", function () { /*
 165 PRINT
 190 m=LEN(a$):n=LEN(b$):m=m-n
 200 IF m>0 THEN 220
-210 PRINT"Divident muss > als Divisor sein":?:goto 150
+210 PRINT"Divident muss > als Divisor sein":print:goto 150
 220 DIM u(n+m),v(n),w(n),q(m)
 240 FOR i=1 TO n+m
 250 u(i)=VAL(MID$(a$,i,1))

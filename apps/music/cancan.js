@@ -12,9 +12,9 @@ cpcBasic.addItem("", function () { /*
 7 rem
 2310 mode 1
 2312 window #1,9,38,10,24
-2313 ?#1,spc(0);"Can Can (Infernal Galop)":?#1
-2314 ?#1,spc(9);"by":?#1
-2315 ?#1,spc(3);"Jacques Offenbach"
+2313 print#1,spc(0);"Can Can (Infernal Galop)":print#1
+2314 print#1,spc(9);"by":print#1
+2315 print#1,spc(3);"Jacques Offenbach"
 2320 defint a-z
 2330 DIM period(12)
 2480 unit=4

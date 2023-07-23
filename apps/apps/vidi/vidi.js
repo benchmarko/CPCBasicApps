@@ -23,19 +23,19 @@ cpcBasic.addItem("", function () { /*
 260 GOSUB 430
 270 PRINT#1,"3Hauptmenue:   2( Filme:"p")3
 280 PRINT"21)1  Filme auflisten"
-290 ?:PRINT"22)1  Filme suchen"
-300 ?:PRINT"23)1  Filme aendern"
-310 ?:PRINT"24)1  Filme laden/speichern"
-320 ?:PRINT"25)1  Filme sortieren"
-330 ?:PRINT"26)1  Ausgabemedium"
-340 ?:?:PRINT"27)1  Programm beenden"
-345 ?:?
+290 PRINT:PRINT"22)1  Filme suchen"
+300 PRINT:PRINT"23)1  Filme aendern"
+310 PRINT:PRINT"24)1  Filme laden/speichern"
+320 PRINT:PRINT"25)1  Filme sortieren"
+330 PRINT:PRINT"26)1  Ausgabemedium"
+340 PRINT:PRINT:PRINT"27)1  Programm beenden"
+345 PRINT:PRINT
 350 mi=1:ma=7:GOSUB 2350
 360 IF m<7 THEN ON m GOSUB 490,780,1120,1530,1850,2070:GOTO 260
 370 MODE 2
-380 ?:?:PRINT"Bei Neustart des Programms ohne Datenverlust bitte"
-390 ?:PRINT"die <TAB> - Taste druecken ..."
-395 ?:?:?
+380 PRINT:PRINT:PRINT"Bei Neustart des Programms ohne Datenverlust bitte"
+390 PRINT:PRINT"die <TAB> - Taste druecken ..."
+395 PRINT:PRINT:PRINT
 400 z=1
 410 END
 420 '
@@ -49,9 +49,9 @@ cpcBasic.addItem("", function () { /*
 500 IF p=0 THEN 2410
 510 PRINT#1,"Bereich angeben:"
 520 PRINT"21)1  alle Filme"
-530 ?:PRINT"22)1  Filmbereich"
-540 ?:?:PRINT"23)1  Hauptmenue"
-545 ?:?
+530 PRINT:PRINT"22)1  Filmbereich"
+540 PRINT:PRINT:PRINT"23)1  Hauptmenue"
+545 PRINT:PRINT
 550 mi=1:ma=3:GOSUB 2350
 560 IF m=3 THEN RETURN
 570 IF m=1 THEN x=1:y=p:GOTO 650
@@ -112,18 +112,18 @@ cpcBasic.addItem("", function () { /*
 1120 CLS:CLS#1
 1130 PRINT#1,"Filme aendern :"
 1140 PRINT"21)1  Film hinzufuegen"
-1150 ?:?:PRINT"22)1  Film ueberschreiben"
-1160 ?:?:PRINT"23)1  AFSS"
-1170 ?:?:PRINT"    (Autom.FilmSuchSystem)"
-1180 ?:?:PRINT"24)1  Hauptmenue"
-1185 ?:?
+1150 PRINT:PRINT:PRINT"22)1  Film ueberschreiben"
+1160 PRINT:PRINT:PRINT"23)1  AFSS"
+1170 PRINT:PRINT:PRINT"    (Autom.FilmSuchSystem)"
+1180 PRINT:PRINT:PRINT"24)1  Hauptmenue"
+1185 PRINT:PRINT
 1190 mi=1:ma=4:GOSUB 2350
 1200 IF m=4 THEN RETURN
 1210 '
 1220 d="":CLS:CLS#1
 1230 ON m GOSUB 1250,1280,1300
 1240 GOTO 1120
-1250 IF p>=n THEN CLS:?:PRINT"Maximal nur"n"Filme !":GOTO 2430
+1250 IF p>=n THEN CLS:PRINT:PRINT"Maximal nur"n"Filme !":GOTO 2430
 1260 h1=p+1:GOSUB 1340
 1270 p=h1:RETURN
 1280 mi=1:ma=p:h=p:b="Filmnummer :":GOSUB 2460:h1=h
@@ -154,9 +154,9 @@ cpcBasic.addItem("", function () { /*
 1530 CLS:CLS#1
 1540 PRINT#1,"Filme laden / speichern :"
 1550 PRINT"21)1  Filme laden"
-1560 ?:PRINT"22)1  Filme speichern"
-1570 ?:?:PRINT"23)1  Hauptmenue"
-1575 ?:?
+1560 PRINT:PRINT"22)1  Filme speichern"
+1570 PRINT:PRINT:PRINT"23)1  Hauptmenue"
+1575 PRINT:PRINT
 1580 mi=1:ma=3:GOSUB 2350
 1590 IF m=3 THEN RETURN
 1595 mh=m
@@ -164,10 +164,10 @@ cpcBasic.addItem("", function () { /*
 1610 CLS:CLS#1
 1620 PRINT#1,"Filmgruppe zum Laden waehlen :"
 1630 PRINT"21)1  V2000"
-1635 ?:PRINT"22)1  VHS"
-1640 ?:?:PRINT"23)1  eigene Filmgruppe"
-1650 ?:?:PRINT"24)1  Hauptmenue"
-1655 ?:?
+1635 PRINT:PRINT"22)1  VHS"
+1640 PRINT:PRINT:PRINT"23)1  eigene Filmgruppe"
+1650 PRINT:PRINT:PRINT"24)1  Hauptmenue"
+1655 PRINT:PRINT
 1660 mi=1:ma=4:GOSUB 2350
 1670 IF m=4 THEN RETURN
 1675 CLS
@@ -198,7 +198,7 @@ cpcBasic.addItem("", function () { /*
 1900 CLS:IF PEEK(&A600)<>254 THEN PRINT"VIDISORT nachladen ...":LOAD"!VIDISOR.BIN",&A600
 1910 ON m GOSUB 1990,2000,2010,2020,2030,2040,2050
 1920 POKE &A6A1,mi:POKE &A6A2,h
-1930 ?:PRINT"Ich sortiere ...":?
+1930 PRINT:PRINT"Ich sortiere ...":PRINT
 1940 CALL &A600,f(1),f(p)
 1950 IF m=1 THEN a="V2000" ELSE IF m=2 THEN a="VHS"
 1960 PRINT"Schon erledigt ."
@@ -215,10 +215,10 @@ cpcBasic.addItem("", function () { /*
 2070 CLS#1:CLS
 2080 PRINT#1,"Ausgabemedium:
 2090 PRINT"21)1  Bildschirm"
-2100 ?:PRINT"22)1  Bildschirm schnell"
-2110 ?:PRINT"23)1  Drucker"
-2120 ?:PRINT"24)1  Hauptmenue"
-2125 ?:?
+2100 PRINT:PRINT"22)1  Bildschirm schnell"
+2110 PRINT:PRINT"23)1  Drucker"
+2120 PRINT:PRINT"24)1  Hauptmenue"
+2125 PRINT:PRINT
 2130 mi=1:ma=4:GOSUB 2350
 2140 IF m=4 THEN RETURN
 2150 IF m=3 THEN 2200
@@ -226,20 +226,20 @@ cpcBasic.addItem("", function () { /*
 2170 CALL &BB51
 2180 IF m=2 THEN IF PEEK(&BEB0)=42 THEN CALL &BEB0 ELSE LOAD"!VIDIMD2.BIN",&BEB0:CALL &BEB0
 2190 RETURN
-2200 IF INP(&F500) AND 64 THEN CLS:PRINT"Drucker nicht bereit !":PRINT"Einschalten und":?:?"nochmal versuchen ...":GOSUB 2430:GOTO 2070
+2200 IF INP(&F500) AND 64 THEN CLS:PRINT"Drucker nicht bereit !":PRINT"Einschalten und":PRINT:PRINT"nochmal versuchen ...":GOSUB 2430:GOTO 2070
 2210 w=8:RETURN
 2220 '
 2230 PRINT#1,a
 2240 PRINT"2"b
 2250 PRINT"21)1  Nummer"
-2260 ?:PRINT"22)1  Kassette"
-2270 ?:PRINT"23)1  Titel"
-2280 ?:PRINT"24)1  Art"
-2290 ?:PRINT"25)1  Bandzeit Anf."
-2300 ?:PRINT"26)1  Bandzeit End."
-2310 ?:PRINT"27)1  Laenge"
-2320 ?:PRINT"28)1  Hauptmenue"
-2325 ?:?
+2260 PRINT:PRINT"22)1  Kassette"
+2270 PRINT:PRINT"23)1  Titel"
+2280 PRINT:PRINT"24)1  Art"
+2290 PRINT:PRINT"25)1  Bandzeit Anf."
+2300 PRINT:PRINT"26)1  Bandzeit End."
+2310 PRINT:PRINT"27)1  Laenge"
+2320 PRINT:PRINT"28)1  Hauptmenue"
+2325 PRINT:PRINT
 2330 mi=1:ma=8:GOTO 2350
 2340 'Auswahl:
 2350 PRINT"( Bitte waehlen ... )";
@@ -255,7 +255,7 @@ cpcBasic.addItem("", function () { /*
 2450 'Zahl input:
 2460 WINDOW#2,5,35,13,20:PAPER#2,0
 2470 CLS#2:PRINT#2,b:PRINT#2,"( Eingabe : "mi"bis"ma" )"
-2480 ?:PRINT#2,"Alter Wert: ";h
+2480 PRINT:PRINT#2,"Alter Wert: ";h
 2490 INPUT#2,"Neuer Wert:  ",a
 2500 IF a="" THEN RETURN
 2510 h1=VAL(a)
@@ -292,8 +292,8 @@ cpcBasic.addItem("", function () { /*
 2820 RETURN
 2830 CLS:PRINT"Wirklich Neustart ?"
 2840 PRINT"1) Ja"
-2850 ?:PRINT"2) Nein"
-2855 ?
+2850 PRINT:PRINT"2) Nein"
+2855 PRINT
 2860 mi=1:ma=2:GOSUB 2350
 2870 IF m=2 THEN z=1
 2880 RETURN

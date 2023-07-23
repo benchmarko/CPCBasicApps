@@ -174,5 +174,5 @@ cpcBasic.addItem("", function () { /*
 1600 IF I$="n"OR I$="N"THEN CALL 0
 1610 BORDER RND*26:INK 1,RND*26:GOTO 1590
 1790 '
-1800 locate 1,25:?"Press small ENTER to bomb...";chr$(18):return
+1800 locate 1,25:print"Press small ENTER to bomb...";chr$(18):return
 */ });

@@ -11,7 +11,7 @@ cpcBasic.addItem("", function () { /*
 125 '
 130 for m=0 to c.m%
 140 gosub 290
-145 ?"Press a key,":?"or wait..."
+145 print"Press a key,":print"or wait..."
 146 c.c=3:c.iv%=200:gosub 9020:'waitOrKey
 150 next
 160 goto 130
@@ -22,12 +22,12 @@ cpcBasic.addItem("", function () { /*
 305 cols=80/xd:rows=50/yd
 306 window 12/80*cols,cols-12/80*cols+1,rows/4,rows-rows/4
 308 pens=4^(2-m mod 3)+abs(m=2)
-310 ?"Mode: ";m
-312 ?"Cols:";cols
-314 ?"Rows:";rows
-318 ?"Res.:";cols*8;"x";str$(rows*8)
-320 ?"Pens:";pens
-327 ?
+310 print"Mode: ";m
+312 print"Cols:";cols
+314 print"Rows:";rows
+318 print"Res.:";cols*8;"x";str$(rows*8)
+320 print"Pens:";pens
+327 print
 328 for i=0 to 48 step 2
 330 graphics pen ((i + 1) / 2) mod 16
 340 move 0+i,0+i

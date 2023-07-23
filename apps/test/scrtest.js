@@ -21,15 +21,15 @@ cpcBasic.addItem("", function () { /*
 128 '
 129 'with check
 130 t!=time:for i=0 to &3fff:a2=a+i:b=i and 255:poke a+i,b
-135 if b<>peek(a+i) then ?"error:";hex$(a+i);b;"<>";peek(a+i):stop
+135 if b<>peek(a+i) then print"error:";hex$(a+i);b;"<>";peek(a+i):stop
 150 next i:t!=time-t!
 400 '
 410 'result
 420 c.c=3:c.iv%=50:gosub 9020:'waitOrKey
-430 ?"Mode";m
-440 ?"Draw time:";
-442 if check=1 then ?:?"With check:";
-445 ?round(t!/300*1000,2);"ms"
+430 print"Mode";m
+440 print"Draw time:";
+442 if check=1 then print:print"With check:";
+445 print round(t!/300*1000,2);"ms"
 450 c.c=3:c.iv%=200:gosub 9020:'waitOrKey
 460 next m
 470 if check=1 then check=0 else check=1

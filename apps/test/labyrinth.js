@@ -15,7 +15,7 @@ cpcBasic.addItem("", function () { /*
 110 rz=ll*lb:w=ll:ll=ll-1:lb=lb-1
 120 '
 140 mode 1
-142 ?"Computing maze...";(ll+1);"x";(lb+1);"..."
+142 print"Computing maze...";(ll+1);"x";(lb+1);"..."
 145 dim m(rz)
 150 t!=time
 160 s=INT(RND*ll):z=INT(RND*lb):r=1
@@ -36,9 +36,9 @@ cpcBasic.addItem("", function () { /*
 300 wend
 310 m(0)=m(0)+1
 320 t1!=time-t!
-321 locate 1,2:?int(r*100/rz);"%"
-322 ?"Done."
-325 locate 1,25:paper 2:?fnRoundSec$(t1!);" sec";:paper 0
+321 locate 1,2:print int(r*100/rz);"%"
+322 print"Done."
+325 locate 1,25:paper 2:print fnRoundSec$(t1!);" sec";:paper 0
 326 t!=time+100*6:while time<t! and inkey$="":wend
 330 '
 335 'output maze
@@ -61,12 +61,12 @@ cpcBasic.addItem("", function () { /*
 480 t!=time
 490 gosub 780
 500 t3!=time-t!: t!=time+50*6:while time<t! and inkey$="":wend
-510 locate 1,25:paper 2:if m>0 then ?fnRoundSec$(t2!);"/";
-520 ?fnRoundSec$(t3!);" sec";:paper 0
+510 locate 1,25:paper 2:if m>0 then print fnRoundSec$(t2!);"/";
+520 print fnRoundSec$(t3!);" sec";:paper 0
 540 t!=time+150*6:while time<t! and inkey$="":wend
 550 return
 560 '
-565 locate 1,2:?int(r*100/rz);"%"
+565 locate 1,2:print int(r*100/rz);"%"
 570 z=z+1:IF z>lb THEN z=0:s=s+1:IF s>ll THEN s=0
 580 IF m(z*w+s)=0 THEN 570 ELSE 180
 590 '
@@ -76,15 +76,15 @@ cpcBasic.addItem("", function () { /*
 630 FOR s2=adr TO adr+ll
 640 IF m(s2) AND 1 THEN a$=a$+"# " ELSE a$=a$+"##"
 650 NEXT
-660 a$=a$+"#":?a$;:if pos(#0)>1 then ?
+660 a$=a$+"#":print a$;:if pos(#0)>1 then print
 670 a$=""
 680 FOR s2=adr TO adr+ll
 690 IF m(s2) AND 8 THEN a$=a$+"  " ELSE a$=a$+"# "
 700 NEXT s2
-710 a$=a$+"#":?a$;:if pos(#0)>1 then ?
+710 a$=a$+"#":print a$;:if pos(#0)>1 then print
 720 NEXT z2
 730 a$="":FOR s2=0 TO ll-1:a$=a$+"##":NEXT s2
-740 a$=a$+"# #":?a$;
+740 a$=a$+"# #":print a$;
 750 return
 760 '
 770 'draw graphical maze

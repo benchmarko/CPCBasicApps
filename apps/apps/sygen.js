@@ -7,7 +7,7 @@ cpcBasic.addItem("", function () { /*
 2 rem (c) SkulleateR
 3 rem https://www.cpcwiki.eu/forum/programming/sygen-symbol-generator-v0-0001/
 4 rem Modifications: delay
-5 MODE 1:BORDER 0:?"Symbol Generator 2x2"
+5 MODE 1:BORDER 0:PRINT"Symbol Generator 2x2"
 6 LOCATE 1,4:PRINT"Use Cursor + Space to draw, C to clear, ENTER to finish input":CALL &BB06:CLS
 7 x(1)=0:y(1)=0:x(2)=1:y(2)=25
 8 DIM a(20),b(20),c(20),d(20),e(20),f(20),g(20),h(20),i(20),j(20),k(20),l(20),m(20),n(20),o(20),p(20)

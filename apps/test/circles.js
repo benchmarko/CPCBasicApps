@@ -16,7 +16,7 @@ cpcBasic.addItem("", function () { /*
 110 goto 70
 120 '
 130 mode m
-140 ?"Mode";m
+140 print"Mode";m
 141 '
 142 'Circles 1
 150 deg
@@ -35,7 +35,7 @@ cpcBasic.addItem("", function () { /*
 335 for r=60 to 80 step 10
 340 MOVE 0,r
 350 FOR n=0 TO 2*PI STEP PI/16
-360 '?n
+360 'print n
 370 draw SIN(n)*r,COS(n)*r
 380 NEXT n
 390 next r

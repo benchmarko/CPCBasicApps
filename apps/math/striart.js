@@ -62,7 +62,7 @@ cpcBasic.addItem("", function () { /*
 620 return
 630 '
 640 REM animation delay
-650 ?:?"Animation delay:";
+650 print:print"Animation delay:";
 660 input dt
 670 return
 740 '
@@ -84,7 +84,7 @@ cpcBasic.addItem("", function () { /*
 1510 '
 1600 REM end
 1700 mode 2
-1710 ?"Bye"
+1710 print"Bye"
 1720 stop
 1730 return
 2000 REM 5 3 0 - 5 pointed star

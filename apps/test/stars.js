@@ -23,7 +23,7 @@ cpcBasic.addItem("", function () { /*
 37 '
 40 MODE m
 41 pens=4^(2-m mod 3)+abs(m=2)
-42 locate 1,1:pen 3:?"Mode";m:pen 1
+42 locate 1,1:pen 3:print"Mode";m:pen 1
 43 after 100 gosub 800
 44 move 0,0,1,1
 45 FOR i=0 TO 24
@@ -52,7 +52,7 @@ cpcBasic.addItem("", function () { /*
 570 WEND
 600 return
 710 '
-800 r=remain(0):LOCATE 1,1:?space$(7);:return
+800 r=remain(0):LOCATE 1,1:print space$(7);:return
 810 '
 9000 'cpclib will be merged...
 9010 chain merge "cpclib"

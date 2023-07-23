@@ -26,8 +26,8 @@ cpcBasic.addItem("", function () { /*
 150 DIM l.psn1(2000),l.psn2(2000),l.zliste$(2000)
 160 DIM k.psn1(20),k.psn2(20),k.zliste$(20),k.znr(20),k.index(20)
 162 bruder=0
-163 ?:?"Simulation Bruder (j/n)?"
-164 a$=LOWER$(INKEY$):if a$="j" then bruder=1:?"Waehrend der Simulation: DEL=Stop&Save" else if a$<>"n" then 164
+163 PRINT:PRINT"Simulation Bruder (j/n)?"
+164 a$=LOWER$(INKEY$):if a$="j" then bruder=1:PRINT"Waehrend der Simulation: DEL=Stop&Save" else if a$<>"n" then 164
 170 PRINT
 180 PRINT"Wurde bereits eine Datei erstellt (j/n)?"
 190 a$=LOWER$(INKEY$)

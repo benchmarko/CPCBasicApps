@@ -95,7 +95,7 @@ cpcBasic.addItem("", function () { /*
 860 WEND
 870 '
 880 MODE 1:BORDER 0:INK 0,0:INK 1,6:INK 2,18:PAPER 1:PEN 0
-890 WINDOW #0,1,40,1,5:CLS:?chr$(23)+chr$(0);: 'CALL &AA00
+890 WINDOW #0,1,40,1,5:CLS:PRINT chr$(23)+chr$(0);: 'CALL &AA00
 900 LOCATE 11,2:PRINT "** Sultan's Maze **";
 910 LOCATE 11,3:PRINT CHR$(164);" 1984 Gem Software";
 920 LOCATE 3,4:PRINT "Coding & Design by J. Line & C. Hunt"
@@ -429,7 +429,7 @@ cpcBasic.addItem("", function () { /*
 4180 IF ghost.in.sight=1 OR (bx=p AND by=q)   THEN GOSUB 5300:GOTO 4230  
 4190 IF ghost.drawn!=0 THEN GOTO 4230
 4200 IF face.drawn=1 THEN RESTORE 4680 ELSE RESTORE 4710
-4210 s!=ghost.drawn!:no.plane=1:?chr$(23)+chr$(1);:GOSUB 4520:?chr$(23)+chr$(0);: 'CALL &AA04:GOSUB 4520:CALL &AA00
+4210 s!=ghost.drawn!:no.plane=1:PRINT chr$(23)+chr$(1);:GOSUB 4520:PRINT chr$(23)+chr$(0);: 'CALL &AA04:GOSUB 4520:CALL &AA00
 4220 no.plane=0:ghost.drawn!=0:face.drawn!=0
 4230 IF ABS (bx-p)<3 AND ABS (by-q)<3         THEN GOSUB 5850
 4240 RETURN
@@ -539,7 +539,7 @@ cpcBasic.addItem("", function () { /*
 5280 '
 5290 'draw ghost subroutine
 5300 IF no.ghost THEN RETURN
-5310 ghosting=1:no.plane=1:?chr$(23)+chr$(1);: 'CALL &AA04
+5310 ghosting=1:no.plane=1:PRINT chr$(23)+chr$(1);: 'CALL &AA04
 5320 IF ghost.drawn!=0 THEN 5370
 5330 s!=ghost.drawn!
 5340 IF s!=10 OR face.drawn THEN RESTORE 4680 ELSE RESTORE 4710 
@@ -553,7 +553,7 @@ cpcBasic.addItem("", function () { /*
 5420 IF m[next.f+1] AND bm[p+q*12] OR 16=bm[p+(next.f=4)-(next.f=2)+12*(q+(next.f=1)-(next.f=3))] THEN 5410
 5430 IF s!=10 OR ((bf+f)=4 OR (bf+f)=6) AND bf<>f OR ((bf+next.f)=4 OR (bf+next.f)=6) AND bf<>next.f THEN face.drawn=1:RESTORE 4680 ELSE face.drawn=0:RESTORE 4710 
 5440 GOSUB 4520 'sketch
-5450 ghost.drawn!=s!:?chr$(23)+chr$(0);:ghosting=0:no.plane=0:RETURN:' CALL &AA00
+5450 ghost.drawn!=s!:PRINT chr$(23)+chr$(0);:ghosting=0:no.plane=0:RETURN:' CALL &AA00
 5460 '
 5470 'control keys subroutine
 5480 no.ghost=1:no.plane=1:CLS

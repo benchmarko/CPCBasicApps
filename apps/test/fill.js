@@ -16,7 +16,7 @@ cpcBasic.addItem("", function () { /*
 120 goto 80
 130 '
 140 MODE m
-150 move 32,30:m$=right$(str$(m),1):tag:?m$;:tagoff
+150 move 32,30:m$=right$(str$(m),1):tag:print m$;:tagoff
 160 dx=638:dy=398:MOVE 0,0:GOSUB 320
 170 MOVE 10,390:dx=10
 180 FOR dy=-10 TO -380 STEP -12

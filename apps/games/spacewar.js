@@ -52,7 +52,7 @@ cpcBasic.addItem("", function () { /*
 340 if k$ = chr$(240) and player1y > minY  then gosub 610 : player1y = player1y - 1
 350 if k$ = chr$(241) and player1y < maxY then gosub 610 : player1y = player1y + 1
 355 if k$ = " " or k$=chr$(224) then gosub 700
-360 if k$ = "q" then cls:?"end":end:goto 205
+360 if k$ = "q" then cls:PRINT"end":end:goto 205
 369 rem Control the computer player
 370 gosub 500
 380 goto 300

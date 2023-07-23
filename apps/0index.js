@@ -827,10 +827,6 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Screen Memory Test"
 	},
 	{
-		"key": "test/seconds",
-		"title": "Seconds Test"
-	},
-	{
 		"key": "test/scrudu",
 		"title": "Scrudu (Gedichte)"
 	},
@@ -838,6 +834,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"key": "test/scrudu.vok",
 		"title": "Scrudu Vocabulary",
 		"meta": "D"
+	},
+	{
+		"key": "test/seconds",
+		"title": "Seconds Test"
 	},
 	{
 		"key": "test/simple",

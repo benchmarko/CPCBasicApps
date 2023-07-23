@@ -248,7 +248,7 @@ um das Programm zu stoppen":GOTO 110
 2760 stavecole2=(stavecole2+2)MOD 8:i2=stavecole2
 2770 notecol=notecol MOD 8+2:stavecol=(stavecol+2)MOD 8
 2780 INK i1,backgrnd:INK i2,backgrnd:INK i3,backgrnd:INK i4,backgrnd
-2790 locate#7,1,25:?#7,string$(9,chr$(10)); :FRAME:'CALL mcentry+28
+2790 locate#7,1,25:print#7,string$(9,chr$(10)); :FRAME:'CALL mcentry+28
 2800 INK i5,colstave:INK i6,colnote
 2810 GOTO 2570
 2820 'calculate note parms

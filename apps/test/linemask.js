@@ -36,7 +36,7 @@ cpcBasic.addItem("", function () { /*
 270 next
 280 t!=time-t!
 285 graphics pen ,0
-290 tag:move 8*xd+((h=1)+1)*320,2*8*yd,1:?int(t!/300*1000);:tagoff
+290 tag:move 8*xd+((h=1)+1)*320,2*8*yd,1:print int(t!/300*1000);:tagoff
 300 return
 310 '
 320 ' init method

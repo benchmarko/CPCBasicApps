@@ -5,15 +5,15 @@
 cpcBasic.addItem("", function () { /*
 100 REM Sound Test 1
 110 MODE 2:CLEAR:DEFINT a-z
-120 ?"Sound Test 1":?
-130 ?"1) Richard Wagner: Brautchor aus 'Lohengrin'"
-140 ?"2) Franz Schubert: Die Forelle"
-142 ?"3) Marc-Antoine Charpentiers: Te Deum"
-143 ?"4) August Heinrich Hoffmann von Fallersleben: Winter ade"
-150 ?
-160 ?"Your choice ";
+120 print"Sound Test 1":print
+130 print"1) Richard Wagner: Brautchor aus 'Lohengrin'"
+140 print"2) Franz Schubert: Die Forelle"
+142 print"3) Marc-Antoine Charpentiers: Te Deum"
+143 print"4) August Heinrich Hoffmann von Fallersleben: Winter ade"
+150 print
+160 print"Your choice ";
 170 x=pos(#0):y=vpos(#0)
-172 ?:?:?"(Or wait for random sound...)"
+172 print:print:print"(Or wait for random sound...)"
 175 pMax=4:p=0
 176 gosub 505
 177 every 50*2 gosub 500
@@ -24,16 +24,16 @@ cpcBasic.addItem("", function () { /*
 193 if (t=240 or t=242 or t=8 or t=11) and p>0 then p=p-1:goto 176
 194 if (t=241 or t=243 or t=9 or t=10) and p<pMax-1 then p=p+1:goto 176
 200 t=val(t$):if t<1 or t>pMax then 176
-210 p=t-1:gosub 510:?t$;
+210 p=t-1:gosub 510:print t$;
 220 on t gosub 1000,1100,1800,3030
 222 ink 0,1,1:speed ink 10,10
-225 ?" stopping...";
+225 print" stopping...";
 227 WHILE SQ(4)<>4:call &bd19:WEND
-230 ?chr$(17);chr$(13);:goto 160
+230 print chr$(17);chr$(13);:goto 160
 490 '
 500 p=p+1
 505 if p>=pMax then p=p+int(rnd*pMax)
-510 locate x,y:?"[";(p mod pMax)+1;"]: ";:return
+510 locate x,y:print"[";(p mod pMax)+1;"]: ";:return
 970 '
 980 '
 990 REM Richard Wagner: Brautchor aus 'Lohengrin'

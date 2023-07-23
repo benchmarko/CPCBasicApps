@@ -22,7 +22,7 @@ cpcBasic.addItem("", function () { /*
 6090 CLS
 6100 FOR big=260 TO 70 STEP-10
 6110 xo=INT(RND*640):yo=INT(RND*400):oi=i:i=INT(RND*13)+1
-6112 'locate 1,24:?xo;yo;i
+6112 'locate 1,24:print xo;yo;i
 6113 ORIGIN xo,yo
 6120 IF TEST(0,0)=i OR oi=i THEN 6110
 6130 ON point GOSUB 6260,6330,6310,6500
@@ -44,7 +44,7 @@ cpcBasic.addItem("", function () { /*
 6230 RETURN
 6240 '
 6260 MOVE 0,big\2,i
-6270 FOR n=0 TO 2*PI  +  0.0000000001 STEP PI/8:DRAW SIN(n)*big\2,COS(n)*big\2:NEXT n
+6270 FOR n=0 TO 2*PI  +  1E-10 STEP PI/8:DRAW SIN(n)*big\2,COS(n)*big\2:NEXT n
 6300 RETURN
 6310 MOVE big\2,big\2,i:DRAWR 0,-big:DRAWR-big,0:DRAWR 0,big:DRAWR big,0
 6320 RETURN

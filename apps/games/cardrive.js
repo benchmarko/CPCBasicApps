@@ -66,7 +66,7 @@ cpcBasic.addItem("", function () { /*
 1320 b2=b1+br:IF b2<=78 THEN 1360
 1350 b1=50-br:GOTO 1320
 1360 RETURN
-1370 PRINT TAB(t);"*   CRASH!!"; :?" Distance:";st
+1370 PRINT TAB(t);"*   CRASH!!"; :PRINT" Distance:";st
 1375 while inkey$<>"":wend
 1380 STOP
 1385 t=b1+(b2-b1)\2:goto 980:'for cont

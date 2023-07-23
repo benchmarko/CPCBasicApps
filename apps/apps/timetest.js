@@ -258,12 +258,12 @@ cpcBasic.addItem("", function () { /*
 17980 '
 17990 'ASM (&9c49-&9c9d) converted to BASIC: print frame
 18000 w=5
-18010 ?chr$(&96);string$(&15,&9a);chr$(&9e);string$(&10,&9a);chr$(&9c);
-18020 window #w,1,1,2,23:?#w,string$(22,&95);
-18030 window #w,&17,&17,2,23:?#w,string$(22,&95);
-18040 window #w,&28,&28,2,23:?#w,string$(22,&95);
+18010 PRINT chr$(&96);string$(&15,&9a);chr$(&9e);string$(&10,&9a);chr$(&9c);
+18020 window #w,1,1,2,23:PRINT#w,string$(22,&95);
+18030 window #w,&17,&17,2,23:PRINT#w,string$(22,&95);
+18040 window #w,&28,&28,2,23:PRINT#w,string$(22,&95);
 18050 locate 1,24
-18060 ?chr$(&93);string$(&15,&9a);chr$(&9b);string$(&10,&9a);chr$(&99);
+18060 PRINT chr$(&93);string$(&15,&9a);chr$(&9b);string$(&10,&9a);chr$(&99);
 18070 return
 18080 '
 18490 'duplicate character matrix of ch to chr 254 and 255:

@@ -24,7 +24,7 @@ cpcBasic.addItem("", function () { /*
 210 GOSUB 1000:'Initialisation
 211 '
 212 gosub 1040
-215 locate 14,24:?"Ready?";
+215 locate 14,24:print"Ready?";
 216 t!=time+600:while time<t! and inkey$="":wend
 220 GOSUB 2000:'Hauptprg.
 221 while inkey$<>"":call &bd19:wend
@@ -43,7 +43,7 @@ cpcBasic.addItem("", function () { /*
 1035 return
 1036 '
 1040 z=0
-1041 locate 1,24:?chr$(20);
+1041 locate 1,24:print chr$(20);
 1042 PRINT"Richtung___> "
 1045 PRINT"Durchgang Nr.";
 1050 '
@@ -51,7 +51,7 @@ cpcBasic.addItem("", function () { /*
 1061 'x=33:y=4:'start with no exit
 1062 'x=16:y=14:'another start
 1063 x=rnd*(xa-3)+2:y=rnd*(ya-3)+2:if f(y,x)="*" then 1063:'random
-1065 'locate x,y:?"*";:goto 1063:'test fill
+1065 'locate x,y:print"*";:goto 1063:'test fill
 1070 xh=x:yh=y:'Hilfsspeicher
 1075 gosub 4250
 1090 RETURN
@@ -84,14 +84,14 @@ cpcBasic.addItem("", function () { /*
 2800 IF f(y-1,x)=" " AND f(y,x+1)<>" " THEN y=y-1:GOSUB 4152:GOTO 2060
 2810 IF f(y,x+1)=" " THEN x=x+1:ri=ri+1:GOSUB 4152:GOTO 2060
 2820 IF f(y-1,x)="*" THEN 4800:'kein Ausgang
-2825 ?"Error":stop
+2825 print"Error":stop
 2830 '
 3990 'Labyrinthausdruck:
 4040 '
 4120 'Statusausgaben:
 4152 z=z+1:'Durchgang
-4160 LOCATE 14,24:PRINT USING"####";ri;:?" ";
-4170 if ri<>-4 then PRINT b(ri+3); else ?"??    ";
+4160 LOCATE 14,24:PRINT USING"####";ri;:print" ";
+4170 if ri<>-4 then PRINT b(ri+3); else print"??    ";
 4220 '
 4230 LOCATE 15,25:PRINT z;
 4240 'Mausposition:

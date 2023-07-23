@@ -6,7 +6,7 @@ cpcBasic.addItem("", function () { /*
 1 rem spacera - Space Race
 2 rem (c) 1986 Peter Pekarek
 3 rem
-4 rem Modifications: scrolling MC replaced by ?chr$(11)
+4 rem Modifications: scrolling MC replaced by print chr$(11)
 5 rem
 10 REM ***************************
 20 REM *                         *
@@ -33,7 +33,7 @@ cpcBasic.addItem("", function () { /*
 240 IF m=2 THEN SPEED INK 20,20:INK 3,t*2+1,(t-1)*2+1
 250 IF a<445 THEN IF INKEY(1)=0 OR JOY(0)=8 THEN a=a+8
 260 IF a>1 THEN IF INKEY(8)=0 OR JOY(0)=4 THEN a=a-8
-270 locate #1,1,1:?#1,chr$(11): 'or: CALL mc
+270 locate #1,1,1:PRINT#1,chr$(11): 'or: CALL mc
 280 IF TEST(a,8)=3 OR TEST(a+7,8)=3 OR TEST(a+14,8)=3 THEN leben=leben-1:GOTO 390
 290 IF TEST(a+8,8)=1 THEN LOCATE 32,1:PRINT CHR$(7):punkte=punkte+t*25
 300 TAG:MOVE a,16:PRINT CHR$(239);:TAGOFF
@@ -80,7 +80,7 @@ cpcBasic.addItem("", function () { /*
 700 REM ***************************
 710 REM *   TEIL 1,3,5,7,9,11     *
 720 REM *************************** 
-730 IF t<>11 THEN PEN 3 ELSE PEN 2:re=REMAIN(0):IF m>=250 THEN locate #1,1,1:?#1,chr$(11):GOTO 1200: 'or: CALL mc
+730 IF t<>11 THEN PEN 3 ELSE PEN 2:re=REMAIN(0):IF m>=250 THEN locate #1,1,1:PRINT#1,chr$(11):GOTO 1200: 'or: CALL mc
 740 PRINT"|":LOCATE 29,1:PRINT"|"
 750 IF m>=250 THEN m=1000
 760 RETURN

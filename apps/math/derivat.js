@@ -43,6 +43,6 @@ cpcBasic.addItem("", function () { /*
 400 IF n(i,h)=1 THEN PRINT"*x"; ELSE PRINT"*x^"n(i,h);
 410 NEXT i,h
 420 PRINT:PRINT:PRINT:PRINT"Soll noch eine Gleichung untersucht werden (j/n) ";:INPUT a$
-430 IF LOWER$(a$)="n" THEN ?"end":END
+430 IF LOWER$(a$)="n" THEN PRINT"end":END
 440 GOTO 140
 */ });

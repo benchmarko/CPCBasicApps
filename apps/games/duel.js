@@ -115,10 +115,10 @@ cpcBasic.addItem("", function () { /*
 1010 SOUND 1,142,20,12:SOUND 1,159,40,12:RETURN
 1990 '
 2000 'simulate CALL 40000 software roll player 1 in BASIC
-2010 if peek(40001)>0 then locate #3,1,21:?#3:?#3 else locate #3,1,1:?#3,chr$(11);chr$(11);
+2010 if peek(40001)>0 then locate #3,1,21:print#3:print#3 else locate #3,1,1:print#3,chr$(11);chr$(11);
 2020 return
 2030 'simulate CALL 40015 software roll player 2 in BASIC
-2040 if peek(40016)>0 then locate #4,1,21:?#4:?#4 else locate #4,1,1:?#4,chr$(11);chr$(11);
+2040 if peek(40016)>0 then locate #4,1,21:print#4:print#4 else locate #4,1,1:print#4,chr$(11);chr$(11);
 2050 return
 2060 '
 */ });

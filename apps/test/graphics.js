@@ -23,7 +23,7 @@ cpcBasic.addItem("", function () { /*
 1500 mode m
 1510 pens=4^(2-m mod 3)+abs(m=2)
 1560 INK 0,0:BORDER 0:n=0:gosub 1700
-1565 locate 1,1:?"Mode":?m
+1565 locate 1,1:print"Mode":print m
 1570 RAD:ORIGIN 320,200
 1583 '
 1584 'draw graphics
@@ -49,7 +49,7 @@ cpcBasic.addItem("", function () { /*
 1710 return
 1780 '
 1790 'remove mode text
-1800 r=remain(1):locate 1,1:?space$(5):?space$(3)
+1800 r=remain(1):locate 1,1:print space$(5):print space$(3)
 1805 return
 1810 '
 9000 'cpclib will be merged...

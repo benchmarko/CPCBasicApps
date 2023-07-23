@@ -15,7 +15,7 @@ cpcBasic.addItem("", function () { /*
 190 l=l*0.434295:r%=int(l/5+1)
 200 'Multi-Schleife
 210 l=1:FOR i=n TO 2 STEP -1
-220 l=l+LOG(i)*0.434294575010426:l%=l/5+1:u=0
+220 l=l+LOG(i)*0.434294575:l%=l/5+1:u=0
 230 FOR j=1 TO l%
 240 h=r(j)*i+u
 250 IF h<-100000 THEN u=0:GOTO 270

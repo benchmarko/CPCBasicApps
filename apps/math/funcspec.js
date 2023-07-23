@@ -10,17 +10,17 @@ cpcBasic.addItem("", function () { /*
 116 xd=2^(2-min(m,2)):yd=((m=3)+2)
 118 cols=80/xd:rows=50/yd
 120 MODE m:INK 14,26:INK 15,20:PRINT "Functional Spectrum"
-121 locate 1,24:?"(Use Cursor/Joystick also next screen)"
+121 locate 1,24:print"(Use Cursor/Joystick also next screen)"
 122 k=1:gosub 222:gosub 300
 124 locate 1,3
-125 ?"Your choice ";
+125 print"Your choice ";
 126 x=pos(#0):y=vpos(#0)
 127 p=0:gosub 280:every 50*2 gosub 280
 128 call &bd19:t$=inkey$:if t$="" then 128
 129 if t$=chr$(13) or t$=" " then t=p else t=val(t$)
 130 if t<1 or t>16 then 128
 131 r=remain(0)
-132 ?str$(t);
+132 print str$(t);
 133 k=t
 140 cls
 150 gosub 400
@@ -36,7 +36,7 @@ cpcBasic.addItem("", function () { /*
 232 '
 279 '
 280 p=(p+1) mod 17:if p=0 then p=1
-285 locate x,y:?"[";p;"]: ";:return
+285 locate x,y:print"[";p;"]: ";:return
 299 '
 300 xoff=0:yoff=0
 304 for k=1 to 16
@@ -54,7 +54,7 @@ cpcBasic.addItem("", function () { /*
 450 NEXT z
 460 PEN 1
 462 call &bd19:j=joy(0):t$=inkey$:if j=0 and t$="" then 462
-463 if (j and 1) or t$=chr$(240) then LOCATE 1,25:?:?:yoff=yoff+1:LOCATE 1,25:z=25:gosub 480:goto 462
+463 if (j and 1) or t$=chr$(240) then LOCATE 1,25:print:print:yoff=yoff+1:LOCATE 1,25:z=25:gosub 480:goto 462
 464 if (j and 2) or t$=chr$(241) then locate 1,1:PRINT CHR$(11);CHR$(11);:yoff=yoff-1:locate 1,1:z=1:gosub 480:goto 462
 465 if (j and 4) or t$=chr$(242) then xoff=xoff+1:goto 405
 466 if (j and 8) or t$=chr$(243) then xoff=xoff-1:goto 405
@@ -84,7 +84,7 @@ cpcBasic.addItem("", function () { /*
 560 p=3*(ATN(x)+ATN(y)):RETURN
 570 p=15*3*((x*x+y*y)>18)*ATN(x/2+y/2):RETURN
 580 p=3*((x*x+y*y)>18)*ATN(x/2+y/2):RETURN
-590 p=3*(x*x*x-y*y)*SIN((x+y)/20)/(x*x+y*y+0.300000000046566):RETURN
+590 p=3*(x*x*x-y*y)*SIN((x+y)/20)/(x*x+y*y+0.3):RETURN
 600 p=(SIN(x)-SIN(y))^3:RETURN
 610 p=SIN(x-y)+SQR(ABS(x*y)):RETURN
 620 p=7*(SIN(x/5)+COS(y)):RETURN
