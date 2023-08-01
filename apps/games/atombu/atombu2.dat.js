@@ -1,0 +1,7 @@
+/* globals cpcBasic */
+
+"use strict";
+
+cpcBasic.addItem("", function () { /*
+CPCBasic;B;37830;1074;0;base64,ePDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8P//iKqquqKuq/+IryL6Cur//wD6Ar6gr///gqqqq6iv//8A7iLrCP///4ivKOsquv//Avoir4Dv//8C+iKvKOr//4CuKOuoq///IemLua2pq7ugv4L6gL+g7yC+oqqK+gqqor6iroj7CrqK6yqqqqoou4rqKqqqqqrqKqqqq6i6irqC7iK6qK6Cqqq6iuqiryD6Iq6i6ii7gamhv6PpjbmjvqKqqLuI74D7iqoq+iKuqOsq6iK+oK+g7wj7iLqirorqKL6gq4r6IKqqqqK/gP+Iu4ivIv4gr4j/AP4CvqKrqP+Iq6quKOuLrSnrIa2pran+iqqoq6KuqKsor6irIv6I7yC/KOuKuoK6Iu4gvyDqCr+groq6iuoiuqKviLqK6wq6gu+IuoqrKu4iq6q6Iu4CuoLuIusI/oOrif8hrYX5o7uKrqK7iL6CrijrKLuK6gr/gKso7wj6gv8A/iKqqq6iqqqrqqqKu4r6CvoI7yL6gu6gu4rqCvoC+4iuKOso6yivoL6g6yqqq7+BvaHvKa2hv4irorqK74L7Cuoo7wDuIq4q6yivoP4i+gqrKP+Ar6jqKK8i6iq6iruI7yLqiqqo/4C+IO+qqiquqKqivwD/AKqqqor7CP8Iu4P9IekL8Y2rqK+iuoj/gKso6irriL4iqoj/AL6iq6iqor+gryL6iuooryD/Iqqqv4L6Av4K6iCrIv6CuqKvqO8ivoL6COsK6yivoL+A7yCrKe0hv4H9gb+I6qKqivuI6qivIP4gr6iuqKuqqqrqCKso/grriLqqr6C+AvuCvgi/iOoqq4i/grqC/gLrKK4q6iq7iK6i6wruCvqKqirqKL+JraH5jamr6oq+oqqKuoqvqKqiv4Dvgr+C+grqKuoqqyK+oO+IugrrIr+guorrIP4gqyrqKK+iq6K+grqg7wj6CuuI/4K6iusor6K6Iu4oqS3pK6mtqavriL+gvqCvoroi7oK+oqoor6D7CO+C+ojvCPqCqyrqiL6I6yiviPoKuor7CO4i+oj6AruK7iL7iPoK6yiriPuK7yiroroi7iipLekL+Y2pq7qK6oq6oqqo74i6iquovoqvoL4i6oqvKL+iqqrqCuoq6iK/gL+g6gqvoL4i74i7Iq6g/wjrKK4iqirqKquqqqqviOoqqyjvIKmhvyHtJamLr6C/iKuo///qCvoA5zz///uIr6iqKv//u4ivKOkn///6Av8grab//+4ivqKqqv//+oK+iOso//+6gv+AvqL//+4iv6CuKv//
+*/ });

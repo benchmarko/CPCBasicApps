@@ -23,7 +23,7 @@ to stop program.":GOTO 110
 100 MODE 1:LOCATE 7,18:PRINT"Incompatible BASIC installed
 ":END
 110 ON BREAK CONT
-111 t=time+50:while t<time and inkey$="":call &bd19:wend
+111 t=time+50:while time<t and inkey$="":call &bd19:wend
 115 DATA 21,0,C0,11,0,40,42,4B,AF,DD,BE,1,20,1,EB,DD,7E,0,C6,2,CD,5B,BD,ED,B0,C3,5B,BD
 120 DATA CD,B,BC,11,80,2,19,CD,5,BC,C9,E,FF,CD,15,B9,EB,DD,66,1,DD,6E,0,73,23,72,C9
 130 'LOAD"ritdemo"

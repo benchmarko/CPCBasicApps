@@ -13,7 +13,7 @@ Links:
 ### anageo - Analytical Geometry
 
 [![Analytical Geometry](./img/anageo.png)](../../dist/index.html?database=apps&example=math/anageo)
-[![Analytical Geometry](./img/anageo2.png)](../../dist/index.html?database=apps&example=math/anageo)
+[![Analytical Geometry](./img/anageo2.png)](../../dist/index.html?database=apps&example=math/anageo&input=512%0d%0d)
 
 ### complex - Complex numbers (Komplexe Zahlen)
 
@@ -42,7 +42,7 @@ Links:
 ### fractions - Fractions (Bruchrechnen)
 
 [![Fractions (Bruchrechnen)](./img/fractions.png)](../../dist/index.html?database=apps&example=math/fractions)
-[![Fractions (Bruchrechnen)](./img/fractions2.png)](../../dist/index.html?database=apps&example=math/fractions)
+[![Fractions (Bruchrechnen)](./img/fractions2.png)](../../dist/index.html?database=apps&example=math/fractions&input=323%0D2%0D4%0D56%0D)
 
 ### funcarea - Functional Area
 
@@ -51,7 +51,7 @@ Links:
 ### funcspec - Functional Spectrum
 
 [![Functional Spectrum](./img/funcspec.png)](../../dist/index.html?database=apps&example=math/funcspec)
-[![Functional Spectrum](./img/funcspec2.png)](../../dist/index.html?database=apps&example=math/funcspec)
+[![Functional Spectrum](./img/funcspec2.png)](../../dist/index.html?database=apps&example=math/funcspec&input=6ðððððóóóó)
 
 ### ninedig2 - Nine Digits 2 (tokenized BASIC)
 
@@ -59,8 +59,8 @@ Links:
 
 ### Quadratic Function
 
-[![Quadratic Function](./img/quadfunc.png)](../../dist/index.html?database=apps&example=quadfunc)
-[![Quadratic Function](./img/quadfunc2.png)](../../dist/index.html?database=apps&example=quadfunc) TODO
+[![Quadratic Function](./img/quadfunc.png)](../../dist/index.html?database=apps&example=math/quadfunc)
+[![Quadratic Function](./img/quadfunc2.png)](../../dist/index.html?database=apps&example=math/quadfunc&input=6)
 
 ### raytrace - Raytracing
 

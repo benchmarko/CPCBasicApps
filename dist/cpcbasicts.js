@@ -1,4 +1,636 @@
 "use strict";
+// Polyfills.ts - Some Polyfills for old browsers, e.g. IE8, and nodeJS
+//
+/* globals globalThis */
+var Polyfills = {
+    list: [],
+    getList: function () {
+        return Polyfills.list;
+    },
+    log: function (part) {
+        Polyfills.list.push(part);
+    },
+    console: typeof window !== "undefined" ? window.console : globalThis.console,
+    localStorage: (function () {
+        var rc;
+        if (typeof window !== "undefined") {
+            try {
+                rc = window.localStorage; // due to a bug in MS Edge this will throw an error when hosting locally (https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/8816771/)
+            }
+            catch (_e) {
+                // empty
+            }
+        }
+        return rc; // if it is undefined, localStorage is set in Polyfills
+    }()),
+    isNodeAvailable: (function () {
+        // eslint-disable-next-line no-new-func
+        var myGlobalThis = (typeof globalThis !== "undefined") ? globalThis : Function("return this")(); // for old IE
+        var nodeJs = false;
+        // https://www.npmjs.com/package/detect-node
+        // Only Node.JS has a process variable that is of [[Class]] process
+        try {
+            if (Object.prototype.toString.call(myGlobalThis.process) === "[object process]") {
+                nodeJs = true;
+            }
+        }
+        catch (e) {
+            // empty
+        }
+        return nodeJs;
+    }()),
+    isDefinePropertyOk: (function () {
+        if (!Object.defineProperty) {
+            return false;
+        }
+        try { // IE8 cannot do this...
+            Object.defineProperty({}, "p1", {
+                value: "1"
+            });
+        }
+        catch (e) { // on IE8 we get "TypeError: Object does not support this action"
+            return false;
+        }
+        return true;
+    }())
+};
+// IE: window.console is only available when Dev Tools are open
+if (!Polyfills.console) { // browser or node.js
+    var polyFillConsole_1 = {
+        cpcBasicLog: "LOG:\n",
+        log: function () {
+            if (polyFillConsole_1.cpcBasicLog) {
+                polyFillConsole_1.cpcBasicLog += Array.prototype.slice.call(arguments).join(" ") + "\n";
+            }
+        }
+    };
+    polyFillConsole_1.info = polyFillConsole_1.log;
+    polyFillConsole_1.warn = polyFillConsole_1.log;
+    polyFillConsole_1.error = polyFillConsole_1.log;
+    polyFillConsole_1.debug = polyFillConsole_1.log;
+    Polyfills.console = polyFillConsole_1;
+    Polyfills.log("window.console");
+}
+if (!Polyfills.console.debug) { // IE8 has no console.debug
+    Polyfills.console.debug = Polyfills.console.log;
+    Polyfills.log("window.console.debug");
+}
+if ((typeof globalThis !== "undefined") && !globalThis.window) { // nodeJS
+    Polyfills.log("window");
+    globalThis.window = globalThis;
+}
+if (!Array.prototype.indexOf) { // IE8
+    Polyfills.log("Array.prototype.indexOf");
+    Array.prototype.indexOf = function (searchElement, from) {
+        var len = this.length >>> 0; // eslint-disable-line no-bitwise
+        from = Number(from) || 0;
+        from = (from < 0) ? Math.ceil(from) : Math.floor(from);
+        if (from < 0) {
+            from += len;
+        }
+        for (; from < len; from += 1) {
+            if (from in this && this[from] === searchElement) {
+                return from;
+            }
+        }
+        return -1;
+    };
+}
+if (!Array.prototype.fill) { // IE11
+    // based on: https://github.com/1000ch/array-fill/blob/master/index.js
+    Polyfills.log("Array.prototype.fill");
+    Array.prototype.fill = function (value, start, end) {
+        var length = this.length;
+        start = start || 0;
+        end = end === undefined ? length : (end || 0);
+        var i = start < 0 ? Math.max(length + start, 0) : Math.min(start, length);
+        var l = end < 0 ? Math.max(length + end, 0) : Math.min(end, length);
+        for (; i < l; i += 1) {
+            this[i] = value;
+        }
+        return this;
+    };
+}
+if (!Array.prototype.filter) { // IE8
+    Polyfills.log("Array.prototype.filter");
+    Array.prototype.filter = function (callbackFn) {
+        var arr = [];
+        for (var i = 0; i < this.length; i += 1) {
+            if (callbackFn.call(this, this[i], i, this)) {
+                arr.push(this[i]);
+            }
+        }
+        return arr;
+    };
+}
+if (!Array.prototype.map) { // IE8
+    // based on: https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/map
+    Polyfills.log("Array.prototype.map");
+    Array.prototype.map = function (callback, thisArg) {
+        var values = [], object = Object(this), len = object.length;
+        var T;
+        if (arguments.length > 1) {
+            T = thisArg;
+        }
+        for (var i = 0; i < len; i += 1) {
+            if (i in object) {
+                var kValue = object[i], mappedValue = callback.call(T, kValue, i, object);
+                values[i] = mappedValue;
+            }
+        }
+        return values;
+    };
+}
+if (window.Element) {
+    if (!Element.prototype.addEventListener) { // IE8
+        Polyfills.log("Element.prototype.addEventListener");
+        Element.prototype.addEventListener = function (event, fnCallback) {
+            event = "on" + event;
+            return this.attachEvent(event, fnCallback);
+        };
+    }
+    if (!Element.prototype.removeEventListener) { // IE8
+        Polyfills.log("Element.prototype.removeEventListener");
+        Element.prototype.removeEventListener = function (event, fnCallback) {
+            event = "on" + event;
+            return this.detachEvent(event, fnCallback);
+        };
+    }
+}
+if (window.Event) {
+    if (!Event.prototype.preventDefault) { // IE8
+        Polyfills.log("Event.prototype.preventDefault");
+        Event.prototype.preventDefault = function () {
+            // empty
+        };
+    }
+    if (!Event.prototype.stopPropagation) { // IE8
+        Polyfills.log("Event.prototype.stopPropagation");
+        Event.prototype.stopPropagation = function () {
+            // empty
+        };
+    }
+}
+if (!window.getComputedStyle) { // IE8
+    // https://stackoverflow.com/questions/21797258/getcomputedstyle-like-javascript-function-for-ie8
+    Polyfills.log("window.getComputedStyle");
+    window.getComputedStyle = function (el, _pseudo) {
+        this.getPropertyValue = function (prop) {
+            var re = /(-([a-z]){1})/g;
+            if (prop === "float") {
+                prop = "styleFloat";
+            }
+            if (re.test(prop)) {
+                prop = prop.replace(re, function () {
+                    return arguments[2].toUpperCase();
+                });
+            }
+            var currentStyle = el.currentStyle;
+            return currentStyle && currentStyle[prop] ? currentStyle[prop] : null;
+        };
+        return this;
+    };
+}
+if (!Date.now) { // IE8
+    Polyfills.log("Date.now");
+    Date.now = function () {
+        return new Date().getTime();
+    };
+}
+if (window.document) {
+    if (!document.addEventListener) {
+        // or check: https://gist.github.com/fuzzyfox/6762206
+        Polyfills.log("document.addEventListener, removeEventListener");
+        if (document.attachEvent) {
+            (function () {
+                var eventListeners = [];
+                document.addEventListener = function (eventString, fnHandler) {
+                    var fnFindCaret = function (event) {
+                        var documentSelection = document.selection; // IE only
+                        if (documentSelection) {
+                            var target = (event.target || event.srcElement);
+                            target.focus();
+                            var range = documentSelection.createRange(), range2 = range.duplicate();
+                            if (range2.moveToElementTxt) { // not on IE8
+                                range2.moveToElementTxt(target);
+                            }
+                            range2.setEndPoint("EndToEnd", range);
+                            target.selectionStart = range2.text.length - range.text.length;
+                            target.selectionEnd = target.selectionStart + range.text.length;
+                        }
+                    }, fnOnEvent = function (event) {
+                        event = event || window.event;
+                        var target = event.target || event.srcElement;
+                        if (event.type === "click" && target && target.tagName === "TEXTAREA") {
+                            fnFindCaret(event);
+                        }
+                        if (typeof fnHandler === "function") {
+                            fnHandler(event);
+                        }
+                        else if (typeof fnHandler === "object") {
+                            fnHandler.handleEvent(event);
+                        }
+                        else {
+                            Polyfills.console.error("Unknown fnHandler:", fnHandler);
+                        }
+                        return false;
+                    };
+                    // The change event is not bubbled and fired on document for old IE8. So attach it to every select tag
+                    if (eventString === "change") {
+                        var elements = document.getElementsByTagName("select");
+                        for (var i = 0; i < elements.length; i += 1) {
+                            elements[i].attachEvent("on" + eventString, fnOnEvent);
+                            eventListeners.push({
+                                object: this,
+                                eventString: eventString,
+                                fnHandler: fnHandler,
+                                fnOnEvent: fnOnEvent
+                            });
+                        }
+                    }
+                    else { // e.g. "Click"
+                        document.attachEvent("on" + eventString, fnOnEvent);
+                        eventListeners.push({
+                            object: this,
+                            eventString: eventString,
+                            fnHandler: fnHandler,
+                            fnOnEvent: fnOnEvent
+                        });
+                    }
+                };
+                document.removeEventListener = function (event, fnHandler) {
+                    var counter = 0;
+                    while (counter < eventListeners.length) {
+                        var eventListener = eventListeners[counter];
+                        if (eventListener.object === this && eventListener.eventString === event && eventListener.fnHandler === fnHandler) {
+                            this.detachEvent("on" + event, eventListener.fnOnEvent);
+                            eventListeners.splice(counter, 1);
+                            break;
+                        }
+                        counter += 1;
+                    }
+                };
+            }());
+        }
+        else {
+            (Polyfills.console || window.console).error("No document.attachEvent found."); // will be ignored
+            // debug: trying to fix
+            if (document.__proto__.addEventListener) { // eslint-disable-line no-proto
+                document.addEventListener = document.__proto__.addEventListener; // eslint-disable-line no-proto
+            }
+        }
+    }
+}
+if (!Function.prototype.bind) { // IE8
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+    // Does not work with `new funcA.bind(thisArg, args)`
+    Polyfills.log("Function.prototype.bind");
+    (function () {
+        var ArrayPrototypeSlice = Array.prototype.slice; // since IE6
+        Function.prototype.bind = function () {
+            var that = this, // eslint-disable-line @typescript-eslint/no-this-alias
+            thatArg = arguments[0], args = ArrayPrototypeSlice.call(arguments, 1), argLen = args.length;
+            if (typeof that !== "function") {
+                // closest thing possible to the ECMAScript 5 internal IsCallable function
+                throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+            }
+            return function () {
+                args.length = argLen;
+                args.push.apply(args, arguments);
+                return that.apply(thatArg, args);
+            };
+        };
+    }());
+}
+if (!Math.log10) { // IE11
+    Polyfills.log("Math.log10");
+    Math.log10 = function (x) {
+        return Math.log(x) * Math.LOG10E;
+    };
+}
+if (!Math.sign) { // IE11
+    Polyfills.log("Math.sign");
+    Math.sign = function (x) {
+        return (Number(x > 0) - Number(x < 0)) || Number(x);
+    };
+}
+if (!Math.trunc) { // IE11
+    Polyfills.log("Math.trunc");
+    Math.trunc = function (v) {
+        return v < 0 ? Math.ceil(v) : Math.floor(v);
+    };
+}
+if (!Object.assign) { // IE11
+    Polyfills.log("Object.assign");
+    Object.assign = function (target) {
+        var to = target;
+        for (var i = 1; i < arguments.length; i += 1) {
+            var nextSource = arguments[i];
+            for (var nextKey in nextSource) {
+                if (nextSource.hasOwnProperty(nextKey)) {
+                    to[nextKey] = nextSource[nextKey];
+                }
+            }
+        }
+        return to;
+    };
+}
+if (!Object.defineProperty || !Polyfills.isDefinePropertyOk) { // IE8
+    Polyfills.log("Object.defineProperty");
+    Object.defineProperty = function (target, prop, PropDescriptor) {
+        // can handle simple case: Object.defineProperty(exports, "__esModule", { value: true });
+        target[prop] = PropDescriptor.value;
+        return target;
+    };
+}
+if (!Object.keys) { // IE8
+    Polyfills.log("Object.keys");
+    // based on: https://tokenposts.blogspot.com/2012/04/javascript-objectkeys-browser.html
+    Object.keys = function (o) {
+        var k = [];
+        if (o !== Object(o)) {
+            throw new TypeError("Object.keys called on a non-object");
+        }
+        for (var p in o) {
+            if (Object.prototype.hasOwnProperty.call(o, p)) {
+                k.push(p);
+            }
+        }
+        return k;
+    };
+}
+if (!Object.values) { // IE11
+    Polyfills.log("Object.values");
+    // based on: https://github.com/KhaledElAnsari/Object.values/blob/master/index.js
+    Object.values = function (o) {
+        return Object.keys(o).map(function (key) {
+            return o[key];
+        });
+    };
+}
+if (!String.prototype.endsWith) {
+    Polyfills.log("String.prototype.endsWith");
+    String.prototype.endsWith = function (search, position) {
+        if (position === undefined) {
+            position = this.length;
+        }
+        position -= search.length;
+        var lastIndex = this.indexOf(search, position);
+        return lastIndex !== -1 && lastIndex === position;
+    };
+}
+if (!String.prototype.includes) { // IE11
+    Polyfills.log("String.prototype.includes");
+    String.prototype.includes = function (search, start) {
+        if (start === void 0) { start = 0; }
+        var ret;
+        if (start + search.length > this.length) {
+            ret = false;
+        }
+        else {
+            ret = this.indexOf(search, start) !== -1;
+        }
+        return ret;
+    };
+}
+if (!String.prototype.padStart) { // IE11
+    Polyfills.log("String.prototype.padStart");
+    String.prototype.padStart = function (targetLength, pad) {
+        var ret = String(this);
+        targetLength >>= 0; // eslint-disable-line no-bitwise
+        if (this.length < targetLength) {
+            pad = String(typeof pad !== "undefined" ? pad : " ");
+            targetLength -= this.length;
+            if (targetLength > pad.length) {
+                pad += pad.repeat(targetLength / pad.length);
+            }
+            ret = pad.slice(0, targetLength) + ret;
+        }
+        return ret;
+    };
+}
+if (!String.prototype.padEnd) { // IE11
+    // based on: https://github.com/behnammodi/polyfill/blob/master/string.polyfill.js
+    Polyfills.log("String.prototype.padEnd");
+    String.prototype.padEnd = function (targetLength, pad) {
+        var ret = String(this);
+        targetLength >>= 0; // eslint-disable-line no-bitwise
+        if (this.length < targetLength) {
+            pad = String(typeof pad !== "undefined" ? pad : " ");
+            targetLength -= this.length;
+            if (targetLength > pad.length) {
+                pad += pad.repeat(targetLength / pad.length);
+            }
+            ret += pad.slice(0, targetLength); // this line differs from padStart
+        }
+        return ret;
+    };
+}
+if (!String.prototype.repeat) { // IE11
+    Polyfills.log("String.prototype.repeat");
+    String.prototype.repeat = function (count) {
+        var str = String(this);
+        var out = "";
+        for (var i = 0; i < count; i += 1) {
+            out += str;
+        }
+        return out;
+    };
+}
+if (!String.prototype.startsWith) {
+    Polyfills.log("String.prototype.startsWith");
+    String.prototype.startsWith = function (search, position) {
+        position = position || 0;
+        return this.indexOf(search, position) === position;
+    };
+}
+if (!String.prototype.trim) { // IE8
+    Polyfills.log("String.prototype.trim");
+    String.prototype.trim = function () {
+        return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, "");
+    };
+}
+// based on: https://github.com/mathiasbynens/base64/blob/master/base64.js
+// https://mths.be/base64 v0.1.0 by @mathias | MIT license
+if (!window.atob) { // IE9 (and node.js)
+    Polyfills.log("window.atob, window.btoa");
+    if (Polyfills.isNodeAvailable) { // for nodeJS we have an alternative
+        // https://dirask.com/posts/Node-js-atob-btoa-functions-equivalents-1Aqb51
+        window.atob = function (input) {
+            return Buffer.from(input, "base64").toString("binary");
+        };
+        window.btoa = function (input) {
+            return Buffer.from(input, "binary").toString("base64");
+        };
+    }
+    else {
+        (function () {
+            var table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", reSpaceCharacters = /[\t\n\f\r ]/g; // http://whatwg.org/html/common-microsyntaxes.html#space-character
+            /* eslint-disable no-bitwise */
+            window.atob = function (input) {
+                input = String(input).replace(reSpaceCharacters, "");
+                var length = input.length;
+                if (length % 4 === 0) {
+                    input = input.replace(/[=]=?$/, ""); // additional brackets to maks eslint happy
+                    length = input.length;
+                }
+                if (length % 4 === 1 || (/[^+a-zA-Z0-9/]/).test(input)) { // http://whatwg.org/C#alphanumeric-ascii-characters
+                    throw new TypeError("Polyfills:atob: Invalid character: the string to be decoded is not correctly encoded.");
+                }
+                var bitCounter = 0, output = "", position = 0, bitStorage = 0;
+                while (position < length) {
+                    var buffer = table.indexOf(input.charAt(position));
+                    bitStorage = bitCounter % 4 ? bitStorage * 64 + buffer : buffer;
+                    bitCounter += 1;
+                    if ((bitCounter - 1) % 4) { // Unless this is the first of a group of 4 characters...
+                        output += String.fromCharCode(0xFF & bitStorage >> (-2 * bitCounter & 6)); // ...convert the first 8 bits to a single ASCII character
+                    }
+                    position += 1;
+                }
+                return output;
+            };
+            window.btoa = function (input) {
+                input = String(input);
+                if ((/[^\0-\xFF]/).test(input)) {
+                    throw new TypeError("Polyfills:btoa: The string to be encoded contains characters outside of the Latin1 range.");
+                }
+                var padding = input.length % 3, length = input.length - padding; // Make sure any padding is handled outside of the loop
+                var output = "", position = 0;
+                while (position < length) {
+                    // Read three bytes, i.e. 24 bits.
+                    var a = input.charCodeAt(position) << 16;
+                    position += 1;
+                    var b = input.charCodeAt(position) << 8;
+                    position += 1;
+                    var c = input.charCodeAt(position);
+                    position += 1;
+                    var buffer = a + b + c;
+                    // Turn the 24 bits into four chunks of 6 bits each, and append the matching character for each of them to the output
+                    output += table.charAt(buffer >> 18 & 0x3F) + table.charAt(buffer >> 12 & 0x3F) + table.charAt(buffer >> 6 & 0x3F) + table.charAt(buffer & 0x3F);
+                }
+                if (padding === 2) {
+                    var a = input.charCodeAt(position) << 8;
+                    position += 1;
+                    var b = input.charCodeAt(position), buffer = a + b;
+                    output += table.charAt(buffer >> 10) + table.charAt((buffer >> 4) & 0x3F) + table.charAt((buffer << 2) & 0x3F) + "=";
+                }
+                else if (padding === 1) {
+                    var buffer = input.charCodeAt(position);
+                    output += table.charAt(buffer >> 2) + table.charAt((buffer << 4) & 0x3F) + "==";
+                }
+                return output;
+            };
+            /* eslint-enable no-bitwise */
+        }());
+    }
+}
+// For IE and Edge, localStorage is only available if page is hosted on web server, so we simulate it (do not use property "length" or method names as keys!)
+if (!Polyfills.localStorage) {
+    Polyfills.log("window.localStorage");
+    (function () {
+        var Storage = /** @class */ (function () {
+            function Storage() {
+                this.length = 0;
+            }
+            Storage.prototype.clear = function () {
+                for (var key in this) {
+                    if (this.hasOwnProperty(key)) {
+                        delete this[key];
+                    }
+                }
+                this.length = 0;
+            };
+            Storage.prototype.key = function (index) {
+                var i = 0;
+                for (var key in this) {
+                    if (this.hasOwnProperty(key) && key !== "length") {
+                        if (i === index) {
+                            return key;
+                        }
+                        i += 1;
+                    }
+                }
+                return null;
+            };
+            Storage.prototype.getItem = function (key) {
+                return this.hasOwnProperty(key) ? this[key] : null;
+            };
+            Storage.prototype.setItem = function (key, value) {
+                if (this.getItem(key) === null) {
+                    this.length += 1;
+                }
+                this[key] = String(value);
+            };
+            Storage.prototype.removeItem = function (key) {
+                if (this.getItem(key) !== null) {
+                    delete this[key];
+                    this.length -= 1;
+                }
+            };
+            return Storage;
+        }());
+        Polyfills.localStorage = new Storage();
+    }());
+}
+if (!window.ArrayBuffer) { // IE9
+    Polyfills.log("window.ArrayBuffer");
+    window.ArrayBuffer = Array;
+}
+if (!window.AudioContext) { // ? not for IE
+    window.AudioContext = window.webkitAudioContext || window.mozAudioContext;
+    if (window.AudioContext) {
+        Polyfills.log("window.AudioContext");
+    }
+    else {
+        Polyfills.log("window.AudioContext not ok!");
+    }
+}
+if (!window.JSON) { // simple polyfill for JSON.parse only
+    // for a better implementation, see https://github.com/douglascrockford/JSON-js/blob/master/json2.js
+    Polyfills.log("window.JSON.parse");
+    window.JSON = {
+        parse: function (text) {
+            return eval("(" + text + ")"); // eslint-disable-line no-eval
+        },
+        stringify: function (o) {
+            (Polyfills.console || window.console).error("Not implemented: window.JSON.stringify");
+            return String(o);
+        }
+    };
+}
+if (!window.requestAnimationFrame) { // IE9, SliTaz tazweb browser
+    // https://wiki.selfhtml.org/wiki/JavaScript/Window/requestAnimationFrame
+    window.requestAnimationFrame = window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+    window.cancelAnimationFrame = window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.msCancelAnimationFrame;
+    if (!window.requestAnimationFrame || !window.cancelAnimationFrame) {
+        (function () {
+            var lastTime = 0;
+            Polyfills.log("window.requestAnimationFrame, cancelAnimationFrame");
+            window.requestAnimationFrame = function (callback /* , element */) {
+                var currTime = new Date().getTime(), timeToCall = Math.max(0, 16 - (currTime - lastTime)), id = window.setTimeout(function () { callback(currTime + timeToCall); }, timeToCall);
+                lastTime = currTime + timeToCall;
+                return id;
+            };
+            window.cancelAnimationFrame = function (id) {
+                clearTimeout(id);
+            };
+        }());
+    }
+    else {
+        Polyfills.log("window.requestAnimationFrame, cancelAnimationFrame: Using vendor specific method.");
+    }
+}
+if (!window.Uint8Array) { // IE9
+    Polyfills.log("Uint8Array (fallback only)");
+    window.Uint8Array = function (arrayBuffer) {
+        return arrayBuffer; // we just return the ArrayBuffer as fallback; enough for our needs
+    };
+    window.Uint8Array.BYTES_PER_ELEMENT = 1;
+    // A more complex solution would be: https://github.com/inexorabletash/polyfill/blob/master/typedarray.js
+}
+(Polyfills.console || window.console).debug("Polyfills: (" + Polyfills.getList().length + ") " + Polyfills.getList().join("; "));
+window.Polyfills = Polyfills; // for nodeJs
+// end
 // amdLoader.ts - AMD Loader for the browser or nodeJS
 // (c) Marco Vieth, 2022
 //
@@ -62,20 +694,26 @@ function amd4browser() {
         window.define = function (arg1, arg2, arg3) {
             // if arg1 is no id, we have an anonymous module
             var _a = (typeof arg1 !== "string") ? [arg1, arg2] : [arg2, arg3], deps = _a[0], func = _a[1], // eslint-disable-line array-element-newline
-            args = deps.map(function (name) {
-                if (name === "require") {
-                    return null;
+            depsMapped = []; // deps.map() (Array.map() not IE8)
+            for (var i = 0; i < deps.length; i += 1) {
+                var name_1 = deps[i];
+                var mapped = void 0;
+                if (name_1 === "require") {
+                    mapped = null;
                 }
-                else if (name === "exports") {
-                    return window.exports;
+                else if (name_1 === "exports") {
+                    mapped = window.exports;
                 }
-                return window.require(name);
-            });
-            func.apply(this, args);
+                else {
+                    mapped = window.require(name_1);
+                }
+                depsMapped[i] = mapped;
+            }
+            func.apply(this, depsMapped);
         };
     }
 }
-if ((typeof globalThis !== "undefined") && !globalThis.window) { // we assume nodeJS
+if (Polyfills.isNodeAvailable) {
     amd4Node();
 }
 else {
@@ -89,6 +727,7 @@ define("Utils", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Utils = void 0;
+    var Polyfills = window.Polyfills;
     var Utils = /** @class */ (function () {
         function Utils() {
         }
@@ -187,6 +826,14 @@ define("Utils", ["require", "exports"], function (require, exports) {
         Utils.toDegrees = function (rad) {
             return rad * 180 / Math.PI;
         };
+        Utils.toPrecision9 = function (num) {
+            var numStr = num.toPrecision(9), // some rounding, formatting
+            _a = numStr.split("e"), decimal = _a[0], exponent = _a[1], // eslint-disable-line array-element-newline
+            result = String(Number(decimal)) + (exponent !== undefined ? ("E" + exponent.replace(/(\D)(\d)$/, "$10$2")) : "");
+            // Number(): strip trailing decimal point and/or zeros (replace(/\.?0*$/, ""))
+            // exponent 1 digit to 2 digits
+            return result;
+        };
         Utils.testIsSupported = function (testExpression) {
             try {
                 Function(testExpression); // eslint-disable-line no-new-func
@@ -232,540 +879,26 @@ define("Utils", ["require", "exports"], function (require, exports) {
             customError.message += lineMsg + posMsg + ": " + customError.value;
             return customError;
         };
+        Utils.composeVmError = function (name, errorObject, errCode, value) {
+            var customError = Utils.composeError(name, errorObject, String(errCode), value);
+            customError.errCode = errCode;
+            return customError;
+        };
         Utils.debug = 0;
-        Utils.console = (function () {
-            return typeof window !== "undefined" ? window.console : globalThis.console; // browser or node.js
-        }());
+        Utils.console = Polyfills.console;
         Utils.supportsBinaryLiterals = Utils.testIsSupported("0b01"); // does the browser support binary literals?
         Utils.supportReservedNames = Utils.testIsSupported("({}).return()"); // does the browser support reserved names (delete, new, return) in dot notation? (not old IE8; "goto" is ok)
-        Utils.localStorage = (function () {
-            var rc;
-            if (typeof window !== "undefined") {
-                try {
-                    rc = window.localStorage; // due to a bug in MS Edge this will throw an error when hosting locally (https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/8816771/)
-                }
-                catch (_e) {
-                    // empty
-                }
-            }
-            return rc; // if it is undefined, localStorage is set in Polyfills
-        }());
-        Utils.atob = (function () {
-            return typeof window !== "undefined" && window.atob && window.atob.bind ? window.atob.bind(window) : null; // we need bind: https://stackoverflow.com/questions/9677985/uncaught-typeerror-illegal-invocation-in-chrome
-        }());
-        Utils.btoa = (function () {
-            return typeof window !== "undefined" && window.btoa && window.btoa.bind ? window.btoa.bind(window) : null; // we need bind!
-        }());
+        Utils.localStorage = Polyfills.localStorage || window.localStorage;
+        Utils.atob = function (data) {
+            return window.atob(data);
+        };
+        Utils.btoa = function (data) {
+            return window.btoa(data);
+        };
         return Utils;
     }());
     exports.Utils = Utils;
 });
-// Polyfills.ts - Some Polyfills for old browsers, e.g. IE8, and nodeJS
-//
-define("Polyfills", ["require", "exports", "Utils"], function (require, exports, Utils_1) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Polyfills = void 0;
-    exports.Polyfills = {
-        count: 0,
-        // empty
-        log: function (part) {
-            Utils_1.Utils.console.debug("Polyfill: " + part);
-            exports.Polyfills.count += 1;
-        }
-    };
-    // IE: window.console is only available when Dev Tools are open
-    if (!Utils_1.Utils.console) {
-        var utilsConsole_1 = {
-            cpcBasicLog: "LOG:\n",
-            log: function () {
-                if (utilsConsole_1.cpcBasicLog) {
-                    utilsConsole_1.cpcBasicLog += Array.prototype.slice.call(arguments).join(" ") + "\n";
-                }
-            }
-        };
-        utilsConsole_1.info = utilsConsole_1.log;
-        utilsConsole_1.warn = utilsConsole_1.log;
-        utilsConsole_1.error = utilsConsole_1.log;
-        utilsConsole_1.debug = utilsConsole_1.log;
-        Utils_1.Utils.console = utilsConsole_1;
-    }
-    if (!Utils_1.Utils.console.debug) { // IE8 has no console.debug
-        Utils_1.Utils.console.debug = Utils_1.Utils.console.log;
-        exports.Polyfills.log("window.console.debug");
-    }
-    if ((typeof globalThis !== "undefined") && !globalThis.window) { // nodeJS
-        exports.Polyfills.log("window");
-        globalThis.window = globalThis;
-    }
-    if (!Array.prototype.indexOf) { // IE8
-        Array.prototype.indexOf = function (searchElement, from) {
-            var len = this.length >>> 0; // eslint-disable-line no-bitwise
-            from = Number(from) || 0;
-            from = (from < 0) ? Math.ceil(from) : Math.floor(from);
-            if (from < 0) {
-                from += len;
-            }
-            for (; from < len; from += 1) {
-                if (from in this && this[from] === searchElement) {
-                    return from;
-                }
-            }
-            return -1;
-        };
-    }
-    if (!Array.prototype.map) { // IE8
-        // based on: https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/map
-        exports.Polyfills.log("Array.prototype.map");
-        Array.prototype.map = function (callback, thisArg) {
-            var values = [], object = Object(this), len = object.length;
-            var T;
-            if (arguments.length > 1) {
-                T = thisArg;
-            }
-            for (var i = 0; i < len; i += 1) {
-                if (i in object) {
-                    var kValue = object[i], mappedValue = callback.call(T, kValue, i, object);
-                    values[i] = mappedValue;
-                }
-            }
-            return values;
-        };
-    }
-    if (window.Element) {
-        if (!Element.prototype.addEventListener) { // IE8
-            exports.Polyfills.log("Element.prototype.addEventListener");
-            Element.prototype.addEventListener = function (event, fnCallback) {
-                event = "on" + event;
-                return this.attachEvent(event, fnCallback);
-            };
-        }
-        if (!Element.prototype.removeEventListener) { // IE8
-            exports.Polyfills.log("Element.prototype.removeEventListener");
-            Element.prototype.removeEventListener = function (event, fnCallback) {
-                event = "on" + event;
-                return this.detachEvent(event, fnCallback);
-            };
-        }
-    }
-    if (window.Event) {
-        if (!Event.prototype.preventDefault) { // IE8
-            exports.Polyfills.log("Polyfill: Event.prototype.preventDefault");
-            Event.prototype.preventDefault = function () {
-                // empty
-            };
-        }
-        if (!Event.prototype.stopPropagation) { // IE8
-            exports.Polyfills.log("Event.prototype.stopPropagation");
-            Event.prototype.stopPropagation = function () {
-                // empty
-            };
-        }
-    }
-    if (!Date.now) { // IE8
-        exports.Polyfills.log("Date.now");
-        Date.now = function () {
-            return new Date().getTime();
-        };
-    }
-    if (window.document) {
-        if (!document.addEventListener) {
-            // or check: https://gist.github.com/fuzzyfox/6762206
-            exports.Polyfills.log("document.addEventListener, removeEventListener");
-            if (document.attachEvent) {
-                (function () {
-                    var eventListeners = [];
-                    document.addEventListener = function (eventString, fnHandler) {
-                        var fnFindCaret = function (event) {
-                            var documentSelection = document.selection; // IE only
-                            if (documentSelection) {
-                                var eventTarget = event.target;
-                                eventTarget.focus();
-                                var range = documentSelection.createRange(), range2 = range.duplicate();
-                                if (range2.moveToElementTxt) { // not on IE8
-                                    range2.moveToElementTxt(event.target);
-                                }
-                                range2.setEndPoint("EndToEnd", range);
-                                eventTarget.selectionStart = range2.text.length - range.text.length;
-                                eventTarget.selectionEnd = eventTarget.selectionStart + range.text.length;
-                            }
-                        }, fnOnEvent = function (event) {
-                            event = event || window.event;
-                            var eventTarget = event.target || event.srcElement;
-                            if (event.type === "click" && eventTarget && eventTarget.tagName === "TEXTAREA") {
-                                fnFindCaret(event);
-                            }
-                            fnHandler(event);
-                            return false;
-                        };
-                        // The change event is not bubbled and fired on document for old IE8. So attach it to every select tag
-                        if (eventString === "change") {
-                            var elements = document.getElementsByTagName("select");
-                            for (var i = 0; i < elements.length; i += 1) {
-                                elements[i].attachEvent("on" + eventString, fnOnEvent);
-                                eventListeners.push({
-                                    object: this,
-                                    eventString: eventString,
-                                    fnHandler: fnHandler,
-                                    fnOnEvent: fnOnEvent
-                                });
-                            }
-                        }
-                        else { // e.g. "Click"
-                            document.attachEvent("on" + eventString, fnOnEvent);
-                            eventListeners.push({
-                                object: this,
-                                eventString: eventString,
-                                fnHandler: fnHandler,
-                                fnOnEvent: fnOnEvent
-                            });
-                        }
-                    };
-                    document.removeEventListener = function (event, fnHandler) {
-                        var counter = 0;
-                        while (counter < eventListeners.length) {
-                            var eventListener = eventListeners[counter];
-                            if (eventListener.object === this && eventListener.eventString === event && eventListener.fnHandler === fnHandler) {
-                                this.detachEvent("on" + event, eventListener.fnOnEvent);
-                                eventListeners.splice(counter, 1);
-                                break;
-                            }
-                            counter += 1;
-                        }
-                    };
-                }());
-            }
-            else {
-                Utils_1.Utils.console.log("No document.attachEvent found."); // will be ignored
-                // debug: trying to fix
-                if (document.__proto__.addEventListener) { // eslint-disable-line no-proto
-                    document.addEventListener = document.__proto__.addEventListener; // eslint-disable-line no-proto
-                }
-            }
-        }
-    }
-    if (!Function.prototype.bind) { // IE8
-        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
-        // Does not work with `new funcA.bind(thisArg, args)`
-        exports.Polyfills.log("Function.prototype.bind");
-        (function () {
-            var ArrayPrototypeSlice = Array.prototype.slice; // since IE6
-            Function.prototype.bind = function () {
-                var that = this, // eslint-disable-line @typescript-eslint/no-this-alias
-                thatArg = arguments[0], args = ArrayPrototypeSlice.call(arguments, 1), argLen = args.length;
-                if (typeof that !== "function") {
-                    // closest thing possible to the ECMAScript 5 internal IsCallable function
-                    throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
-                }
-                return function () {
-                    args.length = argLen;
-                    args.push.apply(args, arguments);
-                    return that.apply(thatArg, args);
-                };
-            };
-        }());
-    }
-    if (!Math.log10) { // IE11
-        exports.Polyfills.log("Math.log10");
-        Math.log10 = function (x) {
-            return Math.log(x) * Math.LOG10E;
-        };
-    }
-    if (!Math.sign) { // IE11
-        exports.Polyfills.log("Math.sign");
-        Math.sign = function (x) {
-            return (Number(x > 0) - Number(x < 0)) || Number(x);
-        };
-    }
-    if (!Math.trunc) { // IE11
-        exports.Polyfills.log("Math.trunc");
-        Math.trunc = function (v) {
-            return v < 0 ? Math.ceil(v) : Math.floor(v);
-        };
-    }
-    if (!Object.assign) { // IE11
-        exports.Polyfills.log("Object.assign");
-        Object.assign = function (target) {
-            var to = target;
-            for (var i = 1; i < arguments.length; i += 1) {
-                var nextSource = arguments[i];
-                for (var nextKey in nextSource) {
-                    if (nextSource.hasOwnProperty(nextKey)) {
-                        to[nextKey] = nextSource[nextKey];
-                    }
-                }
-            }
-            return to;
-        };
-    }
-    if (!Object.keys) { // IE8
-        exports.Polyfills.log("Object.keys");
-        // https://tokenposts.blogspot.com/2012/04/javascript-objectkeys-browser.html
-        Object.keys = function (o) {
-            var k = [];
-            if (o !== Object(o)) {
-                throw new TypeError("Object.keys called on a non-object");
-            }
-            for (var p in o) {
-                if (Object.prototype.hasOwnProperty.call(o, p)) {
-                    k.push(p);
-                }
-            }
-            return k;
-        };
-    }
-    if (!String.prototype.endsWith) {
-        exports.Polyfills.log("String.prototype.endsWith");
-        String.prototype.endsWith = function (search, position) {
-            if (position === undefined) {
-                position = this.length;
-            }
-            position -= search.length;
-            var lastIndex = this.indexOf(search, position);
-            return lastIndex !== -1 && lastIndex === position;
-        };
-    }
-    if (!String.prototype.includes) { // IE11
-        exports.Polyfills.log("String.prototype.includes");
-        String.prototype.includes = function (search, start) {
-            if (start === void 0) { start = 0; }
-            var ret;
-            if (start + search.length > this.length) {
-                ret = false;
-            }
-            else {
-                ret = this.indexOf(search, start) !== -1;
-            }
-            return ret;
-        };
-    }
-    if (!String.prototype.padStart) { // IE11
-        exports.Polyfills.log("String.prototype.padStart");
-        String.prototype.padStart = function (targetLength, pad) {
-            var ret = String(this);
-            targetLength >>= 0; // eslint-disable-line no-bitwise
-            if (this.length < targetLength) {
-                pad = String(typeof pad !== "undefined" ? pad : " ");
-                targetLength -= this.length;
-                if (targetLength > pad.length) {
-                    pad += pad.repeat(targetLength / pad.length);
-                }
-                ret = pad.slice(0, targetLength) + ret;
-            }
-            return ret;
-        };
-    }
-    if (!String.prototype.padEnd) { // IE11
-        // based on: https://github.com/behnammodi/polyfill/blob/master/string.polyfill.js
-        exports.Polyfills.log("String.prototype.padEnd");
-        String.prototype.padEnd = function (targetLength, pad) {
-            var ret = String(this);
-            targetLength >>= 0; // eslint-disable-line no-bitwise
-            if (this.length < targetLength) {
-                pad = String(typeof pad !== "undefined" ? pad : " ");
-                targetLength -= this.length;
-                if (targetLength > pad.length) {
-                    pad += pad.repeat(targetLength / pad.length);
-                }
-                ret += pad.slice(0, targetLength); // this line differs from padStart
-            }
-            return ret;
-        };
-    }
-    if (!String.prototype.repeat) { // IE11
-        exports.Polyfills.log("String.prototype.repeat");
-        String.prototype.repeat = function (count) {
-            var str = String(this);
-            var out = "";
-            for (var i = 0; i < count; i += 1) {
-                out += str;
-            }
-            return out;
-        };
-    }
-    if (!String.prototype.startsWith) {
-        exports.Polyfills.log("String.prototype.startsWith");
-        String.prototype.startsWith = function (search, position) {
-            position = position || 0;
-            return this.indexOf(search, position) === position;
-        };
-    }
-    if (!String.prototype.trim) { // IE8
-        exports.Polyfills.log("String.prototype.trim");
-        String.prototype.trim = function () {
-            return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, "");
-        };
-    }
-    // based on: https://github.com/mathiasbynens/base64/blob/master/base64.js
-    // https://mths.be/base64 v0.1.0 by @mathias | MIT license
-    if (!Utils_1.Utils.atob) { // IE9 (and node.js)
-        exports.Polyfills.log("window.atob, btoa");
-        (function () {
-            var table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", reSpaceCharacters = /[\t\n\f\r ]/g; // http://whatwg.org/html/common-microsyntaxes.html#space-character
-            /* eslint-disable no-bitwise */
-            Utils_1.Utils.atob = function (input) {
-                input = String(input).replace(reSpaceCharacters, "");
-                var length = input.length;
-                if (length % 4 === 0) {
-                    input = input.replace(/[=]=?$/, ""); // additional brackets to maks eslint happy
-                    length = input.length;
-                }
-                if (length % 4 === 1 || (/[^+a-zA-Z0-9/]/).test(input)) { // http://whatwg.org/C#alphanumeric-ascii-characters
-                    throw new TypeError("Polyfills:atob: Invalid character: the string to be decoded is not correctly encoded.");
-                }
-                var bitCounter = 0, output = "", position = 0, bitStorage = 0;
-                while (position < length) {
-                    var buffer = table.indexOf(input.charAt(position));
-                    bitStorage = bitCounter % 4 ? bitStorage * 64 + buffer : buffer;
-                    bitCounter += 1;
-                    if ((bitCounter - 1) % 4) { // Unless this is the first of a group of 4 characters...
-                        output += String.fromCharCode(0xFF & bitStorage >> (-2 * bitCounter & 6)); // ...convert the first 8 bits to a single ASCII character
-                    }
-                    position += 1;
-                }
-                return output;
-            };
-            Utils_1.Utils.btoa = function (input) {
-                input = String(input);
-                if ((/[^\0-\xFF]/).test(input)) {
-                    throw new TypeError("Polyfills:btoa: The string to be encoded contains characters outside of the Latin1 range.");
-                }
-                var padding = input.length % 3, length = input.length - padding; // Make sure any padding is handled outside of the loop
-                var output = "", position = 0;
-                while (position < length) {
-                    // Read three bytes, i.e. 24 bits.
-                    var a = input.charCodeAt(position) << 16;
-                    position += 1;
-                    var b = input.charCodeAt(position) << 8;
-                    position += 1;
-                    var c = input.charCodeAt(position);
-                    position += 1;
-                    var buffer = a + b + c;
-                    // Turn the 24 bits into four chunks of 6 bits each, and append the matching character for each of them to the output
-                    output += table.charAt(buffer >> 18 & 0x3F) + table.charAt(buffer >> 12 & 0x3F) + table.charAt(buffer >> 6 & 0x3F) + table.charAt(buffer & 0x3F);
-                }
-                if (padding === 2) {
-                    var a = input.charCodeAt(position) << 8;
-                    position += 1;
-                    var b = input.charCodeAt(position), buffer = a + b;
-                    output += table.charAt(buffer >> 10) + table.charAt((buffer >> 4) & 0x3F) + table.charAt((buffer << 2) & 0x3F) + "=";
-                }
-                else if (padding === 1) {
-                    var buffer = input.charCodeAt(position);
-                    output += table.charAt(buffer >> 2) + table.charAt((buffer << 4) & 0x3F) + "==";
-                }
-                return output;
-            };
-            /* eslint-enable no-bitwise */
-        }());
-    }
-    // For IE and Edge, localStorage is only available if page is hosted on web server, so we simulate it (do not use property "length" or method names as keys!)
-    if (!Utils_1.Utils.localStorage) {
-        exports.Polyfills.log("window.localStorage");
-        (function () {
-            var Storage = /** @class */ (function () {
-                function Storage() {
-                    this.length = 0;
-                }
-                Storage.prototype.clear = function () {
-                    for (var key in this) {
-                        if (this.hasOwnProperty(key)) {
-                            delete this[key];
-                        }
-                    }
-                    this.length = 0;
-                };
-                Storage.prototype.key = function (index) {
-                    var i = 0;
-                    for (var key in this) {
-                        if (this.hasOwnProperty(key) && key !== "length") {
-                            if (i === index) {
-                                return key;
-                            }
-                            i += 1;
-                        }
-                    }
-                    return null;
-                };
-                Storage.prototype.getItem = function (key) {
-                    return this.hasOwnProperty(key) ? this[key] : null;
-                };
-                Storage.prototype.setItem = function (key, value) {
-                    if (this.getItem(key) === null) {
-                        this.length += 1;
-                    }
-                    this[key] = String(value);
-                };
-                Storage.prototype.removeItem = function (key) {
-                    if (this.getItem(key) !== null) {
-                        delete this[key];
-                        this.length -= 1;
-                    }
-                };
-                return Storage;
-            }());
-            Utils_1.Utils.localStorage = new Storage();
-        }());
-    }
-    if (!window.ArrayBuffer) { // IE9
-        exports.Polyfills.log("window.ArrayBuffer");
-        window.ArrayBuffer = Array;
-    }
-    if (!window.AudioContext) { // ? not for IE
-        window.AudioContext = window.webkitAudioContext || window.mozAudioContext;
-        if (window.AudioContext) {
-            exports.Polyfills.log("window.AudioContext");
-        }
-        else {
-            Utils_1.Utils.console.warn("Polyfill: window.AudioContext: not ok!");
-        }
-    }
-    if (!window.JSON) { // simple polyfill for JSON.parse only
-        // for a better implementation, see https://github.com/douglascrockford/JSON-js/blob/master/json2.js
-        exports.Polyfills.log("window.JSON.parse");
-        window.JSON = {
-            parse: function (text) {
-                return eval("(" + text + ")"); // eslint-disable-line no-eval
-            },
-            stringify: function (o) {
-                Utils_1.Utils.console.error("Not implemented: window.JSON.stringify");
-                return String(o);
-            }
-        };
-    }
-    if (!window.requestAnimationFrame) { // IE9, SliTaz tazweb browser
-        // https://wiki.selfhtml.org/wiki/JavaScript/Window/requestAnimationFrame
-        window.requestAnimationFrame = window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-        window.cancelAnimationFrame = window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.msCancelAnimationFrame;
-        if (!window.requestAnimationFrame || !window.cancelAnimationFrame) {
-            (function () {
-                var lastTime = 0;
-                exports.Polyfills.log("window.requestAnimationFrame, cancelAnimationFrame");
-                window.requestAnimationFrame = function (callback /* , element */) {
-                    var currTime = new Date().getTime(), timeToCall = Math.max(0, 16 - (currTime - lastTime)), id = window.setTimeout(function () { callback(currTime + timeToCall); }, timeToCall);
-                    lastTime = currTime + timeToCall;
-                    return id;
-                };
-                window.cancelAnimationFrame = function (id) {
-                    clearTimeout(id);
-                };
-            }());
-        }
-        else {
-            exports.Polyfills.log("window.requestAnimationFrame, cancelAnimationFrame: Using vendor specific method.");
-        }
-    }
-    if (!window.Uint8Array) { // IE9
-        exports.Polyfills.log("Uint8Array (fallback only)");
-        window.Uint8Array = function (arrayBuffer) {
-            return arrayBuffer; // we just return the ArrayBuffer as fallback; enough for our needs
-        };
-        window.Uint8Array.BYTES_PER_ELEMENT = 1;
-        // A more complex solution would be: https://github.com/inexorabletash/polyfill/blob/master/typedarray.js
-    }
-    Utils_1.Utils.console.debug("Polyfill: end of Polyfills: count=" + exports.Polyfills.count);
-});
-// end
 // Interfaces.ts - Interfaces
 // (c) Marco Vieth, 2020
 // https://benchmarko.github.io/CPCBasicTS/
@@ -1043,6 +1176,87 @@ define("cpcCharset", ["require", "exports"], function (require, exports) {
     ];
 });
 /* eslint-enable array-element-newline */
+// Model.ts - Model (MVC)
+// (c) Marco Vieth, 2019
+// https://benchmarko.github.io/CPCBasicTS/
+define("Model", ["require", "exports", "Utils"], function (require, exports, Utils_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.Model = void 0;
+    var Model = /** @class */ (function () {
+        function Model(config) {
+            this.config = config || {}; // store only a reference
+            this.initialConfig = Object.assign({}, this.config); // save initial config
+            this.databases = {};
+            this.examples = {}; // loaded examples per database
+        }
+        Model.prototype.getProperty = function (property) {
+            return this.config[property];
+        };
+        Model.prototype.setProperty = function (property, value) {
+            this.config[property] = value;
+        };
+        Model.prototype.getAllProperties = function () {
+            return this.config;
+        };
+        Model.prototype.getAllInitialProperties = function () {
+            return this.initialConfig;
+        };
+        Model.prototype.getChangedProperties = function () {
+            var current = this.config, initial = this.initialConfig, changed = {};
+            for (var name_2 in current) {
+                if (current.hasOwnProperty(name_2)) {
+                    if (current[name_2] !== initial[name_2]) {
+                        changed[name_2] = current[name_2];
+                    }
+                }
+            }
+            return changed;
+        };
+        Model.prototype.addDatabases = function (db) {
+            for (var par in db) {
+                if (db.hasOwnProperty(par)) {
+                    var entry = db[par];
+                    this.databases[par] = entry;
+                    this.examples[par] = {};
+                }
+            }
+        };
+        Model.prototype.getAllDatabases = function () {
+            return this.databases;
+        };
+        Model.prototype.getDatabase = function () {
+            var database = this.getProperty("database");
+            return this.databases[database];
+        };
+        Model.prototype.getAllExamples = function () {
+            var database = this.getProperty("database");
+            return this.examples[database];
+        };
+        Model.prototype.getExample = function (key) {
+            var database = this.getProperty("database");
+            return this.examples[database][key];
+        };
+        Model.prototype.setExample = function (example) {
+            var database = this.getProperty("database"), key = example.key;
+            if (!this.examples[database][key]) {
+                if (Utils_1.Utils.debug > 1) {
+                    Utils_1.Utils.console.debug("setExample: creating new example:", key);
+                }
+            }
+            this.examples[database][key] = example;
+        };
+        Model.prototype.removeExample = function (key) {
+            var database = this.getProperty("database");
+            if (!this.examples[database][key]) {
+                Utils_1.Utils.console.warn("removeExample: example does not exist: " + key);
+            }
+            delete this.examples[database][key];
+        };
+        return Model;
+    }());
+    exports.Model = Model;
+});
 // BasicLexer.ts - BASIC Lexer
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
@@ -1055,24 +1269,29 @@ define("BasicLexer", ["require", "exports", "Utils"], function (require, exports
     exports.BasicLexer = void 0;
     var BasicLexer = /** @class */ (function () {
         function BasicLexer(options) {
-            this.quiet = false;
-            this.keepWhiteSpace = false;
-            this.line = "0"; // for error messages
-            this.takeNumberAsLinenumber = true; // first number in a line is assumed to be a line number
+            this.label = ""; // for error messages
+            this.takeNumberAsLabel = true; // first number in a line is assumed to be a label (line number)
             this.input = ""; // input to analyze
             this.index = 0; // position in input
             this.tokens = [];
             this.whiteSpace = ""; // collected whitespace
-            if (options) {
-                this.setOptions(options);
-            }
+            this.options = {
+                keywords: options.keywords,
+                keepWhiteSpace: false,
+                quiet: false
+            };
+            this.setOptions(options);
         }
         BasicLexer.prototype.setOptions = function (options) {
-            this.quiet = options.quiet || false;
-            this.keepWhiteSpace = options.keepWhiteSpace || false;
+            if (options.keepWhiteSpace !== undefined) {
+                this.options.keepWhiteSpace = options.keepWhiteSpace;
+            }
         };
-        BasicLexer.prototype.composeError = function (error, message, value, pos) {
-            return Utils_2.Utils.composeError("BasicLexer", error, message, value, pos, undefined, this.line);
+        BasicLexer.prototype.getOptions = function () {
+            return this.options;
+        };
+        BasicLexer.prototype.composeError = function (error, message, value, pos, len) {
+            return Utils_2.Utils.composeError("BasicLexer", error, message, value, pos, len, this.label || undefined);
         };
         BasicLexer.isOperatorOrStreamOrAddress = function (c) {
             return (/[+\-*/^=()[\],;:?\\@#]/).test(c);
@@ -1135,7 +1354,7 @@ define("BasicLexer", ["require", "exports", "Utils"], function (require, exports
             return token;
         };
         BasicLexer.prototype.debugCheckValue = function (type, value, pos, orig) {
-            var origValue = orig || value, part = this.input.substr(pos, origValue.length);
+            var origValue = orig || value, part = this.input.substring(pos, pos + origValue.length);
             if (part !== origValue) {
                 Utils_2.Utils.console.debug("BasicLexer:debugCheckValue:", type, part, "<>", origValue, "at pos", pos);
             }
@@ -1162,11 +1381,18 @@ define("BasicLexer", ["require", "exports", "Utils"], function (require, exports
         };
         BasicLexer.prototype.fnParseExponentialNumber = function (char) {
             // we also try to check: [eE][+-]?\d+; because "E" could be ERR, ELSE,...
-            var token = "";
-            var char1 = this.testChar(1), char2 = this.testChar(2);
+            var token = "", index = 1;
+            while (BasicLexer.isWhiteSpace(this.testChar(index))) { // whitespace between e and rest?
+                index += 1;
+            }
+            var char1 = this.testChar(index), char2 = this.testChar(index + 1);
             if (BasicLexer.isDigit(char1) || (BasicLexer.isSign(char1) && BasicLexer.isDigit(char2))) { // so it is a number
                 token += char; // take "E"
                 char = this.advance();
+                while (BasicLexer.isWhiteSpace(char)) {
+                    token += char;
+                    char = this.advance();
+                }
                 if (BasicLexer.isSign(char)) {
                     token += char; // take sign "+" or "-"
                     char = this.advance();
@@ -1193,18 +1419,25 @@ define("BasicLexer", ["require", "exports", "Utils"], function (require, exports
                     char = this.getChar();
                 }
             }
+            var expNumberPart = "";
             if (char === "e" || char === "E") { // we also try to check: [eE][+-]?\d+; because "E" could be ERR, ELSE,...
-                token += this.fnParseExponentialNumber(char);
+                expNumberPart = this.fnParseExponentialNumber(char);
+                token += expNumberPart;
+                if (expNumberPart[1] === " " && !this.options.quiet) {
+                    Utils_2.Utils.console.warn(this.composeError({}, "Whitespace in exponential number", token, startPos).message);
+                    // do we really want to allow this?
+                }
             }
-            token = token.trim(); // remove trailing spaces
+            var orig = token;
+            token = token.replace(/ /g, ""); // remove spaces
             if (!isFinite(Number(token))) { // Infnity?
                 throw this.composeError(Error(), "Number is too large or too small", token, startPos); // for a 64-bit double
             }
-            var number = parseFloat(token);
-            this.addToken("number", String(number), startPos, token); // store number as string
-            if (this.takeNumberAsLinenumber) {
-                this.takeNumberAsLinenumber = false;
-                this.line = String(number); // save just for error message
+            var number = expNumberPart ? token : parseFloat(token);
+            this.addToken(expNumberPart ? "expnumber" : "number", String(number), startPos, orig); // store number as string
+            if (this.takeNumberAsLabel) {
+                this.takeNumberAsLabel = false;
+                this.label = String(number); // save just for error message
             }
         };
         BasicLexer.prototype.fnParseCompleteLineForRemOrApostrophe = function (char, startPos) {
@@ -1217,7 +1450,7 @@ define("BasicLexer", ["require", "exports", "Utils"], function (require, exports
         };
         BasicLexer.prototype.fnParseWhiteSpace = function (char) {
             var token = this.advanceWhile(char, BasicLexer.isWhiteSpace);
-            if (this.keepWhiteSpace) {
+            if (this.options.keepWhiteSpace) {
                 this.whiteSpace = token;
             }
         };
@@ -1227,7 +1460,7 @@ define("BasicLexer", ["require", "exports", "Utils"], function (require, exports
             var match = reSpacesAtEnd.exec(token), endingSpaces = (match && match[0]) || "";
             token = token.trim(); // remove whitespace before and after; do we need this?
             this.addToken("unquoted", token, pos); // could be interpreted as string or number during runtime
-            if (this.keepWhiteSpace) {
+            if (this.options.keepWhiteSpace) {
                 this.whiteSpace = endingSpaces;
             }
         };
@@ -1271,6 +1504,12 @@ define("BasicLexer", ["require", "exports", "Utils"], function (require, exports
         BasicLexer.prototype.fnParseIdentifier = function (char, startPos) {
             var token = char;
             char = this.advance();
+            var lcToken = (token + char).toLowerCase(); // combine first 2 letters
+            if (lcToken === "fn" && this.options.keywords[lcToken]) {
+                this.addToken(lcToken, token + char, startPos); // create "fn" token
+                this.advance();
+                return;
+            }
             if (BasicLexer.isIdentifierMiddle(char)) {
                 token += this.advanceWhile(char, BasicLexer.isIdentifierMiddle);
                 char = this.getChar();
@@ -1279,29 +1518,34 @@ define("BasicLexer", ["require", "exports", "Utils"], function (require, exports
                 token += char;
                 char = this.advance();
             }
-            this.addToken("identifier", token, startPos);
-            token = token.toLowerCase();
-            if (token === "rem") { // special handling for line comment
-                startPos += token.length;
-                if (char === " ") { // ignore first space
-                    if (this.keepWhiteSpace) {
-                        this.whiteSpace = char;
-                    }
-                    char = this.advance();
-                    startPos += 1;
+            lcToken = token.toLowerCase();
+            if (this.options.keywords[lcToken]) {
+                this.addToken(lcToken, token, startPos);
+                if (lcToken === "rem") { // special handling for line comment
+                    startPos += lcToken.length;
+                    this.fnParseCompleteLineForRemOrApostrophe(char, startPos);
                 }
-                this.fnParseCompleteLineForRemOrApostrophe(char, startPos);
+                else if (lcToken === "data") { // special handling because strings in data lines need not to be quoted
+                    this.fnParseCompleteLineForData(char);
+                }
             }
-            else if (token === "data") { // special handling because strings in data lines need not to be quoted
-                this.fnParseCompleteLineForData(char);
+            else {
+                this.addToken("identifier", token, startPos);
             }
         };
         BasicLexer.prototype.fnParseHexOrBin = function (char, startPos) {
             var token = char;
             char = this.advance();
             if (char.toLowerCase() === "x") { // binary?
-                token += this.advanceWhile(char, BasicLexer.isBin);
-                this.addToken("binnumber", token, startPos);
+                token += char;
+                char = this.advance();
+                if (BasicLexer.isBin(char)) {
+                    token += this.advanceWhile(char, BasicLexer.isBin);
+                    this.addToken("binnumber", token, startPos);
+                }
+                else {
+                    throw this.composeError(Error(), "Expected binary number", token, startPos);
+                }
             }
             else { // hex
                 if (char.toLowerCase() === "h") { // optional h
@@ -1313,7 +1557,7 @@ define("BasicLexer", ["require", "exports", "Utils"], function (require, exports
                     this.addToken("hexnumber", token, startPos);
                 }
                 else {
-                    throw this.composeError(Error(), "Expected number", token, startPos);
+                    throw this.composeError(Error(), "Expected hex number", token, startPos);
                 }
             }
         };
@@ -1332,27 +1576,36 @@ define("BasicLexer", ["require", "exports", "Utils"], function (require, exports
             return out;
         };
         BasicLexer.prototype.fnParseString = function (startPos) {
-            var char = "", token = this.advanceWhile(char, BasicLexer.isNotQuotes);
+            var char = "", token = this.advanceWhile(char, BasicLexer.isNotQuotes), type = "string";
             char = this.getChar();
             if (char !== '"') {
-                if (!this.quiet) {
-                    Utils_2.Utils.console.log(this.composeError({}, "Unterminated string", token, startPos + 1).message);
+                var contString = this.fnTryContinueString(char); // heuristic to detect an LF in the string
+                if (contString) {
+                    if (Utils_2.Utils.debug) {
+                        Utils_2.Utils.console.debug(this.composeError({}, "Continued string", token, startPos + 1).message);
+                    }
+                    token += contString;
+                    char = this.getChar();
                 }
-                token += this.fnTryContinueString(char); // heuristic to detect an LF in the string
-                char = this.getChar();
             }
-            this.addToken("string", token, startPos + 1);
             if (char === '"') { // not for newline
                 this.advance();
             }
+            else {
+                if (Utils_2.Utils.debug) {
+                    Utils_2.Utils.console.debug(this.composeError({}, "Unterminated string", token, startPos + 1).message);
+                }
+                type = "ustring"; // unterminated string
+            }
+            this.addToken(type, token, startPos + 1);
         };
         BasicLexer.prototype.fnParseRsx = function (char, startPos) {
             var token = char;
             char = this.advance();
             if (BasicLexer.isIdentifierMiddle(char)) {
                 token += this.advanceWhile(char, BasicLexer.isIdentifierMiddle);
-                this.addToken("|", token, startPos);
             }
+            this.addToken("|", token, startPos);
         };
         BasicLexer.prototype.processNextCharacter = function (startPos) {
             var char = this.getChar(), token;
@@ -1360,9 +1613,9 @@ define("BasicLexer", ["require", "exports", "Utils"], function (require, exports
                 this.fnParseWhiteSpace(char);
             }
             else if (char === "\n") {
-                this.addToken("(eol)", "", startPos);
+                this.addToken("(eol)", char, startPos);
                 this.advance();
-                this.takeNumberAsLinenumber = true;
+                this.takeNumberAsLabel = true;
             }
             else if (char === "'") { // apostrophe (comment)
                 this.addToken(char, char, startPos);
@@ -1403,8 +1656,8 @@ define("BasicLexer", ["require", "exports", "Utils"], function (require, exports
             var startPos;
             this.input = input;
             this.index = 0;
-            this.line = "0"; // for error messages
-            this.takeNumberAsLinenumber = true;
+            this.label = ""; // for error messages
+            this.takeNumberAsLabel = true;
             this.whiteSpace = "";
             this.tokens.length = 0;
             while (this.index < input.length) {
@@ -1431,11 +1684,6 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
     var BasicParser = /** @class */ (function () {
         function BasicParser(options) {
             this.label = "0"; // for error messages
-            this.quiet = false;
-            this.keepTokens = false;
-            this.keepBrackets = false;
-            this.keepColons = false;
-            this.keepDataComma = false;
             this.symbols = {};
             // set also during parse
             this.tokens = [];
@@ -1444,20 +1692,19 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             this.statementList = []; // just to check last statement when generating error message
             /* eslint-disable no-invalid-this */
             this.specialStatements = {
-                "'": this.apostrophe,
                 "|": this.rsx,
                 after: this.afterEveryGosub,
                 chain: this.chain,
                 clear: this.clear,
                 data: this.data,
                 def: this.def,
-                "else": this.else,
+                "else": this.fnElse,
                 ent: this.entOrEnv,
                 env: this.entOrEnv,
                 every: this.afterEveryGosub,
-                "for": this.for,
+                "for": this.fnFor,
                 graphics: this.graphics,
-                "if": this.if,
+                "if": this.fnIf,
                 input: this.input,
                 key: this.key,
                 let: this.let,
@@ -1470,7 +1717,15 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
                 run: this.run,
                 speed: this.speed,
                 symbol: this.symbol,
-                window: this.window
+                window: this.window,
+                write: this.write
+            };
+            this.options = {
+                quiet: false,
+                keepBrackets: false,
+                keepColons: false,
+                keepDataComma: false,
+                keepTokens: false
             };
             if (options) {
                 this.setOptions(options);
@@ -1480,15 +1735,50 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             this.token = this.previousToken;
         }
         BasicParser.prototype.setOptions = function (options) {
-            this.quiet = options.quiet || false;
-            this.keepTokens = options.keepTokens || false;
-            this.keepBrackets = options.keepBrackets || false;
-            this.keepColons = options.keepColons || false;
-            this.keepDataComma = options.keepDataComma || false;
+            if (options.keepBrackets !== undefined) {
+                this.options.keepBrackets = options.keepBrackets;
+            }
+            if (options.keepColons !== undefined) {
+                this.options.keepColons = options.keepColons;
+            }
+            if (options.keepDataComma !== undefined) {
+                this.options.keepDataComma = options.keepDataComma;
+            }
+            if (options.keepTokens !== undefined) {
+                this.options.keepTokens = options.keepTokens;
+            }
+            if (options.quiet !== undefined) {
+                this.options.quiet = options.quiet;
+            }
+        };
+        BasicParser.prototype.getOptions = function () {
+            return this.options;
         };
         BasicParser.prototype.composeError = function (error, message, value, pos, len) {
             len = value === "(end)" ? 0 : len;
-            return Utils_3.Utils.composeError("BasicParser", error, message, value, pos, len, this.label);
+            return Utils_3.Utils.composeError("BasicParser", error, message, value, pos, len, this.label || undefined);
+        };
+        BasicParser.prototype.fnLastStatementIsOnErrorGotoX = function () {
+            var statements = this.statementList;
+            var isOnErrorGoto = false;
+            for (var i = statements.length - 1; i >= 0; i -= 1) {
+                var lastStatement = statements[i];
+                if (lastStatement.type !== ":") { // ignore colons (separator when keepTokens=true)
+                    if (lastStatement.type === "onErrorGoto" && lastStatement.args && Number(lastStatement.args[0].value) > 0) {
+                        isOnErrorGoto = true;
+                    }
+                    break;
+                }
+            }
+            return isOnErrorGoto;
+        };
+        BasicParser.prototype.fnMaskedError = function (node, message) {
+            if (!this.fnLastStatementIsOnErrorGotoX()) {
+                throw this.composeError(Error(), message, node.value, node.pos);
+            }
+            else if (!this.options.quiet) {
+                Utils_3.Utils.console.warn(this.composeError({}, message, node.value, node.pos).message);
+            }
         };
         // http://crockford.com/javascript/tdop/tdop.html (old: http://javascript.crockford.com/tdop/tdop.html)
         // http://crockford.com/javascript/tdop/parse.js
@@ -1497,14 +1787,16 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
         // Operator: With left binding power (lbp) and operational function.
         // Manipulates tokens to its left (e.g: +)? => left denotative function led(), otherwise null denotative function nud()), (e.g. unary -)
         // identifiers, numbers: also nud.
-        BasicParser.prototype.getToken = function () {
-            return this.token;
-        };
         BasicParser.prototype.advance = function (id) {
             var token = this.token;
             this.previousToken = this.token;
-            if (token.type !== id) {
-                throw this.composeError(Error(), "Expected " + id, (token.value === "") ? token.type : token.value, token.pos);
+            if (id && id !== token.type) {
+                if (!this.fnLastStatementIsOnErrorGotoX()) {
+                    throw this.composeError(Error(), "Expected " + id, token.value === "" ? token.type : token.value, token.pos); //TTT we cannot mask this error because advance is very generic
+                }
+                else if (!this.options.quiet) {
+                    Utils_3.Utils.console.warn(this.composeError({}, "Expected " + id, token.value === "" ? token.type : token.value, token.pos).message);
+                }
             }
             token = this.tokens[this.index]; // we get a lex token and reuse it as parseTree token
             if (!token) { // should not occur
@@ -1512,9 +1804,6 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
                 return this.token; // old token
             }
             this.index += 1;
-            if (token.type === "identifier" && BasicParser.keywords[token.value.toLowerCase()]) {
-                token.type = token.value.toLowerCase(); // modify type identifier => keyword xy
-            }
             var sym = this.symbols[token.type];
             if (!sym) {
                 throw this.composeError(Error(), "Unknown token", token.type, token.pos);
@@ -1530,7 +1819,7 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             if (t.type === "(end)") {
                 throw this.composeError(Error(), "Unexpected end of file", "", t.pos);
             }
-            this.advance(t.type);
+            this.advance();
             if (!s.nud) {
                 throw this.composeError(Error(), "Unexpected token", t.value, t.pos);
             }
@@ -1538,7 +1827,7 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             t = this.token;
             s = this.symbols[t.type];
             while (rbp < (s.lbp || 0)) { // as long as the right binding power is less than the left binding power of the next token...
-                this.advance(t.type);
+                this.advance();
                 if (!s.led) {
                     throw this.composeError(Error(), "Unexpected token", t.type, t.pos);
                     // TODO: How to get this error?
@@ -1551,7 +1840,7 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
         };
         BasicParser.prototype.fnCheckExpressionType = function (expression, expectedType, typeFirstChar) {
             if (expression.type !== expectedType) {
-                throw this.composeError(Error(), "Expected " + BasicParser.parameterTypes[typeFirstChar], expression.value, expression.pos);
+                this.fnMaskedError(expression, "Expected " + BasicParser.parameterTypes[typeFirstChar]);
             }
         };
         BasicParser.prototype.assignment = function () {
@@ -1567,8 +1856,8 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
         BasicParser.prototype.statement = function () {
             var t = this.token, s = this.symbols[t.type];
             if (s.std) { // statement?
-                this.advance(t.type);
-                return s.std();
+                this.advance();
+                return s.std(this.previousToken);
             }
             var value;
             if (t.type === "identifier") {
@@ -1578,20 +1867,22 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
                 value = this.expression(0);
             }
             if (value.type !== "assign" && value.type !== "fcall" && value.type !== "def" && value.type !== "(" && value.type !== "[") {
-                throw this.composeError(Error(), "Bad expression statement", t.value, t.pos);
+                this.fnMaskedError(t, "Bad expression statement");
             }
             return value;
         };
-        BasicParser.prototype.statements = function (closeTokens) {
-            var statementList = [];
+        BasicParser.prototype.statements = function (statementList, closeTokens) {
             this.statementList = statementList; // fast hack to access last statement for error messages
             var colonExpected = false;
             while (!closeTokens[this.token.type]) {
                 if (colonExpected || this.token.type === ":") {
                     if (this.token.type !== "'" && this.token.type !== "else") { // no colon required for line comment or ELSE
                         this.advance(":");
-                        if (this.keepColons) {
+                        if (this.options.keepColons) {
                             statementList.push(this.previousToken);
+                        }
+                        else if (this.previousToken.ws) { // colon token has ws?
+                            this.token.ws = this.previousToken.ws + (this.token.ws || ""); // add ws to next token
                         }
                     }
                     colonExpected = false;
@@ -1603,6 +1894,14 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             }
             return statementList;
         };
+        BasicParser.fnCreateDummyArg = function (type, value) {
+            return {
+                type: type,
+                value: value || "",
+                pos: 0,
+                len: 0
+            };
+        };
         BasicParser.prototype.basicLine = function () {
             var node;
             if (this.token.type !== "number") {
@@ -1610,34 +1909,40 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
                 node.pos = this.token.pos;
             }
             else {
-                this.advance("number");
+                this.advance();
                 node = this.previousToken; // number token
                 node.type = "label"; // number => label
             }
             this.label = node.value; // set line number for error messages
-            node.args = this.statements(BasicParser.closeTokensForLine);
+            node.args = this.statements([], BasicParser.closeTokensForLine);
             if (this.token.type === "(eol)") {
-                this.advance("(eol)");
+                if (this.options.keepTokens) { // not really a token
+                    node.args.push(this.token); // eol token with whitespace
+                }
+                this.advance();
+            }
+            else if (this.token.type === "(end)" && this.token.ws && this.options.keepTokens) {
+                node.args.push(this.token); // end token with whitespace
             }
             return node;
         };
-        BasicParser.fnCreateDummyArg = function (type, value) {
-            return {
-                type: type,
-                value: value !== undefined ? value : type,
-                pos: 0,
-                len: 0
-            };
-        };
-        BasicParser.prototype.fnCombineTwoTokensNoArgs = function (token2) {
-            var node = this.previousToken, name = node.type + Utils_3.Utils.stringCapitalize(this.token.type); // e.g ."speedInk"
+        BasicParser.prototype.fnCombineTwoTokensNoArgs = function (node, token2) {
+            var name = node.type + Utils_3.Utils.stringCapitalize(this.token.type); // e.g ."speedInk"
             node.value += (this.token.ws || " ") + this.token.value; // combine values of both
             this.token = this.advance(token2); // for "speed" e.g. "ink", "key", "write" (this.token.type)
+            if (this.options.keepTokens) {
+                if (!node.right) {
+                    node.right = this.previousToken; // set second token in first token
+                }
+                else { // e.g. on break...
+                    node.right.right = this.previousToken;
+                }
+            }
             this.previousToken = node; // fast hack to get e.g. "speed" token
             return name;
         };
-        BasicParser.prototype.fnCombineTwoTokens = function (token2) {
-            return this.fnCreateCmdCallForType(this.fnCombineTwoTokensNoArgs(token2));
+        BasicParser.prototype.fnCombineTwoTokens = function (node, token2) {
+            return this.fnCreateCmdCallForType(node, this.fnCombineTwoTokensNoArgs(node, token2));
         };
         BasicParser.prototype.fnGetOptionalStream = function () {
             var node;
@@ -1658,19 +1963,19 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             var left;
             if (this.token.type === "number") {
                 left = this.token;
-                this.advance("number");
+                this.advance();
                 this.fnChangeNumber2LineNumber(left);
             }
             var range;
             if (this.token.type === "-") {
                 range = this.token;
-                this.advance("-");
+                this.advance();
             }
             if (range) {
                 var right = void 0;
                 if (this.token.type === "number") {
                     right = this.token;
-                    this.advance("number");
+                    this.advance();
                     this.fnChangeNumber2LineNumber(right);
                 }
                 // accept also "-" as full range
@@ -1682,7 +1987,7 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
                 range = left; // single line number
             }
             else {
-                throw this.composeError(Error(), "Undefined range", this.token.value, this.token.pos);
+                throw this.composeError(Error(), "Programming error: Undefined range", this.token.value, this.token.pos);
             }
             return range;
         };
@@ -1701,7 +2006,7 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
                 expression.right.type = "letter"; // change type: identifier -> letter
             }
             else {
-                throw this.composeError(Error(), "Expected " + BasicParser.parameterTypes[typeFirstChar], expression.value, expression.pos);
+                this.fnMaskedError(expression, "Expected " + BasicParser.parameterTypes[typeFirstChar]);
             }
             return expression;
         };
@@ -1710,42 +2015,20 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
                 var type = types[i];
                 if (!type.endsWith("?") && !type.endsWith("*")) { // mandatory?
                     var text = BasicParser.parameterTypes[type] || ("parameter " + type);
-                    throw this.composeError(Error(), "Expected " + text + " for " + this.previousToken.type, this.token.value, this.token.pos);
+                    this.fnMaskedError(this.token, "Expected " + text + " for " + this.previousToken.type);
                 }
-            }
-        };
-        BasicParser.prototype.fnLastStatemetIsOnErrorGotoX = function () {
-            var statements = this.statementList;
-            var isOnErrorGoto = false;
-            for (var i = statements.length - 1; i >= 0; i -= 1) {
-                var lastStatement = statements[i];
-                if (lastStatement.type !== ":") { // ignore colons (separator when keepTokens=true)
-                    if (lastStatement.type === "onErrorGoto" && lastStatement.args && Number(lastStatement.args[0].value) > 0) {
-                        isOnErrorGoto = true;
-                    }
-                    break;
-                }
-            }
-            return isOnErrorGoto;
-        };
-        BasicParser.prototype.fnMaskedExpressionError = function (expression, typeFirstChar) {
-            if (!this.fnLastStatemetIsOnErrorGotoX()) {
-                throw this.composeError(Error(), "Expected " + BasicParser.parameterTypes[typeFirstChar], expression.value, expression.pos);
-            }
-            else if (!this.quiet) {
-                Utils_3.Utils.console.warn(this.composeError({}, "Expected " + BasicParser.parameterTypes[typeFirstChar], expression.value, expression.pos).message);
             }
         };
         BasicParser.prototype.fnCheckStaticTypeNotNumber = function (expression, typeFirstChar) {
             var type = expression.type, isStringFunction = (BasicParser.keywords[type] || "").startsWith("f") && type.endsWith("$"), isStringIdentifier = type === "identifier" && expression.value.endsWith("$");
-            if (type === "string" || type === "#" || isStringFunction || isStringIdentifier) { // got a string or a stream? (statical check)
-                this.fnMaskedExpressionError(expression, typeFirstChar);
+            if (type === "string" || type === "ustring" || type === "#" || isStringFunction || isStringIdentifier) { // got a string or a stream? (statical check)
+                this.fnMaskedError(expression, "Expected " + BasicParser.parameterTypes[typeFirstChar]);
             }
         };
         BasicParser.prototype.fnCheckStaticTypeNotString = function (expression, typeFirstChar) {
             var type = expression.type, isNumericFunction = (BasicParser.keywords[type] || "").startsWith("f") && !type.endsWith("$"), isNumericIdentifier = type === "identifier" && (expression.value.endsWith("%") || expression.value.endsWith("!")), isComparison = type === "=" || type.startsWith("<") || type.startsWith(">"); // =, <, >, <=, >=
-            if (type === "number" || type === "#" || isNumericFunction || isNumericIdentifier || isComparison) { // got e.g. number or a stream? (statical check)
-                this.fnMaskedExpressionError(expression, typeFirstChar);
+            if (type === "number" || type === "binnumber" || type === "hexnumber" || type === "expnumber" || type === "#" || isNumericFunction || isNumericIdentifier || isComparison) { // got e.g. number or a stream? (statical check)
+                this.fnMaskedError(expression, "Expected " + BasicParser.parameterTypes[typeFirstChar]);
             }
         };
         BasicParser.prototype.fnGetExpressionForType = function (args, type, types) {
@@ -1756,7 +2039,7 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
                     if (type === "#0?") { // optional stream?
                         if (this.token.type !== "#") { // no stream?
                             suppressAdvance = true;
-                            type = ","; // needMore = true;
+                            type = ",";
                         }
                         expression = this.fnGetOptionalStream();
                     }
@@ -1778,23 +2061,21 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
                     expression = this.fnGetLetterRange(typeFirstChar);
                     break;
                 case "q": // line number range
-                    if (type === "q0?") { // optional line number range
-                        if (this.token.type === "number" || this.token.type === "-") {
-                            expression = this.fnGetLineRange();
-                        }
-                        else {
-                            expression = BasicParser.fnCreateDummyArg("null");
-                            if (types.length) {
-                                type = ","; // needMore=true, maybe take it as next parameter
-                            }
-                        }
+                    if (type !== "q0?") { // optional line number range
+                        throw this.composeError(Error(), "Programming error: Unexpected line range type", this.token.type, this.token.pos); // should not occur
+                    }
+                    if (this.token.type === "number" || this.token.type === "-") {
+                        expression = this.fnGetLineRange();
                     }
                     else {
-                        expression = this.fnGetLineRange();
+                        expression = BasicParser.fnCreateDummyArg("null");
+                        if (types.length) {
+                            type = ","; // needMore=true, maybe take it as next parameter
+                        }
                     }
                     break;
                 case "n": // number"
-                    if (type.substr(0, 2) === "n0" && this.token.type === separator) { // n0 or n0?: if parameter not specified, insert default value null?
+                    if (type.substring(0, 2) === "n0" && this.token.type === separator) { // n0 or n0?: if parameter not specified, insert default value null?
                         expression = BasicParser.fnCreateDummyArg("null");
                     }
                     else {
@@ -1809,13 +2090,17 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
                 default:
                     expression = this.expression(0);
                     if (expression.type === "#") { // got stream?
-                        throw this.composeError(Error(), "Unexpected stream", expression.value, expression.pos); // do we still need this?
+                        this.fnMaskedError(expression, "Unexpected stream");
                     }
                     break;
             }
+            args.push(expression);
             if (this.token.type === separator) {
                 if (!suppressAdvance) {
                     this.advance(separator);
+                    if (this.options.keepTokens) {
+                        args.push(this.previousToken);
+                    }
                 }
                 if (type.slice(-1) !== "*") {
                     type = "xxx"; // initial needMore
@@ -1824,18 +2109,17 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             else if (type !== ",") { // !needMore
                 type = ""; // stop
             }
-            args.push(expression);
             return type;
         };
-        BasicParser.prototype.fnGetArgs = function (keyword) {
-            var keyOpts = BasicParser.keywords[keyword], types = keyOpts.split(" "), args = [], closeTokens = BasicParser.closeTokensForArgs;
+        BasicParser.prototype.fnGetArgs = function (args, keyword) {
+            var keyOpts = BasicParser.keywords[keyword], types = keyOpts.split(" "), closeTokens = BasicParser.closeTokensForArgs;
             var type = "xxx"; // initial needMore
             types.shift(); // remove keyword type
             while (type && !closeTokens[this.token.type]) {
                 if (types && type.slice(-1) !== "*") { // "*"= any number of parameters
                     type = types.shift() || "";
                     if (!type) {
-                        throw this.composeError(Error(), "Expected end of arguments", this.previousToken.type, this.previousToken.pos);
+                        this.fnMaskedError(this.previousToken, "Expected end of arguments"); // If masked, it will accept more args than expected
                     }
                 }
                 type = this.fnGetExpressionForType(args, type, types);
@@ -1849,14 +2133,18 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
                     args.push(expression);
                 }
             }
+            if (this.previousToken.type === "," && keyword !== "delete" && keyword !== "list") { // for line number range in delete, list it is ok
+                this.fnMaskedError(this.previousToken, "Operand missing");
+            }
             return args;
         };
-        BasicParser.prototype.fnGetArgsSepByCommaSemi = function () {
-            var closeTokens = BasicParser.closeTokensForArgs, args = [];
+        BasicParser.prototype.fnGetArgsSepByCommaSemi = function (args) {
+            var closeTokens = BasicParser.closeTokensForArgs;
             while (!closeTokens[this.token.type]) {
                 args.push(this.expression(0));
                 if (this.token.type === "," || this.token.type === ";") {
-                    this.advance(this.token.type);
+                    args.push(this.token); // keep comma or semicolon
+                    this.advance();
                 }
                 else {
                     break;
@@ -1864,60 +2152,56 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             }
             return args;
         };
-        BasicParser.prototype.fnGetArgsInParenthesis = function () {
+        BasicParser.prototype.fnGetArgsInParenthesis = function (args, keyword) {
             this.advance("(");
-            var args = this.fnGetArgs("_any1"); // until ")"
+            if (this.options.keepTokens) {
+                args.push(this.previousToken);
+            }
+            this.fnGetArgs(args, keyword || "_any1"); // until ")"
             this.advance(")");
+            if (this.options.keepTokens) {
+                args.push(this.previousToken);
+            }
             return args;
         };
-        BasicParser.prototype.fnGetArgsInParenthesesOrBrackets = function () {
+        BasicParser.prototype.fnGetArgsInParenthesesOrBrackets = function (args) {
             var brackets = BasicParser.brackets;
-            var bracketOpen;
-            if (this.token.type === "(" || this.token.type === "[") {
-                bracketOpen = this.token;
-            }
-            this.advance(bracketOpen ? bracketOpen.type : "(");
-            if (!bracketOpen) {
-                throw this.composeError(Error(), "Programming error: Undefined bracketOpen", this.token.type, this.token.pos); // should not occur
-            }
-            var args = this.fnGetArgs("_any1"); // (until "]" or ")")
-            args.unshift(bracketOpen);
-            var bracketClose;
-            if (this.token.type === ")" || this.token.type === "]") {
-                bracketClose = this.token;
-            }
-            this.advance(bracketClose ? bracketClose.type : ")");
-            if (!bracketClose) {
-                throw this.composeError(Error(), "Programming error: Undefined bracketClose", this.token.type, this.token.pos); // should not occur
-            }
+            this.advance(this.token.type === "[" ? "[" : "(");
+            var bracketOpen = this.previousToken;
+            args.push(bracketOpen);
+            this.fnGetArgs(args, "_any1"); // until "]" or ")"
+            this.advance(this.token.type === "]" ? "]" : ")");
+            var bracketClose = this.previousToken;
             args.push(bracketClose);
-            if (brackets[bracketOpen.type] !== bracketClose.type) {
-                if (!this.quiet) {
-                    Utils_3.Utils.console.warn(this.composeError({}, "Inconsistent bracket style", this.previousToken.value, this.previousToken.pos).message);
-                }
+            if (!this.options.quiet && (brackets[bracketOpen.type] !== bracketClose.type)) {
+                Utils_3.Utils.console.warn(this.composeError({}, "Inconsistent bracket style", this.previousToken.value, this.previousToken.pos).message);
             }
             return args;
         };
-        BasicParser.prototype.fnCreateCmdCall = function () {
-            var node = this.previousToken;
-            node.args = this.fnGetArgs(node.type);
+        BasicParser.prototype.fnCreateCmdCall = function (node) {
+            node.args = this.fnGetArgs([], node.type);
             return node;
         };
-        BasicParser.prototype.fnCreateCmdCallForType = function (type) {
+        BasicParser.prototype.fnCreateCmdCallForType = function (node, type) {
             if (type) {
-                this.previousToken.type = type; // override
+                node.type = type; // override
             }
-            return this.fnCreateCmdCall();
+            return this.fnCreateCmdCall(node);
         };
-        BasicParser.prototype.fnCreateFuncCall = function () {
-            var node = this.previousToken;
+        BasicParser.prototype.fnCreateFuncCall = function (node) {
+            node.args = [];
             if (this.token.type === "(") { // args in parenthesis?
                 this.advance("(");
-                node.args = this.fnGetArgs(node.type);
+                if (this.options.keepTokens) {
+                    node.args.push(this.previousToken);
+                }
+                this.fnGetArgs(node.args, node.type);
                 this.advance(")");
+                if (this.options.keepTokens) {
+                    node.args.push(this.previousToken);
+                }
             }
             else { // no parenthesis?
-                node.args = [];
                 // if we have a check, make sure there are no non-optional parameters left
                 var keyOpts = BasicParser.keywords[node.type];
                 if (keyOpts) {
@@ -1929,136 +2213,112 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             return node;
         };
         // ...
-        BasicParser.prototype.fnIdentifier = function () {
-            var node = this.previousToken, nameValue = node.value, startsWithFn = nameValue.toLowerCase().startsWith("fn");
-            if (startsWithFn) {
-                if (this.token.type !== "(") { // Fnxxx name without ()
-                    var fnNode = {
-                        type: "fn",
-                        value: nameValue,
-                        args: [],
-                        left: node,
-                        pos: node.pos // same pos as identifier?
-                    };
-                    if (node.ws) {
-                        fnNode.ws = node.ws;
-                        node.ws = "";
-                    }
-                    return fnNode;
-                }
-            }
+        BasicParser.prototype.fnIdentifier = function (node) {
             if (this.token.type === "(" || this.token.type === "[") {
-                if (startsWithFn) {
-                    node.args = this.fnGetArgsInParenthesis();
-                    node.type = "fn"; // FNxxx in e.g. print
-                    node.left = {
-                        type: "identifier",
-                        value: node.value,
-                        pos: node.pos
-                    };
-                }
-                else {
-                    node.args = this.fnGetArgsInParenthesesOrBrackets();
-                }
+                node.args = [];
+                this.fnGetArgsInParenthesesOrBrackets(node.args);
             }
             return node;
         };
-        BasicParser.prototype.fnParenthesis = function () {
-            var node;
-            if (this.keepBrackets) {
-                node = this.previousToken; // "("
-                node.args = [
-                    this.expression(0),
-                    this.token // ")" (hopefully)
-                ];
+        BasicParser.prototype.fnParenthesis = function (node) {
+            if (this.options.keepBrackets) {
+                node.args = [this.expression(0)];
             }
             else {
+                if (node.ws) { // bracket open has ws?
+                    this.token.ws = node.ws + (this.token.ws || ""); // add ws to next token
+                }
                 node = this.expression(0);
             }
             this.advance(")");
-            return node;
-        };
-        BasicParser.prototype.fnFn = function () {
-            var node = this.previousToken, // "fn"
-            value2 = this.token; // identifier
-            this.fnCombineTwoTokensNoArgs("identifier");
-            value2.value = "fn" + value2.value; // combine "fn" + identifier (maybe simplify by separating in lexer)
-            if (value2.ws) {
-                value2.ws = "";
+            if (this.options.keepBrackets) {
+                node.args.push(this.previousToken);
             }
-            node.left = value2;
-            node.args = this.token.type === "(" ? this.fnGetArgsInParenthesis() : []; // FN xxx name with ()?
+            else if (this.previousToken.ws) { // bracket close token has ws?
+                this.token.ws = this.previousToken.ws + (this.token.ws || ""); // add ws to next token
+            }
             return node;
         };
-        BasicParser.prototype.apostrophe = function () {
-            return this.fnCreateCmdCallForType("rem");
+        BasicParser.prototype.fnFn = function (node) {
+            node.args = [];
+            this.token = this.advance("identifier");
+            node.right = this.previousToken;
+            if (this.token.type === "(") { // optional args?
+                this.fnGetArgsInParenthesis(node.args);
+            }
+            return node;
         };
-        BasicParser.prototype.rsx = function () {
-            var node = this.previousToken;
+        BasicParser.prototype.rsx = function (node) {
+            node.args = [];
             var type = "_any1"; // expect any number of arguments
             if (this.token.type === ",") { // arguments starting with comma
-                this.advance(",");
+                this.advance();
+                if (this.options.keepTokens) {
+                    node.args.push(this.previousToken);
+                }
                 type = "_rsx1"; // dummy token: expect at least 1 argument
             }
-            node.args = this.fnGetArgs(type); // get arguments
+            this.fnGetArgs(node.args, type); // get arguments
             return node;
         };
-        BasicParser.prototype.afterEveryGosub = function () {
-            var node = this.fnCreateCmdCallForType(this.previousToken.type + "Gosub"); // "afterGosub" or "everyGosub", interval and optional timer
-            if (!node.args) {
+        BasicParser.prototype.afterEveryGosub = function (node) {
+            var combinedNode = this.fnCreateCmdCallForType(node, node.type + "Gosub"); // "afterGosub" or "everyGosub", interval and optional timer
+            if (!combinedNode.args) {
                 throw this.composeError(Error(), "Programming error: Undefined args", this.token.type, this.token.pos); // should not occur
             }
-            if (node.args.length < 2) { // add default timer 0
-                node.args.push(BasicParser.fnCreateDummyArg("null"));
+            if (combinedNode.args.length < 2) { // add default timer 0
+                combinedNode.args.push(BasicParser.fnCreateDummyArg("null"));
             }
             this.advance("gosub");
-            var line = this.fnGetArgs("gosub"); // line number
-            node.args.push(line[0]);
-            return node;
-        };
-        BasicParser.prototype.chain = function () {
-            var node;
-            if (this.token.type !== "merge") { // not chain merge?
-                node = this.fnCreateCmdCall(); // chain
+            if (this.options.keepTokens) {
+                combinedNode.args.push(this.previousToken);
             }
-            else { // chain merge with optional DELETE
-                var name_1 = this.fnCombineTwoTokensNoArgs(this.token.type); // chainMerge
-                node = this.previousToken;
-                node.type = name_1;
-                node.args = [];
-                var value2 = this.expression(0); // filename
-                node.args.push(value2);
-                this.token = this.getToken();
+            this.fnGetArgs(combinedNode.args, "gosub"); // line number
+            return combinedNode;
+        };
+        BasicParser.prototype.chain = function (node) {
+            if (this.token.type === "merge") { // chain merge?
+                var name_3 = this.fnCombineTwoTokensNoArgs(node, this.token.type); // chainMerge
+                node.type = name_3;
+            }
+            node.args = [];
+            // chain, chain merge with optional DELETE
+            var node2 = this.expression(0); // filename
+            node.args.push(node2);
+            if (this.token.type === ",") {
+                this.token = this.advance();
+                if (this.options.keepTokens) {
+                    node.args.push(this.previousToken);
+                }
+                var numberExpression = false; // line number (expression) found
+                if (this.token.type !== "," && this.token.type !== "(eol)" && this.token.type !== "(eof)") {
+                    node2 = this.expression(0); // line number or expression
+                    node.args.push(node2);
+                    numberExpression = true;
+                }
                 if (this.token.type === ",") {
-                    this.token = this.advance(",");
-                    var numberExpression = false; // line number (expression) found
-                    if (this.token.type !== "," && this.token.type !== "(eol)" && this.token.type !== "(eof)") {
-                        value2 = this.expression(0); // line number or expression
-                        node.args.push(value2);
-                        numberExpression = true;
+                    this.advance();
+                    if (this.options.keepTokens) {
+                        node.args.push(this.previousToken);
                     }
-                    if (this.token.type === ",") {
-                        this.advance(",");
-                        if (!numberExpression) {
-                            value2 = BasicParser.fnCreateDummyArg("null"); // insert dummy arg for line
-                            node.args.push(value2);
-                        }
-                        this.advance("delete");
-                        var args = this.fnGetArgs(this.previousToken.type); // args for "delete"
-                        for (var i = 0; i < args.length; i += 1) {
-                            node.args.push(args[i]); // copy arg
-                        }
+                    if (!numberExpression) {
+                        node2 = BasicParser.fnCreateDummyArg("null"); // insert dummy arg for line
+                        node.args.push(node2);
                     }
+                    this.advance("delete");
+                    if (this.options.keepTokens) {
+                        node.args.push(this.previousToken);
+                    }
+                    this.fnGetArgs(node.args, this.previousToken.type); // args for "delete"
                 }
             }
             return node;
         };
-        BasicParser.prototype.clear = function () {
+        BasicParser.prototype.clear = function (node) {
             var tokenType = this.token.type;
-            return tokenType === "input" ? this.fnCombineTwoTokens(tokenType) : this.fnCreateCmdCall(); // "clear input" or "clear"
+            return tokenType === "input" ? this.fnCombineTwoTokens(node, tokenType) : this.fnCreateCmdCall(node); // "clear input" or "clear"
         };
-        BasicParser.prototype.data = function () {
-            var node = this.previousToken;
+        BasicParser.prototype.data = function (node) {
             var parameterFound = false;
             node.args = [];
             // data is special: it can have empty parameters, also the last parameter, and also if no parameters
@@ -2070,8 +2330,8 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
                 if (!parameterFound) {
                     node.args.push(BasicParser.fnCreateDummyArg("null")); // insert null parameter
                 }
-                this.token = this.advance(",");
-                if (this.keepDataComma) {
+                this.token = this.advance();
+                if (this.options.keepDataComma) {
                     node.args.push(this.previousToken); // ","
                 }
                 parameterFound = false;
@@ -2088,32 +2348,34 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             }
             return node;
         };
-        BasicParser.prototype.def = function () {
-            var node = this.previousToken; // def
-            var value2 = this.token, // fn or fn<identifier>
-            fn;
-            if (value2.type === "fn") { // fn and <identifier> separate?
-                fn = value2;
-                value2 = this.advance("fn");
+        BasicParser.prototype.def = function (node) {
+            node.args = [];
+            this.advance("fn");
+            if (this.options.keepTokens) {
+                node.right = this.previousToken;
             }
             this.token = this.advance("identifier");
-            if (fn) { // separate fn?
-                value2.value = fn.value + value2.value; // combine "fn" + identifier (maybe simplify by separating in lexer)
-                value2.space = true; // fast hack: set space for CodeGeneratorBasic
+            if (node.right) { // keepTokens
+                node.right.right = this.previousToken;
             }
-            else if (!value2.value.toLowerCase().startsWith("fn")) { // not fn<identifier>
-                throw this.composeError(Error(), "Invalid DEF", this.token.type, this.token.pos);
+            else {
+                node.right = this.previousToken;
             }
-            node.left = value2;
-            node.args = (this.token.type === "(") ? this.fnGetArgsInParenthesis() : [];
+            if (this.token.type === "(") {
+                this.fnGetArgsInParenthesis(node.args, "_vars1"); // accept only variable names
+            }
             this.advance("=");
-            node.right = this.expression(0);
+            if (this.options.keepTokens) {
+                node.args.push(this.previousToken);
+            }
+            var expression = this.expression(0);
+            node.args.push(expression);
             return node;
         };
-        BasicParser.prototype["else"] = function () {
-            var node = this.previousToken;
+        BasicParser.prototype.fnElse = function (node) {
             node.args = [];
-            if (!this.quiet) {
+            node.type += "Comment"; // else => elseComment
+            if (!this.options.quiet) {
                 Utils_3.Utils.console.warn(this.composeError({}, "ELSE: Weird use of ELSE", this.previousToken.type, this.previousToken.pos).message);
             }
             if (this.token.type === "number") { // first token number?
@@ -2122,64 +2384,73 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             // TODO: data line as separate statement is taken
             while (this.token.type !== "(eol)" && this.token.type !== "(end)") {
                 node.args.push(this.token); // collect tokens unchecked, may contain syntax error
-                this.advance(this.token.type);
+                this.advance();
             }
             return node;
         };
-        BasicParser.prototype.entOrEnv = function () {
-            var node = this.previousToken;
-            node.args = [];
-            node.args.push(this.expression(0)); // should be number or variable
+        BasicParser.prototype.entOrEnv = function (node) {
+            node.args = [this.expression(0)]; // should be number or variable
+            var count = 0;
             while (this.token.type === ",") {
-                this.token = this.advance(",");
-                if (this.token.type === "=" && (node.args.length - 1) % 3 === 0) { // special handling for parameter "number of steps"
-                    this.advance("=");
+                this.token = this.advance();
+                if (this.options.keepTokens) {
+                    node.args.push(this.previousToken);
+                }
+                if (this.token.type === "=" && count % 3 === 0) { // special handling for parameter "number of steps"
+                    this.advance();
+                    if (this.options.keepTokens) {
+                        node.args.push(this.previousToken);
+                    }
                     node.args.push(BasicParser.fnCreateDummyArg("null")); // insert null parameter
+                    count += 1;
                 }
                 var expression = this.expression(0);
                 node.args.push(expression);
+                count += 1;
             }
             return node;
         };
-        BasicParser.prototype["for"] = function () {
-            var node = this.previousToken;
+        BasicParser.prototype.fnFor = function (node) {
             this.fnCheckExpressionType(this.token, "identifier", "v");
             var name = this.expression(90); // take simple identifier, nothing more
             this.fnCheckExpressionType(name, "identifier", "v"); // expected simple
             node.args = [name];
             this.advance("=");
-            if (this.keepTokens) {
+            if (this.options.keepTokens) {
                 node.args.push(this.previousToken);
             }
             node.args.push(this.expression(0));
             this.token = this.advance("to");
-            if (this.keepTokens) {
+            if (this.options.keepTokens) {
                 node.args.push(this.previousToken);
             }
             node.args.push(this.expression(0));
             if (this.token.type === "step") {
-                this.advance("step");
-                if (this.keepTokens) {
+                this.advance();
+                if (this.options.keepTokens) {
                     node.args.push(this.previousToken);
                 }
                 node.args.push(this.expression(0));
             }
             return node;
         };
-        BasicParser.prototype.graphics = function () {
+        BasicParser.prototype.graphics = function (node) {
             var tokenType = this.token.type;
             if (tokenType !== "pen" && tokenType !== "paper") {
                 throw this.composeError(Error(), "Expected PEN or PAPER", tokenType, this.token.pos);
             }
-            return this.fnCombineTwoTokens(tokenType);
+            return this.fnCombineTwoTokens(node, tokenType);
         };
         BasicParser.prototype.fnCheckForUnreachableCode = function (args) {
             for (var i = 0; i < args.length; i += 1) {
                 var node = args[i], tokenType = node.type;
                 if ((i === 0 && tokenType === "linenumber") || tokenType === "goto" || tokenType === "stop") {
                     var index = i + 1;
-                    if (index < args.length && args[index].type !== "rem") {
-                        if (!this.quiet) {
+                    if (index < args.length && (args[index].type !== "rem") && (args[index].type !== "'")) {
+                        if (args[index].type === ":" && this.options.keepColons) {
+                            // ignore
+                        }
+                        else if (!this.options.quiet) {
                             Utils_3.Utils.console.warn(this.composeError({}, "IF: Unreachable code after THEN or ELSE", tokenType, node.pos).message);
                         }
                         break;
@@ -2187,62 +2458,61 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
                 }
             }
         };
-        BasicParser.prototype["if"] = function () {
-            var node = this.previousToken;
-            var numberToken;
-            node.left = this.expression(0);
+        BasicParser.prototype.fnIf = function (node) {
+            node.right = this.expression(0); // condition
+            node.args = [];
             if (this.token.type !== "goto") { // no "goto", expect "then" token...
                 this.advance("then");
-                if (this.keepTokens) {
-                    node.right = this.previousToken;
+                if (this.options.keepTokens) {
+                    node.args.unshift(this.previousToken);
                 }
                 if (this.token.type === "number") {
-                    numberToken = this.fnGetArgs("goto"); // take number parameter as line number
+                    this.fnGetArgs(node.args, "goto"); // take number parameter as line number
                 }
             }
-            node.args = this.statements(BasicParser.closeTokensForLineAndElse); // get "then" statements until "else" or eol
-            if (numberToken) {
-                node.args.unshift(numberToken[0]);
-                numberToken = undefined;
-            }
+            this.statements(node.args, BasicParser.closeTokensForLineAndElse); // get "then" statements until "else" or eol
             this.fnCheckForUnreachableCode(node.args);
             if (this.token.type === "else") {
                 this.token = this.advance("else");
-                if (this.keepTokens) {
-                    // TODO HOWTO?
-                }
+                var elseNode = this.previousToken;
+                node.args.push(elseNode);
+                elseNode.args = [];
                 if (this.token.type === "number") {
-                    numberToken = this.fnGetArgs("goto"); // take number parameter as line number
+                    this.fnGetArgs(elseNode.args, "goto"); // take number parameter as line number
+                    // only number 0?
                 }
-                node.args2 = this.token.type === "if" ? [this.statement()] : this.statements(BasicParser.closeTokensForLineAndElse);
-                if (numberToken) {
-                    node.args2.unshift(numberToken[0]);
+                if (this.token.type === "if") {
+                    elseNode.args.push(this.statement());
                 }
-                this.fnCheckForUnreachableCode(node.args2);
+                else {
+                    this.statements(elseNode.args, BasicParser.closeTokensForLineAndElse);
+                }
+                this.fnCheckForUnreachableCode(elseNode.args);
             }
             return node;
         };
-        BasicParser.prototype.input = function () {
-            var node = this.previousToken;
-            node.args = [];
+        BasicParser.prototype.input = function (node) {
             var stream = this.fnGetOptionalStream();
-            node.args.push(stream);
+            node.args = [stream];
             if (stream.len !== 0) { // not an inserted stream?
                 this.advance(",");
+                if (this.options.keepTokens) {
+                    node.args.push(this.previousToken);
+                }
             }
             if (this.token.type === ";") { // no newline after input?
                 node.args.push(this.token);
-                this.advance(";");
+                this.advance();
             }
             else {
                 node.args.push(BasicParser.fnCreateDummyArg("null"));
             }
-            if (this.token.type === "string") { // message
+            if (this.token.type === "string" || this.token.type === "ustring") { // message
                 node.args.push(this.token);
-                this.token = this.advance("string");
+                this.token = this.advance();
                 if (this.token.type === ";" || this.token.type === ",") { // ";" => need to append prompt "? " , "," = no prompt
                     node.args.push(this.token);
-                    this.advance(this.token.type);
+                    this.advance();
                 }
                 else {
                     throw this.composeError(Error(), "Expected ; or ,", this.token.type, this.token.pos);
@@ -2256,78 +2526,89 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
                 var value2 = this.expression(90); // we expect "identifier", no fnxx
                 this.fnCheckExpressionType(value2, "identifier", "v");
                 node.args.push(value2);
-                if (node.type === "lineInput") {
-                    break; // no loop for lineInput (only one arg)
+                if (node.type === "lineInput" || this.token.type !== ",") {
+                    break; // no loop for lineInput (only one arg) or no more args
                 }
-            } while ((this.token.type === ",") && this.advance(","));
+                this.advance(",");
+                if (this.options.keepTokens) {
+                    node.args.push(this.previousToken);
+                }
+            } while (true); // eslint-disable-line no-constant-condition
             return node;
         };
-        BasicParser.prototype.key = function () {
+        BasicParser.prototype.key = function (node) {
             var tokenType = this.token.type;
-            return tokenType === "def" ? this.fnCombineTwoTokens(tokenType) : this.fnCreateCmdCall(); // "key def" or "key"
+            return tokenType === "def" ? this.fnCombineTwoTokens(node, tokenType) : this.fnCreateCmdCall(node); // "key def" or "key"
         };
-        BasicParser.prototype.let = function () {
-            var node = this.previousToken;
+        BasicParser.prototype.let = function (node) {
             node.right = this.assignment();
             return node;
         };
-        BasicParser.prototype.line = function () {
-            this.previousToken.type = this.fnCombineTwoTokensNoArgs("input"); // combine "line" => "lineInput"
-            return this.input(); // continue with input
+        BasicParser.prototype.line = function (node) {
+            node.type = this.fnCombineTwoTokensNoArgs(node, "input"); // combine "line" => "lineInput"
+            return this.input(node); // continue with input //TTT
         };
-        BasicParser.prototype.mid$Assign = function () {
-            this.previousToken.type = "mid$Assign"; // change type mid$ => mid$Assign
-            var node = this.fnCreateFuncCall();
+        BasicParser.prototype.mid$Assign = function (node) {
+            node.type = "mid$Assign"; // change type mid$ => mid$Assign
+            this.fnCreateFuncCall(node);
             if (!node.args) {
                 throw this.composeError(Error(), "Programming error: Undefined args", this.token.type, this.token.pos); // should not occur
             }
-            this.fnCheckExpressionType(node.args[0], "identifier", "v");
+            // check that first argument is a variable...
+            var i = 0;
+            if (this.options.keepTokens) {
+                while (node.args[i].type === "(" && i < (node.args.length - 1)) {
+                    i += 1;
+                }
+            }
+            this.fnCheckExpressionType(node.args[i], "identifier", "v");
             this.advance("="); // equal as assignment
-            var right = this.expression(0);
-            node.right = right;
+            if (this.options.keepTokens) {
+                node.args.push(this.previousToken);
+            }
+            var expression = this.expression(0);
+            node.args.push(expression);
             return node;
         };
-        BasicParser.prototype.on = function () {
-            var node = this.previousToken;
-            var left;
+        BasicParser.prototype.on = function (node) {
             node.args = [];
+            var tokenType;
             switch (this.token.type) {
                 case "break":
-                    this.previousToken.type = this.fnCombineTwoTokensNoArgs("break"); // onBreak
-                    this.token = this.getToken();
-                    if (this.token.type === "gosub" || this.token.type === "cont" || this.token.type === "stop") {
-                        this.fnCombineTwoTokens(this.token.type); // onBreakGosub, onBreakCont, onBreakStop
+                    node.type = this.fnCombineTwoTokensNoArgs(node, "break"); // onBreak
+                    tokenType = this.token.type;
+                    if (tokenType === "gosub" || tokenType === "cont" || tokenType === "stop") {
+                        this.fnCombineTwoTokens(node, this.token.type); // onBreakGosub, onBreakCont, onBreakStop
                     }
                     else {
                         throw this.composeError(Error(), "Expected GOSUB, CONT or STOP", this.token.type, this.token.pos);
                     }
                     break;
                 case "error": // on error goto
-                    this.previousToken.type = this.fnCombineTwoTokensNoArgs("error"); // onError..
-                    this.fnCombineTwoTokens("goto"); // onErrorGoto
+                    node.type = this.fnCombineTwoTokensNoArgs(node, "error"); // onError..
+                    this.fnCombineTwoTokens(node, "goto"); // onErrorGoto
                     break;
                 case "sq": // on sq(n) gosub
-                    left = this.expression(0);
-                    if (!left.args) {
+                    node.right = this.expression(0);
+                    if (!node.right.args) {
                         throw this.composeError(Error(), "Programming error: Undefined args", this.token.type, this.token.pos); // should not occur
                     }
-                    left = left.args[0];
-                    this.token = this.getToken();
                     this.advance("gosub");
+                    if (this.options.keepTokens) {
+                        node.args.push(this.previousToken);
+                    }
                     node.type = "onSqGosub";
-                    node.args = this.fnGetArgs(node.type);
-                    node.left = left;
+                    this.fnGetArgs(node.args, node.type);
                     break;
-                default: // on <expr>
-                    left = this.expression(0);
+                default: // on <expr> goto|gosub
+                    node.args.push(this.expression(0));
                     if (this.token.type === "gosub" || this.token.type === "goto") {
-                        this.advance(this.token.type);
-                        if (this.keepTokens) {
-                            node.right = this.previousToken;
+                        this.advance();
+                        if (this.options.keepTokens) {
+                            node.args.push(this.previousToken); // modify
                         }
                         node.type = "on" + Utils_3.Utils.stringCapitalize(this.previousToken.type); // onGoto, onGosub
-                        node.args = this.fnGetArgs(node.type);
-                        node.left = left;
+                        this.fnGetArgs(node.args, node.type);
                     }
                     else {
                         throw this.composeError(Error(), "Expected GOTO or GOSUB", this.token.type, this.token.pos);
@@ -2336,43 +2617,40 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             }
             return node;
         };
-        BasicParser.prototype.print = function () {
-            var node = this.previousToken, closeTokens = BasicParser.closeTokensForArgs, stream = this.fnGetOptionalStream();
-            node.args = [];
-            node.args.push(stream);
-            var commaAfterStream = false;
+        BasicParser.prototype.print = function (node) {
+            var closeTokens = BasicParser.closeTokensForArgs, stream = this.fnGetOptionalStream();
+            node.args = [stream];
             if (stream.len !== 0) { // not an inserted stream?
-                commaAfterStream = true;
+                if (!closeTokens[this.token.type]) {
+                    this.advance(",");
+                    if (this.options.keepTokens) {
+                        node.args.push(this.previousToken);
+                    }
+                }
             }
             while (!closeTokens[this.token.type]) {
-                if (commaAfterStream) {
-                    this.advance(",");
-                    commaAfterStream = false;
-                }
                 var node2 = void 0;
                 if (this.token.type === "spc" || this.token.type === "tab") {
-                    this.advance(this.token.type);
-                    node2 = this.fnCreateFuncCall();
+                    this.advance();
+                    node2 = this.fnCreateFuncCall(this.previousToken);
                 }
                 else if (this.token.type === "using") {
                     node2 = this.token;
-                    this.advance("using");
-                    var t = this.expression(0); // format
+                    node2.args = [];
+                    this.advance();
+                    node2.args.push(this.expression(0)); // format
                     this.advance(";"); // after the format there must be a ";"
-                    node2.args = this.fnGetArgsSepByCommaSemi();
-                    node2.args.unshift(t);
+                    node2.args.push(this.previousToken); // semicolon
+                    node2.args = this.fnGetArgsSepByCommaSemi(node2.args);
                     if (this.previousToken.type === ";") { // using closed by ";"?
+                        node2.args.pop(); // remove it from using
                         node.args.push(node2);
                         node2 = this.previousToken; // keep it for print
                     }
                 }
-                else if (BasicParser.keywords[this.token.type] && (BasicParser.keywords[this.token.type].charAt(0) === "c" || BasicParser.keywords[this.token.type].charAt(0) === "p")) { // stop also at keyword which is c=command or p=part of command
-                    break;
-                    //TTT: node2 not set?
-                }
                 else if (this.token.type === ";" || this.token.type === ",") { // separator ";" or comma tab separator ","
                     node2 = this.token;
-                    this.advance(this.token.type);
+                    this.advance();
                 }
                 else {
                     node2 = this.expression(0);
@@ -2381,42 +2659,58 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             }
             return node;
         };
-        BasicParser.prototype.question = function () {
-            var node = this.print();
-            node.type = "print";
-            return node;
+        BasicParser.prototype.question = function (node) {
+            var node2 = this.print(node); // not really a new node
+            node2.type = "print";
+            return node2;
         };
-        BasicParser.prototype.resume = function () {
+        BasicParser.prototype.resume = function (node) {
             var tokenType = this.token.type;
-            return tokenType === "next" ? this.fnCombineTwoTokens(tokenType) : this.fnCreateCmdCall(); // "resume next" or "resume"
+            return tokenType === "next" ? this.fnCombineTwoTokens(node, tokenType) : this.fnCreateCmdCall(node); // "resume next" or "resume"
         };
-        BasicParser.prototype.run = function () {
-            var tokenType = this.token.type;
-            var node;
-            if (tokenType === "number") {
-                node = this.previousToken;
-                node.args = this.fnGetArgs("goto"); // we get linenumber arg as for goto
+        BasicParser.prototype.run = function (node) {
+            if (this.token.type === "number") {
+                node.args = this.fnGetArgs([], "goto"); // we get linenumber arg as for goto
             }
             else {
-                node = this.fnCreateCmdCall();
+                node = this.fnCreateCmdCall(node);
             }
             return node;
         };
-        BasicParser.prototype.speed = function () {
+        BasicParser.prototype.speed = function (node) {
             var tokenType = this.token.type;
             if (tokenType !== "ink" && tokenType !== "key" && tokenType !== "write") {
                 throw this.composeError(Error(), "Expected INK, KEY or WRITE", tokenType, this.token.pos);
             }
-            return this.fnCombineTwoTokens(tokenType);
+            return this.fnCombineTwoTokens(node, tokenType);
         };
-        BasicParser.prototype.symbol = function () {
+        BasicParser.prototype.symbol = function (node) {
             var tokenType = this.token.type;
-            return tokenType === "after" ? this.fnCombineTwoTokens(tokenType) : this.fnCreateCmdCall(); // "symbol after" or "symbol"
+            return tokenType === "after" ? this.fnCombineTwoTokens(node, tokenType) : this.fnCreateCmdCall(node); // "symbol after" or "symbol"
         };
-        BasicParser.prototype.window = function () {
+        BasicParser.prototype.window = function (node) {
             var tokenType = this.token.type;
-            return tokenType === "swap" ? this.fnCombineTwoTokens(tokenType) : this.fnCreateCmdCall(); // "window swap" or "window"
+            return tokenType === "swap" ? this.fnCombineTwoTokens(node, tokenType) : this.fnCreateCmdCall(node); // "window swap" or "window"
         };
+        BasicParser.prototype.write = function (node) {
+            var closeTokens = BasicParser.closeTokensForArgs, stream = this.fnGetOptionalStream();
+            node.args = [stream];
+            if (stream.len !== 0) { // not an inserted stream?
+                if (!closeTokens[this.token.type]) {
+                    this.advance(",");
+                    if (this.options.keepTokens) {
+                        node.args.push(this.previousToken);
+                    }
+                }
+            }
+            var lengthBefore = node.args.length;
+            this.fnGetArgsSepByCommaSemi(node.args);
+            if ((this.previousToken.type === "," && node.args.length > lengthBefore) || this.previousToken.type === ";") {
+                this.fnMaskedError(this.previousToken, "Operand missing");
+            }
+            return node;
+        };
+        // ---
         BasicParser.fnNode = function (node) {
             return node;
         };
@@ -2461,7 +2755,7 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
         BasicParser.prototype.createStatement = function (id, fn) {
             var _this = this;
             var symbol = this.createSymbol(id);
-            symbol.std = function () { return fn.call(_this); };
+            symbol.std = function () { return fn.call(_this, _this.previousToken); };
             return symbol;
         };
         BasicParser.prototype.fnGenerateKeywordSymbols = function () {
@@ -2470,7 +2764,7 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
                 if (BasicParser.keywords.hasOwnProperty(key)) {
                     var keywordType = BasicParser.keywords[key].charAt(0);
                     if (keywordType === "f") {
-                        this.createNudSymbol(key, function () { return _this.fnCreateFuncCall(); });
+                        this.createNudSymbol(key, function () { return _this.fnCreateFuncCall(_this.previousToken); });
                     }
                     else if (keywordType === "c") {
                         this.createStatement(key, this.specialStatements[key] || this.fnCreateCmdCall);
@@ -2485,7 +2779,6 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             var _this = this;
             this.fnGenerateKeywordSymbols();
             // special statements ...
-            this.createStatement("'", this.specialStatements["'"]);
             this.createStatement("|", this.specialStatements["|"]); // rsx
             this.createStatement("mid$", this.specialStatements.mid$); // mid$Assign (statement), combine with function
             this.createStatement("?", this.specialStatements["?"]); // "?" is same as print
@@ -2499,14 +2792,16 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             this.createSymbol("(end)");
             this.createNudSymbol("number", BasicParser.fnNode);
             this.createNudSymbol("binnumber", BasicParser.fnNode);
+            this.createNudSymbol("expnumber", BasicParser.fnNode);
             this.createNudSymbol("hexnumber", BasicParser.fnNode);
             this.createNudSymbol("linenumber", BasicParser.fnNode);
             this.createNudSymbol("string", BasicParser.fnNode);
+            this.createNudSymbol("ustring", BasicParser.fnNode);
             this.createNudSymbol("unquoted", BasicParser.fnNode);
             this.createNudSymbol("ws", BasicParser.fnNode); // optional whitespace
-            this.createNudSymbol("identifier", function () { return _this.fnIdentifier(); });
-            this.createNudSymbol("(", function () { return _this.fnParenthesis(); });
-            this.createNudSymbol("fn", function () { return _this.fnFn(); }); // separate fn
+            this.createNudSymbol("identifier", function () { return _this.fnIdentifier(_this.previousToken); });
+            this.createNudSymbol("(", function () { return _this.fnParenthesis(_this.previousToken); });
+            this.createNudSymbol("fn", function () { return _this.fnFn(_this.previousToken); }); // separate fn
             this.createPrefix("@", 95); // address of
             this.createInfix("^", 90, 80);
             this.createPrefix("+", 80); // + can be uses as prefix or infix
@@ -2545,7 +2840,7 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             this.previousToken = this.token; // just to avoid warning
             var parseTree = this.parseTree;
             parseTree.length = 0;
-            this.advance(this.token.type);
+            this.advance();
             while (this.token.type !== "(end)") {
                 parseTree.push(this.basicLine());
             }
@@ -2566,7 +2861,7 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             "#": "stream"
         };
         // first letter: c=command, f=function, p=part of command, o=operator, x=misc
-        // following are arguments: n=number, s=string, l=line number (checked), v=variable (checked), r=letter or range, a=any, n0?=optional parameter with default null, #=stream, #0?=optional stream with default 0; suffix ?=optional (optionals must be last); last *=any number of arguments may follow
+        // following are arguments: n=number, s=string, l=line number (checked), v=variable (checked), q=line number range, r=letter or range, a=any, n0?=optional parameter with default null, #=stream, #0?=optional stream with default 0; suffix ?=optional (optionals must be last); last *=any number of arguments may follow
         BasicParser.keywords = {
             abs: "f n",
             after: "c",
@@ -2580,7 +2875,7 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             "break": "p",
             call: "c n *",
             cat: "c",
-            chain: "c s n?",
+            chain: "c s n? *",
             chainMerge: "c s n? *",
             chr$: "f n",
             cint: "f n",
@@ -2602,7 +2897,7 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             defreal: "c r r*",
             defstr: "c r r*",
             deg: "c",
-            "delete": "c q?",
+            "delete": "c q0?",
             derr: "f",
             di: "c",
             dim: "c v *",
@@ -2658,12 +2953,12 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             log10: "f n",
             lower$: "f s",
             mask: "c n0? n?",
-            max: "f n *",
+            max: "f a *",
             memory: "c n",
             merge: "c s",
             mid$: "f s n n?",
             mid$Assign: "f s n n?",
-            min: "f n *",
+            min: "f a *",
             mod: "o",
             mode: "c n",
             move: "c n n n0? n?",
@@ -2698,6 +2993,7 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             read: "c v v*",
             release: "c n",
             rem: "c s?",
+            "'": "c s?",
             remain: "f n",
             renum: "c n0? n0? n?",
             restore: "c l?",
@@ -2755,7 +3051,8 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             ypos: "f",
             zone: "c n",
             _rsx1: "c a a*",
-            _any1: "x *" // dummy: any number of args
+            _any1: "x *",
+            _vars1: "x v*" // dummy: any number of variables
         };
         /* eslint-enable no-invalid-this */
         BasicParser.closeTokensForLine = {
@@ -2794,42 +3091,62 @@ define("BasicFormatter", ["require", "exports", "Utils"], function (require, exp
     exports.BasicFormatter = void 0;
     var BasicFormatter = /** @class */ (function () {
         function BasicFormatter(options) {
-            this.line = ""; // current line (label) for error messages
-            this.lexer = options.lexer;
-            this.parser = options.parser;
+            this.label = ""; // current label (line) for error messages
+            this.options = {
+                lexer: options.lexer,
+                parser: options.parser,
+                implicitLines: false
+            };
+            this.setOptions(options);
         }
+        BasicFormatter.prototype.setOptions = function (options) {
+            if (options.implicitLines !== undefined) {
+                this.options.implicitLines = options.implicitLines;
+            }
+        };
+        BasicFormatter.prototype.getOptions = function () {
+            return this.options;
+        };
         BasicFormatter.prototype.composeError = function (error, message, value, pos, len) {
-            return Utils_4.Utils.composeError("BasicFormatter", error, message, value, pos, len, this.line);
+            return Utils_4.Utils.composeError("BasicFormatter", error, message, value, pos, len, this.label);
         };
         // renumber
-        BasicFormatter.fnIsDirect = function (label) {
-            return label === "";
+        BasicFormatter.fnHasLabel = function (label) {
+            return label !== "";
         };
-        BasicFormatter.prototype.fnCreateLineNumbersMap = function (nodes) {
+        BasicFormatter.prototype.fnCreateLabelEntry = function (node, lastLine, implicitLines) {
+            var origLen = (node.orig || node.value).length;
+            if (!BasicFormatter.fnHasLabel(node.value) && implicitLines) {
+                node.value = String(lastLine + 1); // generate label
+            }
+            var label = node.value;
+            this.label = label; // for error messages
+            if (BasicFormatter.fnHasLabel(label)) {
+                var line = Number(label);
+                if (line < 1 || line > 65535) {
+                    throw this.composeError(Error(), "Line number overflow", label, node.pos, node.len);
+                }
+                if (line <= lastLine) {
+                    throw this.composeError(Error(), "Expected increasing line number", label, node.pos, node.len);
+                }
+            }
+            var labelEntry = {
+                value: label,
+                pos: node.pos,
+                len: origLen,
+                refCount: 0
+            };
+            return labelEntry;
+        };
+        BasicFormatter.prototype.fnCreateLabelMap = function (nodes, implicitLines) {
             var lines = {}; // line numbers
-            var lastLine = -1;
+            var lastLine = 0;
             for (var i = 0; i < nodes.length; i += 1) {
                 var node = nodes[i];
                 if (node.type === "label") {
-                    var lineString = node.value, isDirect = BasicFormatter.fnIsDirect(lineString), line = Number(lineString);
-                    this.line = lineString;
-                    if (lineString in lines) {
-                        throw this.composeError(Error(), "Duplicate line number", lineString, node.pos, node.len);
-                    }
-                    if (!isDirect) {
-                        if (line <= lastLine) {
-                            throw this.composeError(Error(), "Line number not increasing", lineString, node.pos, node.len);
-                        }
-                        if (line < 1 || line > 65535) {
-                            throw this.composeError(Error(), "Line number overflow", lineString, node.pos, node.len);
-                        }
-                    }
-                    lines[lineString] = {
-                        value: lineString,
-                        pos: node.pos,
-                        len: (node.orig || lineString).length
-                    };
-                    lastLine = line;
+                    var labelEntry = this.fnCreateLabelEntry(node, lastLine, implicitLines);
+                    lines[labelEntry.value] = labelEntry;
+                    lastLine = Number(labelEntry.value);
                 }
             }
             return lines;
@@ -2842,38 +3159,44 @@ define("BasicFormatter", ["require", "exports", "Utils"], function (require, exp
                         pos: node.pos,
                         len: (node.orig || node.value).length
                     });
+                    var linesEntry = lines[node.value];
+                    if (linesEntry.refCount === undefined) { // not needed for renum but for removing line numbers
+                        linesEntry.refCount = 1;
+                    }
+                    else {
+                        linesEntry.refCount += 1;
+                    }
                 }
                 else {
                     throw this.composeError(Error(), "Line does not exist", node.value, node.pos);
                 }
             }
         };
-        BasicFormatter.prototype.fnAddReferences = function (nodes, lines, refs) {
-            for (var i = 0; i < nodes.length; i += 1) {
-                var node = nodes[i];
-                if (node.type === "label") {
-                    this.line = node.value;
+        BasicFormatter.prototype.fnAddReferencesForNode = function (node, lines, refs) {
+            if (node.type === "label") {
+                this.label = node.value;
+            }
+            else {
+                this.fnAddSingleReference(node, lines, refs);
+            }
+            if (node.left) {
+                this.fnAddSingleReference(node.left, lines, refs);
+            }
+            if (node.right) {
+                this.fnAddSingleReference(node.right, lines, refs);
+            }
+            if (node.args) {
+                if (node.type === "onErrorGoto" && node.args.length === 1 && node.args[0].value === "0") {
+                    // ignore "on error goto 0"
                 }
                 else {
-                    this.fnAddSingleReference(node, lines, refs);
+                    this.fnAddReferences(node.args, lines, refs); // recursive
                 }
-                if (node.left) {
-                    this.fnAddSingleReference(node.left, lines, refs);
-                }
-                if (node.right) {
-                    this.fnAddSingleReference(node.right, lines, refs);
-                }
-                if (node.args) {
-                    if (node.type === "onErrorGoto" && node.args.length === 1 && node.args[0].value === "0") {
-                        // ignore "on error goto 0"
-                    }
-                    else {
-                        this.fnAddReferences(node.args, lines, refs); // recursive
-                    }
-                }
-                if (node.args2) { // for "ELSE"
-                    this.fnAddReferences(node.args2, lines, refs); // recursive
-                }
+            }
+        };
+        BasicFormatter.prototype.fnAddReferences = function (nodes, lines, refs) {
+            for (var i = 0; i < nodes.length; i += 1) {
+                this.fnAddReferencesForNode(nodes[i], lines, refs);
             }
         };
         BasicFormatter.prototype.fnRenumberLines = function (lines, refs, newLine, oldLine, step, keep) {
@@ -2883,12 +3206,12 @@ define("BasicFormatter", ["require", "exports", "Utils"], function (require, exp
             }
             keys.sort(fnSortbyPosition);
             for (var i = 0; i < keys.length; i += 1) {
-                var lineEntry = lines[keys[i]], isDirect = BasicFormatter.fnIsDirect(lineEntry.value), line = Number(lineEntry.value);
-                if (isDirect || (line >= oldLine && line < keep)) {
+                var lineEntry = lines[keys[i]], hasLabel = BasicFormatter.fnHasLabel(lineEntry.value), line = Number(lineEntry.value);
+                if (!hasLabel || (line >= oldLine && line < keep)) {
                     if (newLine > 65535) {
                         throw this.composeError(Error(), "Line number overflow", lineEntry.value, lineEntry.pos);
                     }
-                    lineEntry.newLine = newLine;
+                    lineEntry.newValue = String(newLine);
                     changes[lineEntry.pos] = lineEntry;
                     newLine += step;
                 }
@@ -2896,8 +3219,8 @@ define("BasicFormatter", ["require", "exports", "Utils"], function (require, exp
             for (var i = 0; i < refs.length; i += 1) {
                 var ref = refs[i], lineString = ref.value, line = Number(lineString);
                 if (line >= oldLine && line < keep) {
-                    if (line !== lines[lineString].newLine) {
-                        ref.newLine = lines[lineString].newLine;
+                    if (lineString !== lines[lineString].newValue) {
+                        ref.newValue = lines[lineString].newValue;
                         changes[ref.pos] = ref;
                     }
                 }
@@ -2913,13 +3236,13 @@ define("BasicFormatter", ["require", "exports", "Utils"], function (require, exp
             // apply changes to input in reverse order
             for (var i = keys.length - 1; i >= 0; i -= 1) {
                 var line = changes[keys[i]];
-                input = input.substring(0, line.pos) + line.newLine + input.substr(line.pos + line.len);
+                input = input.substring(0, line.pos) + line.newValue + input.substring(line.pos + line.len);
             }
             return input;
         };
         BasicFormatter.prototype.fnRenumber = function (input, parseTree, newLine, oldLine, step, keep) {
             var refs = [], // references
-            lines = this.fnCreateLineNumbersMap(parseTree);
+            lines = this.fnCreateLabelMap(parseTree, Boolean(this.options.implicitLines));
             this.fnAddReferences(parseTree, lines, refs); // create reference list
             var changes = this.fnRenumberLines(lines, refs, newLine, oldLine, step, keep), output = BasicFormatter.fnApplyChanges(input, changes);
             return output;
@@ -2928,9 +3251,49 @@ define("BasicFormatter", ["require", "exports", "Utils"], function (require, exp
             var out = {
                 text: ""
             };
-            this.line = ""; // current line (label)
+            this.label = ""; // current line (label)
             try {
-                var tokens = this.lexer.lex(input), parseTree = this.parser.parse(tokens), output = this.fnRenumber(input, parseTree, newLine, oldLine, step, keep || 65535);
+                var tokens = this.options.lexer.lex(input), parseTree = this.options.parser.parse(tokens), output = this.fnRenumber(input, parseTree, newLine, oldLine, step, keep || 65535);
+                out.text = output;
+            }
+            catch (e) {
+                if (Utils_4.Utils.isCustomError(e)) {
+                    out.error = e;
+                }
+                else { // other errors
+                    out.error = e; // force set other error
+                    Utils_4.Utils.console.error(e);
+                }
+            }
+            return out;
+        };
+        // ---
+        BasicFormatter.prototype.fnRemoveUnusedLines = function (input, parseTree) {
+            var refs = [], // references
+            implicitLines = true, lines = this.fnCreateLabelMap(parseTree, implicitLines);
+            this.fnAddReferences(parseTree, lines, refs); // create reference list
+            // reference count would be enough
+            var changes = {}, keys = Object.keys(lines);
+            for (var i = 0; i < keys.length; i += 1) {
+                var lineEntry = lines[keys[i]];
+                if (lineEntry.len && !lineEntry.refCount) { // non-empty label without references?
+                    lineEntry.newValue = ""; // set empty line number
+                    if (input[lineEntry.pos + lineEntry.len] === " ") { // space following line number?
+                        lineEntry.len += 1; // remove it as well
+                    }
+                    changes[lineEntry.pos] = lineEntry;
+                }
+            }
+            var output = BasicFormatter.fnApplyChanges(input, changes);
+            return output;
+        };
+        BasicFormatter.prototype.removeUnusedLines = function (input) {
+            var out = {
+                text: ""
+            };
+            this.label = ""; // current line (label)
+            try {
+                var tokens = this.options.lexer.lex(input), parseTree = this.options.parser.parse(tokens), output = this.fnRemoveUnusedLines(input, parseTree);
                 out.text = output;
             }
             catch (e) {
@@ -2967,6 +3330,7 @@ define("BasicTokenizer", ["require", "exports", "Utils"], function (require, exp
             // will also be set in decode
             this.lineEnd = 0;
             this.input = "";
+            this.needSpace = false; // hmm
             this.debug = {
                 startPos: 0,
                 line: 0,
@@ -3262,14 +3626,7 @@ define("BasicTokenizer", ["require", "exports", "Utils"], function (require, exp
                 var mantissa = value >= 0 ? value + 0x80000000 : value;
                 exponent -= 0x81; // 2-complement: 2^-127 .. 2^128
                 var num = mantissa * Math.pow(2, exponent - 31);
-                out = num.toPrecision(9); // some rounding, formatting
-                if (out.indexOf("e") >= 0) {
-                    out = out.replace(/\.?0*e/, "E"); // exponential uppercase, no zeros
-                    out = out.replace(/(E[+-])(\d)$/, "$10$2"); // exponent 1 digit to 2 digits
-                }
-                else if (out.indexOf(".") >= 0) { // decimal number?
-                    out = out.replace(/\.?0*$/, ""); // remove trailing dot and/or zeros
-                }
+                out = Utils_5.Utils.toPrecision9(num);
             }
             return out;
         };
@@ -3299,8 +3656,9 @@ define("BasicTokenizer", ["require", "exports", "Utils"], function (require, exp
             return this.fnVar() + "!";
         };
         BasicTokenizer.prototype.fnRsx = function () {
-            this.fnNum8Dec(); // ignore length (offset to tokens following RSX name)
-            return "|" + this.fnGetBit7TerminatedString();
+            var name = this.fnGetBit7TerminatedString();
+            name = name.substring(1); // ignore length (offset to tokens following RSX name)
+            return "|" + name;
         };
         BasicTokenizer.prototype.fnStringUntilEol = function () {
             var out = this.input.substring(this.pos, this.lineEnd - 1); // take remaining line
@@ -3353,55 +3711,55 @@ define("BasicTokenizer", ["require", "exports", "Utils"], function (require, exp
             }
             debug.info += " [" + hex + "] " + tokenLine;
         };
+        BasicTokenizer.prototype.fnParseNextToken = function (input) {
+            var oldNeedSpace = this.needSpace;
+            var token = this.fnNum8Dec();
+            if (token === 0x01) { // statement seperator ":"?
+                if (this.pos < input.length) {
+                    var nextToken = input.charCodeAt(this.pos); // test next token
+                    if (nextToken === 0x97 || nextToken === 0xc0) { // ELSE or rem '?
+                        token = nextToken; // ignore ':'
+                        this.pos += 1;
+                    }
+                }
+            }
+            this.needSpace = ((token >= 0x02 && token <= 0x1f) || (token === 0x7c)); // constant 0..9; variable, or RSX?
+            var tokenValue;
+            if (token === 0xff) { // extended token?
+                token = this.fnNum8Dec(); // get it
+                tokenValue = this.tokensFF[token];
+            }
+            else {
+                tokenValue = this.tokens[token];
+            }
+            var tstr;
+            if (tokenValue !== undefined) {
+                tstr = typeof tokenValue === "function" ? tokenValue.call(this) : tokenValue;
+                if ((/[a-zA-Z0-9.]$/).test(tstr) && token !== 0xe4) { // last character char, number, dot? (not for token "FN")
+                    this.needSpace = true; // maybe need space next time...
+                }
+            }
+            else { // normal ASCII
+                tstr = String.fromCharCode(token);
+            }
+            if (oldNeedSpace) {
+                if ((/^[a-zA-Z0-9$%!]/).test(tstr) || (token >= 0x02 && token <= 0x1f)) {
+                    tstr = " " + tstr;
+                }
+            }
+            if (Utils_5.Utils.debug > 2) {
+                this.debugCollectInfo(tstr);
+            }
+            return tstr;
+        };
         BasicTokenizer.prototype.fnParseLineFragment = function () {
             var input = this.input;
-            var out = "", space = false;
+            var out = "";
+            this.needSpace = false; // only needed in fnParseNextToken
             while (this.pos < this.lineEnd) {
                 this.debug.startPos = this.pos;
-                var oldSpace = space;
-                var token = this.fnNum8Dec();
-                if (token === 0x01) { // statement seperator ":"?
-                    if (this.pos < input.length) {
-                        var nextToken = input.charCodeAt(this.pos); // test next token
-                        if (nextToken === 0x97 || nextToken === 0xc0) { // ELSE or rem '?
-                            token = nextToken; // ignore ':'
-                            this.pos += 1;
-                        }
-                    }
-                }
-                space = ((token >= 0x02 && token <= 0x1f) || (token === 0x7c)); // constant 0..9; variable, or RSX?
-                var tokenValue = void 0;
-                if (token === 0xff) { // extended token?
-                    token = this.fnNum8Dec(); // get it
-                    tokenValue = this.tokensFF[token];
-                }
-                else {
-                    tokenValue = this.tokens[token];
-                }
-                var tstr = void 0;
-                if (tokenValue !== undefined) {
-                    if (typeof tokenValue === "function") {
-                        tstr = tokenValue.call(this);
-                    }
-                    else { // string
-                        tstr = tokenValue;
-                    }
-                    if ((/[a-zA-Z0-9.]$/).test(tstr) && token !== 0xe4) { // last character char, number, dot? (not for token "FN")
-                        space = true; // maybe need space next time...
-                    }
-                }
-                else { // normal ASCII
-                    tstr = String.fromCharCode(token);
-                }
-                if (oldSpace) {
-                    if ((/^[a-zA-Z0-9$%!]/).test(tstr) || (token >= 0x02 && token <= 0x1f)) {
-                        tstr = " " + tstr;
-                    }
-                }
+                var tstr = this.fnParseNextToken(input);
                 out += tstr;
-                if (Utils_5.Utils.debug > 2) {
-                    this.debugCollectInfo(tstr);
-                }
             }
             return out;
         };
@@ -3458,53 +3816,61 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
     exports.CodeGeneratorBasic = void 0;
     var CodeGeneratorBasic = /** @class */ (function () {
         function CodeGeneratorBasic(options) {
-            this.quiet = false;
+            this.hasColons = false;
+            this.keepWhiteSpace = false;
             this.line = 0; // current line (label)
             /* eslint-disable no-invalid-this */
             this.parseFunctions = {
                 "(": this.fnParenthesisOpen,
                 string: CodeGeneratorBasic.string,
-                unquoted: CodeGeneratorBasic.unquoted,
-                "null": CodeGeneratorBasic.fnNull,
+                ustring: CodeGeneratorBasic.ustring,
                 assign: this.assign,
-                number: CodeGeneratorBasic.decBinHexNumber,
-                binnumber: CodeGeneratorBasic.decBinHexNumber,
-                hexnumber: CodeGeneratorBasic.decBinHexNumber,
-                identifier: this.identifier,
-                linenumber: CodeGeneratorBasic.linenumber,
+                expnumber: CodeGeneratorBasic.expnumber,
+                binnumber: CodeGeneratorBasic.binHexNumber,
+                hexnumber: CodeGeneratorBasic.binHexNumber,
                 label: this.label,
                 "|": this.vertical,
                 afterGosub: this.afterEveryGosub,
-                chainMerge: this.chainMerge,
+                chain: this.chainOrChainMerge,
+                chainMerge: this.chainOrChainMerge,
                 data: this.data,
                 def: this.def,
-                "else": this.else,
-                ent: this.entOrEnv,
-                env: this.entOrEnv,
+                "else": this.fnElse,
+                elseComment: this.elseComment,
                 everyGosub: this.afterEveryGosub,
                 fn: this.fn,
-                "for": this.for,
-                "if": this.if,
+                "for": this.fnFor,
+                "if": this.fnIf,
                 input: this.inputLineInput,
                 lineInput: this.inputLineInput,
                 list: this.list,
                 mid$Assign: this.mid$Assign,
+                onBreakCont: this.onBreakOrError,
+                onBreakGosub: this.onBreakOrError,
+                onBreakStop: this.onBreakOrError,
+                onErrorGoto: this.onBreakOrError,
                 onGosub: this.onGotoGosub,
                 onGoto: this.onGotoGosub,
                 onSqGosub: this.onSqGosub,
                 print: this.print,
                 rem: this.rem,
-                using: this.using
+                using: this.using,
+                write: this.write
             };
-            this.quiet = options.quiet || false;
-            this.lexer = options.lexer;
-            this.parser = options.parser;
+            this.options = {
+                lexer: options.lexer,
+                parser: options.parser,
+                quiet: false
+            };
+            this.setOptions(options);
         }
-        CodeGeneratorBasic.prototype.getLexer = function () {
-            return this.lexer;
+        CodeGeneratorBasic.prototype.setOptions = function (options) {
+            if (options.quiet !== undefined) {
+                this.options.quiet = options.quiet;
+            }
         };
-        CodeGeneratorBasic.prototype.getParser = function () {
-            return this.parser;
+        CodeGeneratorBasic.prototype.getOptions = function () {
+            return this.options;
         };
         CodeGeneratorBasic.prototype.composeError = function (error, message, value, pos) {
             return Utils_6.Utils.composeError("CodeGeneratorBasic", error, message, value, pos, undefined, this.line);
@@ -3517,14 +3883,7 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
         };
         CodeGeneratorBasic.getUcKeyword = function (node) {
             var type = node.type;
-            var typeUc = CodeGeneratorBasic.combinedKeywords[type] || type.toUpperCase();
-            if (typeUc !== node.value.toUpperCase()) { // some (extra) whitespace between combined keyword?
-                typeUc = node.value.toUpperCase(); // we could always take this
-            }
-            return typeUc;
-        };
-        CodeGeneratorBasic.prototype.fnParseOneArg = function (arg) {
-            return this.parseNode(arg);
+            return CodeGeneratorBasic.combinedKeywords[type] || type.toUpperCase();
         };
         CodeGeneratorBasic.prototype.fnParseArgs = function (args) {
             var nodeArgs = []; // do not modify node.args here (could be a parameter of defined function)
@@ -3532,101 +3891,76 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
                 throw this.composeError(Error(), "Programming error: Undefined args", "", -1); // should not occur
             }
             for (var i = 0; i < args.length; i += 1) {
-                var value = this.fnParseOneArg(args[i]);
-                if (!(i === 0 && value === "#" && args[i].type === "#")) { // ignore empty stream as first argument (hmm, not for e.g. data!)
-                    nodeArgs.push(value);
+                var value = this.parseNode(args[i]);
+                if (args[i].type === "'" || args[i].type === "else" || args[i].type === "elseComment") { // fast hack to put a space before "'", "else" or "elseComment", if there is no space previously
+                    if (i > 0 && !nodeArgs[i - 1].endsWith(" ") && !nodeArgs[i - 1].endsWith(":")) {
+                        value = CodeGeneratorBasic.fnSpace1(value);
+                    }
                 }
+                nodeArgs.push(value);
             }
             return nodeArgs;
         };
-        CodeGeneratorBasic.fnColonsAvailable = function (args) {
-            var colonsAvailable = false;
-            for (var i = 0; i < args.length; i += 1) {
-                if (args[i].trim() === ":") {
-                    colonsAvailable = true;
-                    break;
+        CodeGeneratorBasic.prototype.combineArgsWithColon = function (args) {
+            if (!this.hasColons) {
+                for (var i = 1; i < args.length; i += 1) { // start with 1
+                    var arg = args[i].trim();
+                    if (!arg.startsWith("ELSE") && !arg.startsWith("'") && arg !== "") { //TTT arg !== "\n"
+                        args[i] = ":" + args[i];
+                    }
                 }
             }
-            return colonsAvailable;
-        };
-        CodeGeneratorBasic.combineArgsWithColon = function (args) {
-            var separator = CodeGeneratorBasic.fnColonsAvailable(args) ? "" : ":", value = args.join(separator);
-            return value;
+            return args.join("");
         };
         CodeGeneratorBasic.prototype.fnParenthesisOpen = function (node) {
-            var value = node.value;
-            if (node.args) {
-                var nodeArgs = this.fnParseArgs(node.args);
-                value += nodeArgs.join("");
-            }
-            return CodeGeneratorBasic.fnWs(node) + value;
+            return CodeGeneratorBasic.fnWs(node) + node.value + (node.args ? this.fnParseArgs(node.args).join("") : "");
         };
         CodeGeneratorBasic.string = function (node) {
             return CodeGeneratorBasic.fnWs(node) + '"' + node.value + '"';
         };
-        CodeGeneratorBasic.unquoted = function (node) {
-            return CodeGeneratorBasic.fnWs(node) + node.value;
-        };
-        CodeGeneratorBasic.fnNull = function () {
-            return "";
+        CodeGeneratorBasic.ustring = function (node) {
+            return CodeGeneratorBasic.fnWs(node) + '"' + node.value;
         };
         CodeGeneratorBasic.prototype.assign = function (node) {
             // see also "let"
-            if (!node.left || !node.right) {
-                throw this.composeError(Error(), "Programming error: Undefined left or right", node.type, node.pos); // should not occur
-            }
             if (node.left.type !== "identifier") {
                 throw this.composeError(Error(), "Unexpected assign type", node.type, node.pos); // should not occur
             }
-            return this.fnParseOneArg(node.left) + CodeGeneratorBasic.fnWs(node) + node.value + this.fnParseOneArg(node.right);
+            // no spaces needed around "="
+            return this.parseNode(node.left) + CodeGeneratorBasic.fnWs(node) + node.value + this.parseNode(node.right);
         };
-        CodeGeneratorBasic.decBinHexNumber = function (node) {
-            return CodeGeneratorBasic.fnWs(node) + node.value.toUpperCase(); // number: maybe "e" inside; binnumber: maybe "&x"
+        CodeGeneratorBasic.expnumber = function (node) {
+            return CodeGeneratorBasic.fnWs(node) + Number(node.value).toExponential().toUpperCase().replace(/(\d+)$/, function (x) {
+                return x.length >= 2 ? x : x.padStart(2, "0"); // format with 2 exponential digits
+            });
         };
-        CodeGeneratorBasic.prototype.identifier = function (node) {
-            var value = CodeGeneratorBasic.fnWs(node) + node.value; // keep case, maybe mixed
-            if (node.args) { // args including brackets or parenthesis
-                var nodeArgs = this.fnParseArgs(node.args), bracketOpen = nodeArgs.shift(), bracketClose = nodeArgs.pop();
-                value += bracketOpen + nodeArgs.join(",") + bracketClose;
-            }
-            return value;
-        };
-        CodeGeneratorBasic.linenumber = function (node) {
-            return CodeGeneratorBasic.fnWs(node) + node.value;
+        CodeGeneratorBasic.binHexNumber = function (node) {
+            return CodeGeneratorBasic.fnWs(node) + node.value.toUpperCase(); // binnumber: maybe "&x", hexnumber: mayby "&h"
         };
         CodeGeneratorBasic.prototype.label = function (node) {
             this.line = Number(node.value); // set line before parsing args
-            var nodeArgs = this.fnParseArgs(node.args);
-            var value = CodeGeneratorBasic.combineArgsWithColon(nodeArgs);
-            if (node.value !== "") { // direct
-                value = node.value + CodeGeneratorBasic.fnSpace1(value);
-            }
-            return CodeGeneratorBasic.fnWs(node) + value;
+            var value = this.combineArgsWithColon(this.fnParseArgs(node.args));
+            return CodeGeneratorBasic.fnWs(node) + node.value + (node.value !== "" ? CodeGeneratorBasic.fnSpace1(value) : value);
         };
         // special keyword functions
         CodeGeneratorBasic.prototype.vertical = function (node) {
-            var nodeArgs = this.fnParseArgs(node.args);
-            var value = node.value.toUpperCase(); // use value!
-            if (nodeArgs.length) {
-                value += "," + nodeArgs.join(",");
-            }
-            return CodeGeneratorBasic.fnWs(node) + value;
+            return CodeGeneratorBasic.fnWs(node) + node.value.toUpperCase() + this.fnParseArgs(node.args).join("");
         };
         CodeGeneratorBasic.prototype.afterEveryGosub = function (node) {
             var nodeArgs = this.fnParseArgs(node.args);
-            var value = node.value.toUpperCase() + CodeGeneratorBasic.fnSpace1(nodeArgs[0]);
-            if (nodeArgs[1]) {
-                value += "," + nodeArgs[1];
-            }
-            value += " GOSUB" + CodeGeneratorBasic.fnSpace1(nodeArgs[2]);
-            return CodeGeneratorBasic.fnWs(node) + value;
+            nodeArgs[0] = CodeGeneratorBasic.fnSpace1(nodeArgs[0]); // first argument
+            nodeArgs[nodeArgs.length - 2] = CodeGeneratorBasic.fnSpace1(nodeArgs[nodeArgs.length - 2]); // "gosub"
+            nodeArgs[nodeArgs.length - 1] = CodeGeneratorBasic.fnSpace1(nodeArgs[nodeArgs.length - 1]); // line number
+            return CodeGeneratorBasic.fnWs(node) + node.value.toUpperCase() + nodeArgs.join("");
         };
-        CodeGeneratorBasic.prototype.chainMerge = function (node) {
-            var nodeArgs = this.fnParseArgs(node.args), typeUc = CodeGeneratorBasic.getUcKeyword(node);
-            if (nodeArgs.length === 3) {
-                nodeArgs[2] = "DELETE" + CodeGeneratorBasic.fnSpace1(nodeArgs[2]);
+        CodeGeneratorBasic.prototype.chainOrChainMerge = function (node) {
+            var nodeArgs = this.fnParseArgs(node.args);
+            if (nodeArgs.length > 2) { // with delete?
+                if (nodeArgs[nodeArgs.length - 2] === "DELETE") {
+                    nodeArgs[nodeArgs.length - 1] = CodeGeneratorBasic.fnSpace1(nodeArgs[nodeArgs.length - 1]);
+                }
             }
-            return CodeGeneratorBasic.fnWs(node) + typeUc + CodeGeneratorBasic.fnSpace1(nodeArgs.join(","));
+            return CodeGeneratorBasic.fnWs(node) + CodeGeneratorBasic.getUcKeyword(node) + (node.right ? CodeGeneratorBasic.fnSpace1(this.parseNode(node.right)) : "") + CodeGeneratorBasic.fnSpace1(nodeArgs.join(""));
         };
         CodeGeneratorBasic.prototype.data = function (node) {
             var nodeArgs = this.fnParseArgs(node.args);
@@ -3635,23 +3969,15 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
                 nodeArgs[i] = value2;
             }
             var args = nodeArgs.join("");
-            args = Utils_6.Utils.stringTrimEnd(args); // remove trailing spaces
+            if (!this.keepWhiteSpace) {
+                args = Utils_6.Utils.stringTrimEnd(args); // remove trailing spaces
+            }
             return CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase() + CodeGeneratorBasic.fnSpace1(args);
         };
         CodeGeneratorBasic.prototype.def = function (node) {
-            if (!node.left || !node.right) {
-                throw this.composeError(Error(), "Programming error: Undefined left or right", node.type, node.pos); // should not occur
-            }
-            var name = this.fnParseOneArg(node.left), space = node.left.space ? " " : "", // fast hack
-            nodeArgs = this.fnParseArgs(node.args), expression = this.fnParseOneArg(node.right);
-            var nodeArgsString = nodeArgs.join(",");
-            if (nodeArgsString !== "") { // not empty?
-                nodeArgsString = "(" + nodeArgsString + ")";
-            }
-            var name2 = name.replace(/FN/i, "FN" + space);
-            return CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase() + CodeGeneratorBasic.fnSpace1(name2) + nodeArgsString + "=" + expression; //TTT how to get space before "="?
+            return CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase() + (node.right ? CodeGeneratorBasic.fnSpace1(this.parseNode(node.right)) + this.fnParseArgs(node.args).join("") : "");
         };
-        CodeGeneratorBasic.prototype["else"] = function (node) {
+        CodeGeneratorBasic.prototype.elseComment = function (node) {
             if (!node.args) {
                 throw this.composeError(Error(), "Programming error: Undefined args", "", -1); // should not occur
             }
@@ -3660,46 +3986,28 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
             for (var i = 0; i < args.length; i += 1) {
                 var token = args[i];
                 if (token.value) {
-                    value += " " + token.value;
-                }
-            }
-            // TODO: whitespaces?
-            return CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase() + value;
-        };
-        CodeGeneratorBasic.prototype.entOrEnv = function (node) {
-            if (!node.args) {
-                throw this.composeError(Error(), "Programming error: Undefined args", "", -1); // should not occur
-            }
-            var args = node.args, nodeArgs = [];
-            var equal = false;
-            for (var i = 0; i < args.length; i += 1) {
-                if (args[i].type !== "null") {
-                    var arg = this.fnParseOneArg(args[i]);
-                    if (equal) {
-                        arg = "=" + arg;
-                        equal = false;
+                    if (this.keepWhiteSpace) {
+                        value += CodeGeneratorBasic.fnWs(token) + token.value;
                     }
-                    nodeArgs.push(arg);
-                }
-                else {
-                    equal = true;
+                    else {
+                        value += CodeGeneratorBasic.fnSpace1(CodeGeneratorBasic.fnWs(token) + token.value); //TTT
+                    }
                 }
             }
-            return CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase() + CodeGeneratorBasic.fnSpace1(nodeArgs.join(","));
+            return CodeGeneratorBasic.fnWs(node) + "else".toUpperCase() + value;
         };
         CodeGeneratorBasic.prototype.fn = function (node) {
-            if (!node.left) {
-                throw this.composeError(Error(), "Programming error: Undefined left", node.type, node.pos); // should not occur
+            if (!node.right) {
+                return CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase(); // only fn
             }
-            var nodeArgs = this.fnParseArgs(node.args);
-            var nodeArgsString = nodeArgs.join(",");
-            if (nodeArgsString !== "") { // not empty?
-                nodeArgsString = "(" + nodeArgsString + ")";
+            var nodeArgs = node.args ? this.fnParseArgs(node.args) : [];
+            var right = this.parseNode(node.right);
+            if ((node.right.pos - node.pos) > 2) { // space between fn and identifier?
+                right = CodeGeneratorBasic.fnSpace1(right); // keep it
             }
-            var name2 = node.value.replace(/FN/i, "FN"); // + space),
-            return CodeGeneratorBasic.fnWs(node) + name2 + nodeArgsString;
+            return CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase() + right + nodeArgs.join("");
         };
-        CodeGeneratorBasic.prototype["for"] = function (node) {
+        CodeGeneratorBasic.prototype.fnFor = function (node) {
             var nodeArgs = this.fnParseArgs(node.args);
             for (var i = 0; i < nodeArgs.length; i += 1) {
                 if (i !== 1 && i !== 2) { // not for "=" and startValue
@@ -3708,38 +4016,23 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
             }
             return CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase() + nodeArgs.join("");
         };
-        CodeGeneratorBasic.prototype.fnThenOrElsePart = function (nodeBranch) {
-            var nodeArgs = this.fnParseArgs(nodeBranch); // args for "then" or "else"
-            return CodeGeneratorBasic.fnSpace1(CodeGeneratorBasic.combineArgsWithColon(nodeArgs));
+        CodeGeneratorBasic.prototype.fnElse = function (node) {
+            return CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase() + CodeGeneratorBasic.fnSpace1(this.combineArgsWithColon(this.fnParseArgs(node.args)));
         };
-        CodeGeneratorBasic.prototype["if"] = function (node) {
-            if (!node.left) {
-                throw this.composeError(Error(), "Programming error: Undefined left", node.type, node.pos); // should not occur
-            }
-            if (!node.args) {
-                throw this.composeError(Error(), "Programming error: Undefined args", node.type, node.pos); // should not occur
-            }
-            var value = node.type.toUpperCase() + CodeGeneratorBasic.fnSpace1(this.fnParseOneArg(node.left));
-            if (node.right) { // "THEN"
-                value += CodeGeneratorBasic.fnSpace1(this.fnParseOneArg(node.right));
-            }
-            value += this.fnThenOrElsePart(node.args); // "then" part
-            if (node.args2) {
-                value += " ELSE" + this.fnThenOrElsePart(node.args2); // "else" part
-            }
-            return CodeGeneratorBasic.fnWs(node) + value;
-        };
-        CodeGeneratorBasic.fnHasStream = function (node) {
-            return node.args && node.args.length && (node.args[0].type === "#") && node.args[0].right && (node.args[0].right.type !== "null");
+        CodeGeneratorBasic.prototype.fnIf = function (node) {
+            /*
+            const elseNode = node.args && node.args.length && node.args[node.args.length - 1].type === "else" ? (node.args.pop() as ParserNode);
+            elseArgs = node.args && node.args.length && node.args[node.args.length - 1].type === "else" ? (node.args.pop() as ParserNode).args : undefined,
+            */
+            var nodeArgs = this.fnParseArgs(node.args), partName = nodeArgs.shift(); // "then"/"goto"
+            return CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase() + CodeGeneratorBasic.fnSpace1(this.parseNode(node.right))
+                + CodeGeneratorBasic.fnSpace1(partName) + CodeGeneratorBasic.fnSpace1(this.combineArgsWithColon(nodeArgs));
+            //+ elseArgs ? CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase()
         };
         CodeGeneratorBasic.prototype.inputLineInput = function (node) {
-            var nodeArgs = this.fnParseArgs(node.args), typeUc = CodeGeneratorBasic.getUcKeyword(node), hasStream = CodeGeneratorBasic.fnHasStream(node);
-            var i = 0;
-            if (hasStream) { // stream?
-                i += 1;
-            }
-            nodeArgs.splice(i, 4, nodeArgs[i] + nodeArgs[i + 1] + nodeArgs[i + 2] + nodeArgs[i + 3]); // combine 4 elements into one
-            return CodeGeneratorBasic.fnWs(node) + typeUc + CodeGeneratorBasic.fnSpace1(nodeArgs.join(","));
+            var nodeArgs = node.args ? this.fnParseArgs(node.args) : [], // also for clear input, which has no args
+            name = node.right ? this.parseNode(node.right) : ""; // line input?
+            return CodeGeneratorBasic.fnWs(node) + CodeGeneratorBasic.getUcKeyword(node) + CodeGeneratorBasic.fnSpace1(name) + CodeGeneratorBasic.fnSpace1(nodeArgs.join(""));
         };
         CodeGeneratorBasic.prototype.list = function (node) {
             var nodeArgs = this.fnParseArgs(node.args);
@@ -3749,29 +4042,27 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
             if (nodeArgs.length && nodeArgs[nodeArgs.length - 1] === "#") { // dummy stream?
                 nodeArgs.pop(); // remove
             }
-            return CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase() + CodeGeneratorBasic.fnSpace1(nodeArgs.join(","));
+            return CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase() + CodeGeneratorBasic.fnSpace1(nodeArgs.join(""));
         };
         CodeGeneratorBasic.prototype.mid$Assign = function (node) {
-            if (!node.right) {
-                throw this.composeError(Error(), "Programming error: Undefined right", "", -1); // should not occur
-            }
-            var nodeArgs = this.fnParseArgs(node.args), typeUc = CodeGeneratorBasic.getUcKeyword(node);
-            return CodeGeneratorBasic.fnWs(node) + typeUc + "(" + nodeArgs.join(",") + ")=" + this.fnParseOneArg(node.right);
+            return CodeGeneratorBasic.fnWs(node) + CodeGeneratorBasic.getUcKeyword(node) + this.fnParseArgs(node.args).join("");
+        };
+        CodeGeneratorBasic.prototype.onBreakOrError = function (node) {
+            return CodeGeneratorBasic.fnWs(node) + "ON" + CodeGeneratorBasic.fnSpace1(this.parseNode(node.right)) + CodeGeneratorBasic.fnSpace1(this.fnParseArgs(node.args).join(""));
         };
         CodeGeneratorBasic.prototype.onGotoGosub = function (node) {
-            var left = this.fnParseOneArg(node.left), nodeArgs = this.fnParseArgs(node.args), right = this.fnParseOneArg(node.right); // "goto" or "gosub"
-            return CodeGeneratorBasic.fnWs(node) + "ON" + CodeGeneratorBasic.fnSpace1(left) + CodeGeneratorBasic.fnSpace1(right) + CodeGeneratorBasic.fnSpace1(nodeArgs.join(","));
+            var nodeArgs = this.fnParseArgs(node.args), expression = nodeArgs.shift(), instruction = nodeArgs.shift(); // "goto" or "gosub"
+            return CodeGeneratorBasic.fnWs(node) + "ON" + CodeGeneratorBasic.fnSpace1(expression) + CodeGeneratorBasic.fnSpace1(instruction) + CodeGeneratorBasic.fnSpace1(nodeArgs.join(""));
         };
         CodeGeneratorBasic.prototype.onSqGosub = function (node) {
-            var left = this.fnParseOneArg(node.left), nodeArgs = this.fnParseArgs(node.args);
-            return CodeGeneratorBasic.fnWs(node) + "ON SQ(" + left + ") GOSUB" + CodeGeneratorBasic.fnSpace1(nodeArgs.join(","));
+            var nodeArgs = this.fnParseArgs(node.args);
+            nodeArgs[nodeArgs.length - 2] = CodeGeneratorBasic.fnSpace1(nodeArgs[nodeArgs.length - 2]); // "gosub" with space (optional)
+            nodeArgs[nodeArgs.length - 1] = CodeGeneratorBasic.fnSpace1(nodeArgs[nodeArgs.length - 1]); // line number with space
+            return CodeGeneratorBasic.fnWs(node) + "ON" + CodeGeneratorBasic.fnSpace1(this.parseNode(node.right)) + nodeArgs.join("");
         };
         CodeGeneratorBasic.prototype.print = function (node) {
-            var nodeArgs = this.fnParseArgs(node.args), hasStream = CodeGeneratorBasic.fnHasStream(node);
+            var nodeArgs = this.fnParseArgs(node.args);
             var value = "";
-            if (hasStream && nodeArgs.length > 1) { // more args after stream?
-                nodeArgs[0] = String(nodeArgs[0]) + ",";
-            }
             for (var i = 0; i < nodeArgs.length; i += 1) {
                 value += nodeArgs[i];
             }
@@ -3781,103 +4072,86 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
             return CodeGeneratorBasic.fnWs(node) + node.value.toUpperCase() + value; // we use value to get PRINT or ?
         };
         CodeGeneratorBasic.prototype.rem = function (node) {
-            var nodeArgs = this.fnParseArgs(node.args);
-            var value = nodeArgs.length ? nodeArgs[0] : "";
-            if (node.value !== "'" && value !== "") { // for "rem"
-                var arg0 = node.args && node.args[0];
-                if (arg0 && !arg0.ws) {
-                    value = " " + value; // add removed space
-                }
-            }
-            return CodeGeneratorBasic.fnWs(node) + node.value.toUpperCase() + value; // we use value to get rem or '
+            return CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase() + this.fnParseArgs(node.args).join("");
         };
         CodeGeneratorBasic.prototype.using = function (node) {
             var nodeArgs = this.fnParseArgs(node.args), template = nodeArgs.length ? nodeArgs.shift() || "" : "";
-            return CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase() + CodeGeneratorBasic.fnSpace1(template) + ";" + nodeArgs.join(","); // separator between args could be "," or ";", we use ","
+            return CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase() + CodeGeneratorBasic.fnSpace1(template) + nodeArgs.join("");
+        };
+        CodeGeneratorBasic.prototype.write = function (node) {
+            return CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase() + (node.args ? CodeGeneratorBasic.fnSpace1(this.fnParseArgs(node.args).join("")) : ""); // separators already there
         };
         /* eslint-enable no-invalid-this */
         CodeGeneratorBasic.prototype.fnParseOther = function (node) {
-            var type = node.type, typeUc = CodeGeneratorBasic.getUcKeyword(node), keyType = BasicParser_1.BasicParser.keywords[type];
-            var args = "";
+            var type = node.type;
+            var value = ""; // CodeGeneratorBasic.fnGetWs(node);
             if (node.left) {
-                args += this.fnParseOneArg(node.left);
+                value += this.parseNode(node.left);
             }
-            if (!keyType) {
-                if (node.value) { // e.g. string,...
-                    args += node.value;
-                }
+            value += CodeGeneratorBasic.fnWs(node);
+            var keyType = BasicParser_1.BasicParser.keywords[type];
+            if (keyType) {
+                value += CodeGeneratorBasic.getUcKeyword(node);
             }
+            else if (node.value) { // e.g. string,...
+                value += node.value;
+            }
+            var right = "";
             if (node.right) {
-                args += this.fnParseOneArg(node.right);
+                right = this.parseNode(node.right);
+                var needSpace1 = BasicParser_1.BasicParser.keywords[right.toLowerCase()] || keyType;
+                value += needSpace1 ? CodeGeneratorBasic.fnSpace1(right) : right;
             }
             if (node.args) {
-                args += this.fnParseArgs(node.args).join(",");
+                var nodeArgs = this.fnParseArgs(node.args).join(""), needSpace2 = keyType && keyType.charAt(0) !== "f" && node.type !== "'";
+                // special handling for combined keywords with 2 tokens (for 3 tokens, we need a specific function)
+                value += needSpace2 ? CodeGeneratorBasic.fnSpace1(nodeArgs) : nodeArgs;
             }
-            if (node.args2) { // ELSE part already handled
-                throw this.composeError(Error(), "Programming error: args2", node.type, node.pos); // should not occur
-            }
-            var value;
-            if (keyType) {
-                value = typeUc;
-                if (args.length) {
-                    if (keyType.charAt(0) === "f") { // function with parameters?
-                        value += "(" + args + ")";
-                    }
-                    else {
-                        value += CodeGeneratorBasic.fnSpace1(args);
-                    }
+            return value;
+        };
+        CodeGeneratorBasic.getLeftOrRightOperatorPrecedence = function (node) {
+            var precedence = CodeGeneratorBasic.operatorPrecedence, operators = CodeGeneratorBasic.operators;
+            var pr;
+            if (operators[node.type] && (node.left || node.right)) { // binary operator (or unary operator, e.g. not)
+                if (node.left) { // right is binary
+                    pr = precedence[node.type] || 0;
+                }
+                else {
+                    pr = precedence["p" + node.type] || precedence[node.type] || 0;
                 }
             }
-            else {
-                value = args; // for e.g. string
-            }
-            return CodeGeneratorBasic.fnWs(node) + value;
+            return pr;
         };
-        CodeGeneratorBasic.prototype.parseNode = function (node) {
-            if (Utils_6.Utils.debug > 3) {
-                Utils_6.Utils.console.debug("evaluate: parseNode node=%o type=" + node.type + " value=" + node.value + " left=%o right=%o args=%o", node, node.left, node.right, node.args);
-            }
-            var type = node.type, precedence = CodeGeneratorBasic.operatorPrecedence, operators = CodeGeneratorBasic.operators;
+        CodeGeneratorBasic.prototype.parseOperator = function (node) {
+            var precedence = CodeGeneratorBasic.operatorPrecedence, operators = CodeGeneratorBasic.operators;
             var value;
-            if (operators[type]) {
-                if (node.left) {
-                    value = this.parseNode(node.left);
-                    if (operators[node.left.type] && (node.left.left || node.left.right)) { // binary operator (or unary operator, e.g. not)
-                        var p = precedence[node.type];
-                        var pl = void 0;
-                        if (node.left.left) { // left is binary
-                            pl = precedence[node.left.type] || 0;
-                        }
-                        else { // left is unary
-                            pl = precedence["p" + node.left.type] || precedence[node.left.type] || 0;
-                        }
-                        if (pl < p) {
-                            value = "(" + value + ")";
-                        }
+            if (node.left) {
+                value = this.parseNode(node.left);
+                var p = precedence[node.type], pl = CodeGeneratorBasic.getLeftOrRightOperatorPrecedence(node.left);
+                if (pl !== undefined && pl < p) {
+                    value = "(" + value + ")";
+                }
+                var right = node.right;
+                var value2 = this.parseNode(right);
+                var pr = CodeGeneratorBasic.getLeftOrRightOperatorPrecedence(right);
+                if (pr !== undefined) {
+                    if ((pr < p) || ((pr === p) && node.type === "-")) { // "-" is special
+                        value2 = "(" + value2 + ")";
                     }
-                    var right = node.right;
-                    var value2 = this.parseNode(right);
-                    if (operators[right.type] && (right.left || right.right)) { // binary operator (or unary operator, e.g. not)
-                        var p = precedence[node.type];
-                        var pr = void 0;
-                        if (right.left) { // right is binary
-                            pr = precedence[right.type] || 0;
-                        }
-                        else {
-                            pr = precedence["p" + right.type] || precedence[right.type] || 0;
-                        }
-                        if ((pr < p) || ((pr === p) && node.type === "-")) { // "-" is special
-                            value2 = "(" + value2 + ")";
-                        }
-                    }
-                    var whiteBefore = CodeGeneratorBasic.fnWs(node);
-                    var operator = whiteBefore + operators[type].toUpperCase();
-                    if (whiteBefore === "" && (/^(and|or|xor|mod)$/).test(type)) {
-                        operator = " " + operator + " ";
-                    }
+                }
+                var operator = CodeGeneratorBasic.fnWs(node) + operators[node.type].toUpperCase();
+                if ((/^(and|or|xor|mod)$/).test(node.type)) {
+                    value += CodeGeneratorBasic.fnSpace1(operator) + CodeGeneratorBasic.fnSpace1(value2);
+                }
+                else {
                     value += operator + value2;
                 }
-                else if (node.right) { // unary operator, e.g. not
+            }
+            else if (node.right) { // unary operator, e.g. not, '#'
+                if (node.len === 0) {
+                    value = ""; // ignore dummy token, e.g. '#'
+                }
+                else {
                     var right = node.right;
                     value = this.parseNode(right);
                     var pr = void 0;
@@ -3891,15 +4165,22 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
                     if (p && pr && (pr < p)) {
                         value = "(" + value + ")";
                     }
-                    var whiteBefore = CodeGeneratorBasic.fnWs(node), operator = whiteBefore + operators[type].toUpperCase(), whiteAfter = value.startsWith(" ");
-                    if (!whiteAfter && type === "not") {
-                        value = " " + value;
-                    }
-                    value = operator + value;
+                    value = CodeGeneratorBasic.fnWs(node) + operators[node.type].toUpperCase() + (node.type === "not" ? CodeGeneratorBasic.fnSpace1(value) : value);
                 }
-                else { // no operator, e.g. "=" in "for"
-                    value = this.fnParseOther(node);
-                }
+            }
+            else { // no operator, e.g. "=" in "for"
+                value = this.fnParseOther(node);
+            }
+            return value;
+        };
+        CodeGeneratorBasic.prototype.parseNode = function (node) {
+            var type = node.type;
+            if (Utils_6.Utils.debug > 3) {
+                Utils_6.Utils.console.debug("evaluate: parseNode node=%o type=" + type + " value=" + node.value + " left=%o right=%o args=%o", node, node.left, node.right, node.args);
+            }
+            var value;
+            if (CodeGeneratorBasic.operators[type]) {
+                value = this.parseOperator(node);
             }
             else if (this.parseFunctions[type]) { // function with special handling?
                 value = this.parseFunctions[type].call(this, node);
@@ -3922,7 +4203,7 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
                             output = line;
                         }
                         else {
-                            output += "\n" + line;
+                            output += line;
                         }
                     }
                     else {
@@ -3932,19 +4213,21 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
             }
             return output;
         };
-        CodeGeneratorBasic.prototype.generate = function (input, _allowDirect) {
+        CodeGeneratorBasic.prototype.generate = function (input) {
             var out = {
                 text: ""
             };
+            this.hasColons = Boolean(this.options.parser.getOptions().keepColons);
+            this.keepWhiteSpace = Boolean(this.options.lexer.getOptions().keepWhiteSpace);
             this.line = 0;
             try {
-                var tokens = this.lexer.lex(input), parseTree = this.parser.parse(tokens), output = this.evaluate(parseTree);
+                var tokens = this.options.lexer.lex(input), parseTree = this.options.parser.parse(tokens), output = this.evaluate(parseTree);
                 out.text = output;
             }
             catch (e) {
                 if (Utils_6.Utils.isCustomError(e)) {
                     out.error = e;
-                    if (!this.quiet) {
+                    if (!this.options.quiet) {
                         Utils_6.Utils.console.warn(e); // show our customError as warning
                     }
                 }
@@ -3956,23 +4239,23 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
             return out;
         };
         CodeGeneratorBasic.combinedKeywords = {
-            chainMerge: "CHAIN MERGE",
-            clearInput: "CLEAR INPUT",
-            graphicsPaper: "GRAPHICS PAPER",
-            graphicsPen: "GRAPHICS PEN",
-            keyDef: "KEY DEF",
-            lineInput: "LINE INPUT",
+            chainMerge: "CHAIN",
+            clearInput: "CLEAR",
+            graphicsPaper: "GRAPHICS",
+            graphicsPen: "GRAPHICS",
+            keyDef: "KEY",
+            lineInput: "LINE",
             mid$Assign: "MID$",
-            onBreakCont: "ON BREAK CONT",
-            onBreakGosub: "ON BREAK GOSUB",
-            onBreakStop: "ON BREAK STOP",
-            onErrorGoto: "ON ERROR GOTO",
-            resumeNext: "RESUME NEXT",
-            speedInk: "SPEED INK",
-            speedKey: "SPEED KEY",
-            speedWrite: "SPEED WRITE",
-            symbolAfter: "SYMBOL AFTER",
-            windowSwap: "WINDOW SWAP"
+            onBreakCont: "ON",
+            onBreakGosub: "ON",
+            onBreakStop: "ON",
+            onErrorGoto: "ON",
+            resumeNext: "RESUME",
+            speedInk: "SPEED",
+            speedKey: "SPEED",
+            speedWrite: "SPEED",
+            symbolAfter: "SYMBOL",
+            windowSwap: "WINDOW" // "WINDOW SWAP"
         };
         CodeGeneratorBasic.operators = {
             "+": "+",
@@ -4025,27 +4308,66 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
 // Variables.ts - Variables
 // (c) Marco Vieth, 2020
 // https://benchmarko.github.io/CPCBasicTS/
-define("Variables", ["require", "exports"], function (require, exports) {
+define("Variables", ["require", "exports", "Utils"], function (require, exports, Utils_7) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Variables = void 0;
+    var ArrayProxy = /** @class */ (function () {
+        function ArrayProxy(len) {
+            return new Proxy(new Array(len), this);
+        }
+        // eslint-disable-next-line class-methods-use-this
+        ArrayProxy.prototype.get = function (target, prop) {
+            if (typeof prop === "string" && !isNaN(Number(prop))) {
+                var numProp = Number(prop);
+                if (numProp < 0 || numProp >= target.length) {
+                    throw Utils_7.Utils.composeVmError("Variables", Error(), 9, prop); // Subscript out of range
+                }
+            }
+            return target[prop];
+        };
+        // eslint-disable-next-line class-methods-use-this
+        ArrayProxy.prototype.set = function (target, prop, value) {
+            if (!isNaN(Number(prop))) {
+                var numProp = Number(prop);
+                if (numProp < 0 || numProp >= target.length) {
+                    throw Utils_7.Utils.composeVmError("Variables", Error(), 9, prop); // Subscript out of range
+                }
+            }
+            target[prop] = value;
+            return true;
+        };
+        return ArrayProxy;
+    }());
     var Variables = /** @class */ (function () {
-        function Variables() {
+        function Variables(options) {
+            this.arrayBounds = false;
+            if (options) {
+                this.setOptions(options);
+            }
             this.variables = {};
             this.varTypes = {}; // default variable types for variables starting with letters a-z
         }
+        Variables.prototype.setOptions = function (options) {
+            if (options.arrayBounds !== undefined) {
+                this.arrayBounds = options.arrayBounds;
+            }
+        };
         Variables.prototype.removeAllVariables = function () {
             var variables = this.variables;
-            for (var name_2 in variables) { // eslint-disable-line guard-for-in
-                delete variables[name_2];
+            for (var name_4 in variables) { // eslint-disable-line guard-for-in
+                delete variables[name_4];
             }
         };
         Variables.prototype.getAllVariables = function () {
             return this.variables;
         };
+        Variables.prototype.getAllVarTypes = function () {
+            return this.varTypes;
+        };
         Variables.prototype.createNDimArray = function (dims, initVal) {
-            var fnCreateRec = function (index) {
-                var len = dims[index], arr = new Array(len);
+            var that = this, fnCreateRec = function (index) {
+                var len = dims[index], arr = that.arrayBounds ? new ArrayProxy(len) : new Array(len);
                 index += 1;
                 if (index < dims.length) { // more dimensions?
                     for (var i = 0; i < len; i += 1) {
@@ -4062,16 +4384,19 @@ define("Variables", ["require", "exports"], function (require, exports) {
             return ret;
         };
         // determine static varType (first letter + optional fixed vartype) from a variable name
-        // format: (v.)(_)<sname>(I|R|$)(A*[...]([...])) with optional parts in ()
+        // format: (v.|v["])(_)<sname>(A*)(I|R|$)([...]([...])) with optional parts in ()
         Variables.prototype.determineStaticVarType = function (name) {
             if (name.indexOf("v.") === 0) { // preceding variable object?
-                name = name.substr(2); // remove preceding "v."
+                name = name.substring(2); // remove preceding "v."
+            }
+            if (name.indexOf('v["') === 0) { // preceding variable object?
+                name = name.substring(3); // remove preceding 'v["'
             }
             var nameType = name.charAt(0); // take first character to determine variable type later
             if (nameType === "_") { // ignore underscore (do not clash with keywords)
                 nameType = name.charAt(1);
             }
-            var arrayPos = name.indexOf("A"), typePos = arrayPos >= 0 ? arrayPos - 1 : name.length - 1, typeChar = name.charAt(typePos); // check last character before array
+            var bracketPos = name.indexOf("["), typePos = bracketPos >= 0 ? bracketPos - 1 : name.length - 1, typeChar = name.charAt(typePos); // check character before array bracket
             if (typeChar === "I" || typeChar === "R" || typeChar === "$") { // explicit type specified?
                 nameType += typeChar;
             }
@@ -4149,14 +4474,13 @@ define("Variables", ["require", "exports"], function (require, exports) {
 // https://benchmarko.github.io/CPCBasicTS/
 //
 //
-define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, exports, Utils_7) {
+define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, exports, Utils_8) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CodeGeneratorJs = void 0;
     var CodeGeneratorJs = /** @class */ (function () {
         function CodeGeneratorJs(options) {
             this.line = "0"; // current line (label)
-            this.traceActive = false;
             this.stack = {
                 forLabel: [],
                 forVarName: [],
@@ -4174,6 +4498,7 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             this.countMap = {};
             // for evaluate:
             this.variables = {}; // will be set later
+            this.defintDefstrTypes = {};
             /* eslint-disable no-invalid-this */
             this.allOperators = {
                 "+": this.plus,
@@ -4209,14 +4534,16 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                 ",": CodeGeneratorJs.commaOrSemicolon,
                 "|": this.vertical,
                 number: CodeGeneratorJs.number,
+                expnumber: CodeGeneratorJs.expnumber,
                 binnumber: CodeGeneratorJs.binnumber,
                 hexnumber: CodeGeneratorJs.hexnumber,
-                linenumber: CodeGeneratorJs.letterOrLinenumber,
+                linenumber: CodeGeneratorJs.linenumber,
                 identifier: this.identifier,
-                letter: CodeGeneratorJs.letterOrLinenumber,
+                letter: CodeGeneratorJs.letter,
                 range: this.range,
                 linerange: this.linerange,
                 string: CodeGeneratorJs.string,
+                ustring: CodeGeneratorJs.string,
                 unquoted: CodeGeneratorJs.unquoted,
                 "null": CodeGeneratorJs.fnNull,
                 assign: this.assign,
@@ -4235,19 +4562,19 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                 defreal: this.fnParseDefIntRealStr,
                 defstr: this.fnParseDefIntRealStr,
                 dim: this.dim,
-                "delete": this.delete,
+                "delete": this.fnDelete,
                 edit: this.edit,
-                "else": this.else,
+                elseComment: this.elseComment,
                 end: this.stopOrEnd,
                 erase: this.erase,
                 error: this.error,
                 everyGosub: this.afterEveryGosub,
                 fn: this.fn,
-                "for": this.for,
+                "for": this.fnFor,
                 frame: this.fnCommandWithGoto,
                 gosub: this.gosub,
                 "goto": this.gotoOrResume,
-                "if": this.if,
+                "if": this.fnIf,
                 input: this.inputOrlineInput,
                 let: this.let,
                 lineInput: this.inputOrlineInput,
@@ -4255,7 +4582,7 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                 load: this.fnCommandWithGoto,
                 merge: this.fnCommandWithGoto,
                 mid$Assign: this.mid$Assign,
-                "new": CodeGeneratorJs.new,
+                "new": CodeGeneratorJs.fnNew,
                 next: this.next,
                 onBreakGosub: this.onBreakGosubOrRestore,
                 onErrorGoto: this.onErrorGoto,
@@ -4267,11 +4594,12 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                 randomize: this.randomize,
                 read: this.read,
                 rem: this.rem,
+                "'": this.apostrophe,
                 renum: this.fnCommandWithGoto,
                 restore: this.onBreakGosubOrRestore,
                 resume: this.gotoOrResume,
                 resumeNext: this.gotoOrResume,
-                "return": CodeGeneratorJs.return,
+                "return": CodeGeneratorJs.fnReturn,
                 run: this.run,
                 save: this.save,
                 sound: this.fnCommandWithGoto,
@@ -4279,17 +4607,37 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                 stop: this.stopOrEnd,
                 tab: this.tab,
                 tron: this.fnCommandWithGoto,
+                using: this.usingOrWrite,
                 wend: this.wend,
-                "while": this.while
+                "while": this.fnWhile,
+                write: this.usingOrWrite
             };
-            this.lexer = options.lexer;
-            this.parser = options.parser;
-            this.trace = Boolean(options.trace);
-            this.rsx = options.rsx;
-            this.quiet = options.quiet || false;
-            this.noCodeFrame = options.noCodeFrame || false;
+            this.options = {
+                lexer: options.lexer,
+                parser: options.parser,
+                rsx: options.rsx,
+                quiet: false
+            };
+            this.setOptions(options); // optional options
             this.reJsKeywords = CodeGeneratorJs.createJsKeywordRegex();
         }
+        CodeGeneratorJs.prototype.setOptions = function (options) {
+            if (options.implicitLines !== undefined) {
+                this.options.implicitLines = options.implicitLines;
+            }
+            if (options.noCodeFrame !== undefined) {
+                this.options.noCodeFrame = options.noCodeFrame;
+            }
+            if (options.quiet !== undefined) {
+                this.options.quiet = options.quiet;
+            }
+            if (options.trace !== undefined) {
+                this.options.trace = options.trace;
+            }
+        };
+        CodeGeneratorJs.prototype.getOptions = function () {
+            return this.options;
+        };
         CodeGeneratorJs.prototype.reset = function () {
             var stack = this.stack;
             stack.forLabel.length = 0;
@@ -4311,7 +4659,7 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             this.whileCount = 0; // stack needed
         };
         CodeGeneratorJs.prototype.composeError = function (error, message, value, pos) {
-            return Utils_7.Utils.composeError("CodeGeneratorJs", error, message, value, pos, undefined, this.line);
+            return Utils_8.Utils.composeError("CodeGeneratorJs", error, message, value, pos, undefined, this.line);
         };
         CodeGeneratorJs.createJsKeywordRegex = function () {
             return new RegExp("^(" + CodeGeneratorJs.jsKeywords.join("|") + ")$");
@@ -4321,39 +4669,57 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                 this.variables.initVariable(name);
             }
         };
-        CodeGeneratorJs.prototype.fnAdaptVariableName = function (name, arrayIndices) {
+        CodeGeneratorJs.prototype.fnAdaptVariableName = function (node, name, arrayIndices) {
             var defScopeArgs = this.defScopeArgs;
             name = name.toLowerCase().replace(/\./g, "_");
-            if (defScopeArgs || !Utils_7.Utils.supportReservedNames) { // avoid keywords as def fn parameters; and for IE8 avoid keywords in dot notation
+            var firstChar = name.charAt(0);
+            if (defScopeArgs || !Utils_8.Utils.supportReservedNames) { // avoid keywords as def fn parameters; and for IE8 avoid keywords in dot notation
                 if (this.reJsKeywords.test(name)) { // IE8: avoid keywords in dot notation
                     name = "_" + name; // prepend underscore
                 }
             }
-            if (name.endsWith("!")) { // real number?
-                name = name.slice(0, -1) + "R"; // "!" => "R"
-            }
-            else if (name.endsWith("%")) { // integer number?
-                name = name.slice(0, -1) + "I";
+            var mappedTypeChar = CodeGeneratorJs.varTypeMap[name.charAt(name.length - 1)] || ""; // map last char
+            if (mappedTypeChar) {
+                name = name.slice(0, -1); // remove type char
+                node.pt = name.charAt(name.length - 1); // set also type; TODO currently not used
             }
             if (arrayIndices) {
                 name += "A".repeat(arrayIndices);
             }
+            name += mappedTypeChar; // put type at the end
+            var needDeclare = false;
             if (defScopeArgs) {
-                if (name === "o") { // we must not use format parameter "o" since this is our vm object
-                    name = "no"; // change variable name to something we cannot set in BASIC
+                if (name === "o" || name === "t" || name === "v") { // we must not use formal parameter "o", "t", "v", since we use them already
+                    name = "N" + name; // change variable name to something we cannot set in BASIC
                 }
                 if (!defScopeArgs.collectDone) { // in collection mode?
                     defScopeArgs[name] = true; // declare DEF scope variable
                 }
                 else if (!(name in defScopeArgs)) {
-                    // variable
-                    this.fnDeclareVariable(name);
-                    name = "v." + name; // access with "v."
+                    needDeclare = true;
                 }
             }
             else {
-                this.fnDeclareVariable(name);
-                name = "v." + name; // access with "v."
+                needDeclare = true;
+            }
+            if (needDeclare) {
+                if (mappedTypeChar) { // we have an explicit type
+                    this.fnDeclareVariable(name);
+                    name = "v." + name; // access with "v."
+                }
+                else if (!this.defintDefstrTypes[firstChar]) {
+                    // the first char of the variable name is not defined via DEFINT or DEFSTR in the program
+                    name += "R"; // then we know that the type is real
+                    this.fnDeclareVariable(name);
+                    name = "v." + name; // access with "v."
+                }
+                else {
+                    // we do not know which type we will need, so declare for all types
+                    this.fnDeclareVariable(name + "I");
+                    this.fnDeclareVariable(name + "R");
+                    this.fnDeclareVariable(name + "$");
+                    name = 'v["' + name + '" + t.' + name.charAt(0) + "]";
+                }
             }
             return name;
         };
@@ -4374,8 +4740,48 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             }
             return this.fnParseArgRange(args, 0, args.length - 1);
         };
+        CodeGeneratorJs.prototype.fnParseArgsIgnoringCommaSemi = function (args) {
+            var nodeArgs = [];
+            for (var i = 0; i < args.length; i += 1) {
+                if (args[i].type !== "," && args[i].type !== ";") { // ignore separators
+                    nodeArgs.push(this.fnParseOneArg(args[i]));
+                }
+            }
+            return nodeArgs;
+        };
         CodeGeneratorJs.prototype.fnDetermineStaticVarType = function (name) {
             return this.variables.determineStaticVarType(name);
+        };
+        CodeGeneratorJs.fnExtractVarName = function (name) {
+            if (name.indexOf("v.") === 0) { // variable object?
+                name = name.substring(2); // remove preceding "v."
+                var bracketIndex = name.indexOf("[");
+                if (bracketIndex >= 0) {
+                    name = name.substring(0, bracketIndex);
+                }
+            }
+            if (name.indexOf('v["') === 0) { // variable object in brackets?
+                name = name.substring(3); // remove preceding 'v["'
+                var quotesIndex = name.indexOf('"');
+                name = name.substring(0, quotesIndex);
+            }
+            return name;
+        };
+        CodeGeneratorJs.fnGetNameTypeExpression = function (name) {
+            if (name.indexOf("v.") === 0) { // variable object with dot?
+                name = name.substring(2); // remove preceding "v."
+                var bracketIndex = name.indexOf("[");
+                if (bracketIndex >= 0) {
+                    name = name.substring(0, bracketIndex);
+                }
+                name = '"' + name + '"';
+            }
+            if (name.indexOf("v[") === 0) { // variable object with brackets?
+                name = name.substring(2); // remove preceding "v["
+                var closeBracketIndex = name.indexOf("]");
+                name = name.substring(0, closeBracketIndex);
+            }
+            return name;
         };
         CodeGeneratorJs.fnIsIntConst = function (a) {
             var reIntConst = /^[+-]?(\d+|0x[0-9a-f]+|0b[0-1]+)$/; // regex for integer, hex, binary constant
@@ -4426,7 +4832,7 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                 // when optimizing, beware of "--" operator in JavaScript!
                 if (CodeGeneratorJs.fnIsIntConst(value) || right.type === "number") { // int const or number const (also fp)
                     if (value.charAt(0) === "-") { // starting already with "-"?
-                        node.pv = value.substr(1); // remove "-"
+                        node.pv = value.substring(1); // remove "-"
                     }
                     else {
                         node.pv = "-" + value;
@@ -4520,10 +4926,12 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             node.pt = "I";
         };
         CodeGeneratorJs.prototype.addressOf = function (node, _oLeft, right) {
-            node.pv = 'o.addressOf("' + right.pv + '")'; // address of
             if (right.type !== "identifier") {
                 throw this.composeError(Error(), "Expected variable", node.value, node.pos);
             }
+            // we want a name, for arrays with "A"'s but without array indices
+            var name = CodeGeneratorJs.fnGetNameTypeExpression(right.pv);
+            node.pv = "o.addressOf(" + name + ")"; // address of
             node.pt = "I";
         };
         CodeGeneratorJs.stream = function (node, _oLeft, right) {
@@ -4545,8 +4953,8 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                 this.referencedLabelsCount[label] += 1;
             }
             else {
-                if (Utils_7.Utils.debug > 1) {
-                    Utils_7.Utils.console.debug("fnAddReferenceLabel: line does not (yet) exist:", label);
+                if (Utils_8.Utils.debug > 1) {
+                    Utils_8.Utils.console.debug("fnAddReferenceLabel: line does not (yet) exist:", label);
                 }
                 if (!this.countMap.merge && !this.countMap.chainMerge) {
                     throw this.composeError(Error(), "Line does not exist", label, node.pos);
@@ -4581,32 +4989,36 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
         CodeGeneratorJs.prototype.fnCommandWithGoto = function (node, nodeArgs) {
             nodeArgs = nodeArgs || this.fnParseArgs(node.args);
             var label = this.fnGetStopLabel();
-            node.pv = "o." + node.type + "(" + nodeArgs.join(", ") + "); o.goto(\"" + label + "\"); break;\ncase \"" + label + "\":";
+            node.pv = "o." + node.type + "(" + nodeArgs.join(", ") + "); o.vmGoto(\"" + label + "\"); break;\ncase \"" + label + "\":";
             return node.pv;
         };
         CodeGeneratorJs.commaOrSemicolon = function (node) {
             node.pv = node.type;
         };
         CodeGeneratorJs.prototype.vertical = function (node) {
-            var rsxName = node.value.substr(1).toLowerCase().replace(/\./g, "_");
-            var rsxAvailable = this.rsx && this.rsx.rsxIsAvailable(rsxName), nodeArgs = this.fnParseArgs(node.args), label = this.fnGetStopLabel();
+            var rsxName = node.value.substring(1).toLowerCase().replace(/\./g, "_");
+            var rsxAvailable = this.options.rsx && this.options.rsx.rsxIsAvailable(rsxName), nodeArgs = this.fnParseArgs(node.args), label = this.fnGetStopLabel();
             if (!rsxAvailable) { // if RSX not available, we delay the error until it is executed (or catched by on error goto)
-                if (!this.quiet) {
+                if (!this.options.quiet) {
                     var error = this.composeError(Error(), "Unknown RSX command", node.value, node.pos);
-                    Utils_7.Utils.console.warn(error);
+                    Utils_8.Utils.console.warn(error);
                 }
                 nodeArgs.unshift('"' + rsxName + '"'); // put as first arg
                 rsxName = "rsxExec"; // and call special handler which triggers error if not available
             }
-            node.pv = "o.rsx." + rsxName + "(" + nodeArgs.join(", ") + "); o.goto(\"" + label + "\"); break;\ncase \"" + label + "\":"; // most RSX commands need goto (era, ren,...)
+            node.pv = "o.rsx." + rsxName + "(" + nodeArgs.join(", ") + "); o.vmGoto(\"" + label + "\"); break;\ncase \"" + label + "\":"; // most RSX commands need goto (era, ren,...)
         };
         CodeGeneratorJs.number = function (node) {
             node.pt = (/^\d+$/).test(node.value) ? "I" : "R";
             node.pv = node.value;
         };
+        CodeGeneratorJs.expnumber = function (node) {
+            node.pt = "R";
+            node.pv = node.value;
+        };
         CodeGeneratorJs.binnumber = function (node) {
             var value = node.value.slice(2); // remove &x
-            if (Utils_7.Utils.supportsBinaryLiterals) {
+            if (Utils_8.Utils.supportsBinaryLiterals) {
                 value = "0b" + ((value.length) ? value : "0"); // &x->0b; 0b is ES6
             }
             else {
@@ -4634,7 +5046,7 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
         };
         CodeGeneratorJs.prototype.identifier = function (node) {
             var nodeArgs = node.args ? this.fnParseArgRange(node.args, 1, node.args.length - 2) : [], // array: we skip open and close bracket
-            name = this.fnAdaptVariableName(node.value, nodeArgs.length); // here we use node.value;
+            name = this.fnAdaptVariableName(node, node.value, nodeArgs.length); // here we use node.value;
             var indices = "";
             for (var i = 0; i < nodeArgs.length; i += 1) { // array indices
                 var arg = node.args[i + 1], // +1 because of opening braket
@@ -4648,14 +5060,17 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             }
             node.pv = name + indices;
         };
-        CodeGeneratorJs.letterOrLinenumber = function (node) {
+        CodeGeneratorJs.letter = function (node) {
+            node.pv = node.value.toLowerCase();
+        };
+        CodeGeneratorJs.linenumber = function (node) {
             node.pv = node.value;
         };
         CodeGeneratorJs.prototype.range = function (node) {
             if (!node.left || !node.right) {
                 throw this.composeError(Error(), "Programming error: Undefined left or right", node.type, node.pos); // should not occur
             }
-            var left = this.fnParseOneArg(node.left), right = this.fnParseOneArg(node.right);
+            var left = this.fnParseOneArg(node.left).toLowerCase(), right = this.fnParseOneArg(node.right).toLowerCase();
             if (left > right) {
                 throw this.composeError(Error(), "Decreasing range", node.value, node.pos);
             }
@@ -4676,7 +5091,7 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
         CodeGeneratorJs.string = function (node) {
             var value = node.value;
             value = value.replace(/\\/g, "\\\\"); // escape backslashes
-            value = Utils_7.Utils.hexEscape(value);
+            value = Utils_8.Utils.hexEscape(value);
             node.pt = "$";
             node.pv = '"' + value + '"';
         };
@@ -4685,7 +5100,7 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             node.pv = node.value;
         };
         CodeGeneratorJs.fnNull = function (node) {
-            node.pv = node.value !== "null" ? node.value : "undefined"; // use explicit value or convert "null" to "undefined"
+            node.pv = node.value || "undefined"; // use explicit value or "undefined"
         };
         CodeGeneratorJs.prototype.assign = function (node) {
             // see also "let"
@@ -4722,21 +5137,25 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             return traceLabel;
         };
         CodeGeneratorJs.prototype.label = function (node) {
+            var isTraceActive = this.options.trace || Boolean(this.countMap.tron), isResumeNext = Boolean(this.countMap.resumeNext), isResumeNoArgs = Boolean(this.countMap.resumeNoArgsCount);
             var label = node.value;
             this.line = label; // set line before parsing args
             if (this.countMap.resumeNext) {
                 this.labelList.push(label); // only needed to support resume next
             }
             this.resetCountsPerLine(); // we want to have "stable" counts, even if other lines change, e.g. direct
-            var isDirect = label === "";
+            var isDirect = label === "direct";
             var value = "";
             if (isDirect) { // special handling for direct
-                value = "o.goto(\"directEnd\"); break;\n";
+                value = "o.vmGoto(\"directEnd\"); break;\n";
                 label = '"direct"';
             }
-            if (!this.noCodeFrame) {
+            if (!this.options.noCodeFrame) {
                 value += "case " + label + ":";
                 value += " o.line = " + label + ";";
+                if (isTraceActive) {
+                    value += " o.vmTrace();";
+                }
             }
             else {
                 value = "";
@@ -4744,22 +5163,30 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             var nodeArgs = this.fnParseArgs(node.args);
             for (var i = 0; i < nodeArgs.length; i += 1) {
                 var value2 = nodeArgs[i];
-                if (this.traceActive) {
-                    var traceLabel = this.generateTraceLabel(node.args[i], this.line, i);
-                    value += " o.vmTrace(\"" + traceLabel + "\");";
-                }
                 if (value2 !== "") {
+                    if (isTraceActive || isResumeNext || isResumeNoArgs) {
+                        var traceLabel = this.generateTraceLabel(node.args[i], this.line, i); // side effect: put position in source map
+                        if (i > 0) { // only if not first statement in the line
+                            if (isResumeNext || isResumeNoArgs) { // eslint-disable-line max-depth
+                                value += '\ncase "' + traceLabel + '":';
+                            }
+                            value += ' o.line = "' + traceLabel + '";';
+                            if (isResumeNext) { // eslint-disable-line max-depth
+                                this.labelList.push('"' + traceLabel + '"'); // only needed to support resume next
+                            }
+                        }
+                    }
                     if (!(/[}:;\n]$/).test(value2)) { // does not end with } : ; \n
                         value2 += ";";
                     }
-                    else if (value2.substr(-1) === "\n") {
-                        value2 = value2.substr(0, value2.length - 1);
+                    else if (value2.substring(value2.length - 1) === "\n") {
+                        value2 = value2.substring(0, value2.length - 1);
                     }
                     value += " " + value2;
                 }
             }
-            if (isDirect && !this.noCodeFrame) {
-                value += "\n o.goto(\"end\"); break;\ncase \"directEnd\":"; // put in next line because of possible "rem"
+            if (isDirect && !this.options.noCodeFrame) {
+                value += "\n o.vmGoto(\"end\"); break;\ncase \"directEnd\":"; // put in next line because of possible "rem"
             }
             node.pv = value;
         };
@@ -4782,24 +5209,32 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                     nodeArgs[i] = '"' + nodeArgs[i].replace(/\\/g, "\\\\").replace(/"/g, "\\\"") + '"'; // escape backslashes and quotes, put in quotes
                 }
             }
-            nodeArgs.unshift(String(this.line)); // prepend line number
+            var lineString = String(this.line); // TODO: already string?
+            if (lineString === "direct") {
+                lineString = '"' + lineString + '"';
+            }
+            nodeArgs.unshift(lineString); // prepend line number
             this.dataList.push("o.data(" + nodeArgs.join(", ") + ")"); // will be set at the beginning of the script
             node.pv = "/* data */";
         };
         CodeGeneratorJs.prototype.def = function (node) {
-            if (!node.left || !node.right) {
-                throw this.composeError(Error(), "Programming error: Undefined left or right", node.type, node.pos); // should not occur
+            if (!node.right) {
+                throw this.composeError(Error(), "Programming error: Undefined right", node.type, node.pos); // should not occur
             }
-            var name = this.fnParseOneArg(node.left);
+            var savedValue = node.right.value;
+            node.right.value = "fn" + savedValue; // prefix with "fn"
+            var name = this.fnParseOneArg(node.right);
+            node.right.value = savedValue; // restore
+            var expressionArg = node.args.pop();
             this.defScopeArgs = {}; // collect DEF scope args
             var nodeArgs = this.fnParseArgs(node.args);
             this.defScopeArgs.collectDone = true; // collection done => now use them
-            var expression = this.fnParseOneArg(node.right);
+            var expression = this.fnParseOneArg(expressionArg); //this.fnParseOneArg(node.right);
             this.defScopeArgs = undefined;
-            this.fnPropagateStaticTypes(node, node.left, node.right, "II RR IR RI $$");
+            this.fnPropagateStaticTypes(node, node.right, expressionArg, "II RR IR RI $$");
             var value;
             if (node.pt) {
-                if (node.left.pt === "I" && node.right.pt === "R") { // special handing for IR: rounding needed
+                if (node.right.pt === "I" && expressionArg.pt === "R") { // special handing for IR: rounding needed
                     value = "o.vmRound(" + expression + ")";
                     node.pt = "I"; // "R" => "I"
                 }
@@ -4828,17 +5263,14 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                     throw this.composeError(Error(), "Programming error: Undefined args", nodeArg.type, nodeArg.pos); // should not occur
                 }
                 var nodeArgs = this.fnParseArgRange(nodeArg.args, 1, nodeArg.args.length - 2), // we skip open and close bracket
-                fullExpression = this.fnParseOneArg(nodeArg);
-                var name_3 = fullExpression;
-                name_3 = name_3.substr(2); // remove preceding "v."
-                var index = name_3.indexOf("["); // we should always have it
-                name_3 = name_3.substr(0, index);
-                args.push("/* " + fullExpression + " = */ o.dim(\"" + name_3 + "\", " + nodeArgs.join(", ") + ")");
+                fullExpression = this.fnParseOneArg(nodeArg), name_5 = CodeGeneratorJs.fnGetNameTypeExpression(fullExpression);
+                nodeArgs.unshift(name_5); // put as first arg
+                args.push("/* " + fullExpression + " = */ o.dim(" + nodeArgs.join(", ") + ")");
             }
             node.pv = args.join("; ");
         };
-        CodeGeneratorJs.prototype["delete"] = function (node) {
-            var nodeArgs = this.fnParseArgs(node.args), name = Utils_7.Utils.supportReservedNames ? ("o." + node.type) : 'o[" + node.type + "]';
+        CodeGeneratorJs.prototype.fnDelete = function (node) {
+            var nodeArgs = this.fnParseArgs(node.args), name = Utils_8.Utils.supportReservedNames ? ("o." + node.type) : 'o["' + node.type + '"]';
             if (!nodeArgs.length) { // no arguments? => complete range
                 nodeArgs.push("1");
                 nodeArgs.push("65535");
@@ -4849,11 +5281,11 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             var nodeArgs = this.fnParseArgs(node.args);
             node.pv = "o." + node.type + "(" + nodeArgs.join(", ") + "); break;";
         };
-        CodeGeneratorJs.prototype["else"] = function (node) {
+        CodeGeneratorJs.prototype.elseComment = function (node) {
             if (!node.args) {
                 throw this.composeError(Error(), "Programming error: Undefined args", "", -1); // should not occur
             }
-            var value = node.type;
+            var value = "else"; // not: node.type;
             for (var i = 0; i < node.args.length; i += 1) {
                 var token = node.args[i];
                 if (token.value) {
@@ -4876,16 +5308,21 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             node.pv = "o." + node.type + "(" + nodeArgs.join(", ") + "); break";
         };
         CodeGeneratorJs.prototype.fn = function (node) {
-            if (!node.left) {
-                throw this.composeError(Error(), "Programming error: Undefined left", node.type, node.pos); // should not occur
+            if (!node.right) {
+                throw this.composeError(Error(), "Programming error: Undefined right", node.type, node.pos); // should not occur
             }
-            var nodeArgs = this.fnParseArgs(node.args), name = this.fnParseOneArg(node.left);
-            if (node.left.pt) {
-                node.pt = node.left.pt;
+            var nodeArgs = this.fnParseArgs(node.args), savedValue = node.right.value;
+            node.right.value = "fn" + savedValue; // prefix with "fn"
+            var name = this.fnParseOneArg(node.right);
+            node.right.value = savedValue; // restore
+            if (node.right.pt) {
+                node.pt = node.right.pt;
             }
             node.pv = name + "(" + nodeArgs.join(", ") + ")";
         };
-        CodeGeneratorJs.prototype["for"] = function (node) {
+        // TODO: complexity
+        // eslint-disable-next-line complexity
+        CodeGeneratorJs.prototype.fnFor = function (node) {
             var nodeArgs = this.fnParseArgs(node.args), varName = nodeArgs[0], label = this.fnGetForLabel();
             this.stack.forLabel.push(label);
             this.stack.forVarName.push(varName);
@@ -4897,7 +5334,7 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             // optimization for integer constants (check value and not type, because we also want to accept e.g. -<number>):
             var startIsIntConst = CodeGeneratorJs.fnIsIntConst(startValue), endIsIntConst = CodeGeneratorJs.fnIsIntConst(endValue), stepIsIntConst = CodeGeneratorJs.fnIsIntConst(stepValue), varType = this.fnDetermineStaticVarType(varName), type = (varType.length > 1) ? varType.charAt(1) : "";
             if (type === "$") {
-                throw this.composeError(Error(), "String type in FOR at", node.type, node.pos);
+                throw this.composeError(Error(), "Type error", node.args[0].value, node.args[0].pos);
             }
             if (!startIsIntConst) {
                 if (startNode.pt !== "I") {
@@ -4909,21 +5346,24 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                 if (endNode.pt !== "I") {
                     endValue = "o.vmAssign(\"" + varType + "\", " + endValue + ")";
                 }
-                endName = varName + "End";
-                var value2 = endName.substr(2); // remove preceding "v."
-                this.fnDeclareVariable(value2); // declare also end variable
+                endName = CodeGeneratorJs.fnExtractVarName(varName) + "End";
+                this.fnDeclareVariable(endName); // declare also end variable
+                endName = "v." + endName;
+            }
+            if (varName.indexOf("v[") === 0) { // untyped?
+                // TODO
             }
             var stepName;
             if (!stepIsIntConst) {
                 if (stepNode && stepNode.pt !== "I") {
                     stepValue = "o.vmAssign(\"" + varType + "\", " + stepValue + ")";
                 }
-                stepName = varName + "Step";
-                var value2 = stepName.substr(2); // remove preceding "v."
-                this.fnDeclareVariable(value2); // declare also step variable
+                stepName = CodeGeneratorJs.fnExtractVarName(varName) + "Step";
+                this.fnDeclareVariable(stepName); // declare also step variable
+                stepName = "v." + stepName;
             }
             var value = "/* for() */";
-            if (type !== "I") {
+            if (type !== "I" && type !== "R") {
                 value += " o.vmAssertNumberType(\"" + varType + "\");"; // do a type check: assert number type
             }
             value += " " + varName + " = " + startValue + ";";
@@ -4933,24 +5373,24 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             if (!stepIsIntConst) {
                 value += " " + stepName + " = " + stepValue + ";";
             }
-            value += " o.goto(\"" + label + "b\"); break;";
+            value += " o.vmGoto(\"" + label + "b\"); break;";
             value += "\ncase \"" + label + "\": ";
             value += varName + " += " + (stepIsIntConst ? stepValue : stepName) + ";";
             value += "\ncase \"" + label + "b\": ";
             var endNameOrValue = endIsIntConst ? endValue : endName;
             if (stepIsIntConst) {
                 if (Number(stepValue) > 0) {
-                    value += "if (" + varName + " > " + endNameOrValue + ") { o.goto(\"" + label + "e\"); break; }";
+                    value += "if (" + varName + " > " + endNameOrValue + ") { o.vmGoto(\"" + label + "e\"); break; }";
                 }
                 else if (Number(stepValue) < 0) {
-                    value += "if (" + varName + " < " + endNameOrValue + ") { o.goto(\"" + label + "e\"); break; }";
+                    value += "if (" + varName + " < " + endNameOrValue + ") { o.vmGoto(\"" + label + "e\"); break; }";
                 }
-                else { // stepValue === 0 => endless loop, if starting with variable < end
-                    value += "if (" + varName + " < " + endNameOrValue + ") { o.goto(\"" + label + "e\"); break; }";
+                else { // stepValue === 0 => endless loop, if starting with variable !== end
+                    value += "if (" + varName + " === " + endNameOrValue + ") { o.vmGoto(\"" + label + "e\"); break; }";
                 }
             }
             else {
-                value += "if (" + stepName + " > 0 && " + varName + " > " + endNameOrValue + " || " + stepName + " < 0 && " + varName + " < " + endNameOrValue + ") { o.goto(\"" + label + "e\"); break; }";
+                value += "if (" + stepName + " > 0 && " + varName + " > " + endNameOrValue + " || " + stepName + " < 0 && " + varName + " < " + endNameOrValue + " || !" + stepName + " && " + varName + " === " + endNameOrValue + ") { o.vmGoto(\"" + label + "e\"); break; }";
             }
             node.pv = value;
         };
@@ -4969,16 +5409,24 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             node.pv = "o." + node.type + "(" + nodeArgs.join(", ") + "); break"; // with break
         };
         CodeGeneratorJs.prototype.fnThenOrElsePart = function (args, tracePrefix) {
-            var nodeArgs = this.fnParseArgs(args);
-            if (args[0].type === "linenumber") {
+            var isTraceActive = this.options.trace, isResumeNext = Boolean(this.countMap.resumeNext), isResumeNoArgs = Boolean(this.countMap.resumeNoArgsCount), nodeArgs = this.fnParseArgs(args);
+            if (args.length && args[0].type === "linenumber") {
                 var line = nodeArgs[0];
                 this.fnAddReferenceLabel(line, args[0]);
                 nodeArgs[0] = "o.goto(" + line + "); break"; // convert to "goto"
             }
-            if (this.traceActive) {
+            if (isTraceActive || isResumeNext || isResumeNoArgs) {
                 for (var i = 0; i < nodeArgs.length; i += 1) {
                     var traceLabel = this.generateTraceLabel(args[i], tracePrefix, i);
-                    nodeArgs[i] = "o.vmTrace(\"" + traceLabel + "\"); " + nodeArgs[i];
+                    var value = "";
+                    if (isResumeNext || isResumeNoArgs) {
+                        value += '\ncase "' + traceLabel + '":';
+                    }
+                    if (isResumeNext) {
+                        this.labelList.push('"' + traceLabel + '"'); // only needed to support resume next
+                    }
+                    value += ' o.line = "' + traceLabel + '";';
+                    nodeArgs[i] = value + " " + nodeArgs[i];
                 }
             }
             return nodeArgs.join("; ");
@@ -4987,18 +5435,17 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             var partNoTrailingBreak = part.replace(/; break$/, ""), simplePart = !(/case|break/).test(partNoTrailingBreak);
             return simplePart;
         };
-        CodeGeneratorJs.prototype["if"] = function (node) {
-            if (!node.left) {
+        CodeGeneratorJs.prototype.fnIf = function (node) {
+            if (!node.right) {
                 throw this.composeError(Error(), "Programming error: Undefined left", node.type, node.pos); // should not occur
             }
-            var expression = this.fnParseOneArg(node.left);
+            var expression = this.fnParseOneArg(node.right);
             if (expression.endsWith(" ? -1 : 0")) { // optimize simple expression
                 expression = expression.replace(/ \? -1 : 0$/, "");
             }
             var label = this.fnGetIfLabel(), // need it also for tracing nested if
-            thenPart = this.fnThenOrElsePart(node.args, label + "T"), // "then" statements
-            simpleThen = CodeGeneratorJs.fnIsSimplePart(thenPart), elsePart = node.args2 ? this.fnThenOrElsePart(node.args2, label + "E") : "", // "else" statements
-            simpleElse = node.args2 ? CodeGeneratorJs.fnIsSimplePart(elsePart) : true;
+            elseArgs = node.args.length && node.args[node.args.length - 1].type === "else" ? node.args.pop().args : undefined, elsePart = elseArgs ? this.fnThenOrElsePart(elseArgs, label + "E") : "", thenPart = this.fnThenOrElsePart(node.args, label + "T"), // "then"/"goto" statements
+            simpleThen = CodeGeneratorJs.fnIsSimplePart(thenPart), simpleElse = elsePart ? CodeGeneratorJs.fnIsSimplePart(elsePart) : true;
             var value = "if (" + expression + ") { ";
             if (simpleThen && simpleElse) {
                 value += thenPart + "; }";
@@ -5007,11 +5454,11 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                 }
             }
             else {
-                value += 'o.goto("' + label + '"); break; } ';
+                value += 'o.vmGoto("' + label + '"); break; } ';
                 if (elsePart !== "") { // "else" statements?
                     value += "/* else */ " + elsePart + "; ";
                 }
-                value += 'o.goto("' + label + 'e"); break;\ncase "' + label + '": ' + thenPart + ';\ncase "' + label + 'e": ';
+                value += 'o.vmGoto("' + label + 'e"); break;\ncase "' + label + '": ' + thenPart + ';\ncase "' + label + 'e": ';
             }
             node.pv = value;
         };
@@ -5034,14 +5481,14 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             }
             var prompt = nodeArgs[3];
             if (prompt === ";" || node.args[3].type === "null") { // ";" => insert prompt "? " in quoted string
-                msg = msg.substr(0, msg.length - 1) + "? " + msg.substr(-1, 1);
+                msg = msg.substring(0, msg.length - 1) + "? " + msg.substr(-1, 1);
             }
             for (var i = 4; i < nodeArgs.length; i += 1) {
                 varTypes[i - 4] = this.fnDetermineStaticVarType(nodeArgs[i]);
             }
-            var value = "o.goto(\"" + label + "\"); break;\ncase \"" + label + "\":"; // also before input
+            var value = "o.vmGoto(\"" + label + "\"); break;\ncase \"" + label + "\":"; // also before input
             var label2 = this.fnGetStopLabel();
-            value += "o." + node.type + "(" + stream + ", " + noCRLF + ", " + msg + ", \"" + varTypes.join('", "') + "\"); o.goto(\"" + label2 + "\"); break;\ncase \"" + label2 + "\":";
+            value += "o." + node.type + "(" + stream + ", " + noCRLF + ", " + msg + ", \"" + varTypes.join('", "') + "\"); o.vmGoto(\"" + label2 + "\"); break;\ncase \"" + label2 + "\":";
             for (var i = 4; i < nodeArgs.length; i += 1) {
                 value += "; " + nodeArgs[i] + " = o.vmGetNextInput()";
             }
@@ -5068,19 +5515,14 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
         };
         CodeGeneratorJs.prototype.mid$Assign = function (node) {
             var nodeArgs = this.fnParseArgs(node.args);
-            if (nodeArgs.length < 3) {
-                nodeArgs.push("undefined"); // empty length
+            if (nodeArgs.length < 4) {
+                nodeArgs.splice(2, 0, "undefined"); // set empty length
             }
-            if (!node.right) {
-                throw this.composeError(Error(), "Programming error: Undefined right", "", -1); // should not occur
-            }
-            var right = this.fnParseOneArg(node.right);
-            nodeArgs.push(right);
             var name = nodeArgs[0], varType = this.fnDetermineStaticVarType(name);
             node.pv = name + " = o.vmAssign(\"" + varType + "\", o.mid$Assign(" + nodeArgs.join(", ") + "))";
         };
-        CodeGeneratorJs["new"] = function (node) {
-            var name = Utils_7.Utils.supportReservedNames ? ("o." + node.type) : 'o[" + node.type + "]';
+        CodeGeneratorJs.fnNew = function (node) {
+            var name = Utils_8.Utils.supportReservedNames ? ("o." + node.type) : 'o["' + node.type + '"]';
             node.pv = name + "();";
         };
         CodeGeneratorJs.prototype.next = function (node) {
@@ -5104,7 +5546,7 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                     errorNode = node.args[i];
                     throw this.composeError(Error(), "Unexpected NEXT variable", errorNode.value, errorNode.pos);
                 }
-                nodeArgs[i] = "/* " + node.type + "(\"" + nodeArgs[i] + "\") */ o.goto(\"" + label + "\"); break;\ncase \"" + label + "e\":";
+                nodeArgs[i] = "/* " + node.type + "(\"" + nodeArgs[i] + "\") */ o.vmGoto(\"" + label + "\"); break;\ncase \"" + label + "e\":";
             }
             node.pv = nodeArgs.join("; ");
         };
@@ -5125,19 +5567,23 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             node.pv = "o." + node.type + "(" + nodeArgs.join(", ") + ")";
         };
         CodeGeneratorJs.prototype.onGosubOnGoto = function (node) {
-            var left = this.fnParseOneArg(node.left), nodeArgs = this.fnParseArgs(node.args), label = node.type === "onGosub" ? this.fnGetGosubLabel() : this.fnGetStopLabel();
-            for (var i = 0; i < nodeArgs.length; i += 1) {
+            var nodeArgs = this.fnParseArgs(node.args), label = node.type === "onGosub" ? this.fnGetGosubLabel() : this.fnGetStopLabel();
+            for (var i = 1; i < nodeArgs.length; i += 1) { // starting with 1
                 this.fnAddReferenceLabel(nodeArgs[i], node.args[i]);
             }
-            nodeArgs.unshift('"' + label + '"', left);
+            nodeArgs.unshift('"' + label + '"');
             node.pv = "o." + node.type + "(" + nodeArgs.join(", ") + '); break;\ncase "' + label + '":';
         };
         CodeGeneratorJs.prototype.onSqGosub = function (node) {
-            var left = this.fnParseOneArg(node.left), nodeArgs = this.fnParseArgs(node.args);
+            var nodeArgs = this.fnParseArgs(node.args);
             for (var i = 0; i < nodeArgs.length; i += 1) {
                 this.fnAddReferenceLabel(nodeArgs[i], node.args[i]);
             }
-            nodeArgs.unshift(left);
+            if (!node.right) {
+                throw this.composeError(Error(), "Programming error: Undefined right", "", -1); // should not occur
+            }
+            var sqArgs = this.fnParseArgs(node.right.args);
+            nodeArgs.unshift(sqArgs[0]);
             node.pv = "o." + node.type + "(" + nodeArgs.join(", ") + ")";
         };
         CodeGeneratorJs.prototype.print = function (node) {
@@ -5173,7 +5619,7 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             }
             else {
                 var label = this.fnGetStopLabel();
-                value = "o.goto(\"" + label + "\"); break;\ncase \"" + label + "\":"; // also before input
+                value = "o.vmGoto(\"" + label + "\"); break;\ncase \"" + label + "\":"; // also before input
                 value += this.fnCommandWithGoto(node) + " o.randomize(o.vmGetNextInput())";
             }
             node.pv = value;
@@ -5181,17 +5627,24 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
         CodeGeneratorJs.prototype.read = function (node) {
             var nodeArgs = this.fnParseArgs(node.args);
             for (var i = 0; i < nodeArgs.length; i += 1) {
-                var name_4 = nodeArgs[i], varType = this.fnDetermineStaticVarType(name_4);
-                nodeArgs[i] = name_4 + " = o." + node.type + "(\"" + varType + "\")";
+                var name_6 = nodeArgs[i], varType = this.fnDetermineStaticVarType(name_6);
+                nodeArgs[i] = name_6 + " = o." + node.type + "(\"" + varType + "\")";
             }
             node.pv = nodeArgs.join("; ");
         };
         CodeGeneratorJs.prototype.rem = function (node) {
-            var nodeArgs = this.fnParseArgs(node.args), value = nodeArgs.length ? " " + nodeArgs[0] : "";
-            node.pv = "//" + value + "\n";
+            var nodeArgs = this.fnParseArgs(node.args);
+            node.pv = "//" + nodeArgs.join("") + "\n";
         };
-        CodeGeneratorJs["return"] = function (node) {
-            var name = Utils_7.Utils.supportReservedNames ? ("o." + node.type) : 'o[" + node.type + "]';
+        CodeGeneratorJs.prototype.apostrophe = function (node) {
+            var nodeArgs = this.fnParseArgs(node.args);
+            if (nodeArgs.length && !nodeArgs[0].startsWith(" ")) {
+                nodeArgs[0] = " " + nodeArgs[0]; // add extra space
+            }
+            node.pv = "//" + nodeArgs.join("") + "\n";
+        };
+        CodeGeneratorJs.fnReturn = function (node) {
+            var name = Utils_8.Utils.supportReservedNames ? ("o." + node.type) : 'o["' + node.type + '"]';
             node.pv = name + "(); break;";
         };
         CodeGeneratorJs.prototype.run = function (node) {
@@ -5231,17 +5684,21 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             var nodeArgs = this.fnParseArgs(node.args);
             node.pv = "{type: \"tab\", args: [" + nodeArgs.join(", ") + "]}"; // we must delay the tab() call until print() is called
         };
+        CodeGeneratorJs.prototype.usingOrWrite = function (node) {
+            var nodeArgs = this.fnParseArgsIgnoringCommaSemi(node.args);
+            node.pv = "o." + node.type + "(" + nodeArgs.join(", ") + ")";
+        };
         CodeGeneratorJs.prototype.wend = function (node) {
             var label = this.stack.whileLabel.pop();
             if (label === undefined) {
                 throw this.composeError(Error(), "Unexpected WEND", node.type, node.pos);
             }
-            node.pv = "/* o." + node.type + "() */ o.goto(\"" + label + "\"); break;\ncase \"" + label + "e\":";
+            node.pv = "/* o." + node.type + "() */ o.vmGoto(\"" + label + "\"); break;\ncase \"" + label + "e\":";
         };
-        CodeGeneratorJs.prototype["while"] = function (node) {
+        CodeGeneratorJs.prototype.fnWhile = function (node) {
             var nodeArgs = this.fnParseArgs(node.args), label = this.fnGetWhileLabel();
             this.stack.whileLabel.push(label);
-            node.pv = "\ncase \"" + label + "\": if (!(" + nodeArgs + ")) { o.goto(\"" + label + "e\"); break; }";
+            node.pv = "\ncase \"" + label + "\": if (!(" + nodeArgs + ")) { o.vmGoto(\"" + label + "e\"); break; }";
         };
         /* eslint-enable no-invalid-this */
         CodeGeneratorJs.prototype.fnParseOther = function (node) {
@@ -5250,40 +5707,54 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             if (CodeGeneratorJs.fnIsInString(" asc cint derr eof erl err fix fre inkey inp instr int joy len memory peek pos remain sgn sq test testr unt vpos xpos ypos ", typeWithSpaces)) {
                 node.pt = "I";
             }
-            else if (CodeGeneratorJs.fnIsInString(" abs atn cos creal exp log log10 max min pi rnd round sin sqr tan time val ", typeWithSpaces)) {
+            else if (CodeGeneratorJs.fnIsInString(" abs atn cos creal exp log log10 pi rnd round sin sqr tan time val ", typeWithSpaces)) {
                 node.pt = "R";
             }
             else if (CodeGeneratorJs.fnIsInString(" bin$ chr$ copychr$ dec$ hex$ inkey$ left$ lower$ mid$ right$ space$ str$ string$ upper$ ", typeWithSpaces)) {
                 node.pt = "$";
             }
+            // Note: min and max usually return a number, but for a single string argument also the string!
+            if (node.type === "min" || node.type === "max") {
+                if (node.args.length === 1) {
+                    if (node.args[0].type === "$") {
+                        node.pt = "$";
+                    }
+                }
+                else if (node.args.length > 1) {
+                    node.pt = "R";
+                }
+            }
+        };
+        CodeGeneratorJs.prototype.parseOperator = function (node) {
+            var operators = this.allOperators;
+            if (node.left) {
+                this.parseNode(node.left);
+                if (operators[node.left.type] && node.left.left) { // binary operator?
+                    node.left.pv = "(" + node.left.pv + ")";
+                }
+                if (!node.right) {
+                    throw this.composeError(Error(), "Programming error: Undefined right", "", -1); // should not occur
+                }
+                this.parseNode(node.right);
+                if (operators[node.right.type] && node.right.left) { // binary operator?
+                    node.right.pv = "(" + node.right.pv + ")";
+                }
+                operators[node.type].call(this, node, node.left, node.right);
+            }
+            else {
+                if (!node.right) {
+                    throw this.composeError(Error(), "Programming error: Undefined right", "", -1); // should not occur
+                }
+                this.parseNode(node.right);
+                this.unaryOperators[node.type].call(this, node, undefined, node.right); // unary operator: we just use node.right
+            }
         };
         CodeGeneratorJs.prototype.parseNode = function (node) {
-            if (Utils_7.Utils.debug > 3) {
-                Utils_7.Utils.console.debug("evaluate: parseNode node=%o type=" + node.type + " value=" + node.value + " left=%o right=%o args=%o", node, node.left, node.right, node.args);
+            if (Utils_8.Utils.debug > 3) {
+                Utils_8.Utils.console.debug("evaluate: parseNode node=%o type=" + node.type + " value=" + node.value + " left=%o right=%o args=%o", node, node.left, node.right, node.args);
             }
-            var operators = this.allOperators;
-            if (operators[node.type]) {
-                if (node.left) {
-                    this.parseNode(node.left);
-                    if (operators[node.left.type] && node.left.left) { // binary operator?
-                        node.left.pv = "(" + node.left.pv + ")";
-                    }
-                    if (!node.right) {
-                        throw this.composeError(Error(), "Programming error: Undefined right", "", -1); // should not occur
-                    }
-                    this.parseNode(node.right);
-                    if (operators[node.right.type] && node.right.left) { // binary operator?
-                        node.right.pv = "(" + node.right.pv + ")";
-                    }
-                    operators[node.type].call(this, node, node.left, node.right);
-                }
-                else {
-                    if (!node.right) {
-                        throw this.composeError(Error(), "Programming error: Undefined right", "", -1); // should not occur
-                    }
-                    this.parseNode(node.right);
-                    this.unaryOperators[node.type].call(this, node, undefined, node.right); // unary operator: we just use node.right
-                }
+            if (this.allOperators[node.type]) {
+                this.parseOperator(node);
             }
             else if (this.parseFunctions[node.type]) { // function with special handling?
                 this.parseFunctions[node.type].call(this, node);
@@ -5297,32 +5768,69 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                 return (labels[line]) ? all : "/* " + all + " */";
             });
         };
-        CodeGeneratorJs.prototype.fnCreateLabelsMap = function (parseTree, labels, allowDirect) {
-            var lastLine = -1;
-            for (var i = 0; i < parseTree.length; i += 1) {
-                var node = parseTree[i];
-                if (node.type === "label") {
-                    var label = node.value, isDirect = label === "";
-                    if (label in labels) {
-                        throw this.composeError(Error(), "Duplicate line number", label, node.pos);
+        CodeGeneratorJs.prototype.fnCheckLabel = function (node, lastLine) {
+            var label = node.value;
+            if (label === "") {
+                if (this.options.implicitLines) {
+                    label = String(lastLine + 1); // no line => we just increase the last line by 1
+                    node.value = label; // we also modify the parse tree
+                }
+                else {
+                    throw this.composeError(Error(), "Direct command found", label, node.pos);
+                }
+            }
+            var lineNumber = Number(label);
+            if ((lineNumber | 0) !== lineNumber) { // eslint-disable-line no-bitwise
+                throw this.composeError(Error(), "Expected integer line number", label, node.pos);
+            }
+            if (lineNumber < 1 || lineNumber > 65535) {
+                throw this.composeError(Error(), "Line number overflow", label, node.pos);
+            }
+            if (lineNumber <= lastLine) {
+                throw this.composeError(Error(), "Expected increasing line number", label, node.pos);
+            }
+            return label;
+        };
+        CodeGeneratorJs.prototype.fnCreateLabelMap = function (nodes, labels) {
+            var lastLine = 0;
+            for (var i = 0; i < nodes.length; i += 1) {
+                var node = nodes[i];
+                if (node.type === "label" && node.value !== "direct") {
+                    var label = this.fnCheckLabel(node, lastLine);
+                    if (label) {
+                        labels[label] = 0; // init call count
+                        lastLine = Number(label);
                     }
-                    var lineNumber = Number(label);
-                    if (!isDirect) {
-                        if ((lineNumber | 0) !== lineNumber) { // eslint-disable-line no-bitwise
-                            throw this.composeError(Error(), "Expected integer line number", label, node.pos);
-                        }
-                        if (lineNumber <= lastLine) {
-                            throw this.composeError(Error(), "Expected increasing line number", label, node.pos);
-                        }
-                        if (lineNumber < 1 || lineNumber > 65535) {
-                            throw this.composeError(Error(), "Line number overflow", label, node.pos);
-                        }
-                        lastLine = lineNumber;
+                }
+            }
+        };
+        CodeGeneratorJs.prototype.removeAllDefVarTypes = function () {
+            var varTypes = this.defintDefstrTypes;
+            for (var name_7 in varTypes) { // eslint-disable-line guard-for-in
+                delete varTypes[name_7];
+            }
+        };
+        CodeGeneratorJs.prototype.fnSetDefVarTypeRange = function (type, first, last) {
+            var firstNum = first.charCodeAt(0), lastNum = last.charCodeAt(0);
+            for (var i = firstNum; i <= lastNum; i += 1) {
+                var varChar = String.fromCharCode(i);
+                this.defintDefstrTypes[varChar] = type;
+            }
+        };
+        CodeGeneratorJs.prototype.fnPrecheckDefintDefstr = function (node) {
+            if (node.args) {
+                var type = node.type === "defint" ? "I" : "$";
+                for (var i = 0; i < node.args.length; i += 1) {
+                    var arg = node.args[i];
+                    if (arg.type === "letter") {
+                        this.defintDefstrTypes[arg.value.toLowerCase()] = type;
                     }
-                    else if (!allowDirect) {
-                        throw this.composeError(Error(), "Direct command found", label, node.pos);
+                    else { // assuming range
+                        if (!arg.left || !arg.right) {
+                            throw this.composeError(Error(), "Programming error: Undefined left or right", node.type, node.pos); // should not occur
+                        }
+                        this.fnSetDefVarTypeRange(type, arg.left.value.toLowerCase(), arg.right.value.toLowerCase());
                     }
-                    labels[label] = 0; // init call count
                 }
             }
         };
@@ -5330,6 +5838,11 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             for (var i = 0; i < nodes.length; i += 1) {
                 var node = nodes[i];
                 countMap[node.type] = (countMap[node.type] || 0) + 1;
+                if (node.type === "defint" || node.type === "defstr") {
+                    if (node.args) {
+                        this.fnPrecheckDefintDefstr(node);
+                    }
+                }
                 if (node.type === "resume" && !(node.args && node.args.length)) {
                     var resumeNoArgs = "resumeNoArgsCount";
                     countMap[resumeNoArgs] = (countMap[resumeNoArgs] || 0) + 1;
@@ -5337,25 +5850,27 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                 if (node.args) {
                     this.fnPrecheckTree(node.args, countMap); // recursive
                 }
+                /*
                 if (node.args2) { // for "ELSE"
                     this.fnPrecheckTree(node.args2, countMap); // recursive
                 }
+                */
             }
         };
         //
         // evaluate
         //
-        CodeGeneratorJs.prototype.evaluate = function (parseTree, variables, allowDirect) {
+        CodeGeneratorJs.prototype.evaluate = function (parseTree, variables) {
             this.variables = variables;
             this.defScopeArgs = undefined;
             // create labels map
-            this.fnCreateLabelsMap(parseTree, this.referencedLabelsCount, allowDirect);
-            this.fnPrecheckTree(parseTree, this.countMap); // also set "_resumeNoArgs" for resume without args
-            this.traceActive = this.trace || Boolean(this.countMap.tron) || Boolean(this.countMap.resumeNext) || Boolean(this.countMap.resumeNoArgsCount); // we also switch on tracing for tron, resumeNext or resume without parameter
+            this.fnCreateLabelMap(parseTree, this.referencedLabelsCount);
+            this.removeAllDefVarTypes();
+            this.fnPrecheckTree(parseTree, this.countMap); // also sets "resumeNoArgsCount" for resume without args
             var output = "";
             for (var i = 0; i < parseTree.length; i += 1) {
-                if (Utils_7.Utils.debug > 2) {
-                    Utils_7.Utils.console.debug("evaluate: parseTree i=%d, node=%o", i, parseTree[i]);
+                if (Utils_8.Utils.debug > 2) {
+                    Utils_8.Utils.console.debug("evaluate: parseTree i=%d, node=%o", i, parseTree[i]);
                 }
                 var line = this.fnParseOneArg(parseTree[i]);
                 if ((line !== undefined) && (line !== "")) {
@@ -5396,18 +5911,25 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             };
             this.reset();
             try {
-                var tokens = this.lexer.lex(input), parseTree = this.parser.parse(tokens);
-                var output = this.evaluate(parseTree, variables, Boolean(allowDirect));
+                var tokens = this.options.lexer.lex(input), parseTree = this.options.parser.parse(tokens);
+                if (allowDirect && parseTree.length) {
+                    var lastLine = parseTree[parseTree.length - 1];
+                    if (lastLine.type === "label" && lastLine.value === "") {
+                        lastLine.value = "direct";
+                    }
+                }
+                var output = this.evaluate(parseTree, variables);
                 var combinedData = CodeGeneratorJs.combineData(this.dataList), combinedLabels = CodeGeneratorJs.combineLabels(this.labelList);
-                if (!this.noCodeFrame) {
+                if (!this.options.noCodeFrame) {
                     output = '"use strict"\n'
                         + "var v=o.vmGetAllVariables();\n"
+                        + "var t=o.vmGetAllVarTypes();\n"
                         + "while (o.vmLoopCondition()) {\nswitch (o.line) {\ncase 0:\n"
                         + combinedData
                         + combinedLabels
-                        + " o.goto(o.startLine ? o.startLine : \"start\"); break;\ncase \"start\":\n"
+                        + " o.vmGoto(o.startLine ? o.startLine : \"start\"); break;\ncase \"start\":\n"
                         + output
-                        + "\ncase \"end\": o.vmStop(\"end\", 90); break;\ndefault: o.error(8); o.goto(\"end\"); break;\n}}\n";
+                        + "\ncase \"end\": o.vmStop(\"end\", 90); break;\ndefault: o.error(8); o.vmGoto(\"end\"); break;\n}}\n";
                 }
                 else {
                     output = combinedData + output;
@@ -5415,15 +5937,15 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                 out.text = output;
             }
             catch (e) {
-                if (Utils_7.Utils.isCustomError(e)) {
+                if (Utils_8.Utils.isCustomError(e)) {
                     out.error = e;
-                    if (!this.quiet) {
-                        Utils_7.Utils.console.warn(e); // show our customError as warning
+                    if (!this.options.quiet) {
+                        Utils_8.Utils.console.warn(e); // show our customError as warning
                     }
                 }
                 else { // other errors
                     out.error = e; // force set other error
-                    Utils_7.Utils.console.error(e);
+                    Utils_8.Utils.console.error(e);
                 }
             }
             return out;
@@ -5490,6 +6012,11 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             "instanceof",
             "synchronized"
         ];
+        CodeGeneratorJs.varTypeMap = {
+            "!": "R",
+            "%": "I",
+            $: "$" // or "S"?
+        };
         return CodeGeneratorJs;
     }());
     exports.CodeGeneratorJs = CodeGeneratorJs;
@@ -5499,64 +6026,59 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
 // https://benchmarko.github.io/CPCBasicTS/
 //
 //
-define("CodeGeneratorToken", ["require", "exports", "Utils", "BasicParser"], function (require, exports, Utils_8, BasicParser_2) {
+define("CodeGeneratorToken", ["require", "exports", "Utils"], function (require, exports, Utils_9) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CodeGeneratorToken = void 0;
     var CodeGeneratorToken = /** @class */ (function () {
         function CodeGeneratorToken(options) {
-            this.quiet = false;
-            this.line = 0; // current line (label)
+            this.label = ""; // current line (label)
             /* eslint-disable no-invalid-this */
             this.parseFunctions = {
                 args: this.fnArgs,
-                "(": this.fnParenthesisOpen,
-                ";": CodeGeneratorToken.semicolon,
-                ":": this.colon,
-                letter: CodeGeneratorToken.letter,
                 range: this.range,
                 linerange: this.linerange,
                 string: CodeGeneratorToken.string,
-                unquoted: CodeGeneratorToken.unquoted,
-                "null": CodeGeneratorToken.fnNull,
-                assign: this.assign,
+                ustring: CodeGeneratorToken.ustring,
+                "(eol)": CodeGeneratorToken.fnEol,
                 number: CodeGeneratorToken.number,
+                expnumber: CodeGeneratorToken.number,
                 binnumber: CodeGeneratorToken.binnumber,
                 hexnumber: CodeGeneratorToken.hexnumber,
                 identifier: this.identifier,
                 linenumber: CodeGeneratorToken.linenumber,
-                label: this.label,
+                label: this.fnLabel,
                 "|": this.vertical,
-                afterGosub: this.afterGosub,
-                chainMerge: this.chainMerge,
-                data: this.data,
-                def: this.def,
-                "else": this.else,
-                ent: this.entEnv,
-                env: this.entEnv,
-                everyGosub: this.everyGosub,
-                fn: this.fn,
-                "for": this.for,
-                "if": this.if,
-                input: this.inputLineInput,
-                lineInput: this.inputLineInput,
-                list: this.list,
-                mid$Assign: this.mid$Assign,
+                "else": this.fnElseOrApostrophe,
+                elseComment: this.elseComment,
+                onBreakCont: this.onBreakContOrGosubOrStop,
+                onBreakGosub: this.onBreakContOrGosubOrStop,
+                onBreakStop: this.onBreakContOrGosubOrStop,
                 onErrorGoto: this.onErrorGoto,
-                onGosub: this.onGotoGosub,
-                onGoto: this.onGotoGosub,
                 onSqGosub: this.onSqGosub,
-                print: this.print,
-                rem: this.rem,
-                using: this.using
+                "'": this.fnElseOrApostrophe
             };
-            this.quiet = options.quiet || false;
-            this.lexer = options.lexer;
-            this.parser = options.parser;
-            this.statementSeparator = CodeGeneratorToken.token2String(":");
+            this.options = {
+                lexer: options.lexer,
+                parser: options.parser,
+                implicitLines: false,
+                quiet: false
+            };
+            this.setOptions(options);
         }
+        CodeGeneratorToken.prototype.setOptions = function (options) {
+            if (options.implicitLines !== undefined) {
+                this.options.implicitLines = options.implicitLines;
+            }
+            if (options.quiet !== undefined) {
+                this.options.quiet = options.quiet;
+            }
+        };
+        CodeGeneratorToken.prototype.getOptions = function () {
+            return this.options;
+        };
         CodeGeneratorToken.prototype.composeError = function (error, message, value, pos) {
-            return Utils_8.Utils.composeError("CodeGeneratorToken", error, message, value, pos, undefined, this.line);
+            return Utils_9.Utils.composeError("CodeGeneratorToken", error, message, value, pos, undefined, this.label);
         };
         CodeGeneratorToken.convUInt8ToString = function (n) {
             return String.fromCharCode(n);
@@ -5572,31 +6094,18 @@ define("CodeGeneratorToken", ["require", "exports", "Utils", "BasicParser"], fun
             if (token === undefined) {
                 token = CodeGeneratorToken.tokensFF[name];
                 if (token === undefined) {
-                    Utils_8.Utils.console.warn("token2String: Not a token: " + name);
+                    Utils_9.Utils.console.error("token2String: Not a token: " + name);
                     return name; // return something
                 }
                 result = CodeGeneratorToken.convUInt8ToString(0xff); // prefix for special tokens
             }
-            result += (token <= 255) ? CodeGeneratorToken.convUInt8ToString(token) : CodeGeneratorToken.convUInt16ToString(token);
-            return result;
+            return result + CodeGeneratorToken.convUInt8ToString(token);
         };
         CodeGeneratorToken.getBit7TerminatedString = function (s) {
-            return s.substr(0, s.length - 1) + String.fromCharCode(s.charCodeAt(s.length - 1) | 0x80); // eslint-disable-line no-bitwise
+            return s.substring(0, s.length - 1) + String.fromCharCode(s.charCodeAt(s.length - 1) | 0x80); // eslint-disable-line no-bitwise
         };
-        CodeGeneratorToken.prototype.combineArgsWithSeparator = function (nodeArgs) {
-            var separator = "";
-            if (nodeArgs.length > 1 && nodeArgs[1].charAt(0) !== this.statementSeparator) { // no separator for multiple items?
-                // (use charAt(0) because of apostrophe with separator prefix)
-                separator = this.statementSeparator;
-            }
-            return nodeArgs.join(separator);
-        };
-        CodeGeneratorToken.prototype.fnParseOneArg = function (arg) {
-            var value = this.parseNode(arg);
-            if (arg.ws && arg.ws !== " ") {
-                value = arg.ws + value;
-            }
-            return value;
+        CodeGeneratorToken.fnGetWs = function (node) {
+            return node.ws || "";
         };
         CodeGeneratorToken.prototype.fnParseArgs = function (args) {
             var nodeArgs = []; // do not modify node.args here (could be a parameter of defined function)
@@ -5604,66 +6113,27 @@ define("CodeGeneratorToken", ["require", "exports", "Utils", "BasicParser"], fun
                 throw this.composeError(Error(), "Programming error: Undefined args", "", -1); // should not occur
             }
             for (var i = 0; i < args.length; i += 1) {
-                var value = this.fnParseOneArg(args[i]);
-                if (!(i === 0 && value === "#" && args[i].type === "#")) { // ignore empty stream as first argument (hmm, not for e.g. data!)
-                    nodeArgs.push(value);
-                }
+                nodeArgs.push(this.parseNode(args[i]));
             }
             return nodeArgs;
         };
         CodeGeneratorToken.prototype.fnArgs = function (node) {
-            var nodeArgs = this.fnParseArgs(node.args);
-            return nodeArgs.join(node.value);
-        };
-        CodeGeneratorToken.semicolon = function (node) {
-            return node.value; // ";"
-        };
-        CodeGeneratorToken.prototype.colon = function () {
-            return this.statementSeparator;
-        };
-        CodeGeneratorToken.letter = function (node) {
-            return node.value;
+            return this.fnParseArgs(node.args).join(node.value);
         };
         CodeGeneratorToken.prototype.range = function (node) {
-            if (!node.left || !node.right) {
-                throw this.composeError(Error(), "Programming error: Undefined left or right", node.type, node.pos); // should not occur
-            }
-            var left = this.fnParseOneArg(node.left), right = this.fnParseOneArg(node.right);
-            return left + "-" + right;
+            return this.parseNode(node.left) + CodeGeneratorToken.fnGetWs(node) + node.value + this.parseNode(node.right);
         };
         CodeGeneratorToken.prototype.linerange = function (node) {
-            if (!node.left || !node.right) {
-                throw this.composeError(Error(), "Programming error: Undefined left or right", node.type, node.pos); // should not occur
-            }
-            var left = this.fnParseOneArg(node.left), right = this.fnParseOneArg(node.right);
-            return left + CodeGeneratorToken.token2String("-") + right;
-        };
-        CodeGeneratorToken.prototype.fnParenthesisOpen = function (node) {
-            var value = node.value;
-            if (node.args) {
-                var nodeArgs = this.fnParseArgs(node.args);
-                value += nodeArgs.join("");
-            }
-            return value;
+            return this.parseNode(node.left) + CodeGeneratorToken.fnGetWs(node) + CodeGeneratorToken.token2String(node.value) + this.parseNode(node.right);
         };
         CodeGeneratorToken.string = function (node) {
-            return '"' + node.value + '"'; //TTT how to set unterminated string?
+            return CodeGeneratorToken.fnGetWs(node) + '"' + node.value + '"';
         };
-        CodeGeneratorToken.unquoted = function (node) {
-            return node.value;
+        CodeGeneratorToken.ustring = function (node) {
+            return CodeGeneratorToken.fnGetWs(node) + '"' + node.value; // unterminated string
         };
-        CodeGeneratorToken.fnNull = function () {
+        CodeGeneratorToken.fnEol = function () {
             return "";
-        };
-        CodeGeneratorToken.prototype.assign = function (node) {
-            // see also "let"
-            if (!node.left || !node.right) {
-                throw this.composeError(Error(), "Programming error: Undefined left or right", node.type, node.pos); // should not occur
-            }
-            if (node.left.type !== "identifier") {
-                throw this.composeError(Error(), "Unexpected assign type", node.type, node.pos); // should not occur
-            }
-            return this.fnParseOneArg(node.left) + CodeGeneratorToken.token2String("=") + this.fnParseOneArg(node.right);
         };
         CodeGeneratorToken.floatToByteString = function (number) {
             var mantissa = 0, exponent = 0, sign = 0;
@@ -5675,19 +6145,19 @@ define("CodeGeneratorToken", ["require", "exports", "Utils", "BasicParser"], fun
                 exponent = Math.ceil(Math.log(number) / Math.log(2));
                 mantissa = Math.round(number / Math.pow(2, exponent - 32)) & ~0x80000000; // eslint-disable-line no-bitwise
                 if (mantissa === 0) {
-                    exponent += 1; //TTT is this correct?
+                    exponent += 1;
                 }
                 exponent += 0x80;
             }
             return CodeGeneratorToken.convInt32ToString(sign + mantissa) + CodeGeneratorToken.convUInt8ToString(exponent);
         };
         CodeGeneratorToken.number = function (node) {
-            var mumberString = node.value.toUpperCase(), // maybe "e" inside
-            number = Number(mumberString);
+            var numberString = node.value.toUpperCase(), // maybe "e" inside
+            number = Number(numberString);
             var result = "";
             if (number === Math.floor(number)) { // integer?
                 if (number >= 0 && number <= 9) { // integer number constant 0-9? (not sure when 10 is used)
-                    result = CodeGeneratorToken.token2String(mumberString);
+                    result = CodeGeneratorToken.token2String(numberString);
                 }
                 else if (number >= 10 && number <= 0xff) {
                     result = CodeGeneratorToken.token2String("_dec8") + CodeGeneratorToken.convUInt8ToString(number);
@@ -5699,12 +6169,12 @@ define("CodeGeneratorToken", ["require", "exports", "Utils", "BasicParser"], fun
             if (result === "") { // no integer number yet, use float...
                 result = CodeGeneratorToken.token2String("_float") + CodeGeneratorToken.floatToByteString(number);
             }
-            return result;
+            return CodeGeneratorToken.fnGetWs(node) + result;
         };
         CodeGeneratorToken.binnumber = function (node) {
             var valueString = node.value.slice(2), // remove &x
             value = (valueString.length) ? parseInt(valueString, 2) : 0; // we convert it to dec
-            return CodeGeneratorToken.token2String("_bin16") + CodeGeneratorToken.convUInt16ToString(value);
+            return CodeGeneratorToken.fnGetWs(node) + CodeGeneratorToken.token2String("_bin16") + CodeGeneratorToken.convUInt16ToString(value);
         };
         CodeGeneratorToken.hexnumber = function (node) {
             var valueString = node.value.slice(1); // remove &
@@ -5712,110 +6182,57 @@ define("CodeGeneratorToken", ["require", "exports", "Utils", "BasicParser"], fun
                 valueString = valueString.slice(1); // remove
             }
             var value = (valueString.length) ? parseInt(valueString, 16) : 0; // we convert it to dec
-            return CodeGeneratorToken.token2String("_hex16") + CodeGeneratorToken.convUInt16ToString(value);
+            return CodeGeneratorToken.fnGetWs(node) + CodeGeneratorToken.token2String("_hex16") + CodeGeneratorToken.convUInt16ToString(value);
         };
         CodeGeneratorToken.prototype.identifier = function (node) {
             var name = node.value, // keep case, maybe mixed
-            result;
-            if (name.endsWith("!")) { // real number?
-                name = name.slice(0, -1);
-                result = CodeGeneratorToken.token2String("_floatVar");
-            }
-            else if (name.endsWith("%")) { // integer number?
-                name = name.slice(0, -1);
-                result = CodeGeneratorToken.token2String("_intVar");
-            }
-            else if (name.endsWith("$")) { // string?
-                name = name.slice(0, -1);
-                result = CodeGeneratorToken.token2String("_stringVar");
+            mappedTypeName = CodeGeneratorToken.varTypeMap[name.charAt(name.length - 1)] || ""; // map last char
+            if (mappedTypeName) {
+                name = name.slice(0, -1); // remove type char
             }
             else {
-                result = CodeGeneratorToken.token2String("_anyVar");
-            }
-            name = CodeGeneratorToken.getBit7TerminatedString(name);
-            if (node.args) { // args including brackets
-                var nodeArgs = this.fnParseArgs(node.args), bracketOpen = nodeArgs.shift(), bracketClose = nodeArgs.pop();
-                name += bracketOpen + nodeArgs.join(",") + bracketClose;
+                mappedTypeName = "_anyVar";
             }
             var offset = 0; // (offset to memory location of variable; not used here)
-            return result + CodeGeneratorToken.convUInt16ToString(offset) + name;
+            return CodeGeneratorToken.fnGetWs(node) + CodeGeneratorToken.token2String(mappedTypeName) + CodeGeneratorToken.convUInt16ToString(offset) + CodeGeneratorToken.getBit7TerminatedString(name) + (node.args ? this.fnParseArgs(node.args).join("") : "");
         };
         CodeGeneratorToken.linenumber = function (node) {
-            var number = Number(node.value);
-            return CodeGeneratorToken.token2String("_line16") + CodeGeneratorToken.convUInt16ToString(number);
+            return CodeGeneratorToken.fnGetWs(node) + CodeGeneratorToken.token2String("_line16") + CodeGeneratorToken.convUInt16ToString(Number(node.value));
         };
-        CodeGeneratorToken.prototype.label = function (node) {
-            this.line = Number(node.value); // set line before parsing args
-            var line = this.line, nodeArgs = this.fnParseArgs(node.args);
-            var value = this.combineArgsWithSeparator(nodeArgs);
+        CodeGeneratorToken.prototype.fnLabel = function (node) {
+            if (this.options.implicitLines) {
+                if (node.value === "") { // direct
+                    node.value = String(Number(this.label) + 1);
+                }
+            }
+            this.label = node.value; // set line before parsing args
+            var line = Number(this.label), nodeArgs = this.fnParseArgs(node.args);
+            var value = nodeArgs.join("");
             if (node.value !== "") { // direct
-                value = CodeGeneratorToken.convUInt16ToString(line) + value + CodeGeneratorToken.token2String("_eol");
-                var len = value.length + 2;
-                value = CodeGeneratorToken.convUInt16ToString(len) + value;
+                if (value.charAt(0) === " ") { // remove one space (implicit space after label)
+                    value = value.substring(1);
+                }
+                value = CodeGeneratorToken.convUInt16ToString(line) + value + CodeGeneratorToken.token2String("_eol"); // no ws
+                value = CodeGeneratorToken.convUInt16ToString(value.length + 2) + value;
             }
             return value;
         };
         // special keyword functions
         CodeGeneratorToken.prototype.vertical = function (node) {
-            var rsxName = node.value.substr(1).toUpperCase(), nodeArgs = this.fnParseArgs(node.args), offset = 0; // (offset to tokens following RSX name) TODO
-            var value = CodeGeneratorToken.token2String(node.type) + CodeGeneratorToken.convUInt8ToString(offset) + CodeGeneratorToken.getBit7TerminatedString(rsxName);
-            if (nodeArgs.length) {
-                value += "," + nodeArgs.join(",");
-            }
-            return value;
+            var rsxName = node.value.substring(1).toUpperCase(), nodeArgs = this.fnParseArgs(node.args), offset = 0; // offset to tokens following RSX name
+            // if rsxname.length=0 we take 0x80 from empty getBit7TerminatedString
+            return CodeGeneratorToken.fnGetWs(node) + CodeGeneratorToken.token2String(node.type) + (rsxName.length ? CodeGeneratorToken.convUInt8ToString(offset) : "") + CodeGeneratorToken.getBit7TerminatedString(rsxName) + nodeArgs.join("");
         };
-        CodeGeneratorToken.prototype.afterGosub = function (node) {
-            var nodeArgs = this.fnParseArgs(node.args);
-            var value = CodeGeneratorToken.token2String("after") + nodeArgs[0];
-            if (nodeArgs[1]) {
-                value += "," + nodeArgs[1];
-            }
-            value += CodeGeneratorToken.token2String("gosub") + nodeArgs[2];
-            return value;
+        CodeGeneratorToken.prototype.fnElseOrApostrophe = function (node) {
+            // prefix token with ":"
+            return CodeGeneratorToken.fnGetWs(node) + CodeGeneratorToken.token2String(":") + CodeGeneratorToken.token2String(node.type) + this.fnParseArgs(node.args).join("");
         };
-        CodeGeneratorToken.prototype.chainMerge = function (node) {
-            var nodeArgs = this.fnParseArgs(node.args);
-            var value = CodeGeneratorToken.token2String(node.type);
-            if (nodeArgs.length === 3) {
-                nodeArgs[2] = CodeGeneratorToken.token2String("delete") + nodeArgs[2];
-            }
-            value += nodeArgs.join(",");
-            return value;
-        };
-        CodeGeneratorToken.prototype.data = function (node) {
-            var nodeArgs = this.fnParseArgs(node.args);
-            for (var i = 0; i < nodeArgs.length; i += 1) {
-                var value2 = nodeArgs[i];
-                nodeArgs[i] = value2;
-            }
-            var value = nodeArgs.join("");
-            if (value !== "" && value !== "," && value !== '"') { // argument?
-                value = " " + value;
-            }
-            value = CodeGeneratorToken.token2String(node.type) + value;
-            return value;
-        };
-        CodeGeneratorToken.prototype.def = function (node) {
-            if (!node.left || !node.right) {
-                throw this.composeError(Error(), "Programming error: Undefined left or right", node.type, node.pos); // should not occur
-            }
-            var withFn = node.left.value, withoutFn = withFn.substr(2); // remove first 2 characters "FN" or "fn"
-            node.left.value = withoutFn; // fast hack: without fn
-            var name = this.fnParseOneArg(node.left);
-            node.left.value = withFn; // fast hack: restore
-            var space = node.left.space ? " " : "", // fast hack
-            nodeArgs = this.fnParseArgs(node.args), expression = this.fnParseOneArg(node.right);
-            var nodeArgsString = nodeArgs.join(",");
-            if (nodeArgsString !== "") { // not empty?
-                nodeArgsString = "(" + nodeArgsString + ")";
-            }
-            return CodeGeneratorToken.token2String(node.type) + " " + CodeGeneratorToken.token2String("fn") + space + name + nodeArgsString + CodeGeneratorToken.token2String("=") + expression;
-        };
-        CodeGeneratorToken.prototype["else"] = function (node) {
+        CodeGeneratorToken.prototype.elseComment = function (node) {
             if (!node.args) {
                 throw this.composeError(Error(), "Programming error: Undefined args", "", -1); // should not occur
             }
-            var value = CodeGeneratorToken.token2String(":") + CodeGeneratorToken.token2String(node.type); // always prefix with ":"
+            var type = "else"; // not "elseComment"
+            var value = CodeGeneratorToken.fnGetWs(node) + CodeGeneratorToken.token2String(":") + CodeGeneratorToken.token2String(type); // always prefix with ":"
             var args = node.args;
             // we do not have a parse tree here but a simple list
             for (var i = 0; i < args.length; i += 1) {
@@ -5830,283 +6247,63 @@ define("CodeGeneratorToken", ["require", "exports", "Utils", "BasicParser"], fun
             }
             return value;
         };
-        CodeGeneratorToken.prototype.entEnv = function (node) {
-            if (!node.args) {
-                throw this.composeError(Error(), "Programming error: Undefined args", "", -1); // should not occur
-            }
-            var args = node.args, nodeArgs = [];
-            var equal = false;
-            for (var i = 0; i < args.length; i += 1) {
-                if (args[i].type !== "null") {
-                    var arg = this.fnParseOneArg(args[i]);
-                    if (equal) {
-                        arg = "=" + arg;
-                        equal = false;
-                    }
-                    nodeArgs.push(arg);
-                }
-                else {
-                    equal = true;
-                }
-            }
-            return CodeGeneratorToken.token2String(node.type) + " " + nodeArgs.join(",");
-        };
-        CodeGeneratorToken.prototype.everyGosub = function (node) {
-            var nodeArgs = this.fnParseArgs(node.args);
-            var value = CodeGeneratorToken.token2String("every") + nodeArgs[0];
-            if (nodeArgs[1]) {
-                value += "," + nodeArgs[1];
-            }
-            value += CodeGeneratorToken.token2String("gosub") + nodeArgs[2];
-            return value;
-        };
-        CodeGeneratorToken.prototype.fn = function (node) {
-            if (!node.left) {
-                throw this.composeError(Error(), "Programming error: Undefined left", node.type, node.pos); // should not occur
-            }
-            var nodeArgs = this.fnParseArgs(node.args), name = this.fnParseOneArg(node.left).replace(/FN/i, ""), // get identifier without FN
-            space = node.value.indexOf(" ") >= 0 ? " " : "";
-            var nodeArgsString = nodeArgs.join(",");
-            if (nodeArgsString !== "") { // not empty?
-                nodeArgsString = "(" + nodeArgsString + ")";
-            }
-            var name2 = CodeGeneratorToken.token2String(node.type) + space + name;
-            return name2 + nodeArgsString;
-        };
-        CodeGeneratorToken.prototype["for"] = function (node) {
-            var nodeArgs = this.fnParseArgs(node.args);
-            return CodeGeneratorToken.token2String(node.type) + nodeArgs.join("");
-        };
-        CodeGeneratorToken.prototype.fnThenOrElsePart = function (nodeBranch) {
-            var nodeArgs = this.fnParseArgs(nodeBranch); // args for "then" oe "else"
-            return this.combineArgsWithSeparator(nodeArgs);
-        };
-        CodeGeneratorToken.prototype["if"] = function (node) {
-            if (!node.left) {
-                throw this.composeError(Error(), "Programming error: Undefined left", node.type, node.pos); // should not occur
-            }
-            if (!node.args) {
-                throw this.composeError(Error(), "Programming error: Undefined args", node.type, node.pos); // should not occur
-            }
-            var value = CodeGeneratorToken.token2String(node.type) + this.fnParseOneArg(node.left) + CodeGeneratorToken.token2String("then");
-            value += this.fnThenOrElsePart(node.args); // "then" part
-            if (node.args2) {
-                if (!value.endsWith(this.statementSeparator)) {
-                    value += this.statementSeparator; // ":" before "else"!
-                }
-                value += CodeGeneratorToken.token2String("else") + this.fnThenOrElsePart(node.args2); // "else" part
-            }
-            return value;
-        };
-        CodeGeneratorToken.fnHasStream = function (node) {
-            return node.args && node.args.length && (node.args[0].type === "#") && node.args[0].right && (node.args[0].right.type !== "null");
-        };
-        CodeGeneratorToken.prototype.inputLineInput = function (node) {
-            var nodeArgs = this.fnParseArgs(node.args), hasStream = CodeGeneratorToken.fnHasStream(node);
-            var value = CodeGeneratorToken.token2String(node.type), i = 0;
-            if (hasStream) { // stream?
-                i += 1;
-            }
-            if (nodeArgs.length && !hasStream && String(nodeArgs[0]).charAt(0) !== '"') {
-                // TODO: empty CRLF marker
-                value += " ";
-            }
-            nodeArgs.splice(i, 4, nodeArgs[i] + nodeArgs[i + 1] + nodeArgs[i + 2] + nodeArgs[i + 3]); // combine 4 elements into one
-            value += nodeArgs.join(",");
-            return value;
-        };
-        CodeGeneratorToken.prototype.list = function (node) {
-            var nodeArgs = this.fnParseArgs(node.args);
-            if (nodeArgs.length && nodeArgs[0] === "") { // empty range?
-                nodeArgs.shift(); // remove
-            }
-            if (nodeArgs.length && nodeArgs[nodeArgs.length - 1] === "#") { // dummy stream?
-                nodeArgs.pop(); // remove
-            }
-            var name = CodeGeneratorToken.token2String(node.type), value = nodeArgs.join(",");
-            return name + value;
-        };
-        CodeGeneratorToken.prototype.mid$Assign = function (node) {
-            if (!node.right) {
-                throw this.composeError(Error(), "Programming error: Undefined right", "", -1); // should not occur TTT
-            }
-            var nodeArgs = this.fnParseArgs(node.args);
-            return CodeGeneratorToken.token2String(node.type) + "(" + nodeArgs.join(",") + ")" + CodeGeneratorToken.token2String("=") + this.fnParseOneArg(node.right);
+        CodeGeneratorToken.prototype.onBreakContOrGosubOrStop = function (node) {
+            return CodeGeneratorToken.fnGetWs(node) + CodeGeneratorToken.token2String("_onBreak") + (node.right && node.right.right ? this.parseNode(node.right.right) : "") + this.fnParseArgs(node.args).join("");
         };
         CodeGeneratorToken.prototype.onErrorGoto = function (node) {
-            var nodeArgs = this.fnParseArgs(node.args);
-            var value;
             if (node.args && node.args.length && node.args[0].value === "0") { // on error goto 0?
-                value = CodeGeneratorToken.token2String("_onErrorGoto0");
+                return CodeGeneratorToken.fnGetWs(node) + CodeGeneratorToken.token2String("_onErrorGoto0");
             }
-            else {
-                value = CodeGeneratorToken.token2String("on") + CodeGeneratorToken.token2String("error") + CodeGeneratorToken.token2String("goto") + nodeArgs.join(",");
-            }
-            return value;
-        };
-        CodeGeneratorToken.prototype.onGotoGosub = function (node) {
-            var left = this.fnParseOneArg(node.left), nodeArgs = this.fnParseArgs(node.args), right = this.fnParseOneArg(node.right); // "goto" or "gosub"
-            return CodeGeneratorToken.token2String("on") + left + right + nodeArgs.join(",");
+            return CodeGeneratorToken.fnGetWs(node) + CodeGeneratorToken.token2String("on") + this.parseNode(node.right) + this.fnParseArgs(node.args).join("");
         };
         CodeGeneratorToken.prototype.onSqGosub = function (node) {
-            var left = this.fnParseOneArg(node.left), nodeArgs = this.fnParseArgs(node.args);
-            return CodeGeneratorToken.token2String("_onSq") + "(" + left + ")" + CodeGeneratorToken.token2String("gosub") + nodeArgs.join(",");
-        };
-        CodeGeneratorToken.prototype.print = function (node) {
-            var regExp = /[a-zA-Z0-9.]/, nodeArgs = this.fnParseArgs(node.args), hasStream = CodeGeneratorToken.fnHasStream(node), token = node.value.toLowerCase(); // we use value to get PRINT or ?
-            var value = CodeGeneratorToken.token2String(node.type); // print and ? are tokenized as print, or use token here to keep it different
-            if (token === "print" && nodeArgs.length && !hasStream) { // PRINT with args and not stream?
-                value += " ";
-            }
-            if (hasStream && nodeArgs.length > 1) { // more args after stream?
-                nodeArgs[0] = String(nodeArgs[0]) + ",";
-            }
-            for (var i = 0; i < nodeArgs.length; i += 1) {
-                var arg = String(nodeArgs[i]);
-                if (regExp.test(value.charAt(value.length - 1)) && regExp.test(arg.charAt(0))) { // last character and first character of next arg: char, number, dot? (not for token "FN"??)
-                    value += " "; // additional space
-                }
-                value += nodeArgs[i];
-            }
-            return value;
-        };
-        CodeGeneratorToken.prototype.rem = function (node) {
-            var nodeArgs = this.fnParseArgs(node.args);
-            var value = nodeArgs.length ? nodeArgs[0] : "", name = CodeGeneratorToken.token2String(node.value.toLowerCase()); // we use value to get REM or '
-            if (node.value !== "'") { // for "rem"
-                if (value !== "") {
-                    value = " " + value; // add removed space
-                }
-            }
-            else { // apostrophe
-                name = this.statementSeparator + name; // always prefix apostrophe with ":"
-            }
-            return name + value;
-        };
-        CodeGeneratorToken.prototype.using = function (node) {
-            var nodeArgs = this.fnParseArgs(node.args);
-            var template = nodeArgs.shift();
-            if (template && template.charAt(0) !== '"') { // not a string => space required
-                template = " " + template;
-            }
-            // separator between args could be "," or ";", we use ","
-            return CodeGeneratorToken.token2String(node.type) + template + ";" + nodeArgs.join(",");
+            return CodeGeneratorToken.token2String("_onSq") + this.fnParseArgs(node.right.args).join("") + this.fnParseArgs(node.args).join("");
         };
         /* eslint-enable no-invalid-this */
         CodeGeneratorToken.prototype.fnParseOther = function (node) {
-            var type = node.type, keyType = BasicParser_2.BasicParser.keywords[type];
-            var value = CodeGeneratorToken.token2String(type), args = "";
+            var type = node.type, isToken = CodeGeneratorToken.tokens[type] !== undefined || CodeGeneratorToken.tokensFF[type] !== undefined;
+            var value = ""; // CodeGeneratorToken.fnGetWs(node);
             if (node.left) {
-                args += this.fnParseOneArg(node.left);
+                value += this.parseNode(node.left);
             }
-            if (!keyType) {
-                if (node.value) { // e.g. string,...
-                    args += node.value;
-                }
+            value += CodeGeneratorToken.fnGetWs(node);
+            if (isToken) {
+                value += CodeGeneratorToken.token2String(type);
+            }
+            else if (node.value) { // e.g. string,...
+                value += node.value;
             }
             if (node.right) {
-                args += this.fnParseOneArg(node.right);
+                value += this.parseNode(node.right);
             }
             if (node.args) {
-                args += this.fnParseArgs(node.args).join(",");
-            }
-            if (node.args2) { // ELSE part already handled
-                throw this.composeError(Error(), "Programming error: args2", node.type, node.pos); // should not occur
-            }
-            // for e.g. tab, spc...
-            if (keyType) {
-                if (args.length) {
-                    if (keyType.charAt(0) === "f") { // function with parameters?
-                        value += "(" + args + ")";
-                    }
-                    else {
-                        if (args.charAt(0) !== "#") { // only if not a stream
-                            value += " ";
-                        }
-                        value += args;
-                    }
-                }
-            }
-            else {
-                value = args; // for e.g. string
+                value += this.fnParseArgs(node.args).join("");
             }
             return value;
         };
         CodeGeneratorToken.prototype.parseNode = function (node) {
-            if (Utils_8.Utils.debug > 3) {
-                Utils_8.Utils.console.debug("evaluate: parseNode node=%o type=" + node.type + " value=" + node.value + " left=%o right=%o args=%o", node, node.left, node.right, node.args);
+            if (Utils_9.Utils.debug > 3) {
+                Utils_9.Utils.console.debug("evaluate: parseNode node=%o type=" + node.type + " value=" + node.value + " left=%o right=%o args=%o", node, node.left, node.right, node.args);
             }
-            var type = node.type, precedence = CodeGeneratorToken.operatorPrecedence, operators = CodeGeneratorToken.operators;
+            var type = node.type;
             var value;
-            if (operators[type]) {
-                if (node.left) {
-                    value = this.parseNode(node.left);
-                    if (operators[node.left.type] && (node.left.left || node.left.right)) { // binary operator (or unary operator, e.g. not)
-                        var p = precedence[node.type];
-                        var pl = void 0;
-                        if (node.left.left) { // left is binary
-                            pl = precedence[node.left.type] || 0;
-                        }
-                        else { // left is unary
-                            pl = precedence["p" + node.left.type] || precedence[node.left.type] || 0;
-                        }
-                        if (pl < p) {
-                            value = "(" + value + ")";
-                        }
-                    }
-                    var right = node.right;
-                    var value2 = this.parseNode(right);
-                    if (operators[right.type] && (right.left || right.right)) { // binary operator (or unary operator, e.g. not)
-                        var p = precedence[node.type];
-                        var pr = void 0;
-                        if (right.left) { // right is binary
-                            pr = precedence[right.type] || 0;
-                        }
-                        else {
-                            pr = precedence["p" + right.type] || precedence[right.type] || 0;
-                        }
-                        if ((pr < p) || ((pr === p) && node.type === "-")) { // "-" is special
-                            value2 = "(" + value2 + ")";
-                        }
-                    }
-                    value += CodeGeneratorToken.token2String(operators[type]) + value2;
-                }
-                else if (node.right) { // unary operator, e.g. not
-                    var right = node.right;
-                    value = this.parseNode(right);
-                    var pr = void 0;
-                    if (right.left) { // was binary op?
-                        pr = precedence[right.type] || 0; // no special prio
-                    }
-                    else {
-                        pr = precedence["p" + right.type] || precedence[right.type] || 0; // check unary operator first
-                    }
-                    var p = precedence["p" + node.type] || precedence[node.type] || 0; // check unary operator first
-                    if (p && pr && (pr < p)) {
-                        value = "(" + value + ")";
-                    }
-                    value = CodeGeneratorToken.token2String(operators[type]) + value;
-                }
-                else if (type === "=") { // no operator, "=" in "for"
-                    value = CodeGeneratorToken.token2String(type);
-                }
-                else { // should not occur
-                    value = this.fnParseOther(node);
-                }
+            if (node.len === 0 && type !== "label") { // ignore dummy token, e.g. '#' (but not label)
+                value = "";
             }
-            else if (this.parseFunctions[type]) { // function with special handling?
-                value = this.parseFunctions[type].call(this, node);
+            else {
+                value = this.parseFunctions[type] ? this.parseFunctions[type].call(this, node) : this.fnParseOther(node);
+                // function with special handling or other type
             }
-            else { // for other functions, generate code directly
-                value = this.fnParseOther(node);
+            if (Utils_9.Utils.debug > 2) {
+                Utils_9.Utils.console.debug("parseNode: type='" + type + "', value='" + node.value + "', ws='" + node.ws + "', resultValue='" + value + "'");
             }
             return value;
         };
         CodeGeneratorToken.prototype.evaluate = function (parseTree) {
             var output = "";
             for (var i = 0; i < parseTree.length; i += 1) {
-                if (Utils_8.Utils.debug > 2) {
-                    Utils_8.Utils.console.debug("evaluate: parseTree i=%d, node=%o", i, parseTree[i]);
+                if (Utils_9.Utils.debug > 2) {
+                    Utils_9.Utils.console.debug("evaluate: parseTree i=%d, node=%o", i, parseTree[i]);
                 }
                 var node = this.parseNode(parseTree[i]);
                 if ((node !== undefined) && (node !== "")) {
@@ -6118,77 +6315,33 @@ define("CodeGeneratorToken", ["require", "exports", "Utils", "BasicParser"], fun
                     }
                 }
             }
-            if (output.length && this.line) {
+            if (output.length && this.label) {
                 output += CodeGeneratorToken.token2String("_eol") + CodeGeneratorToken.token2String("_eol"); // 2 times eol is eof
             }
             return output;
         };
-        CodeGeneratorToken.prototype.generate = function (input, _allowDirect) {
+        CodeGeneratorToken.prototype.generate = function (input) {
             var out = {
                 text: ""
             };
-            this.line = 0;
+            this.label = "";
             try {
-                var tokens = this.lexer.lex(input), parseTree = this.parser.parse(tokens), output = this.evaluate(parseTree);
+                var tokens = this.options.lexer.lex(input), parseTree = this.options.parser.parse(tokens), output = this.evaluate(parseTree);
                 out.text = output;
             }
             catch (e) {
-                if (Utils_8.Utils.isCustomError(e)) {
+                if (Utils_9.Utils.isCustomError(e)) {
                     out.error = e;
-                    if (!this.quiet) {
-                        Utils_8.Utils.console.warn(e); // show our customError as warning
+                    if (!this.options.quiet) {
+                        Utils_9.Utils.console.warn(e); // show our customError as warning
                     }
                 }
                 else { // other errors
                     out.error = e; // force set other error
-                    Utils_8.Utils.console.error(e);
+                    Utils_9.Utils.console.error(e);
                 }
             }
             return out;
-        };
-        CodeGeneratorToken.operators = {
-            "+": "+",
-            "-": "-",
-            "*": "*",
-            "/": "/",
-            "\\": "\\",
-            "^": "^",
-            and: "and",
-            or: "or",
-            xor: "xor",
-            not: "not",
-            mod: "mod",
-            ">": ">",
-            "<": "<",
-            ">=": ">=",
-            "<=": "<=",
-            "=": "=",
-            "<>": "<>",
-            "@": "@",
-            "#": "#"
-        };
-        CodeGeneratorToken.operatorPrecedence = {
-            "@": 95,
-            "^": 90,
-            "p-": 80,
-            "p+": 80,
-            "*": 70,
-            "/": 70,
-            "\\": 60,
-            mod: 50,
-            "+": 40,
-            "-": 40,
-            "=": 30,
-            "<>": 30,
-            "<": 30,
-            "<=": 30,
-            ">": 30,
-            ">=": 30,
-            not: 23,
-            and: 22,
-            or: 21,
-            xor: 20,
-            "#": 10 // priority?
         };
         CodeGeneratorToken.tokens = {
             _eol: 0x00,
@@ -6236,14 +6389,15 @@ define("CodeGeneratorToken", ["require", "exports", "Utils", "BasicParser"], fun
             "]": 0x5d,
             "|": 0x7c,
             after: 0x80,
+            afterGosub: 0x80,
             auto: 0x81,
             border: 0x82,
             call: 0x83,
             cat: 0x84,
             chain: 0x85,
-            chainMerge: 0xab85,
+            chainMerge: 0x85,
             clear: 0x86,
-            clearInput: 0xa386,
+            clearInput: 0x86,
             clg: 0x87,
             closein: 0x88,
             closeout: 0x89,
@@ -6267,6 +6421,7 @@ define("CodeGeneratorToken", ["require", "exports", "Utils", "BasicParser"], fun
             erase: 0x9b,
             error: 0x9c,
             every: 0x9d,
+            everyGosub: 0x9d,
             "for": 0x9e,
             gosub: 0x9f,
             "goto": 0xa0,
@@ -6274,10 +6429,10 @@ define("CodeGeneratorToken", ["require", "exports", "Utils", "BasicParser"], fun
             ink: 0xa2,
             input: 0xa3,
             key: 0xa4,
-            keyDef: 0x8da4,
+            keyDef: 0xa4,
             let: 0xa5,
             line: 0xa6,
-            lineInput: 0xa3a6,
+            lineInput: 0xa6,
             list: 0xa7,
             load: 0xa8,
             locate: 0xa9,
@@ -6291,10 +6446,10 @@ define("CodeGeneratorToken", ["require", "exports", "Utils", "BasicParser"], fun
             next: 0xb0,
             "new": 0xb1,
             on: 0xb2,
-            onBreakCont: 0x8bb3,
-            onBreakGosub: 0x9fb3,
-            onBreakStop: 0xceb3,
+            _onBreak: 0xb3,
             _onErrorGoto0: 0xb4,
+            onGosub: 0xb2,
+            onGoto: 0xb2,
             _onSq: 0xb5,
             openin: 0xb6,
             openout: 0xb7,
@@ -6315,17 +6470,18 @@ define("CodeGeneratorToken", ["require", "exports", "Utils", "BasicParser"], fun
             renum: 0xc6,
             restore: 0xc7,
             resume: 0xc8,
-            resumeNext: 0xb0c8,
+            resumeNext: 0xc8,
             "return": 0xc9,
             run: 0xca,
             save: 0xcb,
             sound: 0xcc,
-            speedInk: 0xa2cd,
-            speedKey: 0xa4cd,
-            speedWrite: 0xd9cd,
+            speedInk: 0xcd,
+            speedKey: 0xcd,
+            speedWrite: 0xcd,
             stop: 0xce,
+            swap: 0xe7,
             symbol: 0xcf,
-            symbolAfter: 0x80cf,
+            symbolAfter: 0xcf,
             tag: 0xd0,
             tagoff: 0xd1,
             troff: 0xd2,
@@ -6335,15 +6491,15 @@ define("CodeGeneratorToken", ["require", "exports", "Utils", "BasicParser"], fun
             "while": 0xd6,
             width: 0xd7,
             window: 0xd8,
-            windowSwap: 0xe7d8,
+            windowSwap: 0xd8,
             write: 0xd9,
             zone: 0xda,
             di: 0xdb,
             ei: 0xdc,
             fill: 0xdd,
             graphics: 0xde,
-            graphicsPaper: 0xbade,
-            graphicsPen: 0xbbde,
+            graphicsPaper: 0xde,
+            graphicsPen: 0xde,
             mask: 0xdf,
             frame: 0xe0,
             cursor: 0xe1,
@@ -6361,6 +6517,7 @@ define("CodeGeneratorToken", ["require", "exports", "Utils", "BasicParser"], fun
             using: 0xed,
             ">": 0xee,
             "=": 0xef,
+            assign: 0xef,
             ">=": 0xf0,
             "<": 0xf1,
             "<>": 0xf2,
@@ -6438,6 +6595,11 @@ define("CodeGeneratorToken", ["require", "exports", "Utils", "BasicParser"], fun
             copychr$: 0x7e,
             vpos: 0x7f
         };
+        CodeGeneratorToken.varTypeMap = {
+            "!": "_floatVar",
+            "%": "_intVar",
+            $: "_stringVar"
+        };
         return CodeGeneratorToken;
     }());
     exports.CodeGeneratorToken = CodeGeneratorToken;
@@ -6446,7 +6608,7 @@ define("CodeGeneratorToken", ["require", "exports", "Utils", "BasicParser"], fun
 // (c) Slava Kim
 // https://github.com/Slava/diff.js
 //
-define("Diff", ["require", "exports", "Utils"], function (require, exports, Utils_9) {
+define("Diff", ["require", "exports", "Utils"], function (require, exports, Utils_10) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Diff = void 0;
@@ -6455,7 +6617,7 @@ define("Diff", ["require", "exports", "Utils"], function (require, exports, Util
         }
         // Refer to http://www.xmailserver.org/diff2.pdf
         Diff.composeError = function (error, message, value, pos) {
-            return Utils_9.Utils.composeError("Diff", error, message, value, pos, undefined, 0);
+            return Utils_10.Utils.composeError("Diff", error, message, value, pos, undefined, 0);
         };
         Diff.inRange = function (x, l, r) {
             return (l <= x && x <= r) || (r <= x && x <= l);
@@ -6754,20 +6916,27 @@ define("Diff", ["require", "exports", "Utils"], function (require, exports, Util
 // DiskImage.ts - DiskImage
 // (c) Marco Vieth, 2020
 // https://benchmarko.github.io/CPCBasicTS/
-define("DiskImage", ["require", "exports", "Utils"], function (require, exports, Utils_10) {
+define("DiskImage", ["require", "exports", "Utils"], function (require, exports, Utils_11) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DiskImage = void 0;
     var DiskImage = /** @class */ (function () {
         function DiskImage(options) {
-            this.quiet = false;
-            this.diskName = options.diskName;
-            this.data = options.data;
-            this.quiet = options.quiet || false;
+            this.options = {
+                diskName: options.diskName,
+                data: options.data,
+                quiet: false
+            };
+            this.setOptions(options);
             // reset
             this.diskInfo = DiskImage.getInitialDiskInfo();
             this.format = DiskImage.getInitialFormat();
         }
+        DiskImage.prototype.setOptions = function (options) {
+            if (options.quiet !== undefined) {
+                this.options.quiet = options.quiet;
+            }
+        };
         DiskImage.getInitialDiskInfo = function () {
             return {
                 trackInfo: {
@@ -6784,7 +6953,7 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
         };
         DiskImage.prototype.composeError = function (error, message, value, pos) {
             var len = 0;
-            return Utils_10.Utils.composeError("DiskImage", error, this.diskName + ": " + message, value, pos || 0, len);
+            return Utils_11.Utils.composeError("DiskImage", error, this.options.diskName + ": " + message, value, pos || 0, len);
         };
         DiskImage.testDiskIdent = function (ident) {
             var diskType = 0;
@@ -6797,14 +6966,14 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             return diskType;
         };
         DiskImage.prototype.readUtf = function (pos, len) {
-            var out = this.data.substr(pos, len);
+            var out = this.options.data.substring(pos, pos + len);
             if (out.length !== len) {
                 throw this.composeError(new Error(), "End of File", "", pos);
             }
             return out;
         };
         DiskImage.prototype.readUInt8 = function (pos) {
-            var num = this.data.charCodeAt(pos);
+            var num = this.options.data.charCodeAt(pos);
             if (isNaN(num)) {
                 throw this.composeError(new Error(), "End of File", String(num), pos);
             }
@@ -6821,10 +6990,10 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             }
             diskInfo.extended = (diskType === 2);
             diskInfo.ident = ident + this.readUtf(pos + 8, 34 - 8); // read remaining ident
-            if (diskInfo.ident.substr(34 - 11, 9) !== "Disk-Info") { // some tools use "Disk-Info  " instead of "Disk-Info\r\n", so compare without "\r\n"
+            if (diskInfo.ident.substring(34 - 11, 34 - 11 + 9) !== "Disk-Info") { // some tools use "Disk-Info  " instead of "Disk-Info\r\n", so compare without "\r\n"
                 // "Disk-Info" string is optional
-                if (!this.quiet) {
-                    Utils_10.Utils.console.warn(this.composeError({}, "Disk ident not found", diskInfo.ident.substr(34 - 11, 9), pos + 34 - 11).message);
+                if (!this.options.quiet) {
+                    Utils_11.Utils.console.warn(this.composeError({}, "Disk ident not found", diskInfo.ident.substring(34 - 11, 34 - 11 + 9), pos + 34 - 11).message);
                 }
             }
             diskInfo.creator = this.readUtf(pos + 34, 14);
@@ -6847,10 +7016,10 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             var trackInfoSize = 0x100, trackInfo = this.diskInfo.trackInfo, sectorInfoList = trackInfo.sectorInfo;
             trackInfo.dataPos = pos + trackInfoSize;
             trackInfo.ident = this.readUtf(pos, 12);
-            if (trackInfo.ident.substr(0, 10) !== "Track-Info") { // some tools use "Track-Info  " instead of "Track-Info\r\n", so compare without "\r\n"
+            if (trackInfo.ident.substring(0, 10) !== "Track-Info") { // some tools use "Track-Info  " instead of "Track-Info\r\n", so compare without "\r\n"
                 // "Track-Info" string is optional
-                if (!this.quiet) {
-                    Utils_10.Utils.console.warn(this.composeError({}, "Track ident not found", trackInfo.ident.substr(0, 10), pos).message);
+                if (!this.options.quiet) {
+                    Utils_11.Utils.console.warn(this.composeError({}, "Track ident not found", trackInfo.ident.substring(0, 10), pos).message);
                 }
             }
             // 4 unused bytes
@@ -7004,9 +7173,9 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
         };
         // do not know if we need to sort the extents per file, but...
         DiskImage.sortFileExtents = function (dir) {
-            for (var name_5 in dir) {
-                if (dir.hasOwnProperty(name_5)) {
-                    var fileExtents = dir[name_5];
+            for (var name_8 in dir) {
+                if (dir.hasOwnProperty(name_8)) {
+                    var fileExtents = dir[name_8];
                     fileExtents.sort(DiskImage.fnSortByExtentNumber);
                 }
             }
@@ -7016,13 +7185,13 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             for (var i = 0; i < extents.length; i += 1) {
                 var extent = extents[i];
                 if (fill === null || extent.user !== fill) {
-                    var name_6 = extent.name + "." + extent.ext; // and extent.user?
+                    var name_9 = extent.name + "." + extent.ext; // and extent.user?
                     // (do not convert filename here (to display messages in filenames))
-                    if (!reFilePattern || reFilePattern.test(name_6)) {
-                        if (!(name_6 in dir)) {
-                            dir[name_6] = [];
+                    if (!reFilePattern || reFilePattern.test(name_9)) {
+                        if (!(name_9 in dir)) {
+                            dir[name_9] = [];
                         }
-                        dir[name_6].push(extent);
+                        dir[name_9].push(extent);
                     }
                 }
             }
@@ -7064,10 +7233,10 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             var diskInfo = this.diskInfo, blockSectors = 2, pos = this.convertBlock2Sector(block);
             var out = "";
             if (pos.track >= diskInfo.tracks) {
-                Utils_10.Utils.console.error(this.composeError({}, "Block " + block + ": Track out of range", String(pos.track)));
+                Utils_11.Utils.console.error(this.composeError({}, "Block " + block + ": Track out of range", String(pos.track)));
             }
             if (pos.head >= diskInfo.heads) {
-                Utils_10.Utils.console.error(this.composeError({}, "Block " + block + ": Head out of range", String(pos.track)));
+                Utils_11.Utils.console.error(this.composeError({}, "Block " + block + ": Head out of range", String(pos.track)));
             }
             for (var i = 0; i < blockSectors; i += 1) {
                 this.seekTrack(pos.track, pos.head);
@@ -7076,7 +7245,7 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             }
             return out;
         };
-        DiskImage.prototype.readFile = function (fileExtents) {
+        DiskImage.prototype.readExtents = function (fileExtents) {
             var recPerBlock = 8;
             var out = "";
             for (var i = 0; i < fileExtents.length; i += 1) {
@@ -7085,7 +7254,7 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
                 for (var blockIndex = 0; blockIndex < blocks.length; blockIndex += 1) {
                     var block = this.readBlock(blocks[blockIndex]);
                     if (records < recPerBlock) { // block with some remaining data
-                        block = block.substr(0, 0x80 * records);
+                        block = block.substring(0, 0x80 * records);
                     }
                     out += block;
                     records -= recPerBlock;
@@ -7094,6 +7263,10 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
                     }
                 }
             }
+            return out;
+        };
+        DiskImage.prototype.readFile = function (fileExtents) {
+            var out = this.readExtents(fileExtents);
             var header = DiskImage.parseAmsdosHeader(out);
             var realLen;
             if (header) {
@@ -7104,13 +7277,13 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
                 var fileLen = out.length, lastRecPos = fileLen > 0x80 ? (fileLen - 0x80) : 0, index = out.indexOf(String.fromCharCode(0x1a), lastRecPos);
                 if (index >= 0) {
                     realLen = index;
-                    if (Utils_10.Utils.debug > 0) {
-                        Utils_10.Utils.console.debug("readFile: ASCII file length " + fileLen + " truncated to " + realLen);
+                    if (Utils_11.Utils.debug > 0) {
+                        Utils_11.Utils.console.debug("readFile: ASCII file length " + fileLen + " truncated to " + realLen);
                     }
                 }
             }
             if (realLen !== undefined) { // now real length (from header or ASCII)?
-                out = out.substr(0, realLen);
+                out = out.substring(0, realLen);
             }
             return out;
         };
@@ -7145,12 +7318,12 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             // http://www.benchmarko.de/cpcemu/cpcdoc/chapter/cpcdoc7_e.html#I_AMSDOS_HD
             // http://www.cpcwiki.eu/index.php/AMSDOS_Header
             if (data.length >= 0x80) {
-                var computed = DiskImage.computeChecksum(data.substr(0, 66)), sum = data.charCodeAt(67) + data.charCodeAt(68) * 256;
+                var computed = DiskImage.computeChecksum(data.substring(0, 66)), sum = data.charCodeAt(67) + data.charCodeAt(68) * 256;
                 if (computed === sum) {
                     header = {
                         user: data.charCodeAt(0),
-                        name: data.substr(1, 8),
-                        ext: data.substr(9, 3),
+                        name: data.substring(1, 1 + 8),
+                        ext: data.substring(9, 9 + 3),
                         typeNumber: data.charCodeAt(18),
                         start: data.charCodeAt(21) + data.charCodeAt(22) * 256,
                         pseudoLen: data.charCodeAt(24) + data.charCodeAt(25) * 256,
@@ -7163,17 +7336,6 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             }
             return header;
         };
-        // for testing only
-        /*
-        private static writeUInt8(data: Uint8Array, pos: number, value: number) {
-            data[pos] = value;
-        }
-    
-        private static writeUInt16(data: Uint8Array, pos: number, value: number) {
-            data[pos] = value & 0xff;
-            data[pos + 1] = (value >> 8) & 0xff;
-        }
-        */
         DiskImage.uInt8ToString = function (value) {
             return String.fromCharCode(value);
         };
@@ -7331,7 +7493,7 @@ define("InputStack", ["require", "exports"], function (require, exports) {
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("View", ["require", "exports", "Utils"], function (require, exports, Utils_11) {
+define("View", ["require", "exports", "Utils"], function (require, exports, Utils_12) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.View = void 0;
@@ -7354,7 +7516,7 @@ define("View", ["require", "exports", "Utils"], function (require, exports, Util
         };
         View.prototype.setHidden = function (id, hidden, display) {
             // optional display: block or flex
-            var element = View.getElementById1(id), displayVisible = "display" + Utils_11.Utils.stringCapitalize(display || "block");
+            var element = View.getElementById1(id), displayVisible = "display" + Utils_12.Utils.stringCapitalize(display || "block");
             if (hidden) {
                 if (element.className.indexOf("displayNone") < 0) {
                     this.toggleClass(id, "displayNone");
@@ -7386,7 +7548,7 @@ define("View", ["require", "exports", "Utils"], function (require, exports, Util
                 classes = classes.trim() + " " + className;
             }
             else {
-                classes = classes.substr(0, nameIndex) + classes.substr(nameIndex + className.length + 1).trim();
+                classes = classes.substring(0, nameIndex) + classes.substring(nameIndex + className.length + 1).trim();
             }
             element.className = classes;
         };
@@ -7412,6 +7574,11 @@ define("View", ["require", "exports", "Utils"], function (require, exports, Util
             var element = View.getElementByIdAs(id);
             return element.checked;
         };
+        View.prototype.setInputChecked = function (id, checked) {
+            var element = View.getElementByIdAs(id);
+            element.checked = checked;
+            return this;
+        };
         View.prototype.setSelectOptions = function (id, options) {
             var element = View.getElementByIdAs(id);
             for (var i = 0; i < options.length; i += 1) {
@@ -7431,8 +7598,8 @@ define("View", ["require", "exports", "Utils"], function (require, exports, Util
                         option.value = item.value;
                     }
                     if (option.text !== item.text) {
-                        if (Utils_11.Utils.debug > 3) {
-                            Utils_11.Utils.console.debug("setSelectOptions: " + id + ": text changed for index " + i + ": " + item.text);
+                        if (Utils_12.Utils.debug > 3) {
+                            Utils_12.Utils.console.debug("setSelectOptions: " + id + ": text changed for index " + i + ": " + item.text);
                         }
                         option.text = item.text;
                         option.title = item.title;
@@ -7505,11 +7672,34 @@ define("View", ["require", "exports", "Utils"], function (require, exports, Util
             return this;
         };
         View.prototype.attachEventHandler = function (type, eventHandler) {
-            if (Utils_11.Utils.debug) {
-                Utils_11.Utils.console.debug("attachEventHandler: type=" + type + ", eventHandler=" + ((eventHandler !== undefined) ? "[?]" : null));
+            if (Utils_12.Utils.debug) {
+                Utils_12.Utils.console.debug("attachEventHandler: type=" + type + ", eventHandler=" + ((eventHandler !== undefined) ? "[?]" : null));
             }
             window.document.addEventListener(type, eventHandler, false);
             return this;
+        };
+        View.getEventTarget = function (event) {
+            var target = event.target || event.srcElement; // target, not currentTarget; srcElement for IE8
+            if (!target) {
+                Utils_12.Utils.console.error("getEventTarget: Undefined event target: " + target);
+            }
+            return target;
+        };
+        View.requestFullscreenForId = function (id) {
+            var element = View.getElementById1(id), anyEl = element, requestMethod = element.requestFullscreen || anyEl.webkitRequestFullscreen || anyEl.mozRequestFullscreen || anyEl.msRequestFullscreen;
+            if (requestMethod) {
+                requestMethod.call(element); // can we ALLOW_KEYBOARD_INPUT?
+            }
+            else if (typeof window.ActiveXObject !== "undefined") { // older IE
+                var wscript = new window.ActiveXObject("WScript.Shell");
+                if (wscript !== null) {
+                    wscript.SendKeys("{F11}"); // eslint-disable-line new-cap
+                }
+            }
+            else {
+                return false;
+            }
+            return true;
         };
         return View;
     }());
@@ -7519,7 +7709,7 @@ define("View", ["require", "exports", "Utils"], function (require, exports, Util
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("Keyboard", ["require", "exports", "Utils", "View"], function (require, exports, Utils_12, View_1) {
+define("Keyboard", ["require", "exports", "Utils", "View"], function (require, exports, Utils_13, View_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Keyboard = void 0;
@@ -7530,8 +7720,11 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
             this.active = false; // flag if keyboard is active/focused, set from outside
             this.codeStringsRemoved = false;
             this.pressedKeys = {}; // currently pressed browser keys
-            this.options = Object.assign({}, options);
-            this.fnOnKeyDown = this.options.fnOnKeyDown;
+            this.options = {
+                fnOnEscapeHandler: undefined,
+                fnOnKeyDown: undefined
+            };
+            this.setOptions(options);
             this.key2CpcKey = Keyboard.key2CpcKey;
             this.cpcKeyExpansions = {
                 normal: {},
@@ -7546,9 +7739,20 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
             textArea.addEventListener("keydown", this.onCpcAreaKeydown.bind(this), false);
             textArea.addEventListener("keyup", this.oncpcAreaKeyup.bind(this), false);
         }
+        Keyboard.prototype.setOptions = function (options) {
+            if (options.fnOnEscapeHandler !== undefined) {
+                this.options.fnOnEscapeHandler = options.fnOnEscapeHandler;
+            }
+            if (options.fnOnKeyDown !== undefined) {
+                this.options.fnOnKeyDown = options.fnOnKeyDown;
+            }
+        };
+        Keyboard.prototype.getOptions = function () {
+            return this.options;
+        };
         /* eslint-enable array-element-newline */
         Keyboard.prototype.reset = function () {
-            this.fnOnKeyDown = undefined;
+            this.options.fnOnKeyDown = undefined;
             this.clearInput();
             this.pressedKeys = {}; // currently pressed browser keys
             this.resetExpansionTokens();
@@ -7591,19 +7795,20 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
             };
             cpcKeyExpansions.repeat = {};
         };
+        //TODO: remove getKeyDownHandler, setKeyDownHandler?
         Keyboard.prototype.getKeyDownHandler = function () {
-            return this.fnOnKeyDown;
+            return this.options.fnOnKeyDown;
         };
         Keyboard.prototype.setKeyDownHandler = function (fnOnKeyDown) {
-            this.fnOnKeyDown = fnOnKeyDown;
+            this.options.fnOnKeyDown = fnOnKeyDown;
         };
         Keyboard.prototype.setActive = function (active) {
             this.active = active;
         };
         Keyboard.prototype.removeCodeStringsFromKeymap = function () {
             var key2CpcKey = this.key2CpcKey, newMap = {};
-            if (Utils_12.Utils.debug > 1) {
-                Utils_12.Utils.console.log("removeCodeStringsFromKeymap: Unfortunately not all keys can be used.");
+            if (Utils_13.Utils.debug > 1) {
+                Utils_13.Utils.console.log("removeCodeStringsFromKeymap: Unfortunately not all keys can be used.");
             }
             for (var key in key2CpcKey) {
                 if (key2CpcKey.hasOwnProperty(key)) {
@@ -7628,8 +7833,8 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
             cpcKeyEntry.keys[pressedKey] = true;
             cpcKeyEntry.shift = shiftKey;
             cpcKeyEntry.ctrl = ctrlKey;
-            if (Utils_12.Utils.debug > 1) {
-                Utils_12.Utils.console.log("fnPressCpcKey: pressedKey=" + pressedKey + ", key=" + key + ", affected cpc key=" + cpcKey);
+            if (Utils_13.Utils.debug > 1) {
+                Utils_13.Utils.console.log("fnPressCpcKey: pressedKey=" + pressedKey + ", key=" + key + ", affected cpc key=" + cpcKey);
             }
             var repeat = cpcKeyExpansions.repeat;
             if (keyAlreadyPressed && ((cpcKey in repeat) && !repeat[cpcKey])) {
@@ -7679,17 +7884,17 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
             if (cpcKeyCode === 66 && this.options.fnOnEscapeHandler) { // or: key === "Escape" or "Esc" (on IE)
                 this.options.fnOnEscapeHandler(key, pressedKey);
             }
-            if (this.fnOnKeyDown) { // special handler?
-                this.fnOnKeyDown();
+            if (this.options.fnOnKeyDown) { // special handler?
+                this.options.fnOnKeyDown();
             }
         };
         Keyboard.prototype.fnReleaseCpcKey = function (cpcKeyCode, pressedKey, key, shiftKey, ctrlKey) {
             var pressedKeys = this.pressedKeys, cpcKey = pressedKeys[cpcKeyCode];
-            if (Utils_12.Utils.debug > 1) {
-                Utils_12.Utils.console.log("fnReleaseCpcKey: pressedKey=" + pressedKey + ", key=" + key + ", affected cpc key=" + cpcKeyCode + ", keys:", (cpcKey ? cpcKey.keys : "undef."));
+            if (Utils_13.Utils.debug > 1) {
+                Utils_13.Utils.console.log("fnReleaseCpcKey: pressedKey=" + pressedKey + ", key=" + key + ", affected cpc key=" + cpcKeyCode + ", keys:", (cpcKey ? cpcKey.keys : "undef."));
             }
             if (!cpcKey) {
-                Utils_12.Utils.console.warn("fnReleaseCpcKey: cpcKey was not pressed:", cpcKeyCode);
+                Utils_13.Utils.console.warn("fnReleaseCpcKey: cpcKey was not pressed:", cpcKeyCode);
             }
             else {
                 delete cpcKey.keys[pressedKey];
@@ -7726,8 +7931,8 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
                 this.removeCodeStringsFromKeymap(); // remove code information from the mapping. Not all keys can be detected any more
                 this.codeStringsRemoved = true;
             }
-            if (Utils_12.Utils.debug > 1) {
-                Utils_12.Utils.console.log("fnKeyboardKeydown: keyCode=" + keyCode + " pressedKey=" + pressedKey + " key='" + key + "' " + key.charCodeAt(0) + " loc=" + event.location + " ", event);
+            if (Utils_13.Utils.debug > 1) {
+                Utils_13.Utils.console.log("fnKeyboardKeydown: keyCode=" + keyCode + " pressedKey=" + pressedKey + " key='" + key + "' " + key.charCodeAt(0) + " loc=" + event.location + " ", event);
             }
             if (pressedKey in this.key2CpcKey) {
                 var cpcKey = this.key2CpcKey[pressedKey];
@@ -7763,24 +7968,24 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
                 }
                 else if (key.length === 2) {
                     if (key.charAt(0) === "^" || key.charAt(0) === "´" || key.charAt(0) === "`") { // IE, Edge? prefix key
-                        key = key.substr(1); // remove prefix
+                        key = key.substring(1); // remove prefix
                     }
                 }
                 this.fnPressCpcKey(cpcKey, pressedKey, key, event.shiftKey, event.ctrlKey);
             }
             else if (key.length === 1) { // put normal keys in buffer, ignore special keys with more than 1 character
                 this.putKeyInBuffer(key);
-                Utils_12.Utils.console.log("fnKeyboardKeydown: Partly unhandled key", pressedKey + ":", key);
+                Utils_13.Utils.console.log("fnKeyboardKeydown: Partly unhandled key", pressedKey + ":", key);
             }
             else {
-                Utils_12.Utils.console.log("fnKeyboardKeydown: Unhandled key", pressedKey + ":", key);
+                Utils_13.Utils.console.log("fnKeyboardKeydown: Unhandled key", pressedKey + ":", key);
             }
         };
         Keyboard.prototype.fnKeyboardKeyup = function (event) {
             var keyCode = event.which || event.keyCode, pressedKey = String(keyCode) + (event.code ? event.code : ""), // event.code available for e.g. Chrome, Firefox
             key = event.key || Keyboard.keyIdentifier2Char(event) || ""; // SliTaz web browser has not key but keyIdentifier
-            if (Utils_12.Utils.debug > 1) {
-                Utils_12.Utils.console.log("fnKeyboardKeyup: keyCode=" + keyCode + " pressedKey=" + pressedKey + " key='" + key + "' " + key.charCodeAt(0) + " loc=" + event.location + " ", event);
+            if (Utils_13.Utils.debug > 1) {
+                Utils_13.Utils.console.log("fnKeyboardKeyup: keyCode=" + keyCode + " pressedKey=" + pressedKey + " key='" + key + "' " + key.charCodeAt(0) + " loc=" + event.location + " ", event);
             }
             if (pressedKey in this.key2CpcKey) {
                 var cpcKey = this.key2CpcKey[pressedKey];
@@ -7790,7 +7995,7 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
                 this.fnReleaseCpcKey(cpcKey, pressedKey, key, event.shiftKey, event.ctrlKey);
             }
             else {
-                Utils_12.Utils.console.log("fnKeyboardKeyup: Unhandled key", pressedKey + ":", key);
+                Utils_13.Utils.console.log("fnKeyboardKeyup: Unhandled key", pressedKey + ":", key);
             }
         };
         Keyboard.prototype.getKeyFromBuffer = function () {
@@ -8048,7 +8253,7 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (require, exports, Utils_13, View_2) {
+define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (require, exports, Utils_14, View_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.VirtualKeyboard = void 0;
@@ -8067,8 +8272,10 @@ define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (req
                 currentX: 0,
                 currentY: 0
             };
-            this.fnPressCpcKey = options.fnPressCpcKey;
-            this.fnReleaseCpcKey = options.fnReleaseCpcKey;
+            this.options = {
+                fnPressCpcKey: options.fnPressCpcKey,
+                fnReleaseCpcKey: options.fnReleaseCpcKey
+            };
             var eventNames = this.fnAttachPointerEvents("kbdArea", this.onVirtualVirtualKeyboardKeydown.bind(this), undefined, this.onVirtualVirtualKeyboardKeyup.bind(this));
             if (eventNames.out) {
                 this.pointerOutEvent = eventNames.out;
@@ -8089,8 +8296,8 @@ define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (req
             else {
                 eventNames = VirtualKeyboard.mouseEventNames;
             }
-            if (Utils_13.Utils.debug > 0) {
-                Utils_13.Utils.console.log("fnAttachPointerEvents: Using", eventNames.type, "events");
+            if (Utils_14.Utils.debug > 0) {
+                Utils_14.Utils.console.log("fnAttachPointerEvents: Using", eventNames.type, "events");
             }
             if (fnDown) {
                 area.addEventListener(eventNames.down, fnDown, false); // +clicked for pointer, touch?
@@ -8223,20 +8430,10 @@ define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (req
             }
             return pressedKey;
         };
-        VirtualKeyboard.prototype.fnGetEventTarget = function (event) {
-            var node = event.target || event.srcElement; // target, not currentTarget
-            if (!node) {
-                throw new Error("VirtualKeyboard: Undefined event target: " + node);
-            }
-            return node;
-        };
-        VirtualKeyboard.prototype.fnGetEventTargetAs = function (event) {
-            return this.fnGetEventTarget(event);
-        };
         VirtualKeyboard.prototype.onVirtualVirtualKeyboardKeydown = function (event) {
-            var node = this.fnGetEventTargetAs(event), cpcKey = node.getAttribute("data-key");
-            if (Utils_13.Utils.debug > 1) {
-                Utils_13.Utils.console.debug("onVirtualVirtualKeyboardKeydown: event", String(event), "type:", event.type, "title:", node.title, "cpcKey:", cpcKey);
+            var node = View_2.View.getEventTarget(event), cpcKey = node.getAttribute("data-key");
+            if (Utils_14.Utils.debug > 1) {
+                Utils_14.Utils.console.debug("onVirtualVirtualKeyboardKeydown: event", String(event), "type:", event.type, "title:", node.title, "cpcKey:", cpcKey);
             }
             if (cpcKey !== null) {
                 var cpcKeyCode = Number(cpcKey);
@@ -8244,7 +8441,7 @@ define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (req
                     cpcKeyCode = this.mapNumLockCpcKey(cpcKeyCode);
                 }
                 var pressedKey = this.fnVirtualGetPressedKey(cpcKeyCode), pointerEvent = event, ascii = this.fnVirtualGetAscii(cpcKeyCode, this.shiftLock || pointerEvent.shiftKey, this.numLock);
-                this.fnPressCpcKey(cpcKeyCode, pressedKey, ascii.key, pointerEvent.shiftKey, pointerEvent.ctrlKey);
+                this.options.fnPressCpcKey(cpcKeyCode, pressedKey, ascii.key, pointerEvent.shiftKey, pointerEvent.ctrlKey);
             }
             if (this.pointerOutEvent && this.fnVirtualKeyout) {
                 node.addEventListener(this.pointerOutEvent, this.fnVirtualKeyout, false);
@@ -8253,14 +8450,14 @@ define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (req
             return false;
         };
         VirtualKeyboard.prototype.fnVirtualVirtualKeyboardKeyupOrKeyout = function (event) {
-            var node = this.fnGetEventTargetAs(event), cpcKey = node.getAttribute("data-key");
+            var node = View_2.View.getEventTarget(event), cpcKey = node.getAttribute("data-key");
             if (cpcKey !== null) {
                 var cpcKeyCode = Number(cpcKey);
                 if (this.numLock) {
                     cpcKeyCode = this.mapNumLockCpcKey(cpcKeyCode);
                 }
                 var pressedKey = this.fnVirtualGetPressedKey(cpcKeyCode), pointerEvent = event, ascii = this.fnVirtualGetAscii(cpcKeyCode, this.shiftLock || pointerEvent.shiftKey, this.numLock);
-                this.fnReleaseCpcKey(cpcKeyCode, pressedKey, ascii.key, pointerEvent.shiftKey, pointerEvent.ctrlKey);
+                this.options.fnReleaseCpcKey(cpcKeyCode, pressedKey, ascii.key, pointerEvent.shiftKey, pointerEvent.ctrlKey);
                 if (cpcKeyCode === 70) { // Caps Lock?
                     this.shiftLock = !this.shiftLock;
                     this.virtualKeyboardAdaptKeys(this.shiftLock, this.numLock);
@@ -8272,9 +8469,9 @@ define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (req
             }
         };
         VirtualKeyboard.prototype.onVirtualVirtualKeyboardKeyup = function (event) {
-            var node = this.fnGetEventTargetAs(event);
-            if (Utils_13.Utils.debug > 1) {
-                Utils_13.Utils.console.debug("onVirtualVirtualKeyboardKeyup: event", String(event), "type:", event.type, "title:", node.title, "cpcKey:", node.getAttribute("data-key"));
+            var node = View_2.View.getEventTarget(event);
+            if (Utils_14.Utils.debug > 1) {
+                Utils_14.Utils.console.debug("onVirtualVirtualKeyboardKeyup: event", String(event), "type:", event.type, "title:", node.title, "cpcKey:", node.getAttribute("data-key"));
             }
             this.fnVirtualVirtualKeyboardKeyupOrKeyout(event);
             if (this.pointerOutEvent && this.fnVirtualKeyout) {
@@ -8284,9 +8481,9 @@ define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (req
             return false;
         };
         VirtualKeyboard.prototype.onVirtualVirtualKeyboardKeyout = function (event) {
-            var node = this.fnGetEventTargetAs(event);
-            if (Utils_13.Utils.debug > 1) {
-                Utils_13.Utils.console.debug("onVirtualVirtualKeyboardKeyout: event=", event);
+            var node = View_2.View.getEventTarget(event);
+            if (Utils_14.Utils.debug > 1) {
+                Utils_14.Utils.console.debug("onVirtualVirtualKeyboardKeyout: event=", event);
             }
             this.fnVirtualVirtualKeyboardKeyupOrKeyout(event);
             if (this.pointerOutEvent && this.fnVirtualKeyout) {
@@ -8305,7 +8502,7 @@ define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (req
             this.fnAttachPointerEvents(containerId, this.dragStart.bind(this), this.drag.bind(this), this.dragEnd.bind(this));
         };
         VirtualKeyboard.prototype.dragStart = function (event) {
-            var node = this.fnGetEventTargetAs(event), parent = node.parentElement ? node.parentElement.parentElement : null, drag = this.dragInfo;
+            var node = View_2.View.getEventTarget(event), parent = node.parentElement ? node.parentElement.parentElement : null, drag = this.dragInfo;
             if (node === drag.dragItem || parent === drag.dragItem) {
                 if (event.type === "touchstart") {
                     var touchEvent = event;
@@ -8911,11 +9108,12 @@ define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (req
 // https://benchmarko.github.io/CPCBasicTS/
 //
 /* globals ArrayBuffer, Uint8Array, Uint32Array */
-define("Canvas", ["require", "exports", "Utils", "View"], function (require, exports, Utils_14, View_3) {
+define("Canvas", ["require", "exports", "Utils", "View"], function (require, exports, Utils_15, View_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Canvas = void 0;
     var Canvas = /** @class */ (function () {
+        //setOptions(options: CanvasOptions): void { }
         function Canvas(options) {
             this.fps = 15; // FPS for canvas update
             this.customCharset = {};
@@ -8947,22 +9145,22 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             this.yTop = 399;
             this.yBottom = 0;
             this.gTransparent = false;
+            this.options = {
+                charset: options.charset,
+                onClickKey: options.onClickKey
+            };
             this.fnUpdateCanvasHandler = this.updateCanvas.bind(this);
             this.fnUpdateCanvas2Handler = this.updateCanvas2.bind(this);
-            this.charset = options.charset;
-            this.onClickKey = options.onClickKey;
             this.cpcAreaBox = View_3.View.getElementById1("cpcAreaBox");
             var canvas = View_3.View.getElementById1("cpcCanvas");
             this.canvas = canvas;
             // make sure canvas is not hidden (allows to get width, height, set style)
             if (canvas.offsetParent === null) {
-                Utils_14.Utils.console.error("Error: canvas is not visible!");
+                Utils_15.Utils.console.error("Error: canvas is not visible!");
             }
             var width = canvas.width, height = canvas.height;
             this.width = width;
             this.height = height;
-            canvas.style.borderWidth = this.borderWidth + "px";
-            canvas.style.borderStyle = "solid";
             this.dataset8 = new Uint8Array(new ArrayBuffer(width * height)); // array with pen values
             this.colorValues = Canvas.extractAllColorValues(Canvas.colors);
             this.animationTimeoutId = undefined;
@@ -8975,17 +9173,17 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
                     this.pen2Color32 = new Uint32Array(new ArrayBuffer(Canvas.modeData[3].pens * 4));
                     this.data32 = new Uint32Array(this.imageData.data.buffer);
                     this.use32BitCopy = true;
-                    Utils_14.Utils.console.log("Canvas: using optimized copy2Canvas32bit, littleEndian:", this.littleEndian);
+                    Utils_15.Utils.console.log("Canvas: using optimized copy2Canvas32bit, littleEndian:", this.littleEndian);
                 }
                 else {
                     this.setAlpha(255);
                     this.use32BitCopy = false;
-                    Utils_14.Utils.console.log("Canvas: using copy2Canvas8bit");
+                    Utils_15.Utils.console.log("Canvas: using copy2Canvas8bit");
                 }
                 this.applyCopy2CanvasFunction(this.offset);
             }
             else {
-                Utils_14.Utils.console.warn("Error: canvas.getContext is not supported.");
+                Utils_15.Utils.console.warn("Error: canvas.getContext is not supported.");
                 this.ctx = {}; // not available
                 this.imageData = {}; // not available
             }
@@ -9132,6 +9330,17 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
                 }
             }
         };
+        Canvas.prototype.updateColorsAndCanvasImmediately = function (inkList) {
+            if (this.fnCopy2Canvas) { // not available on e.g. IE8
+                var currentInksInSet = this.currentInks[this.inkSet], memorizedInks = currentInksInSet.slice();
+                this.currentInks[this.inkSet] = inkList; // temporary inks
+                this.updateColorMap();
+                this.fnCopy2Canvas(); // do it immediately
+                this.currentInks[this.inkSet] = memorizedInks.slice();
+                this.updateColorMap();
+                this.needUpdate = true; // we want to restore it with the next update...
+            }
+        };
         Canvas.prototype.updateSpeedInk = function () {
             var pens = this.modeData.pens;
             this.speedInkCount -= 1;
@@ -9157,7 +9366,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             this.customCharset[char] = charData;
         };
         Canvas.prototype.getCharData = function (char) {
-            return this.customCharset[char] || this.charset[char];
+            return this.customCharset[char] || this.options.charset[char];
         };
         Canvas.prototype.setDefaultInks = function () {
             this.currentInks[0] = Canvas.defaultInks[0].slice(); // copy ink set 0 array
@@ -9173,26 +9382,38 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             this.hasFocus = true;
         };
         Canvas.prototype.getMousePos = function (event) {
-            var rect = this.canvas.getBoundingClientRect(), pos = {
-                x: event.clientX - this.borderWidth - rect.left,
-                y: event.clientY - this.borderWidth - rect.top
+            var anyDoc = document, isFullScreen = Boolean(document.fullscreenElement || anyDoc.mozFullScreenElement || anyDoc.webkitFullscreenElement || anyDoc.msFullscreenElement), rect = this.canvas.getBoundingClientRect();
+            if (isFullScreen) {
+                var rectwidth = rect.right - rect.left - this.borderWidth * 2, rectHeight = rect.bottom - rect.top - this.borderWidth * 2, ratioX = rectwidth / this.canvas.width, ratioY = rectHeight / this.canvas.height, minRatio = ratioX <= ratioY ? ratioX : ratioY, diffX = rectwidth - (this.canvas.width * minRatio), diffY = rectHeight - (this.canvas.height * minRatio);
+                return {
+                    x: (event.clientX - this.borderWidth - rect.left - diffX / 2) / ratioX * ratioX / minRatio,
+                    y: (event.clientY - this.borderWidth - rect.top - diffY / 2) / ratioY * ratioY / minRatio
+                };
+            }
+            return {
+                x: (event.clientX - this.borderWidth - rect.left) / (rect.right - rect.left - this.borderWidth * 2) * this.canvas.width,
+                y: (event.clientY - this.borderWidth - rect.top) / (rect.bottom - rect.top - this.borderWidth * 2) * this.canvas.height
             };
-            return pos;
         };
         Canvas.prototype.canvasClickAction2 = function (event) {
-            var pos = this.getMousePos(event), charWidth = this.modeData.pixelWidth * 8, charHeight = this.modeData.pixelHeight * 8;
-            var x = pos.x, y = pos.y;
+            var pos = this.getMousePos(event);
+            var x = pos.x, y = pos.y, char;
             /* eslint-disable no-bitwise */
             x |= 0; // force integer
             y |= 0;
-            var xTxt = (x / charWidth) | 0, yTxt = (y / charHeight) | 0;
             /* eslint-enable no-bitwise */
-            var char = this.readChar(xTxt, yTxt, 1, 0); // TODO: currently we use pen 1, paper 0
-            if (char < 0 && event.detail === 2) { // no char but mouse double click?
-                char = 13; // use CR
-            }
-            if (char >= 0 && this.onClickKey) { // call click handler (put char in keyboard input buffer)
-                this.onClickKey(String.fromCharCode(char));
+            if (x >= 0 && x <= 639 && y >= 0 && y <= 399) {
+                var charWidth = this.modeData.pixelWidth * 8, charHeight = this.modeData.pixelHeight * 8, 
+                /* eslint-disable no-bitwise */
+                xTxt = (x / charWidth) | 0, yTxt = (y / charHeight) | 0;
+                /* eslint-enable no-bitwise */
+                char = this.readChar(xTxt, yTxt, 1, 0); // TODO: currently we use pen 1, paper 0
+                if (char < 0 && event.detail === 2) { // no char but mouse double click?
+                    char = 13; // use CR
+                }
+                if (char >= 0 && this.options.onClickKey) { // call click handler (put char in keyboard input buffer)
+                    this.options.onClickKey(String.fromCharCode(char));
+                }
             }
             // for graphics coordinates, adapt origin
             x -= this.xOrig;
@@ -9200,8 +9421,8 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             if (this.xPos === 1000 && this.yPos === 1000) { // only activate move if pos is 1000, 1000
                 this.move(x, y);
             }
-            if (Utils_14.Utils.debug > 0) {
-                Utils_14.Utils.console.debug("onCpcCanvasClick: x-xOrig", x, "y-yOrig", y, "char", char, "char", (char !== undefined ? String.fromCharCode(char) : "?"), "detail", event.detail);
+            if (Utils_15.Utils.debug > 0) {
+                Utils_15.Utils.console.debug("onCpcCanvasClick: x", pos.x, "y", pos.y, "x - xOrig", x, "y - yOrig", y, "char", char, "char", (char !== undefined ? String.fromCharCode(char) : "?"), "detail", event.detail);
             }
         };
         Canvas.prototype.onCpcCanvasClick = function (event) {
@@ -9225,18 +9446,19 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
         Canvas.prototype.getYpos = function () {
             return this.yPos;
         };
-        Canvas.prototype.fillMyRect = function (x, y, width, height, pen) {
+        Canvas.prototype.fillMyRect = function (x, y, width, height, paper) {
             var canvasWidth = this.width, dataset8 = this.dataset8;
             for (var row = 0; row < height; row += 1) {
                 for (var col = 0; col < width; col += 1) {
                     var idx = (x + col) + (y + row) * canvasWidth;
-                    dataset8[idx] = pen;
+                    dataset8[idx] = paper;
                 }
             }
         };
-        Canvas.prototype.fillTextBox = function (left, top, width, height, pen) {
+        Canvas.prototype.fillTextBox = function (left, top, width, height, paper) {
             var charWidth = this.modeData.pixelWidth * 8, charHeight = this.modeData.pixelHeight * 8;
-            this.fillMyRect(left * charWidth, top * charHeight, width * charWidth, height * charHeight, pen);
+            paper %= this.modeData.pens; // limit papers
+            this.fillMyRect(left * charWidth, top * charHeight, width * charWidth, height * charHeight, paper);
             this.setNeedUpdate();
         };
         Canvas.prototype.moveMyRectUp = function (x, y, width, height, x2, y2) {
@@ -9269,7 +9491,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             }
         };
         Canvas.prototype.setChar = function (char, x, y, pen, paper, transparent, gColMode, textAtGraphics) {
-            var charData = this.customCharset[char] || this.charset[char], pixelWidth = this.modeData.pixelWidth, pixelHeight = this.modeData.pixelHeight;
+            var charData = this.customCharset[char] || this.options.charset[char], pixelWidth = this.modeData.pixelWidth, pixelHeight = this.modeData.pixelHeight;
             for (var row = 0; row < 8; row += 1) {
                 for (var col = 0; col < 8; col += 1) {
                     var charValue = charData[row], bit = charValue & (0x80 >> col); // eslint-disable-line no-bitwise
@@ -9321,7 +9543,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
                             this.dataset8[i] |= gPen;
                             break;
                         default:
-                            Utils_14.Utils.console.warn("setSubPixels: Unknown colMode:", gColMode);
+                            Utils_15.Utils.console.warn("setSubPixels: Unknown colMode:", gColMode);
                             break;
                     }
                     i += 1;
@@ -9330,6 +9552,11 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             /* eslint-enable no-bitwise */
         };
         Canvas.prototype.setPixel = function (x, y, gPen, gColMode) {
+            // some rounding needed before applying origin:
+            /* eslint-disable no-bitwise */
+            x = x >= 0 ? x & ~(this.modeData.pixelWidth - 1) : -(-x & ~(this.modeData.pixelWidth - 1));
+            y = y >= 0 ? y & ~(this.modeData.pixelHeight - 1) : -(-y & ~(this.modeData.pixelHeight - 1));
+            /* eslint-enable no-bitwise */
             x += this.xOrig;
             y = this.height - 1 - (y + this.yOrig);
             if (x < this.xLeft || x > this.xRight || y < (this.height - 1 - this.yTop) || y > (this.height - 1 - this.yBottom)) {
@@ -9348,6 +9575,11 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             return pen;
         };
         Canvas.prototype.testPixel = function (x, y) {
+            // some rounding needed before applying origin:
+            /* eslint-disable no-bitwise */
+            x = x >= 0 ? x & ~(this.modeData.pixelWidth - 1) : -(-x & ~(this.modeData.pixelWidth - 1));
+            y = y >= 0 ? y & ~(this.modeData.pixelHeight - 1) : -(-y & ~(this.modeData.pixelHeight - 1));
+            /* eslint-enable no-bitwise */
             x += this.xOrig;
             y = this.height - 1 - (y + this.yOrig);
             if (x < this.xLeft || x > this.xRight || y < (this.height - 1 - this.yTop) || y > (this.height - 1 - this.yBottom)) {
@@ -9506,8 +9738,8 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
         };
         Canvas.prototype.draw = function (x, y) {
             var xStart = this.xPos, yStart = this.yPos;
-            this.move(x, y); // destination, round values
-            this.drawBresenhamLine(xStart, yStart, this.xPos, this.yPos);
+            this.move(x, y); // destination
+            this.drawBresenhamLine(xStart, yStart, x, y);
             this.setNeedUpdate();
         };
         Canvas.prototype.move = function (x, y) {
@@ -9558,8 +9790,8 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
         };
         Canvas.prototype.printGChar = function (char) {
             var charWidth = this.modeData.pixelWidth * 8;
-            if (char >= this.charset.length) {
-                Utils_14.Utils.console.warn("printGChar: Ignoring char with code", char);
+            if (char >= this.options.charset.length) {
+                Utils_15.Utils.console.warn("printGChar: Ignoring char with code", char);
                 return;
             }
             this.setChar(char, this.xPos, this.yPos, this.gPen, this.gPaper, this.gTransparent, this.gColMode, true);
@@ -9568,8 +9800,8 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
         };
         Canvas.prototype.printChar = function (char, x, y, pen, paper, transparent) {
             var charWidth = this.modeData.pixelWidth * 8, charHeight = this.modeData.pixelHeight * 8, pens = this.modeData.pens;
-            if (char >= this.charset.length) {
-                Utils_14.Utils.console.warn("printChar: Ignoring char with code", char);
+            if (char >= this.options.charset.length) {
+                Utils_15.Utils.console.warn("printChar: Ignoring char with code", char);
                 return;
             }
             pen %= pens;
@@ -9585,7 +9817,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             this.setNeedUpdate();
         };
         Canvas.prototype.findMatchingChar = function (charData) {
-            var charset = this.charset;
+            var charset = this.options.charset;
             var char = -1; // not detected
             for (var i = 0; i < charset.length; i += 1) {
                 var charData2 = this.customCharset[i] || charset[i];
@@ -9740,8 +9972,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             }
         };
         Canvas.prototype.clearTextWindow = function (left, right, top, bottom, paper) {
-            var width = right + 1 - left, height = bottom + 1 - top, pens = this.modeData.pens;
-            paper %= pens; // limit papers
+            var width = right + 1 - left, height = bottom + 1 - top;
             this.fillTextBox(left, top, width, height, paper);
         };
         Canvas.prototype.clearGraphicsWindow = function () {
@@ -9754,20 +9985,20 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             this.fillMyRect(0, 0, this.width, this.height, paper);
             this.setNeedUpdate();
         };
-        Canvas.prototype.windowScrollUp = function (left, right, top, bottom, pen) {
+        Canvas.prototype.windowScrollUp = function (left, right, top, bottom, paper) {
             var charWidth = this.modeData.pixelWidth * 8, charHeight = this.modeData.pixelHeight * 8, width = right + 1 - left, height = bottom + 1 - top;
             if (height > 1) { // scroll part
                 this.moveMyRectUp(left * charWidth, (top + 1) * charHeight, width * charWidth, (height - 1) * charHeight, left * charWidth, top * charHeight);
             }
-            this.fillTextBox(left, bottom, width, 1, pen);
+            this.fillTextBox(left, bottom, width, 1, paper);
             this.setNeedUpdate();
         };
-        Canvas.prototype.windowScrollDown = function (left, right, top, bottom, pen) {
+        Canvas.prototype.windowScrollDown = function (left, right, top, bottom, paper) {
             var charWidth = this.modeData.pixelWidth * 8, charHeight = this.modeData.pixelHeight * 8, width = right + 1 - left, height = bottom + 1 - top;
             if (height > 1) { // scroll part
                 this.moveMyRectDown(left * charWidth, top * charHeight, width * charWidth, (height - 1) * charHeight, left * charWidth, (top + 1) * charHeight);
             }
-            this.fillTextBox(left, top, width, 1, pen);
+            this.fillTextBox(left, top, width, 1, paper);
             this.setNeedUpdate();
         };
         Canvas.prototype.setSpeedInk = function (time1, time2) {
@@ -9801,10 +10032,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             this.setGPaper(this.gPaper); // keep, maybe different for other mode
             this.setGTransparentMode(false);
         };
-        Canvas.prototype.startScreenshot = function () {
-            return this.canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // here is the most important part because if you do not replace you will get a DOM 18 exception.
-        };
-        Canvas.prototype.getCanvas = function () {
+        Canvas.prototype.getCanvasElement = function () {
             return this.canvas;
         };
         // http://www.cpcwiki.eu/index.php/CPC_Palette
@@ -9877,7 +10105,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
 // (c) Marco Vieth, 2022
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("TextCanvas", ["require", "exports", "Utils", "View"], function (require, exports, Utils_15, View_4) {
+define("TextCanvas", ["require", "exports", "Utils", "View"], function (require, exports, Utils_16, View_4) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.TextCanvas = void 0;
@@ -9887,9 +10115,11 @@ define("TextCanvas", ["require", "exports", "Utils", "View"], function (require,
             this.needTextUpdate = false;
             this.textBuffer = []; // textbuffer characters at row,column
             this.hasFocus = false; // canvas has focus
+            this.options = {
+                onClickKey: options.onClickKey
+            };
             this.fnUpdateTextCanvasHandler = this.updateTextCanvas.bind(this);
             this.fnUpdateTextCanvas2Handler = this.updateTextCanvas2.bind(this);
-            this.onClickKey = options.onClickKey;
             this.textText = View_4.View.getElementById1("textText"); // View.setAreaValue()
             this.animationTimeoutId = undefined;
             this.animationFrame = undefined;
@@ -9964,20 +10194,20 @@ define("TextCanvas", ["require", "exports", "Utils", "View"], function (require,
             return pos;
         };
         TextCanvas.prototype.canvasClickAction2 = function (event) {
-            var target = event.target, style = window.getComputedStyle(target, null).getPropertyValue("font-size"), fontSize = parseFloat(style), pos = this.getMousePos(event), charWidth = (fontSize + 1.4) / 2, charHeight = fontSize + 2.25, // TODO
+            var target = View_4.View.getEventTarget(event), style = window.getComputedStyle(target, null).getPropertyValue("font-size"), fontSize = parseFloat(style), pos = this.getMousePos(event), charWidth = (fontSize + 1.4) / 2, charHeight = fontSize + 2.25, // TODO
             x = pos.x, y = pos.y, 
             /* eslint-disable no-bitwise */
             xTxt = (x / charWidth) | 0, yTxt = (y / charHeight) | 0;
             /* eslint-enable no-bitwise */
-            if (Utils_15.Utils.debug > 0) { //TTT
-                Utils_15.Utils.console.debug("canvasClickAction2: x=" + x + ", y=" + y + ", xTxt=" + xTxt + ", yTxt=" + yTxt);
+            if (Utils_16.Utils.debug > 0) {
+                Utils_16.Utils.console.debug("canvasClickAction2: x=" + x + ", y=" + y + ", xTxt=" + xTxt + ", yTxt=" + yTxt);
             }
             var char = this.getCharFromTextBuffer(xTxt, yTxt); // is there a character an the click position?
             if (char === undefined && event.detail === 2) { // no char but mouse double click?
                 char = 13; // use CR
             }
-            if (char !== undefined && this.onClickKey) { // call click handler (put char in keyboard input buffer)
-                this.onClickKey(String.fromCharCode(char));
+            if (char !== undefined && this.options.onClickKey) { // call click handler (put char in keyboard input buffer)
+                this.options.onClickKey(String.fromCharCode(char));
             }
         };
         TextCanvas.prototype.onTextCanvasClick = function (event) {
@@ -10116,91 +10346,163 @@ define("TextCanvas", ["require", "exports", "Utils", "View"], function (require,
     }());
     exports.TextCanvas = TextCanvas;
 });
-// Model.ts - Model (MVC)
-// (c) Marco Vieth, 2019
-// https://benchmarko.github.io/CPCBasicTS/
-define("Model", ["require", "exports", "Utils"], function (require, exports, Utils_16) {
+// NodeAdapt.ts - Adaptations for nodeJS
+//
+define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports, Utils_17) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Model = void 0;
-    var Model = /** @class */ (function () {
-        function Model(config) {
-            this.config = config || {}; // store only a reference
-            this.initialConfig = Object.assign({}, this.config); // save initial config
-            this.databases = {};
-            this.examples = {}; // loaded examples per database
+    exports.NodeAdapt = void 0;
+    var NodeAdapt = /** @class */ (function () {
+        function NodeAdapt() {
         }
-        Model.prototype.getProperty = function (property) {
-            return this.config[property];
-        };
-        Model.prototype.setProperty = function (property, value) {
-            this.config[property] = value;
-        };
-        Model.prototype.getAllProperties = function () {
-            return this.config;
-        };
-        Model.prototype.getAllInitialProperties = function () {
-            return this.initialConfig;
-        };
-        Model.prototype.getChangedProperties = function () {
-            var current = this.config, initial = this.initialConfig, changed = {};
-            for (var name_7 in current) {
-                if (current.hasOwnProperty(name_7)) {
-                    if (current[name_7] !== initial[name_7]) {
-                        changed[name_7] = current[name_7];
+        NodeAdapt.doAdapt = function () {
+            var https, // nodeJs
+            fs, module, audioContext;
+            var domElements = {}, myCreateElement = function (id) {
+                domElements[id] = {
+                    className: "",
+                    style: {
+                        borderwidth: "",
+                        borderStyle: ""
+                    },
+                    addEventListener: function () { },
+                    options: []
+                };
+                // old syntax for getter with "get length() { ... }"
+                Object.defineProperty(domElements[id], "length", {
+                    get: function () {
+                        return domElements[id].options.length;
+                    },
+                    set: function (len) {
+                        domElements[id].options.length = len;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return domElements[id];
+            };
+            function fnEval(code) {
+                return eval(code); // eslint-disable-line no-eval
+            }
+            if (!audioContext) {
+                // fnEval('audioContext = require("web-audio-api").AudioContext;'); // has no createChannelMerger()
+                if (!audioContext) {
+                    audioContext = function () {
+                        throw new Error("AudioContext not supported");
+                    };
+                }
+            }
+            Object.assign(window, {
+                console: console,
+                document: {
+                    addEventListener: function () { },
+                    getElementById: function (id) { return domElements[id] || myCreateElement(id); },
+                    createElement: function (type) {
+                        if (type === "option") {
+                            return {};
+                        }
+                        Utils_17.Utils.console.error("createElement: unknown type", type);
+                        return {};
+                    }
+                },
+                AudioContext: audioContext
+            });
+            // eslint-disable-next-line no-eval
+            var nodeExports = eval("exports"), view = nodeExports.View, setSelectOptionsOrig = view.prototype.setSelectOptions;
+            view.prototype.setSelectOptions = function (id, options) {
+                var element = domElements[id] || myCreateElement(id);
+                if (!element.options.add) {
+                    element.add = function (option) {
+                        // eslint-disable-next-line no-invalid-this
+                        element.options.push(option);
+                        if (element.options.length === 1 || option.selected) {
+                            element.value = element.options[element.options.length - 1].value;
+                        }
+                    };
+                }
+                return setSelectOptionsOrig(id, options);
+            };
+            var setAreaValueOrig = view.prototype.setAreaValue;
+            view.prototype.setAreaValue = function (id, value) {
+                if (id === "resultText") {
+                    if (value) {
+                        Utils_17.Utils.console.log(value);
                     }
                 }
+                return setAreaValueOrig(id, value);
+            };
+            // https://nodejs.dev/learn/accept-input-from-the-command-line-in-nodejs
+            // readline?
+            var controller = nodeExports.Controller;
+            controller.prototype.startWithDirectInput = function () {
+                Utils_17.Utils.console.log("We are ready.");
+            };
+            //
+            function isUrl(s) {
+                return s.startsWith("http"); // http or https
             }
-            return changed;
-        };
-        Model.prototype.addDatabases = function (db) {
-            for (var par in db) {
-                if (db.hasOwnProperty(par)) {
-                    var entry = db[par];
-                    this.databases[par] = entry;
-                    this.examples[par] = {};
+            function nodeReadUrl(url, fnDataLoaded) {
+                if (!https) {
+                    fnEval('https = require("https");'); // to trick TypeScript
                 }
+                https.get(url, function (resp) {
+                    var data = "";
+                    // A chunk of data has been received.
+                    resp.on("data", function (chunk) {
+                        data += chunk;
+                    });
+                    // The whole response has been received. Print out the result.
+                    resp.on("end", function () {
+                        fnDataLoaded(undefined, data);
+                    });
+                }).on("error", function (err) {
+                    Utils_17.Utils.console.log("Error: " + err.message);
+                    fnDataLoaded(err);
+                });
             }
-        };
-        Model.prototype.getAllDatabases = function () {
-            return this.databases;
-        };
-        Model.prototype.getDatabase = function () {
-            var database = this.getProperty("database");
-            return this.databases[database];
-        };
-        Model.prototype.getAllExamples = function () {
-            var database = this.getProperty("database");
-            return this.examples[database];
-        };
-        Model.prototype.getExample = function (key) {
-            var database = this.getProperty("database");
-            return this.examples[database][key];
-        };
-        Model.prototype.setExample = function (example) {
-            var database = this.getProperty("database"), key = example.key;
-            if (!this.examples[database][key]) {
-                if (Utils_16.Utils.debug > 1) {
-                    Utils_16.Utils.console.debug("setExample: creating new example:", key);
+            var modulePath;
+            function nodeReadFile(name, fnDataLoaded) {
+                if (!fs) {
+                    fnEval('fs = require("fs");'); // to trick TypeScript
                 }
+                if (!module) {
+                    fnEval('module = require("module");'); // to trick TypeScript
+                    modulePath = module.path || "";
+                    if (!modulePath) {
+                        Utils_17.Utils.console.warn("nodeReadFile: Cannot determine module path");
+                    }
+                }
+                var name2 = modulePath ? modulePath + "/" + name : name;
+                fs.readFile(name2, "utf8", fnDataLoaded);
             }
-            this.examples[database][key] = example;
+            var utils = nodeExports.Utils;
+            utils.loadScript = function (fileOrUrl, fnSuccess, _fnError, key) {
+                var fnLoaded = function (error, data) {
+                    if (error) {
+                        Utils_17.Utils.console.error("file error: ", error);
+                    }
+                    if (data) {
+                        fnEval(data); // load js (for nodeJs)
+                    }
+                    fnSuccess(fileOrUrl, key);
+                };
+                if (isUrl(fileOrUrl)) {
+                    nodeReadUrl(fileOrUrl, fnLoaded);
+                }
+                else {
+                    nodeReadFile(fileOrUrl, fnLoaded);
+                }
+            };
         };
-        Model.prototype.removeExample = function (key) {
-            var database = this.getProperty("database");
-            if (!this.examples[database][key]) {
-                Utils_16.Utils.console.warn("removeExample: example does not exist: " + key);
-            }
-            delete this.examples[database][key];
-        };
-        return Model;
+        return NodeAdapt;
     }());
-    exports.Model = Model;
+    exports.NodeAdapt = NodeAdapt;
 });
+// end
 // CommonEventHandler.ts - Common event handler for browser events
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
-define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (require, exports, Utils_17, View_5) {
+define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (require, exports, Utils_18, View_5) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CommonEventHandler = void 0;
@@ -10218,12 +10520,14 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
                 onVariableButtonClick: this.onVariableButtonClick,
                 onCpcButtonClick: this.onCpcButtonClick,
                 onConvertButtonClick: this.onConvertButtonClick,
+                onSettingsButtonClick: this.onSettingsButtonClick,
                 onKbdButtonClick: this.onKbdButtonClick,
-                onKbdLayoutButtonClick: this.onKbdLayoutButtonClick,
                 onConsoleButtonClick: this.onConsoleButtonClick,
                 onParseButtonClick: this.onParseButtonClick,
                 onRenumButtonClick: this.onRenumButtonClick,
                 onPrettyButtonClick: this.onPrettyButtonClick,
+                onLineNumberAddButtonClick: this.onLineNumberAddButtonClick,
+                onLineNumberRemoveButtonClick: this.onLineNumberRemoveButtonClick,
                 onUndoButtonClick: this.onUndoButtonClick,
                 onRedoButtonClick: this.onRedoButtonClick,
                 onDownloadButtonClick: this.onDownloadButtonClick,
@@ -10244,9 +10548,14 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
                 onVarSelectChange: this.onVarSelectChange,
                 onKbdLayoutSelectChange: this.onKbdLayoutSelectChange,
                 onVarTextChange: this.onVarTextChange,
+                onImplicitLinesInputChange: this.onImplicitLinesInputChange,
+                onArrayBoundsInputChange: this.onArrayBoundsInputChange,
+                onTraceInputChange: this.onTraceInputChange,
+                onSpeedInputChange: this.onSpeedInputChange,
                 onScreenshotButtonClick: this.onScreenshotButtonClick,
                 onEnterButtonClick: this.onEnterButtonClick,
                 onSoundButtonClick: this.onSoundButtonClick,
+                onFullscreenButtonClick: CommonEventHandler.onFullscreenButtonClick,
                 onCpcCanvasClick: this.onCpcCanvasClick,
                 onWindowClick: this.onWindowClick,
                 onTextTextClick: this.onTextTextClick,
@@ -10302,16 +10611,20 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
         CommonEventHandler.prototype.onConvertButtonClick = function () {
             this.toogleHidden("convertArea", "showConvert", "flex");
         };
+        CommonEventHandler.prototype.onSettingsButtonClick = function () {
+            this.toogleHidden("settingsArea", "showSettings", "flex");
+        };
         CommonEventHandler.prototype.onKbdButtonClick = function () {
             if (this.toogleHidden("kbdArea", "showKbd", "flex")) {
                 if (this.view.getHidden("kbdArea")) { // on old browsers, display "flex" is not available, so set "block" if still hidden
                     this.view.setHidden("kbdArea", false);
                 }
                 this.controller.virtualKeyboardCreate(); // maybe draw it
+                this.view.setHidden("kbdLayoutArea", true, "inherit"); // kbd visible => kbdlayout invisible
             }
-        };
-        CommonEventHandler.prototype.onKbdLayoutButtonClick = function () {
-            this.toogleHidden("kbdLayoutArea", "showKbdLayout");
+            else {
+                this.view.setHidden("kbdLayoutArea", false, "inherit");
+            }
         };
         CommonEventHandler.prototype.onConsoleButtonClick = function () {
             this.toogleHidden("consoleArea", "showConsole");
@@ -10324,6 +10637,12 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
         };
         CommonEventHandler.prototype.onPrettyButtonClick = function () {
             this.controller.fnPretty();
+        };
+        CommonEventHandler.prototype.onLineNumberAddButtonClick = function () {
+            this.controller.fnAddLines();
+        };
+        CommonEventHandler.prototype.onLineNumberRemoveButtonClick = function () {
+            this.controller.fnRemoveLines();
         };
         CommonEventHandler.prototype.fnUpdateAreaText = function (input) {
             this.controller.setInputText(input, true);
@@ -10365,12 +10684,15 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
         };
         // eslint-disable-next-line class-methods-use-this
         CommonEventHandler.prototype.onCopyTextButtonClick = function () {
-            var textText = document.getElementById("textText");
-            // const copyText = View.getElementByIdAs<HTMLTextAreaElement>("textText");
-            // TODO: use View.setAreaSelection...
+            var textText = View_5.View.getElementByIdAs("textText");
             textText.select();
-            textText.setSelectionRange(0, 99999); // for mobile devices
-            window.navigator.clipboard.writeText(textText.value);
+            this.view.setAreaSelection("textText", 0, 99999); // for mobile devices
+            if (window.navigator && window.navigator.clipboard) {
+                window.navigator.clipboard.writeText(textText.value);
+            }
+            else {
+                Utils_18.Utils.console.warn("Copy to clipboard not available");
+            }
         };
         CommonEventHandler.prototype.onOutputTextChange = function () {
             this.controller.invalidateScript();
@@ -10380,7 +10702,7 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
             for (var key in params) {
                 if (params.hasOwnProperty(key)) {
                     var value = params[key];
-                    parts[parts.length] = encodeURIComponent(key) + "=" + encodeURIComponent((value === null) ? "" : value);
+                    parts[parts.length] = encodeURIComponent(key) + "=" + encodeURIComponent(value === null ? "" : value);
                 }
             }
             return parts.join("&");
@@ -10411,11 +10733,33 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
         CommonEventHandler.prototype.onVarTextChange = function () {
             this.controller.changeVariable();
         };
+        CommonEventHandler.prototype.onImplicitLinesInputChange = function () {
+            var checked = this.view.getInputChecked("implicitLinesInput");
+            this.model.setProperty("implicitLines", checked);
+            this.controller.fnImplicitLines();
+        };
+        CommonEventHandler.prototype.onArrayBoundsInputChange = function () {
+            var checked = this.view.getInputChecked("arrayBoundsInput");
+            this.model.setProperty("arrayBounds", checked);
+            this.controller.fnArrayBounds();
+        };
+        CommonEventHandler.prototype.onTraceInputChange = function () {
+            var checked = this.view.getInputChecked("traceInput");
+            this.model.setProperty("trace", checked);
+            this.controller.fnTrace();
+        };
+        CommonEventHandler.prototype.onSpeedInputChange = function () {
+            var speed = this.view.getInputValue("speedInput");
+            this.model.setProperty("speed", Number(speed));
+            this.controller.fnSpeed();
+        };
         CommonEventHandler.prototype.onScreenshotButtonClick = function () {
             var example = this.view.getSelectValue("exampleSelect"), image = this.controller.startScreenshot(), link = View_5.View.getElementById1("screenshotLink"), name = example + ".png";
-            link.setAttribute("download", name);
-            link.setAttribute("href", image);
-            link.click();
+            if (image) {
+                link.setAttribute("download", name);
+                link.setAttribute("href", image);
+                link.click();
+            }
         };
         CommonEventHandler.prototype.onEnterButtonClick = function () {
             this.controller.startEnter();
@@ -10423,6 +10767,12 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
         CommonEventHandler.prototype.onSoundButtonClick = function () {
             this.model.setProperty("sound", !this.model.getProperty("sound"));
             this.controller.setSoundActive();
+        };
+        CommonEventHandler.onFullscreenButtonClick = function () {
+            var switched = View_5.View.requestFullscreenForId("cpcCanvas");
+            if (!switched) {
+                Utils_18.Utils.console.warn("Switch to fullscreen not available");
+            }
         };
         CommonEventHandler.prototype.onCpcCanvasClick = function (event) {
             this.controller.onCpcCanvasClick(event);
@@ -10435,27 +10785,27 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
         };
         /* eslint-enable no-invalid-this */
         CommonEventHandler.prototype.handleEvent = function (event) {
-            var target = event.target, id = (target) ? target.getAttribute("id") : String(target), type = event.type; // click or change
+            var target = View_5.View.getEventTarget(event), id = (target) ? target.getAttribute("id") : String(target), type = event.type; // click or change
             if (this.fnUserAction) {
                 this.fnUserAction(event, id);
             }
             if (id) {
                 if (!target.disabled) { // check needed for IE which also fires for disabled buttons
-                    var handler = "on" + Utils_17.Utils.stringCapitalize(id) + Utils_17.Utils.stringCapitalize(type);
-                    if (Utils_17.Utils.debug) {
-                        Utils_17.Utils.console.debug("fnCommonEventHandler: handler=" + handler);
+                    var handler = "on" + Utils_18.Utils.stringCapitalize(id) + Utils_18.Utils.stringCapitalize(type);
+                    if (Utils_18.Utils.debug) {
+                        Utils_18.Utils.console.debug("fnCommonEventHandler: handler=" + handler);
                     }
                     if (handler in this.handlers) {
                         this.handlers[handler].call(this, event);
                     }
                     else if (!handler.endsWith("SelectClick") && !handler.endsWith("InputClick")) { // do not print all messages
-                        Utils_17.Utils.console.log("Event handler not found:", handler);
+                        Utils_18.Utils.console.log("Event handler not found:", handler);
                     }
                 }
             }
             else if (target.getAttribute("data-key") === null) { // not for keyboard buttons
-                if (Utils_17.Utils.debug) {
-                    Utils_17.Utils.console.debug("Event handler for", type, "unknown target:", target.tagName, target.id);
+                if (Utils_18.Utils.debug) {
+                    Utils_18.Utils.console.debug("Event handler for", type, "unknown target:", target.tagName, target.id);
                 }
             }
             if (type === "click") { // special
@@ -10508,12 +10858,12 @@ define("Random", ["require", "exports"], function (require, exports) {
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("Sound", ["require", "exports", "Utils"], function (require, exports, Utils_18) {
+define("Sound", ["require", "exports", "Utils"], function (require, exports, Utils_19) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Sound = void 0;
     var Sound = /** @class */ (function () {
-        function Sound() {
+        function Sound(options) {
             this.isSoundOn = false;
             this.isActivatedByUserFlag = false;
             this.gainNodes = [];
@@ -10522,6 +10872,9 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
             this.fScheduleAheadTime = 0.1; // 100 ms
             this.volEnv = [];
             this.toneEnv = [];
+            this.options = {
+                AudioContextConstructor: options.AudioContextConstructor
+            };
             for (var i = 0; i < 3; i += 1) {
                 this.queues[i] = {
                     soundData: [],
@@ -10530,7 +10883,7 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
                     rendevousMask: 0
                 };
             }
-            if (Utils_18.Utils.debug > 1) {
+            if (Utils_19.Utils.debug > 1) {
                 this.debugLogList = []; // access: cpcBasic.controller.sound.debugLog
             }
         }
@@ -10554,9 +10907,8 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
             }
         };
         Sound.prototype.stopOscillator = function (n) {
-            var oscillators = this.oscillators;
-            if (oscillators[n]) {
-                var oscillatorNode = oscillators[n];
+            var oscillators = this.oscillators, oscillatorNode = oscillators[n];
+            if (oscillatorNode) {
                 oscillatorNode.frequency.value = 0;
                 oscillatorNode.stop();
                 oscillatorNode.disconnect();
@@ -10586,7 +10938,7 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
                 0,
                 2,
                 1
-            ], context = new window.AudioContext(), // may produce exception if not available
+            ], context = new this.options.AudioContextConstructor(), // may produce exception if not available
             mergerNode = context.createChannelMerger(6); // create mergerNode with 6 inputs; we are using the first 3 for left, right, center
             this.context = context;
             this.mergerNode = mergerNode;
@@ -10603,7 +10955,7 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
             noiseNode = ctx.createBufferSource(); // create a buffer source for noise data
             // fill the buffer with noise
             for (var i = 0; i < bufferSize; i += 1) {
-                data[i] = Math.random() * 2 - 1;
+                data[i] = Math.random() * 2 - 1; // -1..1
             }
             noiseNode.buffer = buffer;
             if (noise > 1) {
@@ -10703,7 +11055,7 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
             var maxVolume = 15, i100ms2sec = 100, // time duration unit: 1/100 sec=10 ms, convert to sec
             ctx = this.context, toneEnv = soundData.toneEnv;
             var volEnv = soundData.volEnv, volEnvRepeat = 1;
-            if (Utils_18.Utils.debug > 1) {
+            if (Utils_19.Utils.debug > 1) {
                 this.debugLog("scheduleNote: " + oscillator + " " + fTime);
             }
             var oscillatorNode = ctx.createOscillator();
@@ -10711,7 +11063,9 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
             oscillatorNode.frequency.value = (soundData.period >= 3) ? 62500 / soundData.period : 0;
             oscillatorNode.connect(this.gainNodes[oscillator]);
             if (fTime < ctx.currentTime) {
-                Utils_18.Utils.console.log("TTT: scheduleNote:", fTime, "<", ctx.currentTime);
+                if (Utils_19.Utils.debug) {
+                    Utils_19.Utils.console.debug("Test: sound: scheduleNote:", fTime, "<", ctx.currentTime);
+                }
             }
             var volume = soundData.volume, gain = this.gainNodes[oscillator].gain, fVolume = volume / maxVolume;
             gain.setValueAtTime(fVolume * fVolume, fTime); // start volume
@@ -10769,13 +11123,13 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
                         this.stopOscillator(i);
                     }
                     queue.soundData.push(soundData); // just a reference
-                    if (Utils_18.Utils.debug > 1) {
+                    if (Utils_19.Utils.debug > 1) {
                         this.debugLog("sound: " + i + " " + state + ":" + queue.soundData.length);
                     }
                     this.updateQueueStatus(i, queue);
                 }
             }
-            this.scheduler(); // schedule early to allow SQ busy check immiediately (can channels go out of sync by this?)
+            this.scheduler(); // schedule early to allow SQ busy check immediately (can channels go out of sync by this?)
         };
         Sound.prototype.setVolEnv = function (volEnv, volEnvData) {
             this.volEnv[volEnv] = volEnvData;
@@ -10843,7 +11197,7 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
             if (!queues.length) {
                 return;
             }
-            if (Utils_18.Utils.debug > 1) {
+            if (Utils_19.Utils.debug > 1) {
                 this.debugLog("release: " + releaseMask);
             }
             for (var i = 0; i < 3; i += 1) {
@@ -10885,7 +11239,9 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
                 var mergerNode = this.mergerNode, context = this.context;
                 mergerNode.connect(context.destination);
                 this.isSoundOn = true;
-                Utils_18.Utils.console.log("soundOn: Sound switched on");
+                if (Utils_19.Utils.debug) {
+                    Utils_19.Utils.console.debug("soundOn: Sound switched on");
+                }
             }
         };
         Sound.prototype.soundOff = function () {
@@ -10893,7 +11249,9 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
                 var mergerNode = this.mergerNode, context = this.context;
                 mergerNode.disconnect(context.destination);
                 this.isSoundOn = false;
-                Utils_18.Utils.console.log("soundOff: Sound switched off");
+                if (Utils_19.Utils.debug) {
+                    Utils_19.Utils.console.debug("soundOff: Sound switched off");
+                }
             }
         };
         return Sound;
@@ -10904,7 +11262,7 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("ZipFile", ["require", "exports", "Utils"], function (require, exports, Utils_19) {
+define("ZipFile", ["require", "exports", "Utils"], function (require, exports, Utils_20) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ZipFile = void 0;
@@ -10919,7 +11277,7 @@ define("ZipFile", ["require", "exports", "Utils"], function (require, exports, U
         };
         ZipFile.prototype.composeError = function (error, message, value, pos) {
             message = this.zipName + ": " + message; // put zipname in message
-            return Utils_19.Utils.composeError("ZipFile", error, message, value, pos);
+            return Utils_20.Utils.composeError("ZipFile", error, message, value, pos);
         };
         ZipFile.prototype.subArr = function (begin, length) {
             var data = this.data, end = begin + length;
@@ -11027,7 +11385,7 @@ define("ZipFile", ["require", "exports", "Utils"], function (require, exports, U
                 cdfh.timestamp = new Date(((dostime >> 25) & 0x7F) + 1980, ((dostime >> 21) & 0x0F) - 1, (dostime >> 16) & 0x1F, (dostime >> 11) & 0x1F, (dostime >> 5) & 0x3F, (dostime & 0x1F) << 1).getTime(); // eslint-disable-line no-bitwise
                 // local file header... much more info
                 if (this.readUInt(cdfh.localOffset) !== lfhSignature) {
-                    Utils_19.Utils.console.error("Zip: readZipDirectory: LFH signature not found at offset", cdfh.localOffset);
+                    Utils_20.Utils.console.error("Zip: readZipDirectory: LFH signature not found at offset", cdfh.localOffset);
                 }
                 var lfhExtrafieldLength = this.readUShort(cdfh.localOffset + 28); // extra field length
                 cdfh.dataStart = cdfh.localOffset + lfhLen + cdfh.name.length + lfhExtrafieldLength;
@@ -11279,7 +11637,7 @@ define("ZipFile", ["require", "exports", "Utils"], function (require, exports, U
                 throw this.composeError(Error(), "Zip: readData: compression method not supported:" + cdfh.compressionMethod, "", 0);
             }
             if (dataUTF8.length !== cdfh.size) { // assert
-                Utils_19.Utils.console.error("Zip: readData: different length 2!");
+                Utils_20.Utils.console.error("Zip: readData: different length 2!");
             }
             return dataUTF8;
         };
@@ -11291,7 +11649,7 @@ define("ZipFile", ["require", "exports", "Utils"], function (require, exports, U
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, exports, Utils_20, Random_1) {
+define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, exports, Utils_21, Random_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CpcVm = void 0;
@@ -11311,6 +11669,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.startTime = 0;
             this.lastRnd = 0; // last random number
             this.nextFrameTime = 0;
+            this.initialStop = 5;
             this.stopCount = 0;
             this.line = 0;
             this.startLine = 0;
@@ -11323,7 +11682,6 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.errorLine = 0; // line of last error (Erl)
             this.degFlag = false; // degree or radians
             this.tronFlag1 = false; // trace flag
-            this.traceLabel = "";
             this.ramSelect = 0;
             this.screenPage = 3; // 16K screen page, 3=0xc000..0xffff
             this.minCharHimem = CpcVm.maxHimem;
@@ -11353,6 +11711,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.variables = options.variables;
             this.quiet = Boolean(options.quiet);
             this.random = new Random_1.Random();
+            this.stopCount = this.initialStop;
             this.stopEntry = {
                 reason: "",
                 priority: 0,
@@ -11364,7 +11723,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 command: "",
                 name: "",
                 line: 0,
-                start: 0,
+                start: undefined,
                 fileData: [],
                 fnFileCallback: undefined,
                 first: 0,
@@ -11416,15 +11775,24 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             this.crtcData = [];
         }
+        CpcVm.prototype.getOptions = function () {
+            return {
+                canvas: this.canvas,
+                textCanvas: this.textCanvas,
+                keyboard: this.keyboard,
+                sound: this.soundClass,
+                variables: this.variables,
+                quiet: this.quiet
+            };
+        };
         CpcVm.prototype.vmSetRsxClass = function (rsx) {
             this.rsx = rsx; // this.rsx just used in the script
         };
         CpcVm.prototype.vmReset = function () {
             this.startTime = Date.now();
-            this.random.init();
-            this.lastRnd = 0;
+            this.vmResetRandom();
             this.nextFrameTime = Date.now() + CpcVm.frameTimeMs; // next time of frame fly
-            this.stopCount = 0;
+            this.stopCount = this.initialStop;
             this.line = 0; // current line number (or label)
             this.startLine = 0; // line to start
             this.errorGotoLine = 0;
@@ -11432,8 +11800,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.breakGosubLine = 0;
             this.breakResumeLine = 0;
             this.inputValues.length = 0;
-            CpcVm.vmResetFileHandling(this.inFile);
-            CpcVm.vmResetFileHandling(this.outFile);
+            this.vmResetInFileHandling();
             this.vmResetControlBuffer();
             this.outBuffer = ""; // console output
             this.vmStop("", 0, true);
@@ -11443,16 +11810,10 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.gosubStack.length = 0;
             this.degFlag = false; // degree or radians
             this.tronFlag1 = false;
-            this.traceLabel = "";
-            this.mem.length = 0; // clear memory (for PEEK, POKE)
-            this.ramSelect = 0; // for banking with 16K banks in the range 0x4000-0x7fff (0=default; 1...=additional)
             this.screenPage = 3; // 16K screen page, 3=0xc000..0xffff
             this.crtcReg = 0;
             this.crtcData.length = 0;
-            this.minCharHimem = CpcVm.maxHimem;
-            this.maxCharHimem = CpcVm.maxHimem;
-            this.himemValue = CpcVm.maxHimem;
-            this.minCustomChar = 256;
+            this.vmResetMemory();
             this.symbolAfter(240); // set also minCustomChar
             this.vmResetTimers();
             this.timerPriority = -1; // priority of running task: -1=low (min priority to start new timers)
@@ -11468,6 +11829,18 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.soundClass.reset();
             this.soundData.length = 0;
             this.inkeyTimeMs = 0; // if >0, next time when inkey$ can be checked without inserting "waitFrame"
+        };
+        CpcVm.prototype.vmResetMemory = function () {
+            this.mem.length = 0; // clear memory (for PEEK, POKE)
+            this.ramSelect = 0; // for banking with 16K banks in the range 0x4000-0x7fff (0=default; 1...=additional)
+            this.minCharHimem = CpcVm.maxHimem;
+            this.maxCharHimem = CpcVm.maxHimem;
+            this.himemValue = CpcVm.maxHimem;
+            this.minCustomChar = 256;
+        };
+        CpcVm.prototype.vmResetRandom = function () {
+            this.random.init();
+            this.lastRnd = 0;
         };
         CpcVm.prototype.vmResetTimers = function () {
             var data = {
@@ -11524,6 +11897,24 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.vmResetFileHandling = function (file) {
             file.open = false;
             file.command = ""; // to be sure
+            file.name = "";
+            file.line = 0;
+            file.start = undefined; // to be sure
+            file.fileData.length = 0;
+        };
+        CpcVm.prototype.vmResetInFileHandling = function () {
+            var inFile = this.inFile;
+            CpcVm.vmResetFileHandling(inFile);
+            inFile.first = 0;
+            inFile.last = 0;
+        };
+        CpcVm.prototype.vmResetOutFileHandling = function () {
+            var outFile = this.outFile;
+            CpcVm.vmResetFileHandling(outFile);
+            outFile.stream = 0;
+            outFile.typeString = "";
+            outFile.length = 0;
+            outFile.entry = 0;
         };
         CpcVm.prototype.vmResetData = function () {
             this.dataList.length = 0; // array for BASIC data lines (continuous)
@@ -11538,16 +11929,17 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         };
         CpcVm.prototype.vmReset4Run = function () {
             var stream = 0;
-            this.vmResetInks();
             this.clearInput();
             this.closein();
             this.closeout();
             this.cursor(stream, 0);
-            this.traceLabel = ""; // last trace line
             this.labelList.length = 0;
         };
         CpcVm.prototype.vmGetAllVariables = function () {
             return this.variables.getAllVariables();
+        };
+        CpcVm.prototype.vmGetAllVarTypes = function () {
+            return this.variables.getAllVarTypes();
         };
         CpcVm.prototype.vmSetStartLine = function (line) {
             this.startLine = line;
@@ -11590,7 +11982,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.vmAssertNumber(n, err);
             if (n < min || n > max) {
                 if (!this.quiet) {
-                    Utils_20.Utils.console.warn("vmAssertInRange: number not in range:", min + "<=" + n + "<=" + max);
+                    Utils_21.Utils.console.warn("vmAssertInRange: number not in range:", min + "<=" + n + "<=" + max);
                 }
                 throw this.vmComposeError(Error(), 5, err + " " + n); // 5=Improper argument
             }
@@ -11601,19 +11993,11 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.vmAssertNumber(n, err || "?");
             return (n >= 0) ? (n + 0.5) | 0 : (n - 0.5) | 0; // eslint-disable-line no-bitwise
         };
-        /*
-        // round for comparison TODO
-        vmRound4Cmp(n) {
-            const nAdd = (n >= 0) ? 0.5 : -0.5;
-    
-            return ((n * 1e12 + nAdd) | 0) / 1e12; // eslint-disable-line no-bitwise
-        }
-        */
         CpcVm.prototype.vmInRangeRound = function (n, min, max, err) {
             n = this.vmRound(n, err);
             if (n < min || n > max) {
                 if (!this.quiet) {
-                    Utils_20.Utils.console.warn("vmInRangeRound: number not in range:", min + "<=" + n + "<=" + max);
+                    Utils_21.Utils.console.warn("vmInRangeRound: number not in range:", min + "<=" + n + "<=" + max);
                 }
                 throw this.vmComposeError(Error(), n < -32768 || n > 32767 ? 6 : 5, err + " " + n); // 6=Overflow, 5=Improper argument
             }
@@ -11626,7 +12010,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             if (n < min || n > max) {
                 if (!this.quiet) {
-                    Utils_20.Utils.console.warn("vmLineInRange: number not in range:", min + "<=" + n + "<=" + max);
+                    Utils_21.Utils.console.warn("vmLineInRange: number not in range:", min + "<=" + n + "<=" + max);
                 }
                 throw this.vmComposeError(Error(), 5, err + " " + n); // 5=Improper argument
             }
@@ -11641,7 +12025,6 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         };
         CpcVm.prototype.vmGetLetterCode = function (s, err) {
             this.vmAssertString(s, err);
-            // const reLetter = RegExp("^[A-Za-z]$");
             s = s.toLowerCase();
             if (s.length !== 1 || s < "a" || s > "z") { // single letter?
                 throw this.vmComposeError(Error(), 2, err + " " + s); // Syntax Error
@@ -11669,19 +12052,14 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             else if (type === "$") { // string
                 if (typeof value !== "string") {
                     if (!this.quiet) {
-                        Utils_20.Utils.console.warn("vmAssign: expected string but got:", value);
+                        Utils_21.Utils.console.warn("vmAssign: expected string but got:", value);
                     }
                     throw this.vmComposeError(Error(), 13, "type " + type + "=" + value); // "Type mismatch"
                 }
             }
             return value;
         };
-        CpcVm.prototype.vmGotoLine = function (line, msg) {
-            if (Utils_20.Utils.debug > 5) {
-                if (typeof line === "number" || Utils_20.Utils.debug > 7) { // non-number labels only in higher debug levels
-                    Utils_20.Utils.console.debug("dvmGotoLine:", msg + ": " + line);
-                }
-            }
+        CpcVm.prototype.vmGoto = function (line, _msg) {
             this.line = line;
         };
         CpcVm.prototype.fnCheckSqTimer = function () {
@@ -11784,40 +12162,25 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             var time = Date.now();
             if (time >= this.nextFrameTime) {
                 this.vmCheckNextFrame(time);
-                this.stopCount += 1;
-                if (this.stopCount >= 5) { // do not stop too often because of just timer reason because setTimeout is expensive
-                    this.stopCount = 0;
+                this.stopCount -= 1;
+                if (this.stopCount <= 0) { // do not stop too often because of just timer reason because setTimeout is expensive
+                    this.stopCount = this.initialStop;
                     this.vmStop("timer", 20);
                 }
             }
             return this.stopEntry.reason === "";
         };
-        CpcVm.prototype.vmInitUntypedVariables = function (varChar) {
-            var names = this.variables.getAllVariableNames();
-            for (var i = 0; i < names.length; i += 1) {
-                var name_8 = names[i];
-                if (name_8.charAt(0) === varChar) {
-                    if (name_8.indexOf("$") === -1 && name_8.indexOf("%") === -1 && name_8.indexOf("!") === -1) { // no explicit type?
-                        this.variables.initVariable(name_8);
-                    }
-                }
-            }
-        };
         CpcVm.prototype.vmDefineVarTypes = function (type, err, first, last) {
             var firstNum = this.vmGetLetterCode(first, err), lastNum = last ? this.vmGetLetterCode(last, err) : firstNum;
             for (var i = firstNum; i <= lastNum; i += 1) {
                 var varChar = String.fromCharCode(i);
-                if (this.variables.getVarType(varChar) !== type) { // type changed?
-                    this.variables.setVarType(varChar, type);
-                    // initialize all untyped variables starting with varChar!
-                    this.vmInitUntypedVariables(varChar);
-                }
+                this.variables.setVarType(varChar, type);
             }
         };
         CpcVm.prototype.vmStop = function (reason, priority, force, paras) {
             var defaultPriority = CpcVm.stopPriority[reason];
             if (defaultPriority === undefined) {
-                Utils_20.Utils.console.warn("Programming error: vmStop: Unknown reason:", reason);
+                Utils_21.Utils.console.warn("Programming error: vmStop: Unknown reason:", reason);
             }
             priority = priority || 0;
             if (priority !== 0) {
@@ -11830,8 +12193,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
         };
         CpcVm.prototype.vmNotImplemented = function (name) {
-            if (!this.quiet) {
-                Utils_20.Utils.console.warn("Not implemented:", name);
+            if (Utils_21.Utils.debug > 0) {
+                Utils_21.Utils.console.debug("Not implemented:", name);
             }
         };
         CpcVm.prototype.vmUsingStringFormat = function (format, arg) {
@@ -11869,7 +12232,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 str = arg.toFixed(decimals);
             }
             if (format.indexOf(",") >= 0) { // contains comma => insert thousands separator
-                str = Utils_20.Utils.numberWithCommas(str);
+                str = Utils_21.Utils.numberWithCommas(str);
             }
             var padLen = format.length - str.length, pad = (padLen > 0) ? padChar.repeat(padLen) : "";
             str = pad + str;
@@ -11894,11 +12257,11 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.vmAssertString(name, err);
             name = name.replace(/ /g, ""); // remove spaces
             if (name.indexOf("!") === 0) {
-                name = name.substr(1); // remove preceding "!"
+                name = name.substring(1); // remove preceding "!"
             }
             var index = name.indexOf(":");
             if (index >= 0) {
-                name = name.substr(index + 1); // remove user and drive letter including ":"
+                name = name.substring(index + 1); // remove user and drive letter including ":"
             }
             name = name.toLowerCase();
             if (!name) {
@@ -11912,11 +12275,10 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.vmSetSourceMap = function (sourceMap) {
             this.sourceMap = sourceMap;
         };
-        CpcVm.prototype.vmTrace = function (line) {
-            var stream = 0;
-            this.traceLabel = String(line);
-            if (this.tronFlag1 && !isNaN(Number(line))) {
-                this.print(stream, "[" + line + "]");
+        CpcVm.prototype.vmTrace = function () {
+            if (this.tronFlag1) {
+                var stream = 0;
+                this.print(stream, "[" + String(this.line) + "]");
             }
         };
         CpcVm.prototype.vmDrawMovePlot = function (type, gPen, gColMode) {
@@ -11988,12 +12350,6 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.addressOf = function (variable) {
             // not really implemented
             this.vmAssertString(variable, "@");
-            variable = variable.replace("v.", "");
-            variable = variable.replace("[", "(");
-            var pos = variable.indexOf("("); // array variable with indices?
-            if (pos >= 0) {
-                variable = variable.substr(0, pos); // remove indices
-            }
             var varIndex = this.variables.getVariableIndex(variable);
             if (varIndex < 0) {
                 throw this.vmComposeError(Error(), 5, "@" + variable); // Improper argument
@@ -12021,7 +12377,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.atn = function (n) {
             this.vmAssertNumber(n, "ATN");
             n = Math.atan(n);
-            return this.degFlag ? Utils_20.Utils.toDegrees(n) : n;
+            return this.degFlag ? Utils_21.Utils.toDegrees(n) : n;
         };
         CpcVm.prototype.auto = function (line, increment) {
             line = line === undefined ? 10 : this.vmLineInRange(line, "AUTO");
@@ -12069,6 +12425,17 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 keyDownHandler();
             }
         };
+        // special function to set all inks temporarily; experimental and expensive
+        CpcVm.prototype.updateColorsImmediately = function (addr) {
+            var inkList = [];
+            for (var i = 0; i < 17; i += 1) {
+                /* eslint-disable no-bitwise */
+                var byte = this.peek((addr + i) & 0xffff), color = byte & 0x1f;
+                /* eslint-enable no-bitwise */
+                inkList[i] = color;
+            }
+            this.canvas.updateColorsAndCanvasImmediately(inkList);
+        };
         CpcVm.prototype.call = function (addr) {
             var args = [];
             for (var _i = 1; _i < arguments.length; _i++) {
@@ -12094,15 +12461,10 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     this.keyboard.resetExpansionTokens();
                     // TODO: reset also speed key
                     break;
-                case 0xbb06: // KM Wait Char (ROM &1A3C)
-                    // since we do not return a character, we do the same as call &bb18
-                    if (this.inkey$() === "") { // no key?
-                        this.vmStop("waitKey", 30); // wait for key
-                    }
-                    break;
                 case 0xbb0c: // KM Char Return (ROM &1A77), depending on number of args
                     this.vmPutKeyInBuffer(String.fromCharCode(args.length));
                     break;
+                case 0xbb06: // KM Wait Char (ROM &1A3C); since we do not return a character, we do the same as call &bb18
                 case 0xbb18: // KM Wait Key (ROM &1B56)
                     if (this.inkey$() === "") { // no key?
                         this.vmStop("waitKey", 30); // wait for key
@@ -12141,10 +12503,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     this.cursor(0, 0);
                     break;
                 case 0xbb8a: // TXT Place Cursor (ROM &1268)
-                    this.vmPlaceRemoveCursor(0); // 0=stream
-                    break;
                 case 0xbb8d: // TXT Remove Cursor (ROM &1268); same as place cursor
-                    this.vmPlaceRemoveCursor(0);
+                    this.vmPlaceRemoveCursor(0); // 0=stream
                     break;
                 case 0xbb90: // TXT Set Pen (ROM &12A9), depending on number of args
                     this.pen(0, args.length % 16);
@@ -12205,6 +12565,14 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 case 0xbd1c: // MC Set Mode (ROM &0776) just set mode, depending on number of args
                     this.vmMcSetMode(args.length % 4);
                     break;
+                /*
+                // would be a temporary functionality, will be undo with next interrupt
+                case 0xbd22: // MC Clear Inks (ROM &0786), ink table address in DE (last parameter)
+                    break;
+                */
+                case 0xbd25: // MC Set Inks (ROM &0799), ink table address in DE (last parameter) TTT experimantal
+                    this.updateColorsImmediately(args[0]);
+                    break;
                 case 0xbd3d: // KM Flush (ROM ?; CPC 664/6128)
                     this.clearInput();
                     break;
@@ -12222,8 +12590,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     this.vmSetRamSelect(args.length);
                     break;
                 default:
-                    if (Utils_20.Utils.debug > 0) {
-                        Utils_20.Utils.console.debug("Ignored: CALL", addr, args);
+                    if (Utils_21.Utils.debug > 0) {
+                        Utils_21.Utils.console.debug("Ignored: CALL", addr, args);
                     }
                     break;
             }
@@ -12237,11 +12605,13 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             };
             this.vmStop("fileCat", 45, false, fileParas);
         };
-        CpcVm.prototype.chain = function (name, line) {
+        CpcVm.prototype.chain = function (name, line, first, last) {
             var inFile = this.inFile;
             name = this.vmAdaptFilename(name, "CHAIN");
             this.closein();
             inFile.line = line === undefined ? 0 : this.vmInRangeRound(line, 0, 65535, "CHAIN"); // here we do rounding of line number
+            inFile.first = first === undefined ? 0 : this.vmAssertInRange(first, 1, 65535, "CHAIN"); // first and last are not needed
+            inFile.last = last === undefined ? 0 : this.vmAssertInRange(last, 1, 65535, "CHAIN");
             inFile.open = true;
             inFile.command = "chain";
             inFile.name = name;
@@ -12284,8 +12654,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.rad();
             this.soundClass.resetQueue();
             this.soundData.length = 0;
-            this.closein();
-            this.closeout();
+            this.vmResetInFileHandling();
+            this.vmResetOutFileHandling();
         };
         CpcVm.prototype.clearInput = function () {
             this.keyboard.clearInput();
@@ -12302,9 +12672,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             CpcVm.vmResetFileHandling(inFile);
         };
         CpcVm.prototype.closein = function () {
-            var inFile = this.inFile;
-            if (inFile.open) {
-                this.vmCloseinCallback(); // not really used as a callback here
+            if (this.inFile.open) {
+                this.vmCloseinCallback(); // close directly
             }
         };
         CpcVm.prototype.vmCloseoutCallback = function () {
@@ -12316,7 +12685,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             if (outFile.open) {
                 if (outFile.command !== "openout") {
                     if (!this.quiet) {
-                        Utils_20.Utils.console.warn("closeout: command=", outFile.command); // should not occur
+                        Utils_21.Utils.console.warn("closeout: command=", outFile.command); // should not occur
                     }
                 }
                 if (!outFile.fileData.length) { // openout without data?
@@ -12360,7 +12729,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             if (!this.startLine) {
                 throw this.vmComposeError(Error(), 17, "CONT"); // cannot continue
             }
-            this.vmGotoLine(this.startLine, "CONT");
+            this.vmGoto(this.startLine, "CONT");
             this.startLine = 0;
         };
         CpcVm.prototype.copychr$ = function (stream) {
@@ -12375,7 +12744,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         };
         CpcVm.prototype.cos = function (n) {
             this.vmAssertNumber(n, "COS");
-            return Math.cos((this.degFlag) ? Utils_20.Utils.toRadians(n) : n);
+            return Math.cos((this.degFlag) ? Utils_21.Utils.toRadians(n) : n);
         };
         CpcVm.prototype.creal = function (n) {
             this.vmAssertNumber(n, "CREAL");
@@ -12481,43 +12850,6 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             this.variables.dimVariable(varName, dimensions);
         };
-        /*
-        // TODO, if we want to check array access
-        vmGetVariable(varName: string, ...args: number[]): VariableValue { // TODO
-            let value = this.variables.getVariable(varName);
-    
-            for (let i = 0; i < args.length; i += 1) {
-                if (Array.isArray(value)) {
-                    const index = this.vmInRangeRound(args[i], 0, value.length - 1, "vmGet"); // TODO: in case of error: Subscript out of range; or: vmAssertInRange?
-    
-                    value = value[index];
-                } else {
-                    throw this.vmComposeError(Error(), 9, String(value)); // Subscript out of range
-                }
-            }
-            return value;
-        }
-    
-        vmSetVariable(varName: string, valueToSet: number | string, ...args: number[]): VariableValue { // TODO
-            let value = this.variables.getVariable(varName);
-    
-            for (let i = 0; i < args.length; i += 1) {
-                if (Array.isArray(value)) {
-                    const index = this.vmInRangeRound(args[i], 0, value.length - 1, "vmGet"); // TODO: in case of error: Subscript out of range; or: vmAssertInRange?
-    
-                    if (i < args.length - 1) {
-                        value = value[index];
-                    } else {
-                        value[index] = valueToSet;
-                    }
-                } else {
-                    throw this.vmComposeError(Error(), 9, String(value)); // Subscript out of range
-                }
-            }
-    
-            return value;
-        }
-        */
         CpcVm.prototype.draw = function (x, y, gPen, gColMode) {
             x = this.vmInRangeRound(x, -32768, 32767, "DRAW");
             y = this.vmInRangeRound(y, -32768, 32767, "DRAW");
@@ -12580,7 +12912,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             else { // 0
                 if (!this.quiet) {
-                    Utils_20.Utils.console.warn("ENT: toneEnv", toneEnv);
+                    Utils_21.Utils.console.warn("ENT: toneEnv", toneEnv);
                 }
                 throw this.vmComposeError(Error(), 5, "ENT " + toneEnv); // Improper argument
             }
@@ -12624,14 +12956,22 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             return eof;
         };
+        // find array variable matching <name>(A+)(typeChar?)
         CpcVm.prototype.vmFindArrayVariable = function (name) {
+            var typeChar = name.charAt(name.length - 1); // last character
+            if (typeChar === "I" || typeChar === "R" || typeChar === "$") { // explicit type specified?
+                name = name.slice(0, -1); // remove type char
+            }
+            else {
+                typeChar = "";
+            }
             name += "A";
-            if (this.variables.variableExist(name)) { // one dim array variable?
-                return name;
+            if (this.variables.variableExist(name + typeChar)) { // one dim array variable?
+                return name + typeChar;
             }
             // find multi-dim array variable
             var fnArrayVarFilter = function (variable) {
-                return (variable.indexOf(name) === 0) ? variable : null; // find array varA
+                return (variable.indexOf(name) === 0 && (!typeChar || variable.charAt(variable.length - 1) === typeChar)) ? variable : null; // find array varA(typeChar?)
             };
             var names = this.variables.getAllVariableNames();
             names = names.filter(fnArrayVarFilter); // find array varA... with any number of indices
@@ -12647,13 +12987,13 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             for (var i = 0; i < args.length; i += 1) {
                 this.vmAssertString(args[i], "ERASE");
-                var name_9 = this.vmFindArrayVariable(args[i]);
-                if (name_9) {
-                    this.variables.initVariable(name_9);
+                var name_10 = this.vmFindArrayVariable(args[i]);
+                if (name_10) {
+                    this.variables.initVariable(name_10);
                 }
                 else {
                     if (!this.quiet) {
-                        Utils_20.Utils.console.warn("erase: Array variable not found:", args[i]);
+                        Utils_21.Utils.console.warn("erase: Array variable not found:", args[i]);
                     }
                     throw this.vmComposeError(Error(), 5, "ERASE " + args[i]); // Improper argument
                 }
@@ -12670,15 +13010,11 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             var errors = CpcVm.errors, errorString = errors[err] || errors[errors.length - 1]; // maybe Unknown error
             this.errorCode = err;
             this.errorLine = this.line;
-            var line = this.errorLine;
-            if (this.traceLabel) {
-                line += " (trace: " + this.traceLabel + ")";
-            }
-            var errorWithInfo = errorString + " in " + line + (errInfo ? (": " + errInfo) : "");
+            var errorWithInfo = errorString + " in " + this.errorLine + (errInfo ? (": " + errInfo) : "");
             var hidden = false; // hide errors wich are catched
             if (this.errorGotoLine && !this.errorResumeLine) {
-                this.errorResumeLine = Number(this.errorLine);
-                this.vmGotoLine(this.errorGotoLine, "onError");
+                this.errorResumeLine = this.errorLine;
+                this.vmGoto(this.errorGotoLine, "onError");
                 this.vmStop("onError", 50);
                 hidden = true;
             }
@@ -12686,10 +13022,10 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 this.vmStop("error", 50);
             }
             if (!this.quiet) {
-                Utils_20.Utils.console.log("BASIC error(" + err + "):", errorWithInfo + (hidden ? " (hidden: " + hidden + ")" : ""));
+                Utils_21.Utils.console.log("BASIC error(" + err + "):", errorWithInfo + (hidden ? " (hidden: " + hidden + ")" : ""));
             }
-            var traceLine = this.traceLabel || this.line, sourceMapEntry = this.sourceMap[traceLine], pos = sourceMapEntry && sourceMapEntry[0], len = sourceMapEntry && sourceMapEntry[1];
-            return Utils_20.Utils.composeError("CpcVm", error, errorString, errInfo, pos, len, line, hidden);
+            var traceLine = this.line, sourceMapEntry = this.sourceMap[traceLine], pos = sourceMapEntry && sourceMapEntry[0], len = sourceMapEntry && sourceMapEntry[1];
+            return Utils_21.Utils.composeError("CpcVm", error, errorString, errInfo, pos, len, this.line, hidden);
         };
         CpcVm.prototype.error = function (err, errInfo) {
             err = this.vmInRangeRound(err, 0, 255, "ERROR"); // could trigger another error
@@ -12720,7 +13056,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             return this.himemValue; // example, e.g. 42245;
         };
         CpcVm.prototype.vmGosub = function (retLabel, n) {
-            this.vmGotoLine(n, "gosub (ret=" + retLabel + ")");
+            this.vmGoto(n, "gosub (ret=" + retLabel + ")");
             this.gosubStack.push(retLabel);
         };
         CpcVm.prototype.gosub = function (retLabel, n) {
@@ -12730,9 +13066,9 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             this.vmGosub(retLabel, n);
         };
-        CpcVm.prototype["goto"] = function (n) {
-            // TODO: do we want: this.vmLineInRange(Number(n), "GOTO");
-            this.vmGotoLine(n, "goto");
+        CpcVm.prototype["goto"] = function (line) {
+            this.vmLineInRange(line, "GOTO");
+            this.vmGoto(line, "goto");
         };
         CpcVm.prototype.graphicsPaper = function (gPaper) {
             gPaper = this.vmInRangeRound(gPaper, 0, 15, "GRAPHICS PAPER");
@@ -12807,8 +13143,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.vmInputCallback = function () {
             var inputParas = this.vmGetStopObject().paras, stream = inputParas.stream, input = inputParas.input, inputValues = input.split(","), convertedInputValues = [], types = inputParas.types;
             var inputOk = true;
-            if (Utils_20.Utils.debug > 0) {
-                Utils_20.Utils.console.debug("vmInputCallback:", input);
+            if (Utils_21.Utils.debug > 0) {
+                Utils_21.Utils.console.debug("vmInputCallback:", input);
             }
             if (types && (inputValues.length === types.length)) {
                 for (var i = 0; i < types.length; i += 1) {
@@ -12846,8 +13182,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             if (line.charAt(0) === '"') { // quoted string?
                 var index = line.indexOf('"', 1); // closing quotes in this line?
                 if (index >= 0) {
-                    value = line.substr(1, index - 1); // take string without quotes
-                    line = line.substr(index + 1);
+                    value = line.substring(1, index + 1 - 1); // take string without quotes
+                    line = line.substring(index + 1);
                     line = line.replace(/^\s*,/, ""); // multiple args => remove next comma
                 }
                 else if (fileData.length > 1) { // no closing quotes in this line => try to combine with next line
@@ -12861,8 +13197,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             else { // unquoted string
                 var index = line.indexOf(","); // multiple args?
                 if (index >= 0) {
-                    value = line.substr(0, index); // take arg
-                    line = line.substr(index + 1);
+                    value = line.substring(0, index); // take arg
+                    line = line.substring(index + 1);
                 }
                 else {
                     value = line; // take line
@@ -12877,14 +13213,14 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             index = line.indexOf(","), // multiple args?
             value;
             if (index >= 0) {
-                value = line.substr(0, index); // take arg
-                line = line.substr(index + 1);
+                value = line.substring(0, index); // take arg
+                line = line.substring(index + 1);
             }
             else {
                 index = line.indexOf(" "); // space?
                 if (index >= 0) {
-                    value = line.substr(0, index); // take item until space
-                    line = line.substr(index);
+                    value = line.substring(0, index); // take item until space
+                    line = line.substring(index);
                     line = line.replace(/^\s*/, ""); // remove spaces after number
                 }
                 else {
@@ -12957,13 +13293,17 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
         };
         CpcVm.prototype.instr = function (p1, p2, p3) {
-            this.vmAssertString(p2, "INSTR");
-            if (typeof p1 === "string") { // p1=string, p2=search string
-                return p1.indexOf(p2) + 1;
+            var startPos = typeof p1 === "number" ? this.vmInRangeRound(p1, 1, 255, "INSTR") - 1 : 0, // p1=startpos
+            str = typeof p1 === "number" ? p2 : p1, search = typeof p1 === "number" ? p3 : p2;
+            this.vmAssertString(str, "INSTR");
+            this.vmAssertString(search, "INSTR");
+            if (startPos >= str.length) {
+                return 0; // not found
             }
-            p1 = this.vmInRangeRound(p1, 1, 255, "INSTR"); // p1=startpos
-            this.vmAssertString(p3, "INSTR");
-            return p2.indexOf(p3, p1 - 1) + 1; // p2=string, p3=search string
+            if (!search.length) {
+                return startPos + 1;
+            }
+            return str.indexOf(search, startPos) + 1;
         };
         CpcVm.prototype["int"] = function (n) {
             this.vmAssertNumber(n, "INT");
@@ -12995,7 +13335,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.left$ = function (s, len) {
             this.vmAssertString(s, "LEFT$");
             len = this.vmInRangeRound(len, 0, 255, "LEFT$");
-            return s.substr(0, len);
+            return s.substring(0, len);
         };
         CpcVm.prototype.len = function (s) {
             this.vmAssertString(s, "LEN");
@@ -13004,8 +13344,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         // let
         CpcVm.prototype.vmLineInputCallback = function () {
             var inputParas = this.vmGetStopObject().paras, input = inputParas.input;
-            if (Utils_20.Utils.debug > 0) {
-                Utils_20.Utils.console.debug("vmLineInputCallback:", input);
+            if (Utils_21.Utils.debug > 0) {
+                Utils_21.Utils.console.debug("vmLineInputCallback:", input);
             }
             this.vmSetInputValues([input]);
             this.cursor(inputParas.stream, 0);
@@ -13085,8 +13425,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     if (isNaN(length_1)) {
                         length_1 = input.length; // only valid after atob()
                     }
-                    if (Utils_20.Utils.debug > 1) {
-                        Utils_20.Utils.console.debug("vmLoadCallback:", inFile.name + ": putting data in memory", start, "-", start + length_1);
+                    if (Utils_21.Utils.debug > 1) {
+                        Utils_21.Utils.console.debug("vmLoadCallback:", inFile.name + ": putting data in memory", start, "-", start + length_1);
                     }
                     for (var i = 0; i < length_1; i += 1) {
                         var byte = input.charCodeAt(i);
@@ -13170,7 +13510,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             else if (args.length === 1) { // if just one argument, return it, even if it is a string
                 if (typeof args[0] !== "number" && !this.quiet) {
-                    Utils_20.Utils.console.warn("MAX: Not a number:", args[0]);
+                    Utils_21.Utils.console.warn("MAX: Not a number:", args[0]);
                 }
                 return args[0];
             }
@@ -13202,7 +13542,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             if (len !== undefined) {
                 len = this.vmInRangeRound(len, 0, 255, "MID$");
             }
-            return s.substr(start - 1, len);
+            return s.substr(start - 1, len); // or: s.substring(start - 1, len === undefined ? len : start - 1 + len);
         };
         CpcVm.prototype.mid$Assign = function (s, start, len, newString) {
             this.vmAssertString(s, "MID$");
@@ -13215,7 +13555,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             if (len > s.length - start) {
                 len = s.length - start;
             }
-            s = s.substr(0, start) + newString.substr(0, len) + s.substr(start + len);
+            s = s.substring(0, start) + newString.substring(0, len) + s.substring(start + len);
             return s;
         };
         CpcVm.prototype.min = function () {
@@ -13228,7 +13568,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             else if (args.length === 1) { // if just one argument, return it, even if it is a string
                 if (typeof args[0] !== "number" && !this.quiet) {
-                    Utils_20.Utils.console.warn("MIN: Not a number:", args[0]);
+                    Utils_21.Utils.console.warn("MIN: Not a number:", args[0]);
                 }
                 return args[0];
             }
@@ -13306,8 +13646,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             n = this.vmInRangeRound(n, 0, 255, "ON GOSUB");
             var line;
             if (!n || n > args.length) { // out of range? => continue with line after onGosub
-                if (Utils_20.Utils.debug > 0) {
-                    Utils_20.Utils.console.debug("onGosub: out of range: n=" + n + " in " + this.line);
+                if (Utils_21.Utils.debug > 1) {
+                    Utils_21.Utils.console.debug("onGosub: out of range: n=" + n + " in " + this.line);
                 }
                 line = retLabel;
             }
@@ -13318,7 +13658,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 }
                 this.gosubStack.push(retLabel);
             }
-            this.vmGotoLine(line, "onGosub (n=" + n + ", ret=" + retLabel + ", line=" + line + ")");
+            this.vmGoto(line, "onGosub (n=" + n + ", ret=" + retLabel + ", line=" + line + ")");
         };
         CpcVm.prototype.onGoto = function (retLabel, n) {
             var args = [];
@@ -13328,15 +13668,15 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             n = this.vmInRangeRound(n, 0, 255, "ON GOTO");
             var line;
             if (!n || n > args.length) { // out of range? => continue with line after onGoto
-                if (Utils_20.Utils.debug > 0) {
-                    Utils_20.Utils.console.debug("onGoto: out of range: n=" + n + " in " + this.line);
+                if (Utils_21.Utils.debug > 1) {
+                    Utils_21.Utils.console.debug("onGoto: out of range: n=" + n + " in " + this.line);
                 }
                 line = retLabel;
             }
             else {
                 line = this.vmLineInRange(args[n - 1], "ON GOTO");
             }
-            this.vmGotoLine(line, "onGoto (n=" + n + ", ret=" + retLabel + ", line=" + line + ")");
+            this.vmGoto(line, "onGoto (n=" + n + ", ret=" + retLabel + ", line=" + line + ")");
         };
         CpcVm.fnChannel2ChannelIndex = function (channel) {
             if (channel === 4) {
@@ -13362,7 +13702,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             if (input !== null) {
                 input = input.replace(/\r\n/g, "\n"); // remove CR (maybe from ASCII file in "binary" form)
                 if (input.endsWith("\n")) {
-                    input = input.substr(0, input.length - 1); // remove last "\n" (TTT: also for data files?)
+                    input = input.substring(0, input.length - 1); // remove last "\n" (TTT: also for data files?)
                 }
                 var inFile = this.inFile;
                 inFile.fileData = input.split("\n");
@@ -13396,7 +13736,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             outFile.open = true;
             outFile.command = "openout";
             outFile.name = name;
-            outFile.fileData = []; // no data yet
+            outFile.fileData.length = 0; // no data yet
             outFile.typeString = "A"; // ASCII
         };
         // or
@@ -13443,8 +13783,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 this.vmSetCrtcData(byte);
                 this.crtcData[this.crtcReg] = byte;
             }
-            else if (Utils_20.Utils.debug > 0) {
-                Utils_20.Utils.console.debug("OUT", Number(port).toString(16), byte, ": unknown port");
+            else if (Utils_21.Utils.debug > 0) {
+                Utils_21.Utils.console.debug("OUT", Number(port).toString(16), byte, ": unknown port");
             }
         };
         CpcVm.prototype.paper = function (stream, paper) {
@@ -13477,7 +13817,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 addr = (this.ramSelect - 1) * 0x4000 + 0x10000 + addr;
                 byte = this.mem[addr] || 0;
             }
-            else if (addr > this.minCharHimem && addr <= this.maxCharHimem) { // character map?
+            else if (addr > this.minCharHimem && addr <= this.maxCharHimem) { // character map; TODO: can also be in memory mapped area
                 byte = this.vmGetCharDataByte(addr);
             }
             else {
@@ -13523,7 +13863,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             else if (page === this.screenPage) { // screen memory page?
                 this.canvas.setByte(addr, byte); // write byte also to screen memory
             }
-            else if (addr > this.minCharHimem && addr <= this.maxCharHimem) { // character map?
+            else if (addr > this.minCharHimem && addr <= this.maxCharHimem) { // character map; TODO: can also be in memory mapped area
                 this.vmSetCharDataByte(addr, byte);
             }
             this.mem[addr] = byte;
@@ -13597,8 +13937,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.vmPrintChars = function (stream, str) {
             var win = this.windowDataList[stream];
             if (!win.textEnabled) {
-                if (Utils_20.Utils.debug > 0) {
-                    Utils_20.Utils.console.debug("vmPrintChars: text output disabled:", str);
+                if (Utils_21.Utils.debug > 0) {
+                    Utils_21.Utils.console.debug("vmPrintChars: text output disabled:", str);
                 }
                 return;
             }
@@ -13625,8 +13965,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             if (char >= this.minCustomChar) {
                 this.symbol.apply(this, paraList);
             }
-            else if (Utils_20.Utils.debug > 0) {
-                Utils_20.Utils.console.debug("vmControlSymbol: define SYMBOL ignored:", char);
+            else if (Utils_21.Utils.debug > 0) {
+                Utils_21.Utils.console.debug("vmControlSymbol: define SYMBOL ignored:", char);
             }
         };
         CpcVm.prototype.vmControlWindow = function (para, stream) {
@@ -13763,7 +14103,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     this.vmLocate(stream, para.charCodeAt(0), para.charCodeAt(1));
                     break;
                 default:
-                    Utils_20.Utils.console.warn("vmHandleControlCode: Unknown control code:", code);
+                    Utils_21.Utils.console.warn("vmHandleControlCode: Unknown control code:", code);
                     break;
             }
             return out;
@@ -13780,11 +14120,11 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     }
                     var paraCount = CpcVm.controlCodeParameterCount[code];
                     if (i + paraCount <= str.length) {
-                        out += this.vmHandleControlCode(code, str.substr(i, paraCount), stream);
+                        out += this.vmHandleControlCode(code, str.substring(i, i + paraCount), stream);
                         i += paraCount;
                     }
                     else {
-                        buf = str.substr(i - 1); // not enough parameters, put code in buffer and wait for more
+                        buf = str.substring(i - 1); // not enough parameters, put code in buffer and wait for more
                         i = str.length;
                     }
                 }
@@ -13842,7 +14182,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     }
                 }
                 else if (typeof arg === "number") {
-                    str = ((arg >= 0) ? " " : "") + String(arg) + " ";
+                    str = ((arg >= 0) ? " " : "") + Utils_21.Utils.toPrecision9(arg) + " ";
                 }
                 else { // e.g. string
                     str = String(arg);
@@ -13912,8 +14252,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.vmRandomizeCallback = function () {
             var inputParas = this.vmGetStopObject().paras, input = inputParas.input, value = CpcVm.vmVal(input); // convert to number (also binary, hex)
             var inputOk = true;
-            if (Utils_20.Utils.debug > 0) {
-                Utils_20.Utils.console.debug("vmRandomizeCallback:", input);
+            if (Utils_21.Utils.debug > 0) {
+                Utils_21.Utils.console.debug("vmRandomizeCallback:", input);
             }
             if (isNaN(value)) {
                 inputOk = false;
@@ -13947,8 +14287,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 if (n === 0) {
                     n = rndInit;
                 }
-                if (Utils_20.Utils.debug > 0) {
-                    Utils_20.Utils.console.debug("randomize:", n);
+                if (Utils_21.Utils.debug > 1) {
+                    Utils_21.Utils.console.debug("randomize:", n);
                 }
                 this.random.init(n);
             }
@@ -14016,13 +14356,12 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.restore = function (line) {
             line = line === undefined ? 0 : this.vmLineInRange(line, "RESTORE");
             var dataLineIndex = this.dataLineIndex;
-            // line = String(line);
             if (line in dataLineIndex) {
                 this.dataIndex = dataLineIndex[line];
             }
             else {
-                if (Utils_20.Utils.debug > 0) {
-                    Utils_20.Utils.console.debug("restore: search for dataLine >", line);
+                if (Utils_21.Utils.debug > 0) {
+                    Utils_21.Utils.console.debug("restore: search for dataLine >", line);
                 }
                 for (var dataLine in dataLineIndex) { // linear search a data line > line
                     if (dataLineIndex.hasOwnProperty(dataLine)) {
@@ -14036,8 +14375,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     this.dataIndex = dataLineIndex[line];
                 }
                 else {
-                    if (Utils_20.Utils.debug > 0) {
-                        Utils_20.Utils.console.debug("restore", line + ": No DATA found starting at line");
+                    if (Utils_21.Utils.debug > 0) {
+                        Utils_21.Utils.console.debug("restore", line + ": No DATA found starting at line");
                     }
                     this.dataIndex = this.dataList.length;
                 }
@@ -14045,13 +14384,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         };
         CpcVm.prototype.resume = function (line) {
             if (this.errorGotoLine) {
-                if (line === undefined) {
-                    line = this.errorResumeLine;
-                }
-                else {
-                    this.vmLineInRange(line, "RESUME");
-                }
-                this.vmGotoLine(line, "resume");
+                var label = line === undefined ? this.errorResumeLine : this.vmLineInRange(line, "RESUME");
+                this.vmGoto(label, "resume");
                 this.errorResumeLine = 0;
             }
             else {
@@ -14064,12 +14398,12 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             var resumeLineIndex = this.labelList.indexOf(this.errorResumeLine);
             if (resumeLineIndex < 0) {
-                Utils_20.Utils.console.error("resumeNext: line not found: " + this.errorResumeLine);
+                Utils_21.Utils.console.error("resumeNext: line not found: " + this.errorResumeLine);
                 this.errorResumeLine = 0;
                 return;
             }
             var line = this.labelList[resumeLineIndex + 1]; // get next line
-            this.vmGotoLine(line, "resumeNext");
+            this.vmGoto(line, "resumeNext");
             this.errorResumeLine = 0;
         };
         CpcVm.prototype["return"] = function () {
@@ -14078,7 +14412,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 throw this.vmComposeError(Error(), 3, ""); // Unexpected Return [in <line>]
             }
             else {
-                this.vmGotoLine(line, "return");
+                this.vmGoto(line, "return");
             }
             if (line === this.breakResumeLine) { // end of break handler?
                 this.breakResumeLine = 0; // can start another one
@@ -14118,7 +14452,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 decimals = maxDecimals;
             }
             // To avoid rounding errors: https://www.jacklmoore.com/notes/rounding-in-javascript
-            return Number(Math.round(Number(n + "e" + decimals)) + "e" + ((decimals >= 0) ? "-" + decimals : "+" + -decimals));
+            // Use Math.abs(n) and Math.sign(n) To round negative numbers to larger negative numbers
+            return Math.sign(n) * Number(Math.round(Number(Math.abs(n) + "e" + decimals)) + "e" + ((decimals >= 0) ? "-" + decimals : "+" + -decimals));
         };
         CpcVm.prototype.vmRunCallback = function (input, meta) {
             var inFile = this.inFile, putInMemory = input !== null && meta && (meta.typeString === "B" || inFile.start !== undefined);
@@ -14139,11 +14474,12 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.run = function (numOrString) {
             var inFile = this.inFile;
             if (typeof numOrString === "string") { // filename?
-                var name_10 = this.vmAdaptFilename(numOrString, "RUN");
+                var name_11 = this.vmAdaptFilename(numOrString, "RUN");
                 this.closein();
                 inFile.open = true;
                 inFile.command = "run";
-                inFile.name = name_10;
+                inFile.name = name_11;
+                inFile.start = undefined;
                 inFile.fnFileCallback = this.fnRunHandler;
                 this.vmStop("fileLoad", 90);
             }
@@ -14170,7 +14506,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             else {
                 type = String(type).toUpperCase();
             }
-            var fileData = [];
+            var fileData = outFile.fileData;
+            fileData.length = 0;
             if (type === "B") { // binary
                 start = this.vmRound2Complement(start, "SAVE");
                 length = this.vmRound2Complement(length, "SAVE");
@@ -14197,7 +14534,6 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             outFile.start = start;
             outFile.length = length || 0;
             outFile.entry = entry || 0;
-            outFile.fileData = fileData;
             outFile.fnFileCallback = this.fnCloseoutHandler; // we use closeout handler to reset out file handling
             this.vmStop("fileSave", 90); // must stop directly after save
         };
@@ -14207,7 +14543,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         };
         CpcVm.prototype.sin = function (n) {
             this.vmAssertNumber(n, "SIN");
-            return Math.sin((this.degFlag) ? Utils_20.Utils.toRadians(n) : n);
+            return Math.sin((this.degFlag) ? Utils_21.Utils.toRadians(n) : n);
         };
         CpcVm.prototype.sound = function (state, period, duration, volume, volEnv, toneEnv, noise) {
             state = this.vmInRangeRound(state, 1, 255, "SOUND");
@@ -14251,7 +14587,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 str = " ".repeat(n);
             }
             else if (!this.quiet) {
-                Utils_20.Utils.console.log("SPC: negative number ignored:", n);
+                Utils_21.Utils.console.log("SPC: negative number ignored:", n);
             }
             return str;
         };
@@ -14291,7 +14627,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         };
         // step
         CpcVm.prototype.stop = function (label) {
-            this.vmGotoLine(label, "stop");
+            this.vmGoto(label, "stop");
             this.vmStop("stop", 60);
         };
         CpcVm.prototype.str$ = function (n) {
@@ -14368,7 +14704,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 str = " ".repeat(count);
             }
             else if (!this.quiet) {
-                Utils_20.Utils.console.log("TAB: no tab for value", n);
+                Utils_21.Utils.console.log("TAB: no tab for value", n);
             }
             return str;
         };
@@ -14384,7 +14720,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         };
         CpcVm.prototype.tan = function (n) {
             this.vmAssertNumber(n, "TAN");
-            return Math.tan((this.degFlag) ? Utils_20.Utils.toRadians(n) : n);
+            return Math.tan((this.degFlag) ? Utils_21.Utils.toRadians(n) : n);
         };
         CpcVm.prototype.test = function (x, y) {
             x = this.vmInRangeRound(x, -32768, 32767, "TEST");
@@ -14434,11 +14770,11 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 index = match.index + match[0].length;
             }
             if (index < format.length) { // non-format characters at the end
-                formatList.push(format.substr(index));
+                formatList.push(format.substring(index));
             }
             if (formatList.length < 2) {
                 if (!this.quiet) {
-                    Utils_20.Utils.console.warn("USING: empty or invalid format:", format);
+                    Utils_21.Utils.console.warn("USING: empty or invalid format:", format);
                 }
                 throw this.vmComposeError(Error(), 5, "USING format " + format); // Improper argument
             }
@@ -14550,7 +14886,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             for (var i = 0; i < args.length; i += 1) {
                 var arg = args[i];
                 if (typeof arg === "number") {
-                    str = String(arg);
+                    str = Utils_21.Utils.toPrecision9(arg);
                 }
                 else {
                     str = '"' + String(arg) + '"';
@@ -14769,7 +15105,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
 // (c) Marco Vieth, 2020
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("CpcVmRsx", ["require", "exports", "Utils"], function (require, exports, Utils_21) {
+define("CpcVmRsx", ["require", "exports", "Utils"], function (require, exports, Utils_22) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CpcVmRsx = void 0;
@@ -14799,7 +15135,7 @@ define("CpcVmRsx", ["require", "exports", "Utils"], function (require, exports, 
             this.vm.vmNotImplemented("|B");
         };
         CpcVmRsx.prototype.basic = function () {
-            Utils_21.Utils.console.log("basic: |BASIC");
+            Utils_22.Utils.console.log("basic: |BASIC");
             this.vm.vmStop("reset", 90);
         };
         CpcVmRsx.prototype.cpm = function () {
@@ -14898,11 +15234,271 @@ define("CpcVmRsx", ["require", "exports", "Utils"], function (require, exports, 
     }());
     exports.CpcVmRsx = CpcVmRsx;
 });
+// FileHandler.ts - FileHandler
+// (c) Marco Vieth, 2019
+// https://benchmarko.github.io/CPCBasicTS/
+//
+define("FileHandler", ["require", "exports", "Utils", "DiskImage"], function (require, exports, Utils_23, DiskImage_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.FileHandler = void 0;
+    var FileHandler = /** @class */ (function () {
+        function FileHandler(options) {
+            this.adaptFilename = {};
+            this.updateStorageDatabase = {};
+            this.outputError = {};
+            this.adaptFilename = options.adaptFilename;
+            this.updateStorageDatabase = options.updateStorageDatabase;
+            this.outputError = options.outputError;
+        }
+        FileHandler.fnLocalStorageName = function (name, defaultExtension) {
+            // modify name so we do not clash with localstorage methods/properites
+            if (name.indexOf(".") < 0) { // no dot inside name?
+                name += "." + (defaultExtension || ""); // append dot or default extension
+            }
+            return name;
+        };
+        FileHandler.createMinimalAmsdosHeader = function (type, start, length) {
+            return {
+                typeString: type,
+                start: start,
+                length: length
+            };
+        };
+        FileHandler.joinMeta = function (meta) {
+            return [
+                FileHandler.metaIdent,
+                meta.typeString,
+                meta.start,
+                meta.length,
+                meta.entry
+            ].join(";");
+        };
+        // starting with (line) number, or 7 bit ASCII characters without control codes except \x1a=EOF
+        FileHandler.prototype.fnLoad2 = function (data, name, type, imported) {
+            var header, storageName = this.adaptFilename(name, "FILE");
+            storageName = FileHandler.fnLocalStorageName(storageName);
+            if (type === "text/plain") {
+                header = FileHandler.createMinimalAmsdosHeader("A", 0, data.length);
+            }
+            else {
+                if (type === "application/x-zip-compressed" || type === "cpcBasic/binary") { // are we a file inside zip?
+                    // empty
+                }
+                else { // e.g. "data:application/octet-stream;base64,..."
+                    var index = data.indexOf(",");
+                    if (index >= 0) {
+                        var info1 = data.substring(0, index);
+                        data = data.substring(index + 1); // remove meta prefix
+                        if (info1.indexOf("base64") >= 0) {
+                            data = Utils_23.Utils.atob(data); // decode base64
+                        }
+                    }
+                }
+                header = DiskImage_1.DiskImage.parseAmsdosHeader(data);
+                if (header) {
+                    data = data.substring(0x80); // remove header
+                }
+                else if (FileHandler.reRegExpIsText.test(data)) {
+                    header = FileHandler.createMinimalAmsdosHeader("A", 0, data.length);
+                }
+                else if (DiskImage_1.DiskImage.testDiskIdent(data.substring(0, 8))) { // disk image file?
+                    try {
+                        var dsk = new DiskImage_1.DiskImage({
+                            data: data,
+                            diskName: name
+                        }), dir = dsk.readDirectory(), diskFiles = Object.keys(dir);
+                        for (var i = 0; i < diskFiles.length; i += 1) {
+                            var fileName = diskFiles[i];
+                            try { // eslint-disable-line max-depth
+                                data = dsk.readFile(dir[fileName]);
+                                this.fnLoad2(data, fileName, "cpcBasic/binary", imported); // recursive
+                            }
+                            catch (e) {
+                                Utils_23.Utils.console.error(e);
+                                if (e instanceof Error) { // eslint-disable-line max-depth
+                                    this.outputError(e, true);
+                                }
+                            }
+                        }
+                    }
+                    catch (e) {
+                        Utils_23.Utils.console.error(e);
+                        if (e instanceof Error) {
+                            this.outputError(e, true);
+                        }
+                    }
+                    header = undefined; // ignore dsk file
+                }
+                else { // binary
+                    header = FileHandler.createMinimalAmsdosHeader("B", 0, data.length);
+                }
+            }
+            if (header) {
+                var meta = FileHandler.joinMeta(header);
+                try {
+                    Utils_23.Utils.localStorage.setItem(storageName, meta + "," + data);
+                    this.updateStorageDatabase("set", storageName);
+                    Utils_23.Utils.console.log("fnOnLoad: file: " + storageName + " meta: " + meta + " imported");
+                    imported.push(name);
+                }
+                catch (e) { // maybe quota exceeded
+                    Utils_23.Utils.console.error(e);
+                    if (e instanceof Error) {
+                        if (e.name === "QuotaExceededError") {
+                            e.shortMessage = storageName + ": Quota exceeded";
+                        }
+                        this.outputError(e, true);
+                    }
+                }
+            }
+        };
+        FileHandler.metaIdent = "CPCBasic";
+        FileHandler.reRegExpIsText = new RegExp(/^\d+ |^[\t\r\n\x1a\x20-\x7e]*$/); // eslint-disable-line no-control-regex
+        return FileHandler;
+    }());
+    exports.FileHandler = FileHandler;
+});
+// FileSelect.ts - FileSelect
+// (c) Marco Vieth, 2019
+// https://benchmarko.github.io/CPCBasicTS/
+//
+define("FileSelect", ["require", "exports", "Utils", "ZipFile", "View"], function (require, exports, Utils_24, ZipFile_1, View_6) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.FileSelect = void 0;
+    var FileSelect = /** @class */ (function () {
+        function FileSelect(options) {
+            this.fnEndOfImport = {};
+            this.outputError = {};
+            this.fnLoad2 = {};
+            this.files = {}; // = dataTransfer ? dataTransfer.files : ((event.target as any).files as FileList), // dataTransfer for drag&drop, target.files for file input
+            this.fileIndex = 0;
+            this.imported = []; // imported file names
+            this.file = {}; // current file
+            this.fnEndOfImport = options.fnEndOfImport;
+            this.outputError = options.outputError;
+            this.fnLoad2 = options.fnLoad2;
+        }
+        FileSelect.prototype.fnReadNextFile = function (reader) {
+            if (this.fileIndex < this.files.length) {
+                var file = this.files[this.fileIndex];
+                this.fileIndex += 1;
+                var lastModified = file.lastModified, lastModifiedDate = lastModified ? new Date(lastModified) : file.lastModifiedDate, // lastModifiedDate deprecated, but for old IE
+                text = file.name + " " + (file.type || "n/a") + " " + file.size + " " + (lastModifiedDate ? lastModifiedDate.toLocaleDateString() : "n/a");
+                Utils_24.Utils.console.log(text);
+                if (file.type === "text/plain") {
+                    reader.readAsText(file);
+                }
+                else if (file.type === "application/x-zip-compressed") {
+                    reader.readAsArrayBuffer(file);
+                }
+                else {
+                    reader.readAsDataURL(file);
+                }
+                this.file = file;
+            }
+            else {
+                this.fnEndOfImport(this.imported);
+            }
+        };
+        FileSelect.prototype.fnOnLoad = function (event) {
+            var reader = event.target, data = (reader && reader.result) || null, file = this.file, name = file.name, type = file.type;
+            if (type === "application/x-zip-compressed" && data instanceof ArrayBuffer) {
+                var zip = void 0;
+                try {
+                    zip = new ZipFile_1.ZipFile(new Uint8Array(data), name); // rather data
+                }
+                catch (e) {
+                    Utils_24.Utils.console.error(e);
+                    if (e instanceof Error) {
+                        this.outputError(e, true);
+                    }
+                }
+                if (zip) {
+                    var zipDirectory = zip.getZipDirectory(), entries = Object.keys(zipDirectory);
+                    for (var i = 0; i < entries.length; i += 1) {
+                        var name2 = entries[i];
+                        var data2 = void 0;
+                        try {
+                            data2 = zip.readData(name2);
+                        }
+                        catch (e) {
+                            Utils_24.Utils.console.error(e);
+                            if (e instanceof Error) { // eslint-disable-line max-depth
+                                this.outputError(e, true);
+                            }
+                        }
+                        if (data2) {
+                            this.fnLoad2(data2, name2, type, this.imported);
+                        }
+                    }
+                }
+            }
+            else if (typeof data === "string") {
+                this.fnLoad2(data, name, type, this.imported);
+            }
+            else {
+                Utils_24.Utils.console.warn("Error loading file", name, "with type", type, " unexpected data:", data);
+            }
+            if (reader) {
+                this.fnReadNextFile(reader);
+            }
+        };
+        FileSelect.prototype.fnErrorHandler = function (event, file) {
+            var reader = event.target;
+            var msg = "fnErrorHandler: Error reading file " + file.name;
+            if (reader && reader.error !== null) {
+                if (reader.error.NOT_FOUND_ERR) {
+                    msg += ": File not found";
+                }
+                else if (reader.error.ABORT_ERR) {
+                    msg = ""; // nothing
+                }
+            }
+            if (msg) {
+                Utils_24.Utils.console.warn(msg);
+            }
+            if (reader) {
+                this.fnReadNextFile(reader);
+            }
+        };
+        // https://stackoverflow.com/questions/10261989/html5-javascript-drag-and-drop-file-from-external-window-windows-explorer
+        // https://www.w3.org/TR/file-upload/#dfn-filereader
+        FileSelect.prototype.fnHandleFileSelect = function (event) {
+            event.stopPropagation();
+            event.preventDefault();
+            var dataTransfer = event.dataTransfer, files = dataTransfer ? dataTransfer.files : View_6.View.getEventTarget(event).files; // dataTransfer for drag&drop, target.files for file input
+            if (!files || !files.length) {
+                Utils_24.Utils.console.error("fnHandleFileSelect: No files!");
+                return;
+            }
+            this.files = files;
+            this.fileIndex = 0;
+            this.imported.length = 0;
+            if (window.FileReader) {
+                var reader = new FileReader();
+                reader.onerror = this.fnErrorHandler.bind(this);
+                reader.onload = this.fnOnLoad.bind(this);
+                this.fnReadNextFile(reader);
+            }
+            else {
+                Utils_24.Utils.console.warn("fnHandleFileSelect: FileReader API not supported.");
+            }
+        };
+        //TODO: can we use View.attachEventHandler() somehow?
+        FileSelect.prototype.addFileSelectHandler = function (element, type) {
+            element.addEventListener(type, this.fnHandleFileSelect.bind(this), false);
+        };
+        return FileSelect;
+    }());
+    exports.FileSelect = FileSelect;
+});
 // Controller.ts - Controller
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLexer", "BasicParser", "BasicTokenizer", "Canvas", "CodeGeneratorBasic", "CodeGeneratorJs", "CodeGeneratorToken", "CommonEventHandler", "cpcCharset", "CpcVm", "CpcVmRsx", "Diff", "DiskImage", "InputStack", "Keyboard", "TextCanvas", "VirtualKeyboard", "Sound", "Variables", "View", "ZipFile"], function (require, exports, Utils_22, BasicFormatter_1, BasicLexer_1, BasicParser_3, BasicTokenizer_1, Canvas_1, CodeGeneratorBasic_1, CodeGeneratorJs_1, CodeGeneratorToken_1, CommonEventHandler_1, cpcCharset_1, CpcVm_1, CpcVmRsx_1, Diff_1, DiskImage_1, InputStack_1, Keyboard_1, TextCanvas_1, VirtualKeyboard_1, Sound_1, Variables_1, View_6, ZipFile_1) {
+define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLexer", "BasicParser", "BasicTokenizer", "Canvas", "CodeGeneratorBasic", "CodeGeneratorJs", "CodeGeneratorToken", "CommonEventHandler", "cpcCharset", "CpcVm", "CpcVmRsx", "Diff", "DiskImage", "FileHandler", "FileSelect", "InputStack", "Keyboard", "TextCanvas", "VirtualKeyboard", "Sound", "Variables", "View"], function (require, exports, Utils_25, BasicFormatter_1, BasicLexer_1, BasicParser_2, BasicTokenizer_1, Canvas_1, CodeGeneratorBasic_1, CodeGeneratorJs_1, CodeGeneratorToken_1, CommonEventHandler_1, cpcCharset_1, CpcVm_1, CpcVmRsx_1, Diff_1, DiskImage_2, FileHandler_1, FileSelect_1, InputStack_1, Keyboard_1, TextCanvas_1, VirtualKeyboard_1, Sound_1, Variables_1, View_7) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Controller = void 0;
@@ -14911,10 +15507,12 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.fnScript = undefined; // eslint-disable-line @typescript-eslint/ban-types
             this.timeoutHandlerActive = false;
             this.nextLoopTimeOut = 0; // next timeout for the main loop
+            this.initialLoopTimeout = 0;
             this.inputSet = false;
-            this.variables = new Variables_1.Variables();
             this.inputStack = new InputStack_1.InputStack();
-            this.sound = new Sound_1.Sound();
+            this.sound = new Sound_1.Sound({
+                AudioContextConstructor: window.AudioContext
+            });
             /* eslint-disable no-invalid-this */
             this.handlers = {
                 timer: this.fnTimer,
@@ -14949,7 +15547,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.fnWaitInputHandler = this.fnWaitInput.bind(this);
             this.fnOnEscapeHandler = this.fnOnEscape.bind(this);
             this.fnDirectInputHandler = this.fnDirectInput.bind(this);
-            this.fnPutKeyInBufferHandler = this.fnPutKeyInBuffer.bind(this);
+            this.fnPutKeyInBufferHandler = this.fnPutKeysInBuffer.bind(this);
             this.model = model;
             this.view = view;
             this.commonEventHandler = new CommonEventHandler_1.CommonEventHandler(model, view, this);
@@ -14966,14 +15564,23 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             view.setHidden("textArea", !model.getProperty("showText"));
             view.setHidden("variableArea", !model.getProperty("showVariable"));
             view.setHidden("kbdArea", !model.getProperty("showKbd"), "flex");
-            view.setHidden("kbdLayoutArea", !model.getProperty("showKbdLayout"));
+            view.setHidden("kbdLayoutArea", model.getProperty("showKbd"), "inherit"); // kbd visible => kbdlayout invisible
             view.setHidden("cpcArea", false); // make sure canvas is not hidden (allows to get width, height)
             this.canvas = new Canvas_1.Canvas({
                 charset: cpcCharset_1.cpcCharset,
                 onClickKey: this.fnPutKeyInBufferHandler
             });
             view.setHidden("cpcArea", !model.getProperty("showCpc"));
+            view.setHidden("settingsArea", !model.getProperty("showSettings"), "flex");
             view.setHidden("convertArea", !model.getProperty("showConvert"), "flex");
+            view.setInputChecked("implicitLinesInput", model.getProperty("implicitLines"));
+            view.setInputChecked("arrayBoundsInput", model.getProperty("arrayBounds"));
+            this.variables = new Variables_1.Variables({
+                arrayBounds: model.getProperty("arrayBounds")
+            });
+            view.setInputChecked("traceInput", model.getProperty("trace"));
+            view.setInputValue("speedInput", String(model.getProperty("speed")));
+            this.fnSpeed();
             var kbdLayout = model.getProperty("kbdLayout");
             view.setSelectValue("kbdLayoutSelect", kbdLayout);
             this.commonEventHandler.onKbdLayoutSelectChange();
@@ -14984,8 +15591,6 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 this.virtualKeyboardCreate();
             }
             this.commonEventHandler.fnSetUserAction(this.onUserAction.bind(this)); // check first user action, also if sound is not yet on
-            var example = model.getProperty("example");
-            view.setSelectValue("exampleSelect", example);
             this.vm = new CpcVm_1.CpcVm({
                 canvas: this.canvas,
                 textCanvas: this.textCanvas,
@@ -15010,12 +15615,14 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             }; // backup of stop object
             this.setStopObject(this.noStop);
             this.codeGeneratorJs = new CodeGeneratorJs_1.CodeGeneratorJs({
-                lexer: new BasicLexer_1.BasicLexer(),
-                parser: new BasicParser_3.BasicParser(),
+                lexer: new BasicLexer_1.BasicLexer({
+                    keywords: BasicParser_2.BasicParser.keywords
+                }),
+                parser: new BasicParser_2.BasicParser(),
                 trace: model.getProperty("trace"),
-                rsx: this.rsx // just to check the names
+                rsx: this.rsx,
+                implicitLines: model.getProperty("implicitLines")
             });
-            this.initDatabases();
             if (model.getProperty("sound")) { // activate sound needs user action
                 this.setSoundActive(); // activate in waiting state
             }
@@ -15026,20 +15633,22 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 this.textCanvas.startUpdateCanvas();
             }
             this.initDropZone();
+            var example = model.getProperty("example");
+            view.setSelectValue("exampleSelect", example);
+            this.initDatabases();
         }
         Controller.prototype.initDatabases = function () {
             var model = this.model, databases = {}, databaseDirs = model.getProperty("databaseDirs").split(",");
             for (var i = 0; i < databaseDirs.length; i += 1) {
-                var databaseDir = databaseDirs[i], parts = databaseDir.split("/"), name_11 = parts[parts.length - 1];
-                databases[name_11] = {
-                    text: name_11,
+                var databaseDir = databaseDirs[i], parts = databaseDir.split("/"), name_12 = parts[parts.length - 1];
+                databases[name_12] = {
+                    text: name_12,
                     title: databaseDir,
                     src: databaseDir
                 };
             }
             this.model.addDatabases(databases);
             this.setDatabaseSelectOptions();
-            this.onDatabaseSelectChange();
         };
         Controller.prototype.onUserAction = function ( /* event, id */) {
             this.commonEventHandler.fnSetUserAction(undefined); // deactivate user action
@@ -15067,7 +15676,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             example.key = key; // maybe changed
             example.script = input;
             example.loaded = true;
-            Utils_22.Utils.console.log("addItem:", key);
+            Utils_25.Utils.console.log("addItem:", key);
             return key;
         };
         Controller.prototype.setDatabaseSelectOptions = function () {
@@ -15093,10 +15702,10 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 if (allExamples.hasOwnProperty(key)) {
                     var exampleEntry = allExamples[key];
                     if (exampleEntry.meta !== "D") { // skip data files
-                        var title = (exampleEntry.key + ": " + exampleEntry.title).substr(0, maxTitleLength), item = {
+                        var title = (exampleEntry.key + ": " + exampleEntry.title).substring(0, maxTitleLength), item = {
                             value: exampleEntry.key,
                             title: title,
-                            text: title.substr(0, maxTextLength),
+                            text: title.substring(0, maxTextLength),
                             selected: exampleEntry.key === example
                         };
                         if (item.selected) {
@@ -15124,7 +15733,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             };
             for (var i = 0; i < varNames.length; i += 1) {
                 var key = varNames[i], value = variables.getVariable(key), title = key + "=" + value;
-                var strippedTitle = title.substr(0, maxVarLength); // limit length
+                var strippedTitle = title.substring(0, maxVarLength); // limit length
                 if (title !== strippedTitle) {
                     strippedTitle += " ...";
                 }
@@ -15141,7 +15750,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.view.setSelectOptions(select, items);
         };
         Controller.prototype.updateStorageDatabase = function (action, key) {
-            var database = this.model.getProperty("database"), storage = Utils_22.Utils.localStorage;
+            var database = this.model.getProperty("database"), storage = Utils_25.Utils.localStorage;
             if (database !== "storage") {
                 this.model.setProperty("database", "storage"); // switch to storage database
             }
@@ -15170,7 +15779,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     }
                 }
                 else {
-                    Utils_22.Utils.console.error("updateStorageDatabase: unknown action", action);
+                    Utils_25.Utils.console.error("updateStorageDatabase: unknown action", action);
                 }
             }
             if (database === "storage") {
@@ -15231,7 +15840,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 this.vm.cursor(stream, 0);
                 var savedStop = this.getStopObject();
                 if (savedStop.reason === "waitInput") { // sepcial handling: set line to repeat input
-                    this.vm.vmGotoLine(savedStop.paras.line);
+                    this.vm.vmGoto(savedStop.paras.line);
                 }
                 if (!this.vm.vmEscape()) {
                     this.vm.vmStop("", 0, true); // continue program, in break handler?
@@ -15265,7 +15874,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         Controller.prototype.fnWaitKey = function () {
             var key = this.keyboard.getKeyFromBuffer();
             if (key !== "") { // do we have a key from the buffer already?
-                Utils_22.Utils.console.log("Wait for key:", key);
+                Utils_25.Utils.console.log("Wait for key:", key);
                 this.vm.vmStop("", 0, true);
                 this.removeKeyBoardHandler();
             }
@@ -15382,7 +15991,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             inputParas.input = input;
             var inputOk = false;
             if (key === "\r") {
-                Utils_22.Utils.console.log("fnWaitInput:", input, "reason", stop.reason);
+                Utils_25.Utils.console.log("fnWaitInput:", input, "reason", stop.reason);
                 if (!inputParas.noCRLF) {
                     this.vm.print(stream, "\r\n");
                 }
@@ -15416,7 +16025,23 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             }
             return lineNumber;
         };
-        Controller.splitLines = function (input) {
+        Controller.addLineNumbers = function (input) {
+            var lineParts = input.split("\n");
+            var lastLine = 0;
+            for (var i = 0; i < lineParts.length; i += 1) {
+                var lineNum = parseInt(lineParts[i], 10);
+                if (isNaN(lineNum)) {
+                    lineNum = lastLine + 1;
+                    lineParts[i] = String(lastLine + 1) + " " + lineParts[i];
+                }
+                lastLine = lineNum;
+            }
+            return lineParts.join("\n");
+        };
+        Controller.prototype.splitLines = function (input) {
+            if (this.model.getProperty("implicitLines")) {
+                input = Controller.addLineNumbers(input);
+            }
             // get numbers starting at the beginning of a line (allows some simple multi line strings)
             var lineParts = input.split(/^(\s*\d+)/m), lines = [];
             if (lineParts[0] === "") {
@@ -15426,15 +16051,15 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 var number = lineParts[i];
                 var content = lineParts[i + 1];
                 if (content.endsWith("\n")) {
-                    content = content.substr(0, content.length - 1);
+                    content = content.substring(0, content.length - 1);
                 }
                 lines.push(number + content);
             }
             return lines;
         };
         // merge two scripts with sorted line numbers, lines from script2 overwrite lines from script1
-        Controller.mergeScripts = function (script1, script2) {
-            var lines1 = Controller.splitLines(Utils_22.Utils.stringTrimEnd(script1)), lines2 = Controller.splitLines(Utils_22.Utils.stringTrimEnd(script2));
+        Controller.prototype.mergeScripts = function (script1, script2) {
+            var lines1 = this.splitLines(Utils_25.Utils.stringTrimEnd(script1)), lines2 = this.splitLines(Utils_25.Utils.stringTrimEnd(script2));
             var result = [], lineNumber1, lineNumber2;
             while (lines1.length && lines2.length) {
                 lineNumber1 = lineNumber1 || Controller.parseLineNumber(lines1[0]);
@@ -15464,8 +16089,8 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             return result.join("\n");
         };
         // get line range from a script with sorted line numbers
-        Controller.fnGetLinesInRange = function (script, firstLine, lastLine) {
-            var lines = script ? Controller.splitLines(script) : [];
+        Controller.prototype.fnGetLinesInRange = function (script, firstLine, lastLine) {
+            var lines = script ? this.splitLines(script) : [];
             while (lines.length && parseInt(lines[0], 10) < firstLine) {
                 lines.shift();
             }
@@ -15500,7 +16125,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             return dir;
         };
         Controller.fnGetStorageDirectoryEntries = function (mask) {
-            var storage = Utils_22.Utils.localStorage, dir = [];
+            var storage = Utils_25.Utils.localStorage, dir = [];
             var regExp;
             if (mask) {
                 regExp = Controller.fnPrepareMaskRegExp(mask);
@@ -15544,40 +16169,40 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             lastSlash = example.lastIndexOf("/");
             var fileMask = paras.fileMask ? Controller.fnLocalStorageName(paras.fileMask) : "", dir = Controller.fnGetStorageDirectoryEntries(fileMask), path = "";
             if (lastSlash >= 0) {
-                path = example.substr(0, lastSlash) + "/";
+                path = example.substring(0, lastSlash) + "/";
                 fileMask = path + (fileMask ? fileMask : "*.*"); // only in same directory
             }
             var dir2 = this.fnGetExampleDirectoryEntries(fileMask); // also from examples
             for (var i = 0; i < dir2.length; i += 1) {
-                dir2[i] = dir2[i].substr(path.length); // remove preceding path including "/"
+                dir2[i] = dir2[i].substring(path.length); // remove preceding path including "/"
             }
             dir = dir2.concat(dir); // combine
             this.fnPrintDirectoryEntries(stream, dir, false);
             this.vm.vmStop("", 0, true);
         };
         Controller.prototype.fnFileEra = function (paras) {
-            var stream = paras.stream, storage = Utils_22.Utils.localStorage, fileMask = Controller.fnLocalStorageName(paras.fileMask), dir = Controller.fnGetStorageDirectoryEntries(fileMask);
+            var stream = paras.stream, storage = Utils_25.Utils.localStorage, fileMask = Controller.fnLocalStorageName(paras.fileMask || ""), dir = Controller.fnGetStorageDirectoryEntries(fileMask);
             if (!dir.length) {
                 this.vm.print(stream, fileMask + " not found\r\n");
             }
             for (var i = 0; i < dir.length; i += 1) {
-                var name_12 = dir[i];
-                if (storage.getItem(name_12) !== null) {
-                    storage.removeItem(name_12);
-                    this.updateStorageDatabase("remove", name_12);
-                    if (Utils_22.Utils.debug > 0) {
-                        Utils_22.Utils.console.debug("fnEraseFile: name=" + name_12 + ": removed from localStorage");
+                var name_13 = dir[i];
+                if (storage.getItem(name_13) !== null) {
+                    storage.removeItem(name_13);
+                    this.updateStorageDatabase("remove", name_13);
+                    if (Utils_25.Utils.debug > 0) {
+                        Utils_25.Utils.console.debug("fnEraseFile: name=" + name_13 + ": removed from localStorage");
                     }
                 }
                 else {
-                    this.vm.print(stream, name_12 + " not found\r\n");
-                    Utils_22.Utils.console.warn("fnEraseFile: file not found in localStorage:", name_12);
+                    this.vm.print(stream, name_13 + " not found\r\n");
+                    Utils_25.Utils.console.warn("fnEraseFile: file not found in localStorage:", name_13);
                 }
             }
             this.vm.vmStop("", 0, true);
         };
         Controller.prototype.fnFileRen = function (paras) {
-            var stream = paras.stream, storage = Utils_22.Utils.localStorage, newName = Controller.fnLocalStorageName(paras.newName), oldName = Controller.fnLocalStorageName(paras.oldName), item = storage.getItem(oldName);
+            var stream = paras.stream, storage = Utils_25.Utils.localStorage, newName = Controller.fnLocalStorageName(paras.newName), oldName = Controller.fnLocalStorageName(paras.oldName), item = storage.getItem(oldName);
             if (item !== null) {
                 if (!storage.getItem(newName)) {
                     storage.setItem(newName, item);
@@ -15629,42 +16254,45 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             if (!this.codeGeneratorToken) {
                 this.codeGeneratorToken = new CodeGeneratorToken_1.CodeGeneratorToken({
                     lexer: new BasicLexer_1.BasicLexer({
+                        keywords: BasicParser_2.BasicParser.keywords,
                         keepWhiteSpace: true
                     }),
-                    parser: new BasicParser_3.BasicParser({
+                    parser: new BasicParser_2.BasicParser({
                         keepTokens: true,
                         keepBrackets: true,
                         keepColons: true,
                         keepDataComma: true
-                    })
+                    }),
+                    implicitLines: this.model.getProperty("implicitLines")
                 });
             }
             var output = this.codeGeneratorToken.generate(input);
             if (output.error) {
                 this.outputError(output.error);
             }
-            else if (Utils_22.Utils.debug > 1) {
+            else if (Utils_25.Utils.debug > 1) {
                 var outputText = output.text, hex = outputText.split("").map(function (s) { return s.charCodeAt(0).toString(16).toUpperCase().padStart(2, "0"); }).join(","), decoded = this.decodeTokenizedBasic(outputText), diff = Diff_1.Diff.testDiff(input.toUpperCase(), decoded.toUpperCase()); // for testing
-                Utils_22.Utils.console.debug("TokenizerInput (" + name + "):\n", input);
-                Utils_22.Utils.console.debug("TokenizerHex (" + name + "):\n", hex);
-                Utils_22.Utils.console.debug("TokenizerDecoded (" + name + "):\n", decoded);
-                Utils_22.Utils.console.debug("TokenizerDiff (" + name + "):\n", diff);
+                Utils_25.Utils.console.debug("TokenizerInput (" + name + "):\n" + input);
+                Utils_25.Utils.console.debug("TokenizerHex (" + name + "):\n" + hex);
+                Utils_25.Utils.console.debug("TokenizerDecoded (" + name + "):\n" + decoded);
+                Utils_25.Utils.console.debug("TokenizerDiff (" + name + "):\n" + diff);
             }
             return output.text;
         };
-        Controller.prototype.prettyPrintBasic = function (input, keepWhiteSpace, keepBrackets) {
+        Controller.prototype.prettyPrintBasic = function (input, keepWhiteSpace, keepBrackets, keepColons) {
             if (!this.codeGeneratorBasic) {
                 this.codeGeneratorBasic = new CodeGeneratorBasic_1.CodeGeneratorBasic({
-                    lexer: new BasicLexer_1.BasicLexer(),
-                    parser: new BasicParser_3.BasicParser()
+                    lexer: new BasicLexer_1.BasicLexer({
+                        keywords: BasicParser_2.BasicParser.keywords
+                    }),
+                    parser: new BasicParser_2.BasicParser()
                 });
             }
-            var keepColons = keepBrackets, // we switch all with one setting
-            keepDataComma = true;
-            this.codeGeneratorBasic.getLexer().setOptions({
+            var keepDataComma = true;
+            this.codeGeneratorBasic.getOptions().lexer.setOptions({
                 keepWhiteSpace: keepWhiteSpace
             });
-            this.codeGeneratorBasic.getParser().setOptions({
+            this.codeGeneratorBasic.getOptions().parser.setOptions({
                 keepTokens: true,
                 keepBrackets: keepBrackets,
                 keepColons: keepColons,
@@ -15683,14 +16311,14 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 data = Controller.splitMeta(input);
                 input = data.data; // maybe changed
                 if (data.meta.encoding === "base64") {
-                    input = Utils_22.Utils.atob(input); // decode base64
+                    input = Utils_25.Utils.atob(input); // decode base64
                 }
                 var type = data.meta.typeString;
                 if (type === "T") { // tokenized basic?
                     input = this.decodeTokenizedBasic(input);
                 }
                 else if (type === "P") { // BASIC?
-                    input = DiskImage_1.DiskImage.unOrProtectData(input);
+                    input = DiskImage_2.DiskImage.unOrProtectData(input);
                     input = this.decodeTokenizedBasic(input);
                 }
                 else if (type === "B") { // binary?
@@ -15708,11 +16336,11 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     putInMemory = inFile.fnFileCallback(input, data && data.meta);
                 }
                 catch (e) {
-                    Utils_22.Utils.console.warn(e);
+                    Utils_25.Utils.console.warn(e);
                 }
             }
             if (input === undefined) {
-                Utils_22.Utils.console.error("loadFileContinue: File " + inFile.name + ": input undefined!");
+                Utils_25.Utils.console.error("loadFileContinue: File " + inFile.name + ": input undefined!");
                 this.vm.vmStop("stop", 60, true);
                 this.startMainLoop();
                 return;
@@ -15725,7 +16353,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 case "openin":
                     break;
                 case "chainMerge":
-                    input = Controller.mergeScripts(this.view.getAreaValue("inputText"), input);
+                    input = this.mergeScripts(this.view.getAreaValue("inputText"), input);
                     this.setInputText(input);
                     this.view.setAreaValue("resultText", "");
                     startLine = inFile.line || 0;
@@ -15741,7 +16369,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     }
                     break;
                 case "merge":
-                    input = Controller.mergeScripts(this.view.getAreaValue("inputText"), input);
+                    input = this.mergeScripts(this.view.getAreaValue("inputText"), input);
                     this.setInputText(input);
                     this.view.setAreaValue("resultText", "");
                     this.invalidateScript();
@@ -15767,72 +16395,82 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     }
                     break;
                 default:
-                    Utils_22.Utils.console.error("loadExample: Unknown command:", command);
+                    Utils_25.Utils.console.error("loadExample: Unknown command:", command);
                     break;
             }
             this.vm.vmSetStartLine(startLine);
             this.startMainLoop();
         };
-        Controller.prototype.loadExample = function () {
-            var that = this, inFile = this.vm.vmGetInFileObject();
-            var example, url, fnExampleLoaded = function (_sFullUrl, key, suppressLog) {
+        Controller.prototype.createFnExampleLoaded = function (example, url, inFile) {
+            var _this = this;
+            return function (_sFullUrl, key, suppressLog) {
                 if (key !== example) {
-                    Utils_22.Utils.console.warn("fnExampleLoaded: Unexpected", key, "<>", example);
+                    Utils_25.Utils.console.warn("fnExampleLoaded: Unexpected", key, "<>", example);
                 }
-                var exampleEntry = that.model.getExample(example);
+                var exampleEntry = _this.model.getExample(example);
                 if (!suppressLog) {
-                    Utils_22.Utils.console.log("Example", url, exampleEntry.meta || "", "loaded");
+                    Utils_25.Utils.console.log("Example", url, (exampleEntry.meta ? exampleEntry.meta + " " : "") + " loaded");
                 }
                 var input = exampleEntry.script;
-                that.model.setProperty("example", inFile.memorizedExample);
-                that.vm.vmStop("", 0, true);
-                that.loadFileContinue(input);
-            }, fnExampleError = function () {
-                Utils_22.Utils.console.log("Example", url, "error");
-                that.model.setProperty("example", inFile.memorizedExample);
-                that.vm.vmStop("", 0, true);
-                var error = that.vm.vmComposeError(Error(), 32, example + " not found"); // TODO: set also derr=146 (xx not found)
+                _this.model.setProperty("example", inFile.memorizedExample);
+                _this.vm.vmStop("", 0, true);
+                _this.loadFileContinue(input);
+            };
+        };
+        Controller.prototype.createFnExampleError = function (example, url, inFile) {
+            var _this = this;
+            return function () {
+                Utils_25.Utils.console.log("Example", url, "error");
+                _this.model.setProperty("example", inFile.memorizedExample);
+                _this.vm.vmStop("", 0, true);
+                var error = _this.vm.vmComposeError(Error(), 32, example + " not found"); // TODO: set also derr=146 (xx not found)
                 // error or onError set
                 if (error.hidden) {
-                    that.vm.vmStop("", 0, true); // clear onError
+                    _this.vm.vmStop("", 0, true); // clear onError
                 }
-                that.outputError(error, true);
-                that.loadFileContinue(null);
+                _this.outputError(error, true);
+                _this.loadFileContinue(null);
             };
+        };
+        Controller.prototype.loadExample = function () {
+            var inFile = this.vm.vmGetInFileObject(), key = this.model.getProperty("example");
             var name = inFile.name;
-            var key = this.model.getProperty("example");
             if (name.charAt(0) === "/") { // absolute path?
-                name = name.substr(1); // remove "/"
+                name = name.substring(1); // remove "/"
                 inFile.memorizedExample = name; // change!
             }
             else {
                 inFile.memorizedExample = key;
                 var lastSlash = key.lastIndexOf("/");
                 if (lastSlash >= 0) {
-                    var path = key.substr(0, lastSlash); // take path from selected example
+                    var path = key.substring(0, lastSlash); // take path from selected example
                     name = path + "/" + name;
                     name = name.replace(/\w+\/\.\.\//, ""); // simplify 2 dots (go back) in path: "dir/.."" => ""
                 }
             }
-            example = name;
-            if (Utils_22.Utils.debug > 0) {
-                Utils_22.Utils.console.debug("loadExample: name=" + name + " (current=" + key + ")");
+            var example = name;
+            if (Utils_25.Utils.debug > 0) {
+                Utils_25.Utils.console.debug("loadExample: name=" + name + " (current=" + key + ")");
             }
             var exampleEntry = this.model.getExample(example); // already loaded
+            var url;
             if (exampleEntry && exampleEntry.loaded) {
                 this.model.setProperty("example", example);
+                url = example; //TTT
+                var fnExampleLoaded = this.createFnExampleLoaded(example, url, inFile);
                 fnExampleLoaded("", example, true);
             }
             else if (example && exampleEntry) { // need to load
                 this.model.setProperty("example", example);
                 var databaseDir = this.model.getDatabase().src;
                 url = databaseDir + "/" + example + ".js";
-                Utils_22.Utils.loadScript(url, fnExampleLoaded, fnExampleError, example);
+                Utils_25.Utils.loadScript(url, this.createFnExampleLoaded(example, url, inFile), this.createFnExampleError(example, url, inFile), example);
             }
             else { // keep original example in this error case
                 url = example;
                 if (example !== "") { // only if not empty
-                    Utils_22.Utils.console.warn("loadExample: Unknown file:", example);
+                    Utils_25.Utils.console.warn("loadExample: Unknown file:", example);
+                    var fnExampleError = this.createFnExampleError(example, url, inFile);
                     fnExampleError();
                 }
                 else {
@@ -15850,7 +16488,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             return name;
         };
         Controller.tryLoadingFromLocalStorage = function (name) {
-            var storage = Utils_22.Utils.localStorage;
+            var storage = Utils_25.Utils.localStorage;
             var input = null;
             if (name.indexOf(".") >= 0) { // extension specified?
                 input = storage.getItem(name);
@@ -15879,14 +16517,14 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     });
                     this.vm.vmStop("fileLoad", 90); // restore
                 }
-                var name_13 = inFile.name;
-                if (Utils_22.Utils.debug > 1) {
-                    Utils_22.Utils.console.debug("fnFileLoad:", inFile.command, name_13, "details:", inFile);
+                var name_14 = inFile.name;
+                if (Utils_25.Utils.debug > 1) {
+                    Utils_25.Utils.console.debug("fnFileLoad:", inFile.command, name_14, "details:", inFile);
                 }
-                var input = Controller.tryLoadingFromLocalStorage(name_13);
+                var input = Controller.tryLoadingFromLocalStorage(name_14);
                 if (input !== null) {
-                    if (Utils_22.Utils.debug > 0) {
-                        Utils_22.Utils.console.debug("fnFileLoad:", inFile.command, name_13, "from localStorage");
+                    if (Utils_25.Utils.debug > 0) {
+                        Utils_25.Utils.console.debug("fnFileLoad:", inFile.command, name_14, "from localStorage");
                     }
                     this.vm.vmStop("", 0, true);
                     this.loadFileContinue(input);
@@ -15896,7 +16534,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 }
             }
             else {
-                Utils_22.Utils.console.error("fnFileLoad:", inFile.name, "File not open!"); // hopefully isName is defined
+                Utils_25.Utils.console.error("fnFileLoad:", inFile.name, "File not open!"); // hopefully isName is defined
             }
             this.nextLoopTimeOut = this.vm.vmGetTimeUntilFrame(); // wait until next frame
         };
@@ -15914,8 +16552,8 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             if (input.indexOf(Controller.metaIdent) === 0) { // starts with metaIdent?
                 var index = input.indexOf(","); // metadata separator
                 if (index >= 0) {
-                    var metaString = input.substr(0, index);
-                    input = input.substr(index + 1);
+                    var metaString = input.substring(0, index);
+                    input = input.substring(index + 1);
                     var meta = metaString.split(";");
                     fileMeta = {
                         typeString: meta[1],
@@ -15938,17 +16576,17 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             return metaAndData;
         };
         Controller.prototype.fnFileSave = function () {
-            var outFile = this.vm.vmGetOutFileObject(), storage = Utils_22.Utils.localStorage;
+            var outFile = this.vm.vmGetOutFileObject(), storage = Utils_25.Utils.localStorage;
             var defaultExtension = "";
             if (outFile.open) {
-                var type = outFile.typeString, name_14 = outFile.name;
+                var type = outFile.typeString, name_15 = outFile.name;
                 if (type === "P" || type === "T") {
                     defaultExtension = "bas";
                 }
                 else if (type === "B") {
                     defaultExtension = "bin";
                 }
-                var storageName = Controller.fnLocalStorageName(name_14, defaultExtension);
+                var storageName = Controller.fnLocalStorageName(name_15, defaultExtension);
                 var fileData = void 0;
                 if (outFile.fileData.length || (type === "B") || (outFile.command === "openout")) { // type A(for openout) or B
                     fileData = outFile.fileData.join("");
@@ -15961,34 +16599,34 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                             outFile.typeString = "A"; // override type
                         }
                         else if (type === "P") {
-                            fileData = DiskImage_1.DiskImage.unOrProtectData(fileData);
+                            fileData = DiskImage_2.DiskImage.unOrProtectData(fileData);
                         }
                     }
                     outFile.length = fileData.length; // set length
                 }
-                if (Utils_22.Utils.debug > 0) {
-                    Utils_22.Utils.console.debug("fnFileSave: name=" + name_14 + ": put into localStorage");
+                if (Utils_25.Utils.debug > 0) {
+                    Utils_25.Utils.console.debug("fnFileSave: name=" + name_15 + ": put into localStorage");
                 }
+                var meta = Controller.joinMeta(outFile);
+                storage.setItem(storageName, meta + "," + fileData);
+                this.updateStorageDatabase("set", storageName);
                 if (outFile.fnFileCallback) {
                     try {
                         outFile.fnFileCallback(fileData); // close file
                     }
                     catch (e) {
-                        Utils_22.Utils.console.warn(e);
+                        Utils_25.Utils.console.warn(e);
                     }
                 }
-                var meta = Controller.joinMeta(outFile);
-                storage.setItem(storageName, meta + "," + fileData);
-                this.updateStorageDatabase("set", storageName);
-                CpcVm_1.CpcVm.vmResetFileHandling(outFile); // make sure it is closed
+                this.vm.vmResetOutFileHandling(); // make sure it is closed
             }
             else {
-                Utils_22.Utils.console.error("fnFileSave: file not open!");
+                Utils_25.Utils.console.error("fnFileSave: file not open!");
             }
             this.vm.vmStop("", 0, true); // continue
         };
         Controller.prototype.fnDeleteLines = function (paras) {
-            var inputText = this.view.getAreaValue("inputText"), lines = Controller.fnGetLinesInRange(inputText, paras.first, paras.last);
+            var inputText = this.view.getAreaValue("inputText"), lines = this.fnGetLinesInRange(inputText, paras.first || 0, paras.last || 65535);
             var error;
             if (lines.length) {
                 for (var i = 0; i < lines.length; i += 1) {
@@ -16002,23 +16640,23 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 }
                 if (!error) {
                     var input = lines.join("\n");
-                    input = Controller.mergeScripts(inputText, input); // delete input lines
+                    input = this.mergeScripts(inputText, input); // delete input lines
                     this.setInputText(input);
                 }
             }
-            this.vm.vmGotoLine(0); // reset current line
+            this.vm.vmGoto(0); // reset current line
             this.vm.vmStop("end", 0, true);
         };
         Controller.prototype.fnNew = function () {
             var input = "";
             this.setInputText(input);
             this.variables.removeAllVariables();
-            this.vm.vmGotoLine(0); // reset current line
+            this.vm.vmGoto(0); // reset current line
             this.vm.vmStop("end", 0, true);
             this.invalidateScript();
         };
         Controller.prototype.fnList = function (paras) {
-            var input = this.view.getAreaValue("inputText"), stream = paras.stream, lines = Controller.fnGetLinesInRange(input, paras.first, paras.last), regExp = new RegExp(/([\x00-\x1f])/g); // eslint-disable-line no-control-regex
+            var input = this.view.getAreaValue("inputText"), stream = paras.stream, lines = this.fnGetLinesInRange(input, paras.first || 0, paras.last || 65535), regExp = new RegExp(/([\x00-\x1f])/g); // eslint-disable-line no-control-regex
             for (var i = 0; i < lines.length; i += 1) {
                 var line = lines[i];
                 if (stream !== 9) {
@@ -16026,7 +16664,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 }
                 this.vm.print(stream, line, "\r\n");
             }
-            this.vm.vmGotoLine(0); // reset current line
+            this.vm.vmGoto(0); // reset current line
             this.vm.vmStop("end", 0, true);
         };
         Controller.prototype.fnReset = function () {
@@ -16044,7 +16682,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         Controller.prototype.outputError = function (error, noSelection) {
             var stream = 0;
             var shortError;
-            if (Utils_22.Utils.isCustomError(error)) {
+            if (Utils_25.Utils.isCustomError(error)) {
                 shortError = error.shortMessage || error.message;
                 if (!noSelection) {
                     var startPos = error.pos || 0, len = error.len || ((error.value !== undefined) ? String(error.value).length : 0), endPos = startPos + len;
@@ -16058,17 +16696,22 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.vm.print(stream, escapedShortError + "\r\n");
             return shortError;
         };
+        Controller.createBasicFormatter = function () {
+            return new BasicFormatter_1.BasicFormatter({
+                lexer: new BasicLexer_1.BasicLexer({
+                    keywords: BasicParser_2.BasicParser.keywords
+                }),
+                parser: new BasicParser_2.BasicParser()
+            });
+        };
         Controller.prototype.fnRenumLines = function (paras) {
             var vm = this.vm, input = this.view.getAreaValue("inputText");
             if (!this.basicFormatter) {
-                this.basicFormatter = new BasicFormatter_1.BasicFormatter({
-                    lexer: new BasicLexer_1.BasicLexer(),
-                    parser: new BasicParser_3.BasicParser()
-                });
+                this.basicFormatter = Controller.createBasicFormatter();
             }
-            var output = this.basicFormatter.renumber(input, paras.newLine, paras.oldLine, paras.step, paras.keep);
+            var output = this.basicFormatter.renumber(input, paras.newLine || 10, paras.oldLine || 1, paras.step || 10, paras.keep || 65535);
             if (output.error) {
-                Utils_22.Utils.console.warn(output.error);
+                Utils_25.Utils.console.warn(output.error);
                 this.outputError(output.error);
             }
             else {
@@ -16076,23 +16719,23 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 this.setInputText(output.text, true);
                 this.fnPutChangedInputOnStack();
             }
-            this.vm.vmGotoLine(0); // reset current line
+            this.vm.vmGoto(0); // reset current line
             vm.vmStop("end", 0, true);
         };
         Controller.prototype.fnEditLineCallback = function () {
             var inputParas = this.vm.vmGetStopObject().paras, inputText = this.view.getAreaValue("inputText");
             var input = inputParas.input;
-            input = Controller.mergeScripts(inputText, input);
+            input = this.mergeScripts(inputText, input);
             this.setInputText(input);
             this.vm.vmSetStartLine(0);
-            this.vm.vmGotoLine(0); // to be sure
+            this.vm.vmGoto(0); // to be sure
             this.view.setDisabled("continueButton", true);
             this.vm.cursor(inputParas.stream, 0);
             this.vm.vmStop("end", 90);
             return true;
         };
         Controller.prototype.fnEditLine = function (paras) {
-            var input = this.view.getAreaValue("inputText"), stream = paras.stream, lineNumber = paras.first, lines = Controller.fnGetLinesInRange(input, lineNumber, lineNumber);
+            var input = this.view.getAreaValue("inputText"), stream = paras.stream, lineNumber = paras.first || 0, lines = this.fnGetLinesInRange(input, lineNumber, lineNumber);
             if (lines.length) {
                 var lineString = lines[0];
                 this.vm.print(stream, lineString);
@@ -16110,7 +16753,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             }
             else {
                 var error = this.vm.vmComposeError(Error(), 8, String(lineNumber)); // "Line does not exist"
-                this.vm.print(stream, String(error) + "\r\n");
+                this.outputError(error);
                 this.vm.vmStop("stop", 60, true);
             }
         };
@@ -16120,7 +16763,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 var time = Date.now();
                 output = this.codeGeneratorJs.generate(input, this.variables);
                 time = Date.now() - time;
-                Utils_22.Utils.console.debug("bench size", input.length, "labels", this.codeGeneratorJs.debugGetLabelsCount(), "loop", i, ":", time, "ms");
+                Utils_25.Utils.console.debug("bench size", input.length, "labels", this.codeGeneratorJs.debugGetLabelsCount(), "loop", i, ":", time, "ms");
                 if (output.error) {
                     break;
                 }
@@ -16144,6 +16787,16 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             else {
                 outputString = output.text;
                 this.vm.vmSetSourceMap(this.codeGeneratorJs.getSourceMap());
+                // optional: tokenize to put tokens into memory...
+                var tokens = this.encodeTokenizedBasic(input), addr = 0x170;
+                for (var i = 0; i < tokens.length; i += 1) {
+                    var code = tokens.charCodeAt(i);
+                    if (code > 255) {
+                        Utils_25.Utils.console.warn("Put token in memory: addr=" + (addr + i) + ", code=" + code + ", char=" + tokens.charAt(i));
+                        code = 0x20; //TTT
+                    }
+                    this.vm.poke(addr + i, code);
+                }
             }
             if (outputString && outputString.length > 0) {
                 outputString += "\n";
@@ -16155,7 +16808,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             return output;
         };
         Controller.prototype.fnPretty = function () {
-            var input = this.view.getAreaValue("inputText"), keepWhiteSpace = this.view.getInputChecked("prettySpaceInput"), keepBrackets = this.view.getInputChecked("prettyBracketsInput"), output = this.prettyPrintBasic(input, keepWhiteSpace, keepBrackets);
+            var input = this.view.getAreaValue("inputText"), keepWhiteSpace = this.view.getInputChecked("prettySpaceInput"), keepBrackets = this.view.getInputChecked("prettyBracketsInput"), keepColons = this.view.getInputChecked("prettyColonsInput"), output = this.prettyPrintBasic(input, keepWhiteSpace, keepBrackets, keepColons);
             if (output) {
                 this.fnPutChangedInputOnStack();
                 this.setInputText(output, true);
@@ -16163,6 +16816,28 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 // for testing:
                 var diff = Diff_1.Diff.testDiff(input.toUpperCase(), output.toUpperCase());
                 this.view.setAreaValue("outputText", diff);
+            }
+        };
+        Controller.prototype.fnAddLines = function () {
+            var input = this.view.getAreaValue("inputText"), output = Controller.addLineNumbers(input);
+            if (output) {
+                this.fnPutChangedInputOnStack();
+                this.setInputText(output, true);
+                this.fnPutChangedInputOnStack();
+            }
+        };
+        Controller.prototype.fnRemoveLines = function () {
+            if (!this.basicFormatter) {
+                this.basicFormatter = Controller.createBasicFormatter();
+            }
+            var input = this.view.getAreaValue("inputText"), output = this.basicFormatter.removeUnusedLines(input);
+            if (output.error) {
+                this.outputError(output.error);
+            }
+            else {
+                this.fnPutChangedInputOnStack();
+                this.setInputText(output.text, true);
+                this.fnPutChangedInputOnStack();
             }
         };
         // https://blog.logrocket.com/programmatic-file-downloads-in-the-browser-9a5186298d5c/
@@ -16184,6 +16859,10 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             for (var i = 0; i < data.length; i += 1) {
                 data8[i] = data.charCodeAt(i);
             }
+            if (typeof Blob === "undefined") {
+                Utils_25.Utils.console.warn("fnDownloadNewFile: Blob undefined");
+                return;
+            }
             var blob = new Blob([data8.buffer], {
                 type: type
             });
@@ -16197,7 +16876,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         Controller.prototype.fnDownload = function () {
             var input = this.view.getAreaValue("inputText"), tokens = this.encodeTokenizedBasic(input);
             if (tokens !== "") {
-                var header = Controller.createMinimalAmsdosHeader("T", 0x170, tokens.length), headerString = DiskImage_1.DiskImage.combineAmsdosHeader(header), data = headerString + tokens;
+                var header = FileHandler_1.FileHandler.createMinimalAmsdosHeader("T", 0x170, tokens.length), headerString = DiskImage_2.DiskImage.combineAmsdosHeader(header), data = headerString + tokens;
                 this.fnDownloadNewFile(data, "file.bas");
             }
         };
@@ -16212,7 +16891,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     line += 1;
                 }
                 pos += columnNumber;
-                Utils_22.Utils.console.warn("Info: JS Error occurred at line", lineNumber, "column", columnNumber, "pos", pos);
+                Utils_25.Utils.console.warn("Info: JS Error occurred at line", lineNumber, "column", columnNumber, "pos", pos);
                 this.view.setAreaSelection("outputText", pos, pos + 1);
             }
         };
@@ -16232,7 +16911,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     this.fnScript = new Function("o", script); // eslint-disable-line no-new-func
                 }
                 catch (e) {
-                    Utils_22.Utils.console.error(e);
+                    Utils_25.Utils.console.error(e);
                     if (e instanceof Error) {
                         this.selectJsError(script, e);
                         e.shortMessage = "JS " + String(e);
@@ -16248,7 +16927,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             if (this.fnScript) {
                 vm.outBuffer = this.view.getAreaValue("resultText");
                 vm.vmStop("", 0, true);
-                vm.vmGotoLine(0); // to load DATA lines
+                vm.vmGoto(0); // to load DATA lines
                 this.vm.vmSetStartLine(line); // clear resets also startline
                 this.view.setDisabled("runButton", true);
                 this.view.setDisabled("stopButton", false);
@@ -16265,8 +16944,8 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     }, timeout);
                 }
             }
-            if (Utils_22.Utils.debug > 1) {
-                Utils_22.Utils.console.debug("End of fnRun");
+            if (Utils_25.Utils.debug > 1) {
+                Utils_25.Utils.console.debug("End of fnRun");
             }
         };
         Controller.prototype.fnParseRun = function () {
@@ -16281,24 +16960,28 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             }
             catch (e) {
                 if (e instanceof Error) {
-                    if (e.name === "CpcVm") {
-                        if (!e.hidden) {
-                            Utils_22.Utils.console.warn(e);
-                            this.outputError(e, !e.pos);
+                    if (e.name === "CpcVm" || e.name === "Variables") { //TTT
+                        var customError = e;
+                        if (customError.errCode !== undefined) {
+                            customError = this.vm.vmComposeError(customError, customError.errCode, customError.value);
+                        }
+                        if (!customError.hidden) {
+                            Utils_25.Utils.console.warn(customError);
+                            this.outputError(customError, !customError.pos);
                         }
                         else {
-                            Utils_22.Utils.console.log(e.message);
+                            Utils_25.Utils.console.log(customError.message);
                         }
                     }
                     else {
-                        Utils_22.Utils.console.error(e);
+                        Utils_25.Utils.console.error(e);
                         this.selectJsError(this.view.getAreaValue("outputText"), e);
                         this.vm.vmComposeError(e, 2, "JS " + String(e)); // generate Syntax Error, set also err and erl and set stop
                         this.outputError(e, true);
                     }
                 }
                 else {
-                    Utils_22.Utils.console.error(e);
+                    Utils_25.Utils.console.error(e);
                 }
             }
         };
@@ -16311,29 +16994,28 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 this.vm.cursor(stream, 0);
                 var inputText = this.view.getAreaValue("inputText");
                 if ((/^\d+($| )/).test(input)) { // start with number?
-                    if (Utils_22.Utils.debug > 0) {
-                        Utils_22.Utils.console.debug("fnDirectInput: insert line=" + input);
+                    if (Utils_25.Utils.debug > 0) {
+                        Utils_25.Utils.console.debug("fnDirectInput: insert line=" + input);
                     }
-                    input = Controller.mergeScripts(inputText, input);
+                    input = this.mergeScripts(inputText, input);
                     this.setInputText(input, true);
                     this.vm.vmSetStartLine(0);
-                    this.vm.vmGotoLine(0); // to be sure
+                    this.vm.vmGoto(0); // to be sure
                     this.view.setDisabled("continueButton", true);
                     this.vm.cursor(stream, 1);
                     this.updateResultText();
                     return false; // continue direct input
                 }
-                Utils_22.Utils.console.log("fnDirectInput: execute:", input);
+                Utils_25.Utils.console.log("fnDirectInput: execute:", input);
                 var codeGeneratorJs = this.codeGeneratorJs;
                 var output = void 0, outputString = void 0;
-                if (inputText && (/^\d+($| )/).test(inputText)) { // do we have a program starting with a line number?
+                if (inputText && ((/^\d+($| )/).test(inputText) || this.model.getProperty("implicitLines"))) { // do we have a program starting with a line number?
                     var separator = inputText.endsWith("\n") ? "" : "\n";
                     output = codeGeneratorJs.generate(inputText + separator + input, this.variables, true); // compile both; allow direct command
                     if (output.error) {
                         var error = output.error;
                         if (error.pos < inputText.length + 1) { // error not in direct?
                             error.message = "[prg] " + error.message;
-                            outputString = this.outputError(error, true);
                             output = undefined;
                         }
                     }
@@ -16353,14 +17035,14 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 this.view.setAreaValue("outputText", outputString);
                 if (!output.error) {
                     this.vm.vmSetStartLine(this.vm.line); // fast hack
-                    this.vm.vmGotoLine("direct");
+                    this.vm.vmGoto("direct");
                     try {
                         var fnScript = new Function("o", outputString); // eslint-disable-line no-new-func
                         this.fnScript = fnScript;
                         this.vm.vmSetSourceMap(codeGeneratorJs.getSourceMap());
                     }
                     catch (e) {
-                        Utils_22.Utils.console.error(e);
+                        Utils_25.Utils.console.error(e);
                         if (e instanceof Error) {
                             this.outputError(e, true);
                         }
@@ -16428,7 +17110,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         };
         Controller.prototype.fnRunLoop = function () {
             var stop = this.vm.vmGetStopObject();
-            this.nextLoopTimeOut = 0;
+            this.nextLoopTimeOut = this.initialLoopTimeout;
             if (!stop.reason && this.fnScript) {
                 this.fnRunPart1(this.fnScript); // could change reason
             }
@@ -16436,7 +17118,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 this.handlers[stop.reason].call(this, stop.paras);
             }
             else {
-                Utils_22.Utils.console.warn("runLoop: Unknown run mode:", stop.reason);
+                Utils_25.Utils.console.warn("runLoop: Unknown run mode:", stop.reason);
                 this.vm.vmStop("error", 50);
             }
             if (stop.reason && stop.reason !== "waitSound" && stop.reason !== "waitKey" && stop.reason !== "waitInput") {
@@ -16524,10 +17206,17 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.startMainLoop();
         };
         Controller.prototype.startScreenshot = function () {
-            return this.canvas.startScreenshot();
+            var canvas = this.canvas.getCanvasElement();
+            if (canvas.toDataURL) {
+                return canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // here is the most important part because if you do not replace you will get a DOM 18 exception.
+            }
+            Utils_25.Utils.console.warn("Screenshot not available");
+            return "";
         };
-        Controller.prototype.fnPutKeyInBuffer = function (key) {
-            this.keyboard.putKeyInBuffer(key);
+        Controller.prototype.fnPutKeysInBuffer = function (keys) {
+            for (var i = 0; i < keys.length; i += 1) {
+                this.keyboard.putKeyInBuffer(keys.charAt(i));
+            }
             var keyDownHandler = this.keyboard.getKeyDownHandler();
             if (keyDownHandler) {
                 keyDownHandler();
@@ -16536,12 +17225,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         Controller.prototype.startEnter = function () {
             var input = this.view.getAreaValue("inp2Text");
             input = input.replace(/\n/g, "\r"); // LF => CR
-            if (!input.endsWith("\r")) {
-                input += "\r";
-            }
-            for (var i = 0; i < input.length; i += 1) {
-                this.fnPutKeyInBuffer(input.charAt(i));
-            }
+            this.fnPutKeysInBuffer(input);
             this.view.setAreaValue("inp2Text", "");
         };
         Controller.generateFunction = function (par, functionString) {
@@ -16577,17 +17261,17 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 try {
                     var value2 = this.vm.vmAssign(varType, value);
                     variables.setVariable(par, value2);
-                    Utils_22.Utils.console.log("Variable", par, "changed:", variables.getVariable(par), "=>", value);
+                    Utils_25.Utils.console.log("Variable", par, "changed:", variables.getVariable(par), "=>", value);
                 }
                 catch (e) {
-                    Utils_22.Utils.console.warn(e);
+                    Utils_25.Utils.console.warn(e);
                 }
             }
             this.setVarSelectOptions("varSelect", variables);
             this.commonEventHandler.onVarSelectChange(); // title change?
         };
         Controller.prototype.setSoundActive = function () {
-            var sound = this.sound, soundButton = View_6.View.getElementById1("soundButton"), active = this.model.getProperty("sound");
+            var sound = this.sound, soundButton = View_7.View.getElementById1("soundButton"), active = this.model.getProperty("sound");
             var text;
             if (active) {
                 try {
@@ -16595,7 +17279,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     text = (sound.isActivatedByUser()) ? "Sound is on" : "Sound on (waiting)";
                 }
                 catch (e) {
-                    Utils_22.Utils.console.warn("soundOn:", e);
+                    Utils_25.Utils.console.warn("soundOn:", e);
                     text = "Sound unavailable";
                 }
             }
@@ -16609,13 +17293,6 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             }
             soundButton.innerText = text;
         };
-        Controller.createMinimalAmsdosHeader = function (type, start, length) {
-            return {
-                typeString: type,
-                start: start,
-                length: length
-            };
-        };
         Controller.prototype.fnEndOfImport = function (imported) {
             var stream = 0, vm = this.vm;
             for (var i = 0; i < imported.length; i += 1) {
@@ -16624,181 +17301,6 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             vm.print(stream, "\r\n", imported.length + " file" + (imported.length !== 1 ? "s" : "") + " imported.\r\n");
             this.updateResultText();
         };
-        // starting with (line) number, or 7 bit ASCII characters without control codes except \x1a=EOF
-        Controller.prototype.fnLoad2 = function (data, name, type, imported) {
-            var header, storageName = this.vm.vmAdaptFilename(name, "FILE");
-            storageName = Controller.fnLocalStorageName(storageName);
-            if (type === "text/plain") {
-                header = Controller.createMinimalAmsdosHeader("A", 0, data.length);
-            }
-            else {
-                if (type === "application/x-zip-compressed" || type === "cpcBasic/binary") { // are we a file inside zip?
-                    // empty
-                }
-                else { // e.g. "data:application/octet-stream;base64,..."
-                    var index = data.indexOf(",");
-                    if (index >= 0) {
-                        var info1 = data.substr(0, index);
-                        data = data.substr(index + 1); // remove meta prefix
-                        if (info1.indexOf("base64") >= 0) {
-                            data = Utils_22.Utils.atob(data); // decode base64
-                        }
-                    }
-                }
-                header = DiskImage_1.DiskImage.parseAmsdosHeader(data);
-                if (header) {
-                    data = data.substr(0x80); // remove header
-                }
-                else if (Controller.reRegExpIsText.test(data)) {
-                    header = Controller.createMinimalAmsdosHeader("A", 0, data.length);
-                }
-                else if (DiskImage_1.DiskImage.testDiskIdent(data.substr(0, 8))) { // disk image file?
-                    try {
-                        var dsk = new DiskImage_1.DiskImage({
-                            data: data,
-                            diskName: name
-                        }), dir = dsk.readDirectory(), diskFiles = Object.keys(dir);
-                        for (var i = 0; i < diskFiles.length; i += 1) {
-                            var fileName = diskFiles[i];
-                            try { // eslint-disable-line max-depth
-                                data = dsk.readFile(dir[fileName]);
-                                this.fnLoad2(data, fileName, "cpcBasic/binary", imported); // recursive
-                            }
-                            catch (e) {
-                                Utils_22.Utils.console.error(e);
-                                if (e instanceof Error) { // eslint-disable-line max-depth
-                                    this.outputError(e, true);
-                                }
-                            }
-                        }
-                    }
-                    catch (e) {
-                        Utils_22.Utils.console.error(e);
-                        if (e instanceof Error) {
-                            this.outputError(e, true);
-                        }
-                    }
-                    header = undefined; // ignore dsk file
-                }
-                else { // binary
-                    header = Controller.createMinimalAmsdosHeader("B", 0, data.length);
-                }
-            }
-            if (header) {
-                var meta = Controller.joinMeta(header);
-                try {
-                    Utils_22.Utils.localStorage.setItem(storageName, meta + "," + data);
-                    this.updateStorageDatabase("set", storageName);
-                    Utils_22.Utils.console.log("fnOnLoad: file: " + storageName + " meta: " + meta + " imported");
-                    imported.push(name);
-                }
-                catch (e) { // maybe quota exceeded
-                    Utils_22.Utils.console.error(e);
-                    if (e instanceof Error) {
-                        if (e.name === "QuotaExceededError") {
-                            e.shortMessage = storageName + ": Quota exceeded";
-                        }
-                        this.outputError(e, true);
-                    }
-                }
-            }
-        };
-        // https://stackoverflow.com/questions/10261989/html5-javascript-drag-and-drop-file-from-external-window-windows-explorer
-        // https://www.w3.org/TR/file-upload/#dfn-filereader
-        Controller.prototype.fnHandleFileSelect = function (event) {
-            var dataTransfer = event.dataTransfer, files = dataTransfer ? dataTransfer.files : event.target.files, // dataTransfer for drag&drop, target.files for file input
-            that = this, imported = [];
-            var fileIndex = 0, file, reader;
-            function fnReadNextFile() {
-                if (fileIndex < files.length) {
-                    file = files[fileIndex];
-                    fileIndex += 1;
-                    var lastModified = file.lastModified, lastModifiedDate = lastModified ? new Date(lastModified) : file.lastModifiedDate, // lastModifiedDate deprecated, but for old IE
-                    text = file.name + " " + (file.type || "n/a") + " " + file.size + " " + (lastModifiedDate ? lastModifiedDate.toLocaleDateString() : "n/a");
-                    Utils_22.Utils.console.log(text);
-                    if (file.type === "text/plain") {
-                        reader.readAsText(file);
-                    }
-                    else if (file.type === "application/x-zip-compressed") {
-                        reader.readAsArrayBuffer(file);
-                    }
-                    else {
-                        reader.readAsDataURL(file);
-                    }
-                }
-                else {
-                    that.fnEndOfImport(imported);
-                }
-            }
-            function fnErrorHandler(event2) {
-                var target = event2.target;
-                var msg = "fnErrorHandler: Error reading file " + file.name;
-                if (target !== null && target.error !== null) {
-                    if (target.error.NOT_FOUND_ERR) {
-                        msg += ": File not found";
-                    }
-                    else if (target.error.ABORT_ERR) {
-                        msg = ""; // nothing
-                    }
-                }
-                if (msg) {
-                    Utils_22.Utils.console.warn(msg);
-                }
-                fnReadNextFile();
-            }
-            function fnOnLoad(event2) {
-                var target = event2.target, data = (target && target.result) || null, name = file.name, type = file.type;
-                if (type === "application/x-zip-compressed" && data instanceof ArrayBuffer) {
-                    var zip = void 0;
-                    try {
-                        zip = new ZipFile_1.ZipFile(new Uint8Array(data), name); // rather data
-                    }
-                    catch (e) {
-                        Utils_22.Utils.console.error(e);
-                        if (e instanceof Error) {
-                            that.outputError(e, true);
-                        }
-                    }
-                    if (zip) {
-                        var zipDirectory = zip.getZipDirectory(), entries = Object.keys(zipDirectory);
-                        for (var i = 0; i < entries.length; i += 1) {
-                            var name2 = entries[i];
-                            var data2 = void 0;
-                            try {
-                                data2 = zip.readData(name2);
-                            }
-                            catch (e) {
-                                Utils_22.Utils.console.error(e);
-                                if (e instanceof Error) { // eslint-disable-line max-depth
-                                    that.outputError(e, true);
-                                }
-                            }
-                            if (data2) {
-                                that.fnLoad2(data2, name2, type, imported);
-                            }
-                        }
-                    }
-                }
-                else if (typeof data === "string") {
-                    that.fnLoad2(data, name, type, imported);
-                }
-                else {
-                    Utils_22.Utils.console.warn("Error loading file", name, "with type", type, " unexpected data:", data);
-                }
-                fnReadNextFile();
-            }
-            event.stopPropagation();
-            event.preventDefault();
-            if (window.FileReader) {
-                reader = new FileReader();
-                reader.onerror = fnErrorHandler;
-                reader.onload = fnOnLoad;
-                fnReadNextFile();
-            }
-            else {
-                Utils_22.Utils.console.warn("FileReader API not supported.");
-            }
-        };
         Controller.fnHandleDragOver = function (evt) {
             evt.stopPropagation();
             evt.preventDefault();
@@ -16806,14 +17308,32 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 evt.dataTransfer.dropEffect = "copy"; // explicitly show this is a copy
             }
         };
+        Controller.prototype.adaptFilename = function (name, err) {
+            return this.vm.vmAdaptFilename(name, err);
+        };
         Controller.prototype.initDropZone = function () {
-            var dropZone = View_6.View.getElementById1("dropZone");
+            if (!this.fileHandler) {
+                this.fileHandler = new FileHandler_1.FileHandler({
+                    adaptFilename: this.adaptFilename.bind(this),
+                    updateStorageDatabase: this.updateStorageDatabase.bind(this),
+                    outputError: this.outputError.bind(this)
+                });
+            }
+            if (!this.fileSelect) {
+                this.fileSelect = new FileSelect_1.FileSelect({
+                    fnEndOfImport: this.fnEndOfImport.bind(this),
+                    outputError: this.outputError.bind(this),
+                    fnLoad2: this.fileHandler.fnLoad2.bind(this.fileHandler)
+                });
+            }
+            var dropZone = View_7.View.getElementById1("dropZone");
             dropZone.addEventListener("dragover", Controller.fnHandleDragOver.bind(this), false);
-            dropZone.addEventListener("drop", this.fnHandleFileSelect.bind(this), false);
-            var canvasElement = this.canvas.getCanvas();
+            this.fileSelect.addFileSelectHandler(dropZone, "drop");
+            var canvasElement = this.canvas.getCanvasElement();
             canvasElement.addEventListener("dragover", Controller.fnHandleDragOver.bind(this), false);
-            canvasElement.addEventListener("drop", this.fnHandleFileSelect.bind(this), false);
-            View_6.View.getElementById1("fileInput").addEventListener("change", this.fnHandleFileSelect.bind(this), false);
+            this.fileSelect.addFileSelectHandler(canvasElement, "drop");
+            var fileInput = View_7.View.getElementById1("fileInput");
+            this.fileSelect.addFileSelectHandler(fileInput, "change");
         };
         Controller.prototype.fnUpdateUndoRedoButtons = function () {
             this.view.setDisabled("undoButton", !this.inputStack.canUndoKeepOne());
@@ -16859,26 +17379,45 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         Controller.prototype.redoStackElement = function () {
             return this.inputStack.redo();
         };
+        Controller.prototype.createFnDatabaseLoaded = function (url) {
+            var _this = this;
+            return function (_sFullUrl, key) {
+                var selectedName = _this.model.getProperty("database");
+                if (selectedName === key) {
+                    _this.model.getDatabase().loaded = true;
+                }
+                else { // should not occur
+                    Utils_25.Utils.console.warn("databaseLoaded: name changed: " + key + " => " + selectedName);
+                    _this.model.setProperty("database", key);
+                    var database = _this.model.getDatabase();
+                    if (database) {
+                        database.loaded = true;
+                    }
+                    _this.model.setProperty("database", selectedName);
+                }
+                Utils_25.Utils.console.log("fnDatabaseLoaded: database loaded: " + key + ": " + url);
+                _this.setExampleSelectOptions();
+                _this.onExampleSelectChange();
+            };
+        };
+        Controller.prototype.createFnDatabaseError = function (url) {
+            var _this = this;
+            return function (_sFullUrl, key) {
+                Utils_25.Utils.console.error("fnDatabaseError: database error: " + key + ": " + url);
+                _this.setExampleSelectOptions();
+                _this.onExampleSelectChange();
+                _this.setInputText("");
+                _this.view.setAreaValue("resultText", "Cannot load database: " + key);
+            };
+        };
         Controller.prototype.onDatabaseSelectChange = function () {
             var url;
             var databaseName = this.view.getSelectValue("databaseSelect");
             this.model.setProperty("database", databaseName);
             this.view.setSelectTitleFromSelectedOption("databaseSelect");
-            var database = this.model.getDatabase(), that = this, fnDatabaseLoaded = function () {
-                database.loaded = true;
-                Utils_22.Utils.console.log("fnDatabaseLoaded: database loaded: " + databaseName + ": " + url);
-                that.setExampleSelectOptions();
-                that.onExampleSelectChange();
-            }, fnDatabaseError = function () {
-                database.loaded = false;
-                Utils_22.Utils.console.error("fnDatabaseError: database error: " + databaseName + ": " + url);
-                that.setExampleSelectOptions();
-                that.onExampleSelectChange();
-                that.setInputText("");
-                that.view.setAreaValue("resultText", "Cannot load database: " + databaseName);
-            };
+            var database = this.model.getDatabase();
             if (!database) {
-                Utils_22.Utils.console.error("onDatabaseSelectChange: database not available:", databaseName);
+                Utils_25.Utils.console.error("onDatabaseSelectChange: database not available:", databaseName);
                 return;
             }
             if (database.text === "storage") { // sepcial handling: browser localStorage
@@ -16893,7 +17432,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 this.setInputText("#loading database " + databaseName + "...");
                 var exampleIndex = this.model.getProperty("exampleIndex");
                 url = database.src + "/" + exampleIndex;
-                Utils_22.Utils.loadScript(url, fnDatabaseLoaded, fnDatabaseError, databaseName);
+                Utils_25.Utils.loadScript(url, this.createFnDatabaseLoaded(url), this.createFnDatabaseError(url), databaseName);
             }
         };
         Controller.prototype.onExampleSelectChange = function () {
@@ -16922,26 +17461,34 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.startMainLoop();
         };
         // currently not used. Can be called manually: cpcBasic.controller.exportAsBase64(file);
-        Controller.exportAsBase64 = function (storageName) {
-            var storage = Utils_22.Utils.localStorage;
+        Controller.prototype.exportAsBase64 = function (storageName) {
+            var storage = Utils_25.Utils.localStorage;
             var data = storage.getItem(storageName), out = "";
             if (data !== null) {
                 var index = data.indexOf(","); // metadata separator
                 if (index >= 0) {
-                    var meta = data.substr(0, index);
-                    data = data.substr(index + 1);
-                    data = Utils_22.Utils.btoa(data);
+                    var meta = data.substring(0, index);
+                    data = data.substring(index + 1);
+                    data = Utils_25.Utils.btoa(data);
                     out = meta + ";base64," + data;
                 }
                 else { // hmm, no meta info
-                    data = Utils_22.Utils.btoa(data);
+                    data = Utils_25.Utils.btoa(data);
                     out = "base64," + data;
                 }
             }
-            Utils_22.Utils.console.log(out);
+            Utils_25.Utils.console.log(out);
             return out;
         };
         Controller.prototype.onCpcCanvasClick = function (event) {
+            if (this.model.getProperty("showSettings")) {
+                this.model.setProperty("showSettings", false);
+                this.view.setHidden("settingsArea", !this.model.getProperty("showSettings"), "flex");
+            }
+            if (this.model.getProperty("showConvert")) {
+                this.model.setProperty("showConvert", false);
+                this.view.setHidden("convertArea", !this.model.getProperty("showConvert"), "flex");
+            }
             this.canvas.onCpcCanvasClick(event);
             this.textCanvas.onWindowClick(event);
             this.keyboard.setActive(true);
@@ -16956,13 +17503,42 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.canvas.onWindowClick(event);
             this.keyboard.setActive(true);
         };
+        Controller.prototype.fnArrayBounds = function () {
+            var arrayBounds = this.model.getProperty("arrayBounds");
+            this.variables.setOptions({
+                arrayBounds: arrayBounds
+            });
+            this.vm.vmGoto(0); // reset current line
+            this.vm.vmStop("end", 0, true);
+            this.variables.removeAllVariables(); //TTT
+        };
+        Controller.prototype.fnImplicitLines = function () {
+            var implicitLines = this.model.getProperty("implicitLines");
+            this.codeGeneratorJs.setOptions({
+                implicitLines: implicitLines
+            });
+            if (this.codeGeneratorToken) {
+                this.codeGeneratorToken.setOptions({
+                    implicitLines: implicitLines
+                });
+            }
+        };
+        Controller.prototype.fnTrace = function () {
+            var trace = this.model.getProperty("trace");
+            this.codeGeneratorJs.setOptions({
+                trace: trace
+            });
+        };
+        Controller.prototype.fnSpeed = function () {
+            var speed = this.model.getProperty("speed");
+            this.initialLoopTimeout = 1000 - speed * 10;
+        };
         Controller.metaIdent = "CPCBasic";
         Controller.defaultExtensions = [
             "",
             "bas",
             "bin"
         ];
-        Controller.reRegExpIsText = new RegExp(/^\d+ |^[\t\r\n\x1a\x20-\x7e]*$/); // eslint-disable-line no-control-regex
         return Controller;
     }());
     exports.Controller = Controller;
@@ -16973,16 +17549,26 @@ define("cpcconfig", ["require", "exports"], function (require, exports) {
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.cpcconfig = void 0;
     exports.cpcconfig = {
-        //databaseDirs: "../../CPCBasic/examples,../../CPCBasicApps/apps,./examplesTS,storage" // local test
-        //databaseDirs: "https://benchmarko.github.io/CPCBasic/examples,https://benchmarko.github.io/CPCBasicApps/apps,./examplesTS,storage"
-        databaseDirs: "../apps,storage"
+        //databaseDirs: "./examples,https://benchmarko.github.io/CPCBasicApps/apps,storage",
+        databaseDirs: "./examples,../../CPCBasicApps/apps,storage",
+        // just an example, not the full list of moved examples...
+        redirectExamples: {
+            "examples/art": {
+                database: "apps",
+                example: "demo/art"
+            },
+            "examples/blkedit": {
+                database: "apps",
+                example: "apps/blkedit"
+            }
+        }
     };
 });
 // cpcbasic.ts - CPCBasic for the Browser
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "Model", "View"], function (require, exports, Utils_23, Controller_1, cpcconfig_1, Model_1, View_7) {
+define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "Model", "View", "NodeAdapt"], function (require, exports, Utils_26, Controller_1, cpcconfig_1, Model_1, View_8, NodeAdapt_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var cpcBasic = /** @class */ (function () {
@@ -17006,11 +17592,11 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
         // can be used for nodeJS
         cpcBasic.fnParseArgs = function (args, config) {
             for (var i = 0; i < args.length; i += 1) {
-                var nameValue = args[i], nameValueList = Utils_23.Utils.split2(nameValue, "="), name_15 = nameValueList[0];
-                if (config.hasOwnProperty(name_15)) {
+                var nameValue = args[i], nameValueList = Utils_26.Utils.split2(nameValue, "="), name_16 = nameValueList[0];
+                if (config.hasOwnProperty(name_16)) {
                     var value = nameValueList[1]; // string|number|boolean
-                    if (value !== undefined && config.hasOwnProperty(name_15)) {
-                        switch (typeof config[name_15]) {
+                    if (value !== undefined && config.hasOwnProperty(name_16)) {
+                        switch (typeof config[name_16]) {
                             case "string":
                                 break;
                             case "boolean":
@@ -17025,20 +17611,31 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
                                 break;
                         }
                     }
-                    config[name_15] = value;
+                    config[name_16] = value;
                 }
             }
             return config;
         };
+        cpcBasic.fnDecodeUri = function (s) {
+            var rPlus = /\+/g; // Regex for replacing addition symbol with a space
+            var decoded = "";
+            try {
+                decoded = decodeURIComponent(s.replace(rPlus, " "));
+            }
+            catch (err) {
+                err.message += ": " + s;
+                Utils_26.Utils.console.error(err);
+            }
+            return decoded;
+        };
         // https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
         cpcBasic.fnParseUri = function (urlQuery, config) {
-            var rPlus = /\+/g, // Regex for replacing addition symbol with a space
-            fnDecode = function (s) { return decodeURIComponent(s.replace(rPlus, " ")); }, rSearch = /([^&=]+)=?([^&]*)/g, args = [];
+            var rSearch = /([^&=]+)=?([^&]*)/g, args = [];
             var match;
             while ((match = rSearch.exec(urlQuery)) !== null) {
-                var name_16 = fnDecode(match[1]), value = fnDecode(match[2]);
-                if (value !== null && config.hasOwnProperty(name_16)) {
-                    args.push(name_16 + "=" + value);
+                var name_17 = cpcBasic.fnDecodeUri(match[1]), value = cpcBasic.fnDecodeUri(match[2]);
+                if (value !== null && config.hasOwnProperty(name_17)) {
+                    args.push(name_17 + "=" + value);
                 }
             }
             cpcBasic.fnParseArgs(args, config);
@@ -17058,7 +17655,7 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
             return arg;
         };
         cpcBasic.createDebugUtilsConsole = function (cpcBasicLog) {
-            var currentConsole = Utils_23.Utils.console;
+            var currentConsole = Utils_26.Utils.console;
             return {
                 consoleLog: {
                     value: cpcBasicLog || "" // already something collected?
@@ -17101,9 +17698,18 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
                 }
             };
         };
+        cpcBasic.fnRedirectExamples = function (redirectExamples) {
+            var name = this.model.getProperty("database") + "/" + this.model.getProperty("example");
+            if (redirectExamples[name]) {
+                this.model.setProperty("database", redirectExamples[name].database);
+                this.model.setProperty("example", redirectExamples[name].example);
+            }
+        };
         cpcBasic.fnDoStart = function () {
-            var startConfig = cpcBasic.config, externalConfig = cpcconfig_1.cpcconfig || {}; // external config from cpcconfig.js
-            Object.assign(startConfig, externalConfig);
+            var startConfig = cpcBasic.config, winCpcConfig = window.cpcConfig || {};
+            Object.assign(startConfig, cpcconfig_1.cpcconfig, winCpcConfig);
+            var redirectExamples = startConfig.redirectExamples;
+            delete startConfig.redirectExamples;
             cpcBasic.model = new Model_1.Model(startConfig);
             // eslint-disable-next-line no-new-func
             var myGlobalThis = (typeof globalThis !== "undefined") ? globalThis : Function("return this")(); // for old IE
@@ -17113,47 +17719,54 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
             else { // nodeJs
                 cpcBasic.fnParseArgs(myGlobalThis.process.argv.slice(2), startConfig);
             }
-            cpcBasic.view = new View_7.View();
+            cpcBasic.view = new View_8.View();
             var debug = Number(cpcBasic.model.getProperty("debug"));
-            Utils_23.Utils.debug = debug;
-            var UtilsConsole = Utils_23.Utils.console, cpcBasicLog = "";
+            Utils_26.Utils.debug = debug;
+            var UtilsConsole = Utils_26.Utils.console, cpcBasicLog = "";
             if (UtilsConsole.cpcBasicLog) {
                 cpcBasicLog = UtilsConsole.cpcBasicLog;
                 UtilsConsole.cpcBasicLog = undefined; // do not log any more to dummy console
             }
-            if (Utils_23.Utils.debug > 1 && cpcBasic.model.getProperty("showConsole")) { // console log window?
+            if (Utils_26.Utils.debug > 1 && cpcBasic.model.getProperty("showConsole")) { // console log window?
                 UtilsConsole = cpcBasic.createDebugUtilsConsole(cpcBasicLog);
-                Utils_23.Utils.console = UtilsConsole;
-                Utils_23.Utils.console.log("CPCBasic log started at", Utils_23.Utils.dateFormat(new Date()));
-                UtilsConsole.changeLog(View_7.View.getElementById1("consoleText"));
+                Utils_26.Utils.console = UtilsConsole;
+                Utils_26.Utils.console.log("CPCBasic log started at", Utils_26.Utils.dateFormat(new Date()));
+                UtilsConsole.changeLog(View_8.View.getElementById1("consoleText"));
+            }
+            if (redirectExamples) {
+                this.fnRedirectExamples(redirectExamples);
             }
             cpcBasic.controller = new Controller_1.Controller(cpcBasic.model, cpcBasic.view);
+            cpcBasic.controller.onDatabaseSelectChange(); // trigger loading example
         };
         cpcBasic.fnOnLoad = function () {
-            Utils_23.Utils.console.log("CPCBasic started at", Utils_23.Utils.dateFormat(new Date()));
+            Utils_26.Utils.console.log("CPCBasic started at", Utils_26.Utils.dateFormat(new Date()));
             cpcBasic.fnDoStart();
         };
         cpcBasic.config = {
+            arrayBounds: false,
             bench: 0,
             debug: 0,
             databaseDirs: "examples",
             database: "examples",
             example: "cpcbasic",
             exampleIndex: "0index.js",
+            implicitLines: false,
             input: "",
             kbdLayout: "alphanum",
             showInput: true,
             showInp2: false,
             showCpc: true,
             showKbd: false,
-            showKbdLayout: false,
             showOutput: false,
             showResult: false,
             showText: false,
             showVariable: false,
             showConsole: false,
             showConvert: false,
+            showSettings: false,
             sound: true,
+            speed: 100,
             trace: false // trace code
         };
         return cpcBasic;
@@ -17162,143 +17775,10 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
     window.onload = function () {
         cpcBasic.fnOnLoad();
     };
-    // nodeJsAvail: when launching via node...
-    // eslint-disable-next-line no-new-func
-    var myGlobalThis = (typeof globalThis !== "undefined") ? globalThis : Function("return this")(), // for old IE
-    nodeJsAvail = (function () {
-        var nodeJs = false;
-        // https://www.npmjs.com/package/detect-node
-        // Only Node.JS has a process variable that is of [[Class]] process
-        try {
-            if (Object.prototype.toString.call(myGlobalThis.process) === "[object process]") {
-                nodeJs = true;
-            }
-        }
-        catch (e) {
-            // empty
-        }
-        return nodeJs;
-    }());
-    if (nodeJsAvail) {
-        (function () {
-            var https, // nodeJs
-            fs, module;
-            var domElements = {}, myCreateElement = function (id) {
-                domElements[id] = {
-                    className: "",
-                    style: {
-                        borderwidth: "",
-                        borderStyle: ""
-                    },
-                    addEventListener: function () { },
-                    options: [],
-                    get length() {
-                        return domElements[id].options.length;
-                    }
-                };
-                return domElements[id];
-            };
-            Object.assign(window, {
-                console: console,
-                document: {
-                    addEventListener: function () { },
-                    getElementById: function (id) { return domElements[id] || myCreateElement(id); },
-                    createElement: function (type) {
-                        if (type === "option") {
-                            return {};
-                        }
-                        Utils_23.Utils.console.error("createElement: unknown type", type);
-                        return {};
-                    }
-                },
-                AudioContext: function () { throw new Error("AudioContext not supported"); }
-            });
-            // eslint-disable-next-line no-eval
-            var nodeExports = eval("exports"), view = nodeExports.View, setSelectOptionsOrig = view.prototype.setSelectOptions;
-            view.prototype.setSelectOptions = function (id, options) {
-                var element = domElements[id] || myCreateElement(id);
-                if (!element.options.add) {
-                    // element.options = [];
-                    element.add = function (option) {
-                        // eslint-disable-next-line no-invalid-this
-                        element.options.push(option);
-                        if (element.options.length === 1 || option.selected) {
-                            element.value = element.options[element.options.length - 1].value;
-                        }
-                    };
-                }
-                return setSelectOptionsOrig(id, options);
-            };
-            var setAreaValueOrig = view.prototype.setAreaValue;
-            view.prototype.setAreaValue = function (id, value) {
-                if (id === "resultText") {
-                    if (value) {
-                        Utils_23.Utils.console.log(value);
-                    }
-                }
-                return setAreaValueOrig(id, value);
-            };
-            // https://nodejs.dev/learn/accept-input-from-the-command-line-in-nodejs
-            // readline?
-            var controller = nodeExports.Controller;
-            // startWithDirectInputOrig = controller.prototype.startWithDirectInput;
-            controller.prototype.startWithDirectInput = function () {
-                Utils_23.Utils.console.log("We are ready.");
-            };
-            //
-            function isUrl(s) {
-                return s.startsWith("http"); // http or https
-            }
-            function fnEval(code) {
-                return eval(code); // eslint-disable-line no-eval
-            }
-            function nodeReadUrl(url, fnDataLoaded) {
-                if (!https) {
-                    fnEval('https = require("https");'); // to trick TypeScript
-                }
-                https.get(url, function (resp) {
-                    var data = "";
-                    // A chunk of data has been received.
-                    resp.on("data", function (chunk) {
-                        data += chunk;
-                    });
-                    // The whole response has been received. Print out the result.
-                    resp.on("end", function () {
-                        fnDataLoaded(undefined, data);
-                    });
-                }).on("error", function (err) {
-                    Utils_23.Utils.console.log("Error: " + err.message);
-                    fnDataLoaded(err);
-                });
-            }
-            function nodeReadFile(name, fnDataLoaded) {
-                if (!fs) {
-                    fnEval('fs = require("fs");'); // to trick TypeScript
-                }
-                if (!module) {
-                    fnEval('module = require("module");'); // to trick TypeScript
-                }
-                var name2 = module.path + "/" + name;
-                fs.readFile(name2, "utf8", fnDataLoaded);
-            }
-            var utils = nodeExports.Utils;
-            utils.loadScript = function (fileOrUrl, fnSuccess, _fnError, key) {
-                var fnLoaded = function (_error, data) {
-                    if (data) {
-                        fnEval(data); // load js (for nodeJs)
-                    }
-                    fnSuccess(fileOrUrl, key);
-                };
-                if (isUrl(fileOrUrl)) {
-                    nodeReadUrl(fileOrUrl, fnLoaded);
-                }
-                else {
-                    nodeReadFile(fileOrUrl, fnLoaded);
-                }
-            };
-        }());
+    if (window.Polyfills.isNodeAvailable) {
+        NodeAdapt_1.NodeAdapt.doAdapt();
         cpcBasic.fnOnLoad();
-        Utils_23.Utils.console.log("End of program.");
+        Utils_26.Utils.console.debug("End of main.");
     }
 });
 //# sourceMappingURL=cpcbasicts.js.map

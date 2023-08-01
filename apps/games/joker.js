@@ -5,7 +5,8 @@
 cpcBasic.addItem("", function () { /*
 10 rem joker - Black Joker (Der Schwarze Joker)
 20 rem (c) Marco Vieth
-30 rem
+30 rem CALL &BD25 and OUT &BD00 adapted
+40 rem
 90 REM Der Schwarze Joker
 100 CLEAR:GOSUB 10000
 110 MODE 1:INK 1,24:INK 2,7:INK 3,6,12:PEN 1:PAPER 0
@@ -127,8 +128,8 @@ cpcBasic.addItem("", function () { /*
 10075 WINDOW #1,12,29,20,20:CLS#1:PRINT#1,"  Taste 3druecken1"
 10080 FOR j=6 TO 26:INK 2,6,j:INK 3,10+(j/2),8:SPEED INK 3,18-j/2:SOUND 2,620-j*20,35,5
 10090 IF (SQ(2) AND 128)<>0 THEN call &bd19:goto 10090 ELSE NEXT j:SPEED INK 10,10:INK 2,6:INK 3,12,14
-10100 FOR m=1 TO 10:FOR n=1 TO 255:CALL &BD23,n:NEXT n:SOUND 4,500-(m*30),150,5
-10110 FOR n=0 TO 40:OUT 46359,n:CALL &BD19:SOUND 1,10*n,1,5:NEXT n:IF INKEY$="" THEN NEXT m
+10100 FOR m=1 TO 10:FOR n=1 TO 255:CALL &BD25,n:NEXT n:SOUND 4,500-(m*30),150,5:call &bd19
+10110 FOR n=0 TO 40:OUT &bc00,13:OUT &bd00,n:CALL &BD19:SOUND 1,10*n,1,5:NEXT n:IF INKEY$="" THEN NEXT m
 10120 CLS#1:PEN #1,3:PRINT#1,"Spielregeln(J/N):";
 10130 WHILE t$<>"J" AND t$<>"N":t$=UPPER$(INKEY$):WEND
 10140 IF t$="N" THEN 10500 ELSE MODE 1:PEN 1:PAPER 0:INK 3,14

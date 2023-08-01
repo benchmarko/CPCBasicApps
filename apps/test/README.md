@@ -16,7 +16,7 @@ Links:
 
 ### Basic Bank Manager
 
-[![Basic Bank Manager](./img/basbankm.png)](../../dist/index.html?database=apps&example=test/basbankm) (c)
+[![Basic Bank Manager](./img/basbankm.png)](../../dist/index.html?database=apps&example=test/basbankm) (c) Marco Vieth
 
 ### blocky - Blocky CPC Demo
 
@@ -24,15 +24,16 @@ Links:
 
 ### BM Benchmark 3
 
-[![BM Benchmark 3](./img/bmbench3.png)](../../dist/index.html?database=apps&example=test/bmbench3) (c)
+[![BM Benchmark 3](./img/bmbench3.png)](../../dist/index.html?database=apps&example=test/bmbench3) (c) Marco Vieth, 2002
 
 ### BM Benchmark 8
 
-[![BM Benchmark 8](./img/bmbench8.png)](../../dist/index.html?database=apps&example=test/bmbench8) (c)
+[![BM Benchmark 8](./img/bmbench8.png)](../../dist/index.html?database=apps&example=test/bmbench8)
+[![BM Benchmark 8](./img/bmbench8_2.png)](../../dist/index.html?database=apps&example=test/bmbench8) (c) Marco Vieth, 2023
 
 ### Character set
 
-[![Character set](./img/charset.png)](../../dist/index.html?database=apps&example=test/charset) (c)
+[![Character set](./img/charset.png)](../../dist/index.html?database=apps&example=test/charset) (c) Marco Vieth
 
 ### cpc464ch - CPC 464 Character Art
 
@@ -44,7 +45,7 @@ Links:
 
 ### Circles
 
-[![Drawing circles](./img/circles.png)](../../dist/index.html?database=apps&example=test/circles) (c)
+[![Drawing circles](./img/circles.png)](../../dist/index.html?database=apps&example=test/circles) (c) Marco Vieth
 
 ### colors - Colors CPC Demo
 
@@ -63,11 +64,11 @@ c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 
 ### CPC MHz
 
-[![CPC MHz](./img/cpcmhz.png)](../../dist/index.html?database=apps&example=test/cpcmhz) (c)
+[![CPC MHz](./img/cpcmhz.png)](../../dist/index.html?database=apps&example=test/cpcmhz) (c) Marco Vieth
 
 ### crtctest - CRTC Test (TODO)
 
-[![CRTC Test](./img/crtctest.png)](../../dist/index.html?database=apps&example=test/crtctest)
+[![CRTC Test](./img/crtctest.png)](../../dist/index.html?database=apps&example=test/crtctest) (c) Marco Vieth
 
 ### crypto1 - Cryptology 1
 
@@ -75,15 +76,15 @@ c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 
 ### energy0 - Energy Collectors 0 (Game)
 
-[![Energy Collectors 0](./img/energy0.png)](../../dist/index.html?database=apps&example=games/energy0)
+[![Energy Collectors 0](./img/energy0.png)](../../dist/index.html?database=apps&example=games/energy0) (c) Marco Vieth, 1985
 
 ### energy1 - Energy Collectors 1 (Game)
 
-[![Energy Collectors 1](./img/energy1.png)](../../dist/index.html?database=apps&example=games/energy1)
+[![Energy Collectors 1](./img/energy1.png)](../../dist/index.html?database=apps&example=games/energy1) (c) Marco Vieth, 1985
 
 ### energysa - Energy Savers (Game)
 
-[![Energy Savers](./img/energysa.png)](../../dist/index.html?database=apps&example=games/energysa)
+[![Energy Savers](./img/energysa.png)](../../dist/index.html?database=apps&example=games/energysa) (c) Marco Vieth, 1985
 
 ### Extended RAM Test
 
@@ -91,7 +92,7 @@ c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 
 ### Fancy copychr$
 
-[![Fancy copychr$](./img/fancy.png)](../../dist/index.html?database=apps&example=test/fancy) (c)
+[![Fancy copychr$](./img/fancy.png)](../../dist/index.html?database=apps&example=test/fancy) (c) Marco Vieth
 
 ### Fill
 
@@ -103,7 +104,7 @@ c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 
 ### Keyboard
 
-[![Keyboard](./img/keyboard.png)](../../dist/index.html?database=apps&example=test/keyboard) (c)
+[![Keyboard](./img/keyboard.png)](../../dist/index.html?database=apps&example=test/keyboard) (c) Marco Vieth
 
 ### labyrinth - Labyrinth
 
@@ -115,7 +116,7 @@ c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 
 ### Line Mask
 
-[![Line Mask](./img/linemask.png)](../../dist/index.html?database=apps&example=test/linemask) (c)
+[![Line Mask](./img/linemask.png)](../../dist/index.html?database=apps&example=test/linemask) (c) Marco Vieth
 
 ### mouse - Mouse escaping from a maze
 
@@ -123,7 +124,7 @@ c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 
 ### Mouse Painting
 
-[![Mouse Painting](./img/mousepa.png)](../../dist/index.html?database=apps&example=test/mousepa) (c)
+[![Mouse Painting](./img/mousepa.png)](../../dist/index.html?database=apps&example=test/mousepa) (c) Marco Vieth
 
 ### piechart - Pie Chart
 
@@ -131,11 +132,11 @@ c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 
 ### Pixel Test (Mode 0)
 
-[![Pixel Test (Mode 0)](./img/pixeltst.png)](../../dist/index.html?database=apps&example=test/pixeltst) (c)
+[![Pixel Test (Mode 0)](./img/pixeltst.png)](../../dist/index.html?database=apps&example=test/pixeltst) (c) Marco Vieth
 
 ### RAM Test
 
-[![RAM Test](./img/ramtest.png)](../../dist/index.html?database=apps&example=test/ramtest) (c)
+[![RAM Test](./img/ramtest.png)](../../dist/index.html?database=apps&example=test/ramtest) (c) Marco Vieth
 
 ### rastercircle - Raster Circle
 
@@ -143,19 +144,19 @@ c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 
 ### Rectangles Test
 
-[![Rectangles Test](./img/rectangles.png)](../../dist/index.html?database=apps&example=test/rectangles) (c)
+[![Rectangles Test](./img/rectangles.png)](../../dist/index.html?database=apps&example=test/rectangles) (c) Marco Vieth
 
 ### Reference Timings
 
-[![Reference Timings](./img/reftime.png)](../../dist/index.html?database=apps&example=test/reftime) (c)
+[![Reference Timings](./img/reftime.png)](../../dist/index.html?database=apps&example=test/reftime) (c) Marco Vieth
 
 ### Screen Memory Test
 
-[![Screen Memory Test](./img/scrtest.png)](../../dist/index.html?database=apps&example=test/scrtest) (c)
+[![Screen Memory Test](./img/scrtest.png)](../../dist/index.html?database=apps&example=test/scrtest) (c) Marco Vieth
 
 ### Seconds Test
 
-[![Seconds Test](./img/seconds.png)](../../dist/index.html?database=apps&example=test/seconds) (c)
+[![Seconds Test](./img/seconds.png)](../../dist/index.html?database=apps&example=test/seconds) (c) Marco Vieth
 
 ### scrudu - Scrudu (Gedichte)
 

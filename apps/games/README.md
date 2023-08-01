@@ -12,7 +12,25 @@ Links:
 
 ### 3D-Four In A Row (TODO)
 
-[![3D-Four In A Row](./img/3dfour.png)](../../dist/index.html?database=apps&example=games/3dfour) (c) Dudley Brooke, 1987
+[![3D-Four In A Row](./img/3dfour.png)](../../dist/index.html?database=apps&example=games/3dfour)
+[![3D-Four In A Row](./img/3dfour2.png)](../../dist/index.html?database=apps&example=games/3dfour)
+(c) Dudley Brooke, 1987
+
+### Atombunker
+
+[![Atombunker](./img/atombu.png)](../../dist/index.html?database=apps&example=games/atombu)
+[![Atombunker](./img/atombu2.png)](../../dist/index.html?database=apps&example=games/atombu) (c) Marco Vieth, 1986
+
+Atombunker Editor
+
+[![Atombunker Editor](./img/atomed.png)](../../dist/index.html?database=apps&example=games/atomed)
+[![Atombunker Editor](./img/atomed2.png)](../../dist/index.html?database=apps&example=games/atomed) (c) Marco Vieth, 1986
+
+Additional files:
+
+- atombu0.dat - Map file
+- atombu1.dat
+- atombu2.dat
 
 ### BASIC Game 2
 
@@ -101,7 +119,7 @@ To select an action during the game, use joystick or numpad numbers.
 ### Goldrush (Goldrausch)
 
 [![Goldrush (Goldrausch)](./img/goldrush.png)](../../dist/index.html?database=apps&example=games/goldrush)
-[![Goldrush (Goldrausch)](./img/goldrush2.png)](../../dist/index.html?database=apps&example=games/goldrush) (c) Jörg Walkowiak, 1984
+[![Goldrush (Goldrausch)](./img/goldrush2.png)](../../dist/index.html?database=apps&example=games/goldrush&input=%0d%0do%0dunte%20felsbrocken%0do%0dunters%20kiste%0d) (c) Jörg Walkowiak, 1984
 
 ### hopper - Hopper (Hüpfer)
 
@@ -121,7 +139,7 @@ Hopper2 - Hopper: Main Part (Hüpfer)
 ### joker - Black Joker (Der Schwarze Joker)
 
 [![Black Joker (Der Schwarze Joker)](./img/joker.png)](../../dist/index.html?database=apps&example=games/joker)
-[![Black Joker (Der Schwarze Joker)](./img/joker2.png)](../../dist/index.html?database=apps&example=games/joker) (c) Marco Vieth
+[![Black Joker (Der Schwarze Joker)](./img/joker2.png)](../../dist/index.html?database=apps&example=games/joker&input=%0DN%0D2Tim%0DMary%0D&sound=false) (c) Marco Vieth
 
 ### Klondike
 
@@ -135,7 +153,7 @@ Hopper2 - Hopper: Main Part (Hüpfer)
 ### Maze
 
 [![Maze](./img/maze.png)](../../dist/index.html?database=apps&example=games/maze)
-[![Maze](./img/maze2.png)](../../dist/index.html?database=apps&example=games/maze) (c) Joerg Heise
+[![Maze](./img/maze2.png)](../../dist/index.html?database=apps&example=games/maze&input=%0d5%0D5%0D1&sound=false) (c) Joerg Heise
 
 ### Mini Chess
 
@@ -261,7 +279,7 @@ From the [BASIC 10-Liner Contest 2019](https://gkanold.wixsite.com/homeputerium/
 ### Yahtzee (Kniffel)
 
 [![Yahtzee (Kniffel)](./img/yahtzee.png)](../../dist/index.html?database=apps&example=games/yahtzee)
-[![Yahtzee (Kniffel)](./img/yahtzee2.png)](../../dist/index.html?database=apps&example=games/yahtzee) (c) J. E. Muschik, 1985
+[![Yahtzee (Kniffel)](./img/yahtzee2.png)](../../dist/index.html?database=apps&example=games/yahtze&input=j%0D%0D2%0D1%0D0%0DTim%0D0%0DMary%0D&sound=false) (c) J. E. Muschik, 1985
 
 ### Yahtzee 2 (Kniffel)
 

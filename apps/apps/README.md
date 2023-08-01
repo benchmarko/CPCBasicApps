@@ -10,7 +10,7 @@ Links:
 
 ## Some Apps Highlights
 
-### Advent
+### advedit, advint - Adventure
 
 Adventure Editor
 
@@ -26,11 +26,11 @@ Additional files:
 - goldrush.adv: Goldrush Adventure
 - tunnel.adv: Forest Tunnel Adventure
 
-### Amsynthé
+### amsynthe - Amsynthé
 
 [![Amsynthé](./img/amsynthe.png)](../../dist/index.html?database=apps&example=apps/amsynthe) (c) Hebdogiciel, 1986
 
-### Animator
+### anibas - Animator
 
 [![Animator](./img/animator.png)](../../dist/index.html?database=apps&example=apps/animator/animator) (c) Marco Vieth, 1991
 
@@ -54,7 +54,7 @@ Additional files:
 - rg1.anc: RG-1 Model
 - rg1.and: RG-1 Animation
 
-### Archi
+### archidr - Archi
 
 Little Architect Draw (BASIC viewer)
 
@@ -75,7 +75,11 @@ Additional files:
 - I to select ink
 - L to load, S to save
 
-### CPC Doodle
+### datafine - Database (TODO)
+
+[![Datafine](./img/datafine.png)](../../dist/index.html?database=apps&example=apps/datafine) (c) ms-Software, 1986
+
+### doodle - CPC Doodle
 
 [![CPC Doodle](./img/doodle.png)](../../dist/index.html?database=apps&example=apps/doodle/doodle)
 [![CPC Doodle](./img/doodle2.png)](../../dist/index.html?database=apps&example=apps/doodle/doodle&input=nl2cv%0d) (c) Markus Hohmann, 2018
@@ -118,6 +122,12 @@ Additional files: Three example drawings:
 [![geogra](./img/geogra.png)](../../dist/index.html?database=apps&example=apps/geogra)
 [![geogra](./img/geogra2.png)](../../dist/index.html?database=apps&example=apps/geogra) (c) W. Voss, 1984
 
+### heating (Heizkostenberechnung)
+
+[![Heating](./img/heating.png)](../../dist/index.html?database=apps&example=apps/heating) (c)
+
+Efficiency calculation of heating
+
 ### Lifespan (Lebenserwartung)
 
 [![Lifespan](./img/lifespan.png)](../../dist/index.html?database=apps&example=apps/lifespan) (c)
@@ -140,22 +150,26 @@ This program helps you to create your Morse code.
 - Assignment: F1=. F2=_ F3=/
 - End of word marker: //
 
-### Multitext CPC
+### mtext - Multitext CPC
 
 [![Multitext CPC](./img/mtext.png)](../../dist/index.html?database=apps&example=apps/mtext)
 [![Multitext CPC](./img/mtext2.png)](../../dist/index.html?database=apps&example=apps/mtext) (c) Rainbow Arts, 1985
 
-### Sayit (Sag's)
+### sayit - Sayit (Sag's)
 
 [![Sayit](./img/sayit.png)](../../dist/index.html?database=apps&example=apps/sayit) (c) Wolfgang Rauneker, 1986
 
 Write a number in English, German or Bavarian
 
-### Symbol Generator
+### sygen - Symbol Generator
 
 [![Symbol Generator](./img/sygen.png)](../../dist/index.html?database=apps&example=apps/sygen) (c) SkulleateR
 
-### Time Tester
+### symbol - Symbol Generator
+
+[![Symbol Generator](./img/symbol.png)](../../dist/index.html?database=apps&example=apps/symbol) (c)
+
+### timetest - Time Tester
 
 [![Time Tester](./img/timetest.png)](../../dist/index.html?database=apps&example=apps/timetest)
 [![Time Tester](./img/timetest2.png)](../../dist/index.html?database=apps&example=apps/timetest) (c) K.H. Denham, 1986

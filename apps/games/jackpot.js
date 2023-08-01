@@ -9,12 +9,12 @@ cpcBasic.addItem("", function () { /*
 4 rem Modifications: delay; input F=fast 
 5 rem
 10 REM JACK-POT
-20 REM ——————————–
+20 REM --------------------------------
 30 SYMBOL AFTER 128:GOSUB 2000
 40 MODE 1:INK 0,1:INK 1,24:INK 2,6:INK 3,8:PAPER 0:PEN 1:GOSUB 3000
 50 C=10
 60 RANDOMIZE TIME
-180 REM ——————————-
+180 REM -------------------------------
 190 REM LE JEU
 200 FOR I=1 TO 3 
 210 D(I)=INT(RND*8) 
@@ -31,7 +31,7 @@ cpcBasic.addItem("", function () { /*
 315 if F$<>"F" then call &bd19
 320 NEXT I
 330 IF T(1) OR T(2) OR T(3) THEN 250 
-380 REM ——————————-
+380 REM -------------------------------
 390 REM GAINS ?
 400 C=INT((C-0.195)*10)/10:CAP=C 
 410 D=D(1)*100+D(2)*10+D(3)
@@ -50,19 +50,19 @@ cpcBasic.addItem("", function () { /*
 540 F$=INKEY$: if F$="" THEN 540 ELSE F$=upper$(F$) 'IF INKEY$="" THEN 540 
 550 IF C=0 THEN 800
 560 GOTO 200
-580 REM ——————————-
+580 REM -------------------------------
 590 REM GAGNE
 600 FOR I=500 TO 50 STEP-5:SOUND 1,I,2:NEXT 
 610 PEN 2:LOCATE 19,22:PRINT C-CAP
 620 IF INKEY$="" THEN 620 
 630 LOCATE 19,22:PRINT "   "
 640 GOTO 200
-780 REM ——————————-
+780 REM -------------------------------
 790 REM PERDU
 800 PAPER 0:PEN 1:LOCATE 1,15:PRINT"MERCI":PRINT"POUR":PRINT"LES DIX":PRINT"FRANCS"
 810 LINE INPUT A$
 820 RUN
-980 REM ——————————-
+980 REM -------------------------------
 990 REM DESC. POIGNEE
 1000 FOR I=10 TO 17
 1010 PAPER 0:LOCATE 35,I:PRINT"   "
@@ -71,7 +71,7 @@ cpcBasic.addItem("", function () { /*
 1035 if F$<>"F" then call &bd19:call &bd19
 1040 NEXT I
 1050 PAPER 0:RETURN
-1480 REM ——————————
+1480 REM ------------------------------
 1490 REM MONT. POIGNEE
 1500 FOR I=17 TO 10 STEP -1
 1510 PAPER 0:LOCATE 35,I+2:PRINT" ";:PAPER 1:PRINT" ";:PAPER 0:PRINT" "
@@ -80,7 +80,7 @@ cpcBasic.addItem("", function () { /*
 1535 call &bd19:call &bd19
 1540 NEXT I
 1550 PAPER 0:RETURN
-1980 REM ——————————
+1980 REM ------------------------------
 1990 REM GRAPHIQUES
 2000 SYMBOL 128,1,3,7,15,31,63,127,255
 2010 SYMBOL 129,128,192,224,240,248,252,254,255 
@@ -115,7 +115,7 @@ cpcBasic.addItem("", function () { /*
 2300 SYMBOL 158,74,74,122,0,127,127,0,0 
 2310 SYMBOL 159,82,82,81,0,255,255,0,0 
 2320 RETURN
-2980 REM ——————————
+2980 REM ------------------------------
 2990 REM DESSIN DE LA MACHINE
 3000 FOR I=0 TO 3
 3010 READ A,B,C,D:A=A+128:B=B+128

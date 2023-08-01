@@ -7,11 +7,11 @@ cpcBasic.addIndex("apps", function () { /*
 [
 	{
     	"key": "apps/advent/advedit",
-		"title": "apps/adventure Editor"
+		"title": "Adventure Editor"
 	},
 	{
     	"key": "apps/advent/advint",
-		"title": "apps/adventure Interpreter"
+		"title": "Aventure Interpreter"
 	},
 	{
     	"key": "apps/advent/home.adv",
@@ -30,11 +30,11 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
     	"key": "apps/animator/anibas",
-		"title": "apps/animator BASIC Viewer"
+		"title": "animator BASIC Viewer"
 	},
 	{
     	"key": "apps/animator/animator",
-		"title": "apps/animator"
+		"title": "animator"
 	},
 	{
     	"key": "apps/animator/biplane.anc",
@@ -123,6 +123,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Block Editor"
     },
 	{
+		"key": "apps/datafine",
+		"title": "Datafine Database"
+    },
+	{
     	"key": "apps/doodle/doodle",
 		"title": "CPC Doodle"
 	},
@@ -141,7 +145,7 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Mallet",
 		"meta": "D"
 	},
-		{
+	{
 		"key": "apps/drumkit",
 		"title": "Amstrad Drumkit"
 	},
@@ -152,6 +156,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "apps/geogra",
 		"title": "Geographics (Erkunde)"
+	},
+	{
+		"key": "apps/heating",
+		"title": "Efficiency calculation of heating"
 	},
 	{
     	"key": "apps/lifespan",
@@ -172,6 +180,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "apps/sygen",
 		"title": "Symbol Generator 2x2"
+	},
+	{
+    	"key": "apps/symbol",
+		"title": "Define Symbol"
 	},
 	{
     	"key": "apps/timetest",
@@ -225,11 +237,11 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
     	"key": "basicode/funcplot",
-		"title": "Function Plotting (Funktionsplotting)"
+		"title": "Function Plotting (Funktionen)"
 	},
 	{
     	"key": "basicode/imposfig",
-		"title": "Impossible Figures (Unmoegliche Figuren)"
+		"title": "Impossible Figures (Figuren)"
 	},
 	{
     	"key": "basicode/nonius",
@@ -361,6 +373,29 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Sultan's Maze Demo Screen"
 	},
 	{
+    	"key": "games/atombu/atombu",
+		"title": "Atombunker"
+	},
+	{
+    	"key": "games/atombu/atombu0.dat",
+		"title": "Atombu data 0",
+		"meta": "D"
+	},
+	{
+    	"key": "games/atombu/atombu1.dat",
+		"title": "Atombu data 1",
+		"meta": "D"
+	},
+	{
+    	"key": "games/atombu/atombu2.dat",
+		"title": "Atombu data 2",
+		"meta": "D"
+	},
+	{
+    	"key": "games/atombu/atomed",
+		"title": "Atombunker Editor"
+	},
+	{
     	"key": "games/3dfour",
 		"title": "3D-Four In A Row"
 	},
@@ -382,7 +417,7 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
 		"key": "games/cards",
-		"title": "Card Games: Blackjack (17 und 4) and Memory"
+		"title": "Card Games: Blackjack, Memory"
 	},
 	{
 		"key": "games/catch",
@@ -435,6 +470,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "games/goldrush",
 		"title": "Goldrush (Goldrausch)"
+	},
+	{
+		"key": "games/helicop",
+		"title": "Helicopter"
 	},
 	{
 		"key": "games/hopper",
@@ -576,11 +615,11 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
     	"key": "math/derivat",
-		"title": "Derivatives of Polynomials (Ableitungen eines Polynoms)"
+		"title": "Derivatives of Polynomials (Ableitung)"
 	},
 	{
     	"key": "math/division",
-		"title": "Division of long numbers (Division langer Zahlen)"
+		"title": "Division of long numbers (Division)"
 	},
 	{
     	"key": "math/euler",
@@ -588,7 +627,7 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
     	"key": "math/factorials",
-		"title": "Big Factorials (Berechnung grosser Fakultaeten)"
+		"title": "Big Factorials (Fakultaeten)"
     },
 	{
 		"key": "math/fractals",
@@ -608,11 +647,11 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
     	"key": "math/ninedig2",
-		"title": "Nine Digits 2 (tokenized BASIC)"
+		"title": "Nine Digits 2 (tokenized)"
 	},
 	{
     	"key": "math/quadfunc",
-		"title": "Quadratic Function (Quadratische Funktion)"
+		"title": "Quadratic Function"
 	},
 	{
     	"key": "math/raytrace",
@@ -636,15 +675,15 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
 		"key": "music/bach",
-		"title": "Wohl mir,dass ich Jesum habe (J. S. Bach)"
+		"title": "Wohl mir,... (J. S. Bach)"
 	},
 	{
 		"key": "music/cancan",
-		"title": "Can-Can (Infernal Galop, Jacques Offenbach)"
+		"title": "Can-Can (Infernal Galop)"
 	},
 	{
 		"key": "music/clarinet",
-		"title": "Clarinet (Klarinettenmuck'l, Jaroslav Skabrada)"
+		"title": "Clarinet (Klarinettenmuck'l)"
 	},
 	{
 		"key": "music/cpcorgan",
@@ -652,7 +691,7 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
 		"key": "music/elise",
-		"title": "Fuer Elise (Ludwig van Beethoven)"
+		"title": "Fuer Elise (L. v. Beethoven)"
 	},
 		{
 		"key": "music/menuett",
@@ -660,7 +699,7 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
 		"key": "music/mexicana",
-		"title": "Dance Mexicana (Jarabe Tapatio, Mexican Hat Dance)"
+		"title": "Dance Mexicana"
 	},
 	{
 		"key": "music/rocking",
@@ -672,7 +711,7 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
 		"key": "music/ticotico",
-		"title": "Tico-Tico no Fubá (Zequinha de Abreu)"
+		"title": "Tico-Tico no Fubá"
 	},
 	{
 		"key": "music/touch",
@@ -788,7 +827,7 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
 		"key": "test/mouse",
-		"title": "Mouse escaping from a maze"
+		"title": "Mouse escaping from maze"
 	},
 	{
 		"key": "test/mousepa",
