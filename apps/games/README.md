@@ -32,6 +32,14 @@ Additional files:
 - atombu1.dat
 - atombu2.dat
 
+### Ball Cracker
+
+[![Ball Cracker](./img/ballcra.png)](../../dist/index.html?database=apps&example=games/ballcra) (c)
+
+### Balloon
+
+[![Balloon](./img/balloon.png)](../../dist/index.html?database=apps&example=games/balloon) (c)
+
 ### BASIC Game 2
 
 [![BASIC Game 2](./img/basgame2.png)](../../dist/index.html?database=apps&example=games/basgame2) (c) Roald (Mr.Lou) Strauss
@@ -252,7 +260,6 @@ On a real CPC, the game is rather slow, so I never played it. With CPCBasic it h
 - Your job is to destroy the eggs of giant frogs in the swamp. You move using cursor keys or joystick. You destroy the spawn by standing on it.
 - You have to avoid the two frogs. If they catch you then you will lose one of your five lives.
 - You score 10 for each egg destroyed. You gain a bonus of 100 and 1 extra life for each board of 72 eggs you destroy, after which you are given a new screen.
-
 
 ### Tanks Alot
 

@@ -5,7 +5,8 @@
 cpcBasic.addItem("", function () { /*
 1 rem rotatio - Rotatio
 2 rem (c) Marco Vieth, 1991
-3 rem
+3 rem Modifications: Control also with cursor
+4 rem
 100 REM Rotatio3 (v1.3)
 110 REM 16.3.1991
 120 REM Marco Vieth
@@ -22,17 +23,17 @@ cpcBasic.addItem("", function () { /*
 230 PRINT"Marco Vieth, 16.3.1991"
 240 PRINT
 250 PRINT"Steuerung der Figur:"
-260 PRINT"Joy hoch   = hoch"
-270 PRINT"Joy runter = runter"
-280 PRINT"Joy links  = links"
-290 PRINT"Joy rechts = rechts"
+260 PRINT"Joy/Cursor hoch   = hoch"
+270 PRINT"Joy/Cursor runter = runter"
+280 PRINT"Joy/Cursor links  = links"
+290 PRINT"Joy/Cursor rechts = rechts"
 300 PRINT
 310 PRINT"Joy hoch   + Feuer = vergroessern"
 320 PRINT"Joy runter + Feuer = verkleinern"
 330 PRINT"Joy links  + Feuer = links drehen"
 340 PRINT"Joy rechts + Feuer = rechts drehen"
 350 PRINT
-360 PRINT"Feuer = Menue oder Parameter"
+360 PRINT"Feuer,Copy,Enter = Menue oder Parameter"
 370 PRINT
 380 PRINT"Bitte eine Taste druecken ..."
 390 CALL &BB18
@@ -55,13 +56,32 @@ cpcBasic.addItem("", function () { /*
 560 REM
 570 LOCATE#1,1,po:PRINT#1,CHR$(243);
 580 FOR j=1 TO 500/50:call &bd19:NEXT
-590 call &bd19:j=JOY(0):IF j=0 THEN 590
+590 call &bd19:j=JOY(0):t$=inkey$:IF j=0 and t$="" THEN 590
 600 LOCATE#1,1,po:PRINT#1," ";
-610 IF j AND 16 THEN 660
-620 IF j AND 2 THEN po=po+1:IF po>pomax THEN po=1
-630 IF j AND 1 THEN po=po-1:IF po<1 THEN po=pomax
+610 IF j AND 16 OR t$=CHR$(224) OR t$=CHR$(13) THEN 660
+613 IF j AND 8 OR t$=CHR$(243) THEN 652
+616 IF j AND 4 OR t$=CHR$(242) THEN 642
+620 IF j AND 2 OR t$=CHR$(241) THEN po=po+1:IF po>pomax THEN po=1
+630 IF j AND 1 OR t$=CHR$(240) THEN po=po-1:IF po<1 THEN po=pomax
 640 GOTO 570
+641 REM
+642 on po gosub 644,645,646,647,648,649
+643 GOTO 550
+644 m=m-1:if m<0 then m=0:return else return
+645 w=w-10:if w<0 then w=0:return else return
+646 xv=xv-10:if xv<-500 then xv=-500:return else return
+647 yv=yv-10:if yv<-500 then yv=-500:return else return
+648 xm!=xm!-10:if xm!<0 then xm!=0:return else return
+649 ym!=ym!-10:if ym!<0 then ym!=0:return else return
 650 REM
+652 on po gosub 654,655,656,657,658,659
+653 GOTO 550
+654 m=m+1:if m>3 then m=3:return else return
+655 w=w+10:if w>360 then w=360:return else return
+656 xv=xv+10:if xv>500 then xv=500:return else return
+657 yv=yv+10:if yv>500 then yv=500:return else return
+658 xm!=xm!+10:if xm!>1000 then xm!=1000:return else return
+659 ym!=ym!+10:if ym!>1000 then ym!=1000:return else return
 660 GOSUB 1070
 670 IF po=pomax THEN MODE 2:PRINT"bye.":END
 680 IF po=pomax-1 THEN 780
@@ -85,13 +105,13 @@ cpcBasic.addItem("", function () { /*
 860 IF i>1 THEN DRAW x,y ELSE PLOT x,y
 870 NEXT i
 880 REM Joystick
-890 call &bd19:j=JOY(0):IF j=0 THEN 890
-900 IF j=16 THEN gosub 1070:goto 410
+890 call &bd19:j=JOY(0):t$=inkey$:IF j=0 and t$="" THEN 890
+900 IF j=16 OR t$=CHR$(224) OR t$=CHR$(13) THEN GOSUB 1070:GOTO 410
 910 IF j AND 16 THEN 980
-920 IF j AND 8 THEN xv=xv+10
-930 IF j AND 4 THEN xv=xv-10
-940 IF j AND 2 THEN yv=yv-10
-950 IF j AND 1 THEN yv=yv+10
+920 IF j AND 8 OR t$=CHR$(243) THEN xv=xv+10
+930 IF j AND 4 OR t$=CHR$(242) THEN xv=xv-10
+940 IF j AND 2 OR t$=CHR$(241) THEN yv=yv-10
+950 IF j AND 1 OR t$=CHR$(240) THEN yv=yv+10
 960 GOTO 820
 970 REM Drehen
 980 IF j AND 8 THEN w=(w-10) MOD 360:IF w<0 THEN w=w+360:GOTO 810 ELSE 810

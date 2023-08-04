@@ -14,17 +14,17 @@ Links:
 
 Adventure Editor
 
-[![Adventure Editor](./img/advedit.png)](../../dist/index.html?database=apps&example=apps/advent/advedit) (c) Marco Vieth, 1988
+[![Adventure Editor](./img/advedit.png)](../../dist/index.html?database=apps&example=apps/advedit) (c) Marco Vieth, 1988
 
 Adventure Interpreter
 
-[![Adventure Interpreter](./img/advint.png)](../../dist/index.html?database=apps&example=apps/advent/advint) (c) Marco Vieth, 1988
+[![Adventure Interpreter](./img/advint.png)](../../dist/index.html?database=apps&example=apps/advint) (c) Marco Vieth, 1988
 
 Additional files:
 
-- home.adv: Our Home Adventure
-- goldrush.adv: Goldrush Adventure
-- tunnel.adv: Forest Tunnel Adventure
+- ad_home.adv: Our Home Adventure
+- ad_goldr.adv: Goldrush Adventure
+- ad_adit.adv: Forest Adit/Tunnel Adventure
 
 ### amsynthe - Amsynthé
 
@@ -32,34 +32,36 @@ Additional files:
 
 ### anibas - Animator
 
-[![Animator](./img/animator.png)](../../dist/index.html?database=apps&example=apps/animator/animator) (c) Marco Vieth, 1991
+[![Animator](./img/animator.png)](../../dist/index.html?database=apps&example=apps/animator) (c) Marco Vieth, 1991
 
 (TODO: Make it working with CPCBasic)
 
-[![Animator BASIC Viewer: Box 3D](./img/anibas.png)](../../dist/index.html?database=apps&example=apps/animator/anibas)
-[![Animator BASIC Viewer: Blimp](./img/anibas2.png)](../../dist/index.html?database=apps&example=apps/animator/anibas) (c)
+[![Animator BASIC Viewer: Box 3D](./img/anibas.png)](../../dist/index.html?database=apps&example=apps/anibas)
+[![Animator BASIC Viewer: Blimp](./img/anibas2.png)](../../dist/index.html?database=apps&example=apps/anibas) (c)
 
 Additional files:
 
-- biplane.anc: Biplane Model
-- biplane.and: Biplane Animation
-- blimp.anc: Blimp Model
-- blimp.and: Blimp Animation
-- box3d.anc: Box 3D Model
-- box3d.and: Box 3D Animation
-- copymate.anc: Copymate Model
-- copymate.and: Copymate Animation
-- me109.anc: ME-109 Model
-- me109.and: ME-109 Animation
-- rg1.anc: RG-1 Model
-- rg1.and: RG-1 Animation
+- an_bipla.anc: Biplane Model
+- an_bipla.and: Biplane Animation
+- an_blimp.anc: Blimp Model
+- an_blimp.and: Blimp Animation
+- an_box3d.anc: Box 3D Model
+- an_box3d.and: Box 3D Animation
+- an_copym.anc: Copymate Model
+- an_copym.and: Copymate Animation
+- an_me109.anc: ME-109 Model
+- an_me109.and: ME-109 Animation
+- an_rg1.anc: RG-1 Model
+- an_rg1.and: RG-1 Animation
+- an_ufo.anc: UFO Model
+- an_ufo.and: UFO Animation
 
 ### archidr - Archi
 
 Little Architect Draw (BASIC viewer)
 
-[![Little Architect Draw](./img/archidr.png)](../../dist/index.html?database=apps&example=apps/archi/archidr)
-[![Little Architect Draw](./img/archidr2.png)](../../dist/index.html?database=apps&example=apps/archi/archidr) (c) Marco Vieth, 1991
+[![Little Architect Draw](./img/archidr.png)](../../dist/index.html?database=apps&example=apps/archidr)
+[![Little Architect Draw](./img/archidr2.png)](../../dist/index.html?database=apps&example=apps/archidr) (c) Marco Vieth, 1991
 
 Additional files:
 
@@ -82,7 +84,7 @@ Additional files:
 ### doodle - CPC Doodle
 
 [![CPC Doodle](./img/doodle.png)](../../dist/index.html?database=apps&example=apps/doodle/doodle)
-[![CPC Doodle](./img/doodle2.png)](../../dist/index.html?database=apps&example=apps/doodle/doodle&input=nl2cv%0d) (c) Markus Hohmann, 2018
+[![CPC Doodle](./img/doodle2.png)](../../dist/index.html?database=apps&example=apps/doodle/doodle&input=nldo_2cv%0d) (c) Markus Hohmann, 2018
 
 - Q - this information
 - C - display # of commands used
@@ -105,9 +107,9 @@ Additional files:
 
 Additional files: Three example drawings:
 
-- 2cv.drw
-- doodle.drw
-- mallet.drw
+- do_2cv.drw: 2CV Doodle Drawing
+- do_malle.drw: Mallet Doodle Drawing
+- doodle.drw: Doodle Title Drawing
 
 ### drumkit - Amstrad Drumkit (TODO)
 
@@ -155,6 +157,11 @@ This program helps you to create your Morse code.
 [![Multitext CPC](./img/mtext.png)](../../dist/index.html?database=apps&example=apps/mtext)
 [![Multitext CPC](./img/mtext2.png)](../../dist/index.html?database=apps&example=apps/mtext) (c) Rainbow Arts, 1985
 
+### retrols - Retro Loadsheet
+
+[![Retro Loadsheet](./img/retrols.png)](../../dist/index.html?database=apps&example=apps/retrols)
+[![Retro Loadsheet](./img/retrols2.png)](../../dist/index.html?database=apps&example=apps/retrols2) (c) Sakis Kaffesakis, 2018
+
 ### sayit - Sayit (Sag's)
 
 [![Sayit](./img/sayit.png)](../../dist/index.html?database=apps&example=apps/sayit) (c) Wolfgang Rauneker, 1986
@@ -176,13 +183,13 @@ Write a number in English, German or Bavarian
 
 ### VIDI
 
-[![VIDI](./img/vidi.png)](../../dist/index.html?database=apps&example=apps/vidi/vidi)
-[![VIDI](./img/vidi2.png)](../../dist/index.html?database=apps&example=apps/vidi/vidi) (c) Marco Vieth, 1988
+[![VIDI](./img/vidi.png)](../../dist/index.html?database=apps&example=apps/vidi)
+[![VIDI](./img/vidi2.png)](../../dist/index.html?database=apps&example=apps/vidi) (c) Marco Vieth, 1988
 
 Additional files:
 
-- v2000.fil: VIDI - Video 2000 Sammlung
-- vhs.fil: VIDI - VHS Sammlung
+- vidi_v2k.fil: VIDI - Video 2000 Sammlung
+- vidi_vhs.fil: VIDI - VHS Sammlung
 
 ### vocabula - Vocabulary Test (Vokabeltest)
 

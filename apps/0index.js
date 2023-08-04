@@ -6,108 +6,26 @@
 cpcBasic.addIndex("apps", function () { /*
 [
 	{
-    	"key": "apps/advent/advedit",
+    	"key": "apps/advedit",
 		"title": "Adventure Editor"
 	},
 	{
-    	"key": "apps/advent/advint",
+    	"key": "apps/advint",
 		"title": "Aventure Interpreter"
 	},
 	{
-    	"key": "apps/advent/home.adv",
+    	"key": "apps/ad_home.adv",
 		"title": "Our Home Adventure",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/advent/goldrush.adv",
+    	"key": "apps/ad_goldr.adv",
 		"title": "Goldrush Adventure",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/advent/tunnel.adv",
-		"title": "Forest Tunnel Adventure",
-		"meta": "D"
-	},
-	{
-    	"key": "apps/animator/anibas",
-		"title": "animator BASIC Viewer"
-	},
-	{
-    	"key": "apps/animator/animator",
-		"title": "animator"
-	},
-	{
-    	"key": "apps/animator/biplane.anc",
-		"title": "Biplane Model",
-		"meta": "D"
-	},
-	{
-    	"key": "apps/animator/biplane.and",
-		"title": "Biplane Animation",
-		"meta": "D"
-	},
-	{
-    	"key": "apps/animator/blimp.anc",
-		"title": "Blimp Model",
-		"meta": "D"
-	},
-	{
-    	"key": "apps/animator/blimp.and",
-		"title": "Blimp Animation",
-		"meta": "D"
-	},
-	{
-    	"key": "apps/animator/box3d.anc",
-		"title": "Box 3D Model",
-		"meta": "D"
-	},
-	{
-    	"key": "apps/animator/box3d.and",
-		"title": "Box 3D Animation",
-		"meta": "D"
-	},
-	{
-    	"key": "apps/animator/copymate.anc",
-		"title": "Copymate Model",
-		"meta": "D"
-	},
-	{
-    	"key": "apps/animator/copymate.and",
-		"title": "Copymate Animation",
-		"meta": "D"
-	},
-	{
-    	"key": "apps/animator/me109.anc",
-		"title": "ME-109 Model",
-		"meta": "D"
-	},
-	{
-    	"key": "apps/animator/me109.and",
-		"title": "ME-109 Animation",
-		"meta": "D"
-	},
-	{
-    	"key": "apps/animator/rg1.anc",
-		"title": "RG-1 Model",
-		"meta": "D"
-	},
-	{
-    	"key": "apps/animator/rg1.and",
-		"title": "RG-1 Animation",
-		"meta": "D"
-	},
-	{
-    	"key": "apps/archi/archidr",
-		"title": "Little Architect Draw (BASIC)"
-	},
-	{
-    	"key": "apps/archi/archi1.bil",
-		"title": "Drawing Set 1",
-		"meta": "D"
-	},
-	{
-    	"key": "apps/archi/archi2.bil",
-		"title": "Drawing Set 2",
+    	"key": "apps/ad_adit.adv",
+		"title": "Forest Adit/Tunnel Adventure",
 		"meta": "D"
 	},
 	{
@@ -119,6 +37,98 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Amsynthe Program"
 	},
 	{
+    	"key": "apps/anibas",
+		"title": "animator BASIC Viewer"
+	},
+	{
+    	"key": "apps/animator",
+		"title": "Animator for 3D Models (TODO)"
+	},
+	{
+    	"key": "apps/an_bipla.anc",
+		"title": "Biplane Model",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/an_bipla.and",
+		"title": "Biplane Animation",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/an_blimp.anc",
+		"title": "Blimp Model",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/an_blimp.and",
+		"title": "Blimp Animation",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/an_box3d.anc",
+		"title": "Box 3D Model",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/an_box3d.and",
+		"title": "Box 3D Animation",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/an_copym.anc",
+		"title": "Copymate Model",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/an_copym.and",
+		"title": "Copymate Animation",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/an_me109.anc",
+		"title": "ME-109 Model",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/an_me109.and",
+		"title": "ME-109 Animation",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/an_rg1.anc",
+		"title": "RG-1 Model",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/an_rg1.and",
+		"title": "RG-1 Animation",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/an_ufo.anc",
+		"title": "UFO Model",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/an_ufo.and",
+		"title": "UFO Animation",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/archidr",
+		"title": "Little Architect Draw (BASIC)"
+	},
+	{
+    	"key": "apps/archi1.bil",
+		"title": "Little Architect Drawing Set 1",
+		"meta": "D"
+	},
+	{
+    	"key": "apps/archi2.bil",
+		"title": "Little Architect Drawing Set 2",
+		"meta": "D"
+	},
+	{
 		"key": "apps/blkedit",
 		"title": "Block Editor"
     },
@@ -127,22 +137,22 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Datafine Database"
     },
 	{
-    	"key": "apps/doodle/doodle",
+    	"key": "apps/doodle",
 		"title": "CPC Doodle"
 	},
 	{
-    	"key": "apps/doodle/2cv.drw",
-		"title": "2CV",
+    	"key": "apps/do_2cv.drw",
+		"title": "2CV Doodle Drawing",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/doodle/doodle.drw",
-		"title": "Doodle Title",
+    	"key": "apps/do_malle.drw",
+		"title": "Mallet Doodle Drawing",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/doodle/mallet.drw",
-		"title": "Mallet",
+    	"key": "apps/doodle.drw",
+		"title": "Doodle Title Drawing",
 		"meta": "D"
 	},
 	{
@@ -174,6 +184,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Multitext CPC"
 	},
 	{
+    	"key": "apps/retrols",
+		"title": "Retro-Loadsheet"
+	},
+	{
     	"key": "apps/sayit",
 		"title": "Sayit (Sags)"
 	},
@@ -190,16 +204,16 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Time Tester"
 	},
 	{
-		"key": "apps/vidi/vidi",
+		"key": "apps/vidi",
 		"title": "VIDI - Der Videofilmverwalter"
 	},
 	{
-		"key": "apps/vidi/v2000.fil",
+		"key": "apps/vidi_v2k.fil",
 		"title": "VIDI - Video 2000 Sammlung",
 		"meta": "D"
 	},
 	{
-		"key": "apps/vidi/vhs.fil",
+		"key": "apps/vidi_vhs.fil",
 		"title": "VIDI - VHS Sammlung",
 		"meta": "D"
 	},
@@ -309,7 +323,7 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
     	"key": "demo/btilesim",
-		"title": "British Council Tile / Bus Fabric Sim"
+		"title": "British Council Tile Sim"
 	},
 	{
     	"key": "demo/circlewr",
@@ -320,16 +334,28 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Flags of the World"
 	},
 	{
+    	"key": "demo/frames",
+		"title": "Frames Screen Saver"
+	},
+	{
+    	"key": "demo/frames",
+		"title": "Frames"
+	},
+	{
     	"key": "demo/gdemo",
-		"title": "Graphics Demo 1 (Grafik Demo)"
+		"title": "Graphics Demo 1"
 	},
 	{
     	"key": "demo/gdemo2",
-		"title": "Graphics Demo 2 (Grafik Demo)"
+		"title": "Graphics Demo 2"
 	},
 	{
     	"key": "demo/grafix",
 		"title": "Grafix Demo"
+	},
+	{
+    	"key": "demo/hello1",
+		"title": "Hello World"
 	},
 	{
     	"key": "demo/house",
@@ -337,7 +363,7 @@ cpcBasic.addIndex("apps", function () { /*
 	},
 	{
     	"key": "demo/isgdemo",
-		"title": "Interrupt & Sound & Grafik Demo"
+		"title": "Interrupt/Sound/Graphics Demo"
 	},
 	{
     	"key": "demo/mondrian",
@@ -373,31 +399,39 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Sultan's Maze Demo Screen"
 	},
 	{
-    	"key": "games/atombu/atombu",
+    	"key": "games/3dfour",
+		"title": "3D-Four In A Row"
+	},
+	{
+    	"key": "games/atombu",
 		"title": "Atombunker"
 	},
 	{
-    	"key": "games/atombu/atombu0.dat",
+    	"key": "games/atombu0.dat",
 		"title": "Atombu data 0",
 		"meta": "D"
 	},
 	{
-    	"key": "games/atombu/atombu1.dat",
+    	"key": "games/atombu1.dat",
 		"title": "Atombu data 1",
 		"meta": "D"
 	},
 	{
-    	"key": "games/atombu/atombu2.dat",
+    	"key": "games/atombu2.dat",
 		"title": "Atombu data 2",
 		"meta": "D"
 	},
 	{
-    	"key": "games/atombu/atomed",
+    	"key": "games/atomed",
 		"title": "Atombunker Editor"
 	},
 	{
-    	"key": "games/3dfour",
-		"title": "3D-Four In A Row"
+    	"key": "games/ballcra",
+		"title": "Ball Cracker"
+	},
+	{
+    	"key": "games/balloon",
+		"title": "Balloon"
 	},
 	{
     	"key": "games/basgame2",
@@ -690,10 +724,14 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "CPC organ (CPC-Orgel)"
 	},
 	{
+		"key": "music/dthymne",
+		"title": "Deutschland Hymne"
+	},
+	{
 		"key": "music/elise",
 		"title": "Fuer Elise (L. v. Beethoven)"
 	},
-		{
+	{
 		"key": "music/menuett",
 		"title": "Menuett / Minuet (James Hook)"
 	},

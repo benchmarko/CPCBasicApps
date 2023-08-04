@@ -46,6 +46,10 @@ Clarinet (Klarinettenmuck'l, Jaroslav Skabrada)
 
 CPC Organ (CPC-Orgel) (an app)
 
+### Deutschland Hymne
+
+[![Deutschland Hymne](./img/dthymne.png)](../../dist/index.html?database=apps&example=music/dthymne) (c) Andreas Meyer, 1987
+
 ### Elise
 
 [![Fuer Elise](./img/elise.png)](../../dist/index.html?database=apps&example=music/elise) (c) Jujstronic Software, 1985

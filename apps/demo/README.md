@@ -77,6 +77,10 @@ Check [Rob Manuel’s British Council Tile / Bus Fabric Sim](https://scruss.com/
 [![Flags](./img/flags.png)](../../dist/index.html?database=apps&example=demo/flags&input=1%0d)
 [![Flags](./img/flags2.png)](../../dist/index.html?database=apps&example=demo/flags&input=2%0d) (c) Richard Fairhurst
 
+### Frames
+
+[![Frames Screen Saver](./img/frames.png)](../../dist/index.html?database=apps&example=demo/frames) (c) ZbyniuR
+
 ### Graphics Demo 1
 
 [![Graphics Demo](./img/gdemo1.png)](../../dist/index.html?database=apps&example=demo/gdemo&input=A)
@@ -97,6 +101,10 @@ Here we have "Blinker" and "R2D2".
 
 [![Grafix Demo](./img/grafix.png)](../../dist/index.html?database=apps&example=demo/grafix)
 [![Grafix Demo](./img/grafix2.png)](../../dist/index.html?database=apps&example=demo/grafix) (c) Dino, 1990
+
+### Hello1
+
+[![Hello1r](./img/hello1.png)](../../dist/index.html?database=apps&example=demo/hello1) (c) ZbyniuR
 
 ### House for Sale
 

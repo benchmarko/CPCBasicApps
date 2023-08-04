@@ -37,7 +37,7 @@ Meldung:";
 ":PRINT"verteilt werden.":CLEAR:CALL &BB18:GOTO 1390
 230 j=ad-1:FOR i=1 TO 120
 240 d1(0)=RND*7:d2(0)=RND*6:IF MID$(BIN$(PEEK(j+d2(0)+1),8),d1(0)+1,1)="1" THEN 240
-250 d1(i)=d1(0)*8:d2(i)=d2(0)*24:j=j+8:NEXT i:j=0:d1(PEEK(&93C6))=255
+250 d1(i)=d1(0)*8:d2(i)=d2(0)*24:j=j+8:NEXT i:j=0:i=PEEK(&93C6):if i<= 120 then d1(i)=255 else print "kein Reaktor!":call &bb18
 260 t$=" ":IF he=1 THEN t$="SEIT.":GOTO 300
 280 IF y(1)=ym-7-yb THEN y(1)=0:GOSUB 710 ELSE IF y(1)=0 THEN y(1)=ym-7-yb:GOSUB 710 ELSE IF x(1)=xm-xb-1 THEN x(1)=0:GOSUB 710 ELSE IF x(1)=0 THEN x(1)=xm-xb-1:GOSUB 710
 290 GOTO 310
@@ -98,8 +98,8 @@ Meldung:";
 770 p1=p1/4+y1/24+1:p2=p2/4+x1/8+2:RETURN
 780 SOUND 4,30*LEN(t$),LEN(t$)*6,4:PRINT#2,t$;
 790 WHILE SQ(4)<>4:WEND:CLS#2:RETURN
-800 GOSUB 850:FOR i=10 TO 30 STEP 10:y(w)=y(w)-7:GOSUB 850:SOUND 4,110-i,5,5
-810 GOSUB 840:NEXT:y(w)=y(w)-3:DI:hj=j
+800 GOSUB 850:FOR i=10 TO 30 STEP 10:t2!=time+30:y(w)=y(w)-7:GOSUB 850:SOUND 4,110-i,5,5
+810 while time<t2!:call &bd19:wend:GOSUB 840:NEXT:y(w)=y(w)-3:DI:hj=j
 820 FOR j=1 TO 2:IF x(w)=x(j)THEN IF y(w)=y(j)THEN hi(j)=hi(j)-1:GOSUB 680:j(j)=5:GOSUB 620
 830 NEXT j:j=hj:y(w)=y(w)+24:EI:RETURN
 840 '|CFIGUR,x(w),y(w),&A21B
@@ -191,6 +191,7 @@ Meldung:";
 1520 MODE 1:PRINT" Spielfeld laden:
 
 "
+1525 |dir,"ATOMBU?.DAT"
 1530 PRINT"Kennziffer (0-9):";:t$=""
 1540 GOSUB 1630:PRINT VAL(t$)
 1550 LOAD"ATOMBU"+t$+".DAT",&93C6:GOTO 1390

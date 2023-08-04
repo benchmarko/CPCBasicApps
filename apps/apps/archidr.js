@@ -50,12 +50,14 @@ cpcBasic.addItem("", function () { /*
 450 return
 460 '
 470 REM load drawing set
-480 PRINT
-490 |DIR,"*.BIL"
-500 PRINT"File name (without.BIL): ";
-510 INPUT t$
+480 locate 1,7:PRINT chr$(20);
+490 '|DIR,"*.BIL"
+500 'PRINT"File name (without.BIL): ";
+510 'INPUT t$
+512 f.col=3:f.row=7:f.msk$="*.BIL":gosub 10000:t$=f.f$
 520 IF t$="" THEN RETURN
-530 LOAD t$+".BIL",buf
+525 if upper$(right$(t$,4))<>".BIL" then t$=t$+".BIL" 
+530 LOAD t$,buf
 540 d$=t$
 550 dcnt=peek(buf)
 560 dpos=buf+1
@@ -154,4 +156,26 @@ cpcBasic.addItem("", function () { /*
 1490 wend
 1500 return
 1510 '
+9990 'file select
+10000 f.st=6:f.t$="":f.f$=""
+10010 if f.col=0 then f.col=26
+10020 if f.row=0 then f.row=1
+10030 window #f.st,f.col,f.col+14,f.row,25
+10040 window swap f.st,0
+10050 |dir,f.msk$
+10060 window swap f.st,0
+10070 f.r=f.row:f.rmax=f.r
+10080 while f.r<=25
+10090 locate #f.st,9,f.r-f.row+1:ch$=copychr$(#f.st)
+10100 if ch$="." then f.rmax=f.r:locate f.col-2,f.r:print chr$(45+f.r-f.row);
+10110 f.r=f.r+1
+10120 wend
+10130 locate f.col-2,f.rmax+4:print "Select: ";
+10140 f.t$=inkey$:if f.t$="" then 10140
+10150 if f.t$=chr$(13) then locate f.col-2,f.rmax+5:input "Name";f.f$:goto 10190
+10160 f.t$=upper$(f.t$):f.r=asc(f.t$)-45:if f.r<1 or f.r>=f.rmax then 10140
+10170 ?f.t$;
+10180 f.f$="":for f.c=1 to 12:locate #f.st,f.c,f.r+1:f.f$=f.f$+copychr$(#f.st):next
+10190 return
+10200 rem
 */ });
