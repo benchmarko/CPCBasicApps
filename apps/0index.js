@@ -381,6 +381,15 @@ cpcBasic.addIndex("apps", function () { /*
 		"key": "demo/rayclip",
 		"title": "Ray Eclipse"
 	},
+	{
+		"key": "demo/scanner",
+		"title": "The Scannerisator"
+	},
+	{
+		"key": "demo/scanner1.zip",
+		"title": "The Scannerisator Data",
+		"meta": "D"
+	},
     {
     	"key": "demo/scpc6128",
 		"title": "Schneider CPC 6128 Demo"
@@ -395,7 +404,7 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Serpent"
 	},
 	{
-    	"key": "demo/sultans",
+    	"key": "demo/sultan",
 		"title": "Sultan's Maze Demo Screen"
 	},
 	{
@@ -549,6 +558,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"key": "games/mchess.dat",
 		"title": "Micro Chess Data",
 		"meta": "D"
+	},
+	{
+		"key": "games/olicrown",
+		"title": "Olli's Crown"
 	},
 	{
 		"key": "games/patience",

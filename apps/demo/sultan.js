@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-1 rem sultans - Sultan's Maze Demo Screen
+1 rem sultan - Sultan's Maze Demo Screen
 2 rem
 3 rem
 4 rem

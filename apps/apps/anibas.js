@@ -16,7 +16,7 @@ cpcBasic.addItem("", function () { /*
 150 xm!=2.5:ym!=2.5:xv!=0:yv!=-114:'Korrekturfaktoren (m=Mult.,v=Verschiebung)
 160 aniblk=&8000
 170 PRINT"Animator (v3.2) - Basic"
-180 PRINT"Show animation phases in Basic"
+180 PRINT"Show animation phases (BASIC)"
 200 PRINT
 205 '|DIR,"*.AND"
 210 'INPUT"Filename (ohne .AND): ";t$
@@ -25,9 +25,9 @@ cpcBasic.addItem("", function () { /*
 216 if upper$(right$(t$,4))<>".AND" then t$=t$+".AND" 
 218 MEMORY &7FFF:LOAD t$,aniblk
 219 '
-220 PRINT:PRINT"Border blinkt : S=Screen speichern":PRINT
+220 PRINT:PRINT"Border flashes: Press S to save screen":PRINT
 230 'INPUT"Modus (0..2): ";m:MODE m
-232 PRINT "Mode (0..2): ";:m=1
+232 PRINT "Mode (0,1,2,[3]): ";:m=1
 234 t$="":WHILE t$="":t$=INKEY$:WEND
 235 m=asc(t$)-48:if m<0 or m>3 then 234
 238 MODE m
@@ -43,12 +43,13 @@ cpcBasic.addItem("", function () { /*
 330 '
 340 t$="*":WHILE t$<>"":t$=INKEY$:WEND:BORDER 5,7
 350 i=0:WHILE (i<500) AND (t$=""):t$=UPPER$(INKEY$):i=i+1:WEND
-360 IF t$="S" THEN SAVE"ANISCR.BIN",b,&C000,&4000
+360 IF t$="S" THEN t!=time+500:border 10:SAVE"ANISCR.BIN",b,&C000,&4000:t$="":while time<t! and t$="":t$=inkey$:wend
 370 BORDER 1
 380 CLS
 390 NEXT i2
-400 PRINT"Bye"
-405 STOP
+395 goto 130
+400 'PRINT"Bye"
+405 'STOP
 410 '
 420 REM Animationsphase zeigen
 430 'x=UNT(PEEK(a)+PEEK(a+1)*256)

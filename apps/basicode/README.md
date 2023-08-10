@@ -16,6 +16,12 @@ There is a is a tutorial with PDF documentation in  [BC3 Kurs](http://www.basico
 
 There is also an excellent [BASICODE Interpreter](https://robhagemans.github.io/basicode/) by Rob Hagemans. It runs in the browser and has a lot of sample programs.
 
+### basicode - BasiCode
+
+[![BasiCode](./img/basiCode.png)](../../dist/index.html?database=apps&example=basicode/basiCode)
+
+The library, which is merged to all ather programs.
+
 ### BC Help (BC Hilfe)
 
 [![BC Help](./img/bchelp.png)](../../dist/index.html?database=apps&example=basicode/bchelp) (c) Hannes Frank
@@ -75,9 +81,9 @@ Translated by Ronald Knak.
 
 [![RSA 1](./img/rsa1.png)](../../dist/index.html?database=apps&example=basicode/rsa1) (c) Friedrich Dormeier, 1991
 
-- [RSA 1](../../dist/index.html?database=apps&example=basicode/rsa1)
-- [RSA 2](../../dist/index.html?database=apps&example=basicode/rsa2)
-- [RSA 3](../../dist/index.html?database=apps&example=basicode/rsa3)
+[![RSA 2](./img/rsa2.png)](../../dist/index.html?database=apps&example=basicode/rsa2) (c) Friedrich Dormeier, 1991
+
+[![RSA 3](./img/rsa3.png)](../../dist/index.html?database=apps&example=basicode/rsa3) (c) Friedrich Dormeier, 1991
 
 ### Tennis
 

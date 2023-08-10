@@ -133,7 +133,7 @@ To select an action during the game, use joystick or numpad numbers.
 
 [![Hopper (Hüpfer)](./img/hopper.png)](../../dist/index.html?database=apps&example=games/hopper) (c) Marco Vieth, 1986
 
-Hopper2 - Hopper: Main Part (Hüpfer)
+[![Hopper (Hüpfer) Main Part](./img/hopper2.png)](../../dist/index.html?database=apps&example=games/hopper2) (c) Marco Vieth, 1986
 
 ### Inka Sogra
 

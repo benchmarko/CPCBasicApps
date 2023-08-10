@@ -11,7 +11,7 @@ cpcBasic.addItem("", function () { /*
 6 PRINT:PRINT a$;"Instructions"
 8 PRINT a$;"Start game."
 9 PRINT a$;"Reset computer."
-10 a$=INKEY$:IF a$=""THEN 10
+10 a$=lower$(INKEY$):IF a$=""THEN 10
 11 IF a$="i"THEN 16
 13 IF a$="s"THEN 31
 14 IF a$="r"THEN PRINT" As good as reset...":CALL 0
@@ -45,7 +45,7 @@ cpcBasic.addItem("", function () { /*
 42 NEXT i:RETURN
 43 mo=1
 44 PRINT"><";:in$="":REM parser
-45 a$=INKEY$:IF a$=CHR$(13)THEN PRINT" ";:GOTO 52
+45 a$=lower$(INKEY$):IF a$=CHR$(13)THEN PRINT" ";:GOTO 52
 46 IF(a$>="a"AND a$<="z")OR(a$>="0"AND a$<="9")OR a$=" "AND LEN(a$)<39 THEN 49
 47 IF a$=CHR$(20)AND LEN(in$)THEN PRINT a$;:in$=LEFT$(in$,LEN(in$)-1):GOTO 45
 48 GOTO 45

@@ -160,7 +160,7 @@ This program helps you to create your Morse code.
 ### retrols - Retro Loadsheet
 
 [![Retro Loadsheet](./img/retrols.png)](../../dist/index.html?database=apps&example=apps/retrols)
-[![Retro Loadsheet](./img/retrols2.png)](../../dist/index.html?database=apps&example=apps/retrols2) (c) Sakis Kaffesakis, 2018
+[![Retro Loadsheet](./img/retrols2.png)](../../dist/index.html?database=apps&example=apps/retrols) (c) Sakis Kaffesakis, 2018
 
 ### sayit - Sayit (Sag's)
 
