@@ -74,6 +74,10 @@ c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 
 [![Cryptology 1](./img/crypto1.png)](../../dist/index.html?database=apps&example=test/crypto1)
 
+### detoken - Detokenize BASIC program
+
+[![Detokenize BASIC program](./img/detoken.png)](../../dist/index.html?database=apps&example=test/detoken) (c) Mike Sutton, 2022
+
 ### energy0 - Energy Collectors 0 (Game)
 
 [![Energy Collectors 0](./img/energy0.png)](../../dist/index.html?database=apps&example=games/energy0) (c) Marco Vieth, 1985
@@ -102,6 +106,10 @@ c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 
 [![Graphics CPC Demo](./img/graphics.png)](../../dist/index.html?database=apps&example=test/graphics) (c)
 
+### jump1 - Jump Test 1
+
+[![Jump Test 1](./img/jump1.png)](../../dist/index.html?database=apps&example=test/jump1) (c)
+
 ### Keyboard
 
 [![Keyboard](./img/keyboard.png)](../../dist/index.html?database=apps&example=test/keyboard) (c) Marco Vieth
@@ -125,6 +133,10 @@ c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 ### Mouse Painting
 
 [![Mouse Painting](./img/mousepa.png)](../../dist/index.html?database=apps&example=test/mousepa) (c) Marco Vieth
+
+### movepack - Move Pack
+
+[![Move Pack](./img/movepack.png)](../../dist/index.html?database=apps&example=test/movepack) (c) Marco Vieth
 
 ### piechart - Pie Chart
 
@@ -167,6 +179,10 @@ c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 ### simple - Simple Labyrinth
 
 [![Simple Labyrinth](./img/simple.png)](../../dist/index.html?database=apps&example=test/simple)
+
+### snake42 - Snake 4 Two
+
+[![Snake 4 Two](./img/snake42.png)](../../dist/index.html?database=apps&example=test/snake42)
 
 ### soundtest1 - Sound Test 1
 

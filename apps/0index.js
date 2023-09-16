@@ -507,6 +507,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Emperor (Kaiser)"
 	},
 	{
+		"key": "games/engelber",
+		"title": "Engelbert"
+	},
+	{
 		"key": "games/garfunkl",
 		"title": "Garfunkel"
 	},
@@ -564,6 +568,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Olli's Crown"
 	},
 	{
+		"key": "games/painty",
+		"title": "Painty"
+	},
+	{
 		"key": "games/patience",
 		"title": "Patience: The Card Game"
 	},
@@ -582,6 +590,14 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "games/shot",
 		"title": "Shot Game (Textual)"
+	},
+	{
+		"key": "games/smily",
+		"title": "Smily"
+	},
+	{
+		"key": "games/solita2",
+		"title": "Solitaire 2"
 	},
 	{
 		"key": "games/solitair",
@@ -833,6 +849,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Cryptology 1"
 	},
 	{
+		"key": "test/detoken",
+		"title": "Detokenize BASIC program"
+	},
+	{
 		"key": "test/energy0",
 		"title": "Energy Collectors 0 (Game)"
 	},
@@ -861,6 +881,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Graphics CPC Demo"
 	},
 	{
+		"key": "test/jump1",
+		"title": "Jump Test 1"
+	},
+	{
 		"key": "test/keyboard",
 		"title": "Keyboard Test"
 	},
@@ -883,6 +907,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "test/mousepa",
 		"title": "Mouse Painting"
+	},
+	{
+		"key": "test/movepack",
+		"title": "Move Pack"
 	},
 	{
 		"key": "test/piechart",
@@ -932,6 +960,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "test/simple",
 		"title": "Simple Labyrinth"
+	},
+	{
+		"key": "test/snake42",
+		"title": "Snake 4 Two"
 	},
 	{
 		"key": "test/soundtest1",

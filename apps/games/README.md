@@ -119,6 +119,11 @@ From the [BASIC 10-Liner Contest 2019](https://gkanold.wixsite.com/homeputerium/
 
 To select an action during the game, use joystick or numpad numbers.
 
+### engelber - Engelbert
+
+[![Engelbert](./img/engelber.png)](../../dist/index.html?database=apps&example=games/engelber)
+[![Engelbert](./img/engelber2.png)](../../dist/index.html?database=apps&example=games/engelber) (c) John Kennedy, 1984
+
 ### Garfunkel
 
 [![Garfunkel](./img/garfunkl.png)](../../dist/index.html?database=apps&example=games/garfunkl)
@@ -170,6 +175,11 @@ To select an action during the game, use joystick or numpad numbers.
 Additional file with learned positions: mchess.dat.
 German Documentation can be found at [Software Experiment 6](http://cpctech.cpc-live.com/docs/dse/softex06.html).
 
+### painty: Painty
+
+[![Painty](./img/painty.png)](../../dist/index.html?database=apps&example=games/painty)
+[![Painty](./img/painty2.png)](../../dist/index.html?database=apps&example=games/painty) (c) ?
+
 ### Patience: The Card Game
 
 [![Patience](./img/patience.png)](../../dist/index.html?database=apps&example=games/patience)
@@ -195,9 +205,20 @@ From the [BASIC 10-Liner Contest 2019](https://gkanold.wixsite.com/homeputerium/
 
 [![Shot Game (Textual)](./img/shot.png)](../../dist/index.html?database=apps&example=games/shot)
 
+### smily - Smily
+
+[![Smily](./img/smily.png)](../../dist/index.html?database=apps&example=games/smily)
+[![Smily](./img/smily2.png)](../../dist/index.html?database=apps&example=games/smily) (c) Medi-Software, 1985
+
+Pac Man Clone
+
 ### Solitair
 
 [![Solitair](./img/solitair.png)](../../dist/index.html?database=apps&example=games/solitair) (c) Uwe Ganter, 1985
+
+### Solitair 2
+
+[![Solitair 2](./img/solita2.png)](../../dist/index.html?database=apps&example=games/solita2) (c) Philip Jimenez, 1984
 
 ### Space Race
 
