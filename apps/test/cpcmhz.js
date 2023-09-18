@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-100 rem CPC MHz: Time measurement
+100 rem cpcmhz - CPC MHz: Time measurement
 110 rem Marco Vieth
 120 mode 2:print"Measurement started.":call &bd19
 130 clear:dim r%(5)

@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-141 REM Colors CPC Demo
+141 REM colors - Colors CPC Demo
 143 REM Known from CPC CP/M Disk
 145 clear:defint a-z
 146 c.c=1:gosub 9010:'initCpcLib

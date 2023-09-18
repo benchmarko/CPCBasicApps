@@ -412,6 +412,19 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "3D-Four In A Row"
 	},
 	{
+    	"key": "games/artwar",
+		"title": "Art War (Loader)"
+	},
+	{
+    	"key": "games/artwar2",
+		"title": "Art War (Program)"
+	},
+	{
+		"key": "games/artwarsc.zip",
+		"title": "Art War (Screens)",
+		"meta": "D"
+	},
+	{
     	"key": "games/atombu",
 		"title": "Atombunker"
 	},
@@ -445,6 +458,15 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "games/basgame2",
 		"title": "BASIC Game 2"
+	},
+	{
+    	"key": "games/budrumi",
+		"title": "Budrumi"
+	},
+	{
+		"key": "games/budrumis.zip",
+		"title": "Budrumi (Screens)",
+		"meta": "D"
 	},
 	{
 		"key": "games/canabalt",
@@ -549,6 +571,19 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "games/lander",
 		"title": "Lander"
+	},
+	{
+    	"key": "games/lenin",
+		"title": "Leningrad (Loader)"
+	},
+	{
+    	"key": "games/lenin2",
+		"title": "Leningrad (Program)"
+	},
+	{
+		"key": "games/leninsc.zip",
+		"title": "Leningrad (Screens)",
+		"meta": "D"
 	},
 	{
 		"key": "games/maze",
@@ -889,11 +924,11 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Keyboard Test"
 	},
 	{
-		"key": "test/labyrinth",
+		"key": "test/labyrint",
 		"title": "Labyrinth"
 	},
 	{
-		"key": "test/landscape",
+		"key": "test/landscap",
 		"title": "Landscape"
 	},
 	{
@@ -925,16 +960,20 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "RAM Test"
 	},
 	{
-    	"key": "test/rastercircle",
+    	"key": "test/rasterci",
 		"title": "Raster Circle"
 	},
 	{
-		"key": "test/rectangles",
+		"key": "test/rectangl",
 		"title": "Rectangles Test"
 	},
 	{
 		"key": "test/reftime",
 		"title": "Reference Timings"
+	},
+	{
+		"key": "test/rot13",
+		"title": "ROT13 Caesar Cipher"
 	},
 	{
 		"key": "test/rotatio",
@@ -966,7 +1005,7 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Snake 4 Two"
 	},
 	{
-		"key": "test/soundtest1",
+		"key": "test/soundte1",
 		"title": "Sound Test 1"
 	},
 	{

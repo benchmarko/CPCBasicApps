@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-100 REM crypto1: Cryptology 1 (Kryptoanalyse - Kryptologie)
+100 REM crypto1 - Cryptology 1 (Kryptoanalyse - Kryptologie)
 110 '"Die geheime Nachricht/Umschau Verlag/S.63"
 120 '16.11.1988
 130 '

@@ -13,8 +13,12 @@ Links:
 ### 3D-Four In A Row (TODO)
 
 [![3D-Four In A Row](./img/3dfour.png)](../../dist/index.html?database=apps&example=games/3dfour)
-[![3D-Four In A Row](./img/3dfour2.png)](../../dist/index.html?database=apps&example=games/3dfour)
-(c) Dudley Brooke, 1987
+[![3D-Four In A Row](./img/3dfour2.png)](../../dist/index.html?database=apps&example=games/3dfour) (c) Dudley Brooke, 1987
+
+### Art War
+
+[![Art War](./img/artwar.png)](../../dist/index.html?database=apps&example=games/artwar)
+[![Art War](./img/artwar2.png)](../../dist/index.html?database=apps&example=games/artwar) (c) Sakis Kaffesakis, 2021
 
 ### Atombunker
 
@@ -45,6 +49,11 @@ Additional files:
 [![BASIC Game 2](./img/basgame2.png)](../../dist/index.html?database=apps&example=games/basgame2) (c) Roald (Mr.Lou) Strauss
 
 Unfinished BASIC game 2.
+
+### Budrumi
+
+[![Budrumi](./img/budrumi.png)](../../dist/index.html?database=apps&example=games/budrumi)
+[![Budrumi](./img/budrumi2.png)](../../dist/index.html?database=apps&example=games/budrumi) (c) Sakis Kaffesakis, 2021
 
 ### Canyons of Cannons
 
@@ -105,11 +114,11 @@ From the [BASIC 10-Liner Contest 2019](https://gkanold.wixsite.com/homeputerium/
 [![Dambusters](./img/dambust.png)](../../dist/index.html?database=apps&example=games/dambust)
 [![Dambusters](./img/dambust2.png)](../../dist/index.html?database=apps&example=games/dambust) (c) Paul Stanley, 1984
 
-### Duel
+### duel - Duel
 
 [![Duel](./img/duel.png)](../../dist/index.html?database=apps&example=games/duel) (c) Bernhard Morell
 
-### Dungeons (8 Bit Dungeons)
+### dungeons - Dungeons (8 Bit Dungeons)
 
 [![Dungeons](./img/dungeons.png)](../../dist/index.html?database=apps&example=games/dungeons) (c) JNL, 2019
 
@@ -124,12 +133,12 @@ To select an action during the game, use joystick or numpad numbers.
 [![Engelbert](./img/engelber.png)](../../dist/index.html?database=apps&example=games/engelber)
 [![Engelbert](./img/engelber2.png)](../../dist/index.html?database=apps&example=games/engelber) (c) John Kennedy, 1984
 
-### Garfunkel
+### garfunkl - Garfunkel
 
 [![Garfunkel](./img/garfunkl.png)](../../dist/index.html?database=apps&example=games/garfunkl)
 [![Garfunkel](./img/garfunkl2.png)](../../dist/index.html?database=apps&example=games/garfunkl) (c) Roland Bendig, 1987
 
-### Goldrush (Goldrausch)
+### goldrush - Goldrush (Goldrausch)
 
 [![Goldrush (Goldrausch)](./img/goldrush.png)](../../dist/index.html?database=apps&example=games/goldrush)
 [![Goldrush (Goldrausch)](./img/goldrush2.png)](../../dist/index.html?database=apps&example=games/goldrush&input=%0d%0do%0dunte%20felsbrocken%0do%0dunters%20kiste%0d) (c) Jörg Walkowiak, 1984
@@ -140,12 +149,12 @@ To select an action during the game, use joystick or numpad numbers.
 
 [![Hopper (Hüpfer) Main Part](./img/hopper2.png)](../../dist/index.html?database=apps&example=games/hopper2) (c) Marco Vieth, 1986
 
-### Inka Sogra
+### inka - Inka Sogra
 
 [![Inka Sogra](./img/inka.png)](../../dist/index.html?database=apps&example=games/inka)
 [![Inka Sogra](./img/inka2.png)](../../dist/index.html?database=apps&example=games/inka) (c) F. Meurer
 
-### Jack-Pot
+### jackpot - Jack-Pot
 
 [![Jack-Pot](./img/jackpot.png)](../../dist/index.html?database=apps&example=games/jackpot) (c) Jean-François SEHAN, 1985
 
@@ -154,48 +163,53 @@ To select an action during the game, use joystick or numpad numbers.
 [![Black Joker (Der Schwarze Joker)](./img/joker.png)](../../dist/index.html?database=apps&example=games/joker)
 [![Black Joker (Der Schwarze Joker)](./img/joker2.png)](../../dist/index.html?database=apps&example=games/joker&input=%0DN%0D2Tim%0DMary%0D&sound=false) (c) Marco Vieth
 
-### Klondike
+### klondike - Klondike
 
 [![Klondike](./img/klondike.png)](../../dist/index.html?database=apps&example=games/klondike) (c)
 
-### Lander
+### lander - Lander
 
 [![Lander](./img/lander.png)](../../dist/index.html?database=apps&example=games/lander)
 [![Lander](./img/lander2.png)](../../dist/index.html?database=apps&example=games/lander) (c) Georg Huonker, 1985
 
-### Maze
+### lenin - Lenin (Battle of Leningrad)
+
+[![Lenin](./img/lenin.png)](../../dist/index.html?database=apps&example=games/lenin)
+[![Lenin](./img/lenin2.png)](../../dist/index.html?database=apps&example=games/lenin) (c) Sakis Kaffesakis, 2022
+
+### maze - Maze
 
 [![Maze](./img/maze.png)](../../dist/index.html?database=apps&example=games/maze)
 [![Maze](./img/maze2.png)](../../dist/index.html?database=apps&example=games/maze&input=%0d5%0D5%0D1&sound=false) (c) Joerg Heise
 
-### Mini Chess
+### mchess - Mini Chess
 
 [![Mini Chess](./img/mchess.png)](../../dist/index.html?database=apps&example=games/mchess) (c) Matthias Uphoff, 1986
 
 Additional file with learned positions: mchess.dat.
 German Documentation can be found at [Software Experiment 6](http://cpctech.cpc-live.com/docs/dse/softex06.html).
 
-### painty: Painty
+### painty - Painty
 
 [![Painty](./img/painty.png)](../../dist/index.html?database=apps&example=games/painty)
 [![Painty](./img/painty2.png)](../../dist/index.html?database=apps&example=games/painty) (c) ?
 
-### Patience: The Card Game
+### patience - Patience: The Card Game
 
 [![Patience](./img/patience.png)](../../dist/index.html?database=apps&example=games/patience)
 [![Patience](./img/patience2.png)](../../dist/index.html?database=apps&example=games/patience) (c) Clive Blackmore
 
-### President (Praesident)
+### preside - President (Praesident)
 
 [![President (Praesident)](./img/preside.png)](../../dist/index.html?database=apps&example=games/preside) (c)
 
-### Rogue Descender
+### roguedes - Rogue Descender
 
 [![Rogue Descender](./img/roguedes.png)](../../dist/index.html?database=apps&example=games/roguedes) (c) Graham Briggs
 
 BASIC 10-liner.
 
-### Shielding Color
+### scolor - Shielding Color
 
 [![Shielding Color](./img/scolor.png)](../../dist/index.html?database=apps&example=games/scolor) (c) Antonio "acorpascuenca" Corpas Cuenca, 2019
 
@@ -212,20 +226,20 @@ From the [BASIC 10-Liner Contest 2019](https://gkanold.wixsite.com/homeputerium/
 
 Pac Man Clone
 
-### Solitair
+### solitair - Solitair
 
 [![Solitair](./img/solitair.png)](../../dist/index.html?database=apps&example=games/solitair) (c) Uwe Ganter, 1985
 
-### Solitair 2
+### solita2 - Solitair 2
 
 [![Solitair 2](./img/solita2.png)](../../dist/index.html?database=apps&example=games/solita2) (c) Philip Jimenez, 1984
 
-### Space Race
+### spacera - Space Race
 
 [![Space Race](./img/spacera.png)](../../dist/index.html?database=apps&example=games/spacera)
 [![Space Race](./img/spacera2.png)](../../dist/index.html?database=apps&example=games/spacera) (c) Peter Pekarek, 1986
 
-### Space Base
+### spaceba - Space Base
 
 [![Space Base](./img/spaceba.png)](../../dist/index.html?database=apps&example=games/spaceba)
 [![Space Base](./img/spaceba2.png)](../../dist/index.html?database=apps&example=games/spaceba) (c) Robin Nixon, 1986
@@ -236,14 +250,14 @@ Pac Man Clone
 - Your task is to defend the base from attack.
 - Use Z and X to control your lazer and press ENTER to fire.
 
-### Space War
+### spacewar - Space War
 
 [![Space War](./img/spacewar.png)](../../dist/index.html?database=apps&example=games/spacewar)
 [![Space War](./img/spacewar2.png)](../../dist/index.html?database=apps&example=games/spacewar) (c) Daniel Flower
 
 Minimalistic fun!
 
-### Stardodger
+### stardodg - Stardodger
 
 [![Stardodger](./img/stardodg.png)](../../dist/index.html?database=apps&example=games/stardodg)
 [![Stardodger](./img/stardodg2.png)](../../dist/index.html?database=apps&example=games/stardodg) (c) Stewart C. Russell
@@ -261,7 +275,7 @@ Additional files:
 
 - statesfx - States of the Earth (Data)
 
-### Sultan's Maze
+### sultan - Sultan's Maze
 
 [![Sultan's Maze](./img/sultan.png)](../../dist/index.html?database=apps&example=games/sultan)
 [![Sultan's Maze](./img/sultan2.png)](../../dist/index.html?database=apps&example=games/sultan2)
@@ -269,11 +283,11 @@ Additional files:
 
 On a real CPC, the game is rather slow, so I never played it. With CPCBasic it has a good speed now.
 
-### Sunburst Contamination
+### sunburst -Sunburst Contamination
 
 [![Sunburst Contamination](./img/sunburst.png)](../../dist/index.html?database=apps&example=games/sunburst) (c)
 
-### Swamp
+### swamp - Swamp
 
 [![Swamp](./img/swamp.png)](../../dist/index.html?database=apps&example=games/swamp)
 [![Swamp](./img/swamp2.png)](../../dist/index.html?database=apps&example=games/swamp) (c) David Muir
@@ -282,34 +296,34 @@ On a real CPC, the game is rather slow, so I never played it. With CPCBasic it h
 - You have to avoid the two frogs. If they catch you then you will lose one of your five lives.
 - You score 10 for each egg destroyed. You gain a bonus of 100 and 1 extra life for each board of 72 eggs you destroy, after which you are given a new screen.
 
-### Tanks Alot
+### tanks - Tanks Alot
 
 [![Tanks Alot!](./img/tanks.png)](../../dist/index.html?database=apps&example=games/tanks) (c) Ross "Out Bush" Simpson, 2019
 
 From the [BASIC 10-Liner Contest 2019](https://gkanold.wixsite.com/homeputerium/kopie-von-games-list-2019-2).
 
-### Tarot Reader
+### tarot - Tarot Reader
 
 [![Tarot Reader](./img/tarot.png)](../../dist/index.html?database=apps&example=games/tarot)
 [![Tarot Reader](./img/tarot2.png)](../../dist/index.html?database=apps&example=games/tarot) (c)
 
-### Titan
+### titan - Titan
 
 [![Titan](./img/titan.png)](../../dist/index.html?database=apps&example=games/titan)
 [![Titan](./img/titan2.png)](../../dist/index.html?database=apps&example=games/titan)
 (c) MS-Software, 1985
 
-### Tower of Hanoi (Türme von Hanoi; Pagoden von Peking)
+### tower - Tower of Hanoi (Türme von Hanoi; Pagoden von Peking)
 
 [![Tower of Hanoi](./img/tower.png)](../../dist/index.html?database=apps&example=games/tower)
 [![Tower of Hanoi](./img/tower2.png)](../../dist/index.html?database=apps&example=games/tower) (c)
 
-### Yahtzee (Kniffel)
+### yahtzee -Yahtzee (Kniffel)
 
 [![Yahtzee (Kniffel)](./img/yahtzee.png)](../../dist/index.html?database=apps&example=games/yahtzee)
 [![Yahtzee (Kniffel)](./img/yahtzee2.png)](../../dist/index.html?database=apps&example=games/yahtze&input=j%0D%0D2%0D1%0D0%0DTim%0D0%0DMary%0D&sound=false) (c) J. E. Muschik, 1985
 
-### Yahtzee 2 (Kniffel)
+### yahtzee2 - Yahtzee 2 (Kniffel)
 
 [![Yahtzee 2 (Kniffel)](./img/yahtzee2_1.png)](../../dist/index.html?database=apps&example=games/yahtzee2)
 [![Yahtzee 2 (Kniffel)](./img/yahtzee2_2.png)](../../dist/index.html?database=apps&example=games/yahtzee2) (c) Veb Mikroelektronik Muehlhausen

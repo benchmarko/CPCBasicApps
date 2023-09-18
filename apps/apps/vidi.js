@@ -3,10 +3,13 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-100 ON z GOTO 260,370
-110 'VIDI - Der Videofilmverwalter (v2.0)
+1 rem vidi - VIDI: Der Videofilmverwalter
+2 rem (c) Marco Vieth, 1988
+3 rem
+110 rem VIDI - Der Videofilmverwalter (v2.0)
 120 'Marco Vieth, Juli 1988  (29.8.1989 / 17.7.1988)
 130 '
+135 ON z GOTO 260,370
 140 IF PEEK(&30)=&C7 THEN SYMBOL AFTER 245:MEMORY &A5FF:|TAPE:OPENOUT"!S":MEMORY HIMEM-1:CLOSEOUT:|DISC:POKE &30,&F3
 150 CLEAR
 160 KEY 159,"goto 100"+CHR$(13):KEY DEF 68,0,159

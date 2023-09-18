@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-10 rem rastercircle - Raster circle
+10 rem rasterci - Raster circle
 20 rem https://de.wikipedia.org/wiki/Bresenham-Algorithmus
 30 '
 40 clear:defint a-z

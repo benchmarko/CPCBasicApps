@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-100 REM Sphere 1 (Kugel 1)
+100 REM sphere - Sphere 1 (Kugel 1)
 110 REM Marco Vieth, 2.12.1989
 120 '
 130 CLEAR:DEFINT a-z:DEFREAL a,x-z:DEG

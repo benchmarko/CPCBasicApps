@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-10 REM CPC Basic: Big Text
+10 REM cpcbasic - CPC Basic: Big Text
 15 mode 1
 20 INK 2,2
 25 paper 0:cls

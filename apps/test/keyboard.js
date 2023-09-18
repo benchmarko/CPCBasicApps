@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-100 REM Keyboard Test
+100 REM keyboard - Keyboard Test
 110 REM Marco Vieth, 2019
 120 mode 2:defint a-z
 130 dim keys(79),joys(1)

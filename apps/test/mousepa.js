@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-10 rem mousepa: Mouse Painting
+10 rem mousepa - Mouse Painting
 20 rem CPCBasic only
 25 m=1
 30 mode m

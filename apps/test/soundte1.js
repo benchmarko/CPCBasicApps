@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-100 REM Sound Test 1
+100 REM soundte1 - Sound Test 1
 110 MODE 2:CLEAR:DEFINT a-z
 120 print"Sound Test 1":print
 130 print"1) Richard Wagner: Brautchor aus 'Lohengrin'"

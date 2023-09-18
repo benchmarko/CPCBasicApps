@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-10 REM Drawing Labyrinth
+10 REM labyrint - Drawing Labyrinth
 30 clear:defint a-z
 40 c.c=1:gosub 9010:'initCpcLib
 50 c.c=4:gosub 9020:'checkMode

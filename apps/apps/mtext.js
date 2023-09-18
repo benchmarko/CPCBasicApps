@@ -3,9 +3,12 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-1 POKE 352,PEEK(&160):ON BREAK GOSUB 10:IF PEEK(&AC08)=201 THEN v%=&B4E8:POKE-21503,195:POKE-21502,148:POKE-21501,202:ON ERROR GOTO 15:GOTO 20000 ELSE 40
-2 DATA 2,TEXTEINGABE,3,Text laden,3,Text speichern,2,TEXT DRUCKEN,3,Text fuer Editor definieren,3,aktuelle Zeile neu waehlen,3,linken / rechten Rand waehlen,3,Text loeschen / PRG ENDE
-3 DATA 2,ZEILEN LOESCHEN,3,Zeilen duplizieren,3,Zeilen einfuegen,3,Text links- & rechtsbuendig,3,Text zentrieren,3,Text suchen und zeigen,3,Text suchen und ersetzen,2,TEXTEINGABE
+1 rem mtext - Multitext CPC
+2 rem (c) Rainbow Arts, 1985
+3 rem
+5 POKE 352,PEEK(&160):ON BREAK GOSUB 10:IF PEEK(&AC08)=201 THEN v%=&B4E8:POKE-21503,195:POKE-21502,148:POKE-21501,202:ON ERROR GOTO 15:GOTO 20000 ELSE 40
+6 DATA 2,TEXTEINGABE,3,Text laden,3,Text speichern,2,TEXT DRUCKEN,3,Text fuer Editor definieren,3,aktuelle Zeile neu waehlen,3,linken / rechten Rand waehlen,3,Text loeschen / PRG ENDE
+7 DATA 2,ZEILEN LOESCHEN,3,Zeilen duplizieren,3,Zeilen einfuegen,3,Text links- & rechtsbuendig,3,Text zentrieren,3,Text suchen und zeigen,3,Text suchen und ersetzen,2,TEXTEINGABE
 8 DATA 1,1,1,0,0,1,72,123,0,0,124,0,0,125,0,0,91,0,0,92,0,0,93,0,0,126,0,0,60,0,0,62,0,0,35,0,0
 10 RETURN
 13 DATA &e1,&e5,&7c,&fe,&c4,&28,3,&cf,&b,&9e,&c3,&58,&cb,&c3,&62,&01
@@ -287,7 +290,7 @@ Dateiname ? ";:a$="":g=1:h=17:GOSUB 500:OPENIN a$:INPUT#9,k:FOR h=1 TO k:LINE IN
 21050 LOCATE 8,24:PRINT SPC(25):RETURN
 22000 g=2:GOTO 25000
 22001 DI:BORDER 0:INK 0,0:INK 1,6:g$="Textmenue":GOSUB 1500
-22010 RESTORE 3:FOR h=6 TO 20 STEP 2:LOCATE 10,h:READ g:PEN g:READ g$:PRINT g$:NEXT:g=0
+22010 RESTORE 7:FOR h=6 TO 20 STEP 2:LOCATE 10,h:READ g:PEN g:READ g$:PRINT g$:NEXT:g=0
 22020 PRINT"":GOSUB 1570
 22030 MODE 2:BORDER f0:INK 1,f1:INK 0,f0:ON g GOTO 2200,2300,2400,2500,2600,2700,2800,1000
 23000 PRINT"line 23000 was missing!":call &bb18:g=1

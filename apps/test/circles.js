@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-10 REM Drawing circles
+10 REM circles - Drawing circles
 20 rem
 30 clear
 40 c.c=1:gosub 9010:'initCpcLib

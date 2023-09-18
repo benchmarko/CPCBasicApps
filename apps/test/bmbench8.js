@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-500 REM BM Bench - bmbench.bas (BASIC) mod1
+500 REM bmbench08 - BM Bench - bmbench.bas (BASIC) mod1
 510 REM https://github.com/benchmarko/BMbench
 600 REM PRINT "Press and release Space to start measurement"
 610 REM IF INKEY(47)<>0 THEN 610

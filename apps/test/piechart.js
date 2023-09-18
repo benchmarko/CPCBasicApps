@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-10 REM Pie Chart (Kreisdiagramm)
+10 REM piechart - Pie Chart (Kreisdiagramm)
 20 rem ugly code, improved by MV
 30 '
 50 clear:deg

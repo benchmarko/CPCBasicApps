@@ -5,8 +5,9 @@
 cpcBasic.addItem("", function () { /*
 1 rem retrols - Retro-Loadsheet
 2 rem (c) Sakis Kaffesakis, 2018
-3 rem https://www.cpcwiki.eu/forum/games/retro-loadsheet-on-amstrad-cpc!-new-program-for-aircraft-weight-and-balance/
-4 rem
+3 rem https://amstradsakis.blogspot.com/2020/04/retro-loadsheet.html
+4 rem https://www.cpcwiki.eu/forum/games/retro-loadsheet-on-amstrad-cpc!-new-program-for-aircraft-weight-and-balance/
+5 rem
 10 REM RETRO-LOADSHEET ON AMSTRAD CPC! COPYRIGHT by SAKIS KAFFESAKIS 2018
 15 BORDER 0:INK 1,18:INK 0,0
 20 GOSUB 500

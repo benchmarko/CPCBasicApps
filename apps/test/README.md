@@ -14,7 +14,7 @@ Links:
 
 [![Art: Computer Art](./img/art.png)](../../dist/index.html?database=apps&example=test/art)
 
-### Basic Bank Manager
+### basbankm - Basic Bank Manager
 
 [![Basic Bank Manager](./img/basbankm.png)](../../dist/index.html?database=apps&example=test/basbankm) (c) Marco Vieth
 
@@ -22,16 +22,16 @@ Links:
 
 [![Blocky CPC Demo](./img/blocky.png)](../../dist/index.html?database=apps&example=test/blocky) (c)
 
-### BM Benchmark 3
+### bmbench3 - BM Benchmark 3
 
 [![BM Benchmark 3](./img/bmbench3.png)](../../dist/index.html?database=apps&example=test/bmbench3) (c) Marco Vieth, 2002
 
-### BM Benchmark 8
+### bmbench8 - BM Benchmark 8
 
 [![BM Benchmark 8](./img/bmbench8.png)](../../dist/index.html?database=apps&example=test/bmbench8)
 [![BM Benchmark 8](./img/bmbench8_2.png)](../../dist/index.html?database=apps&example=test/bmbench8) (c) Marco Vieth, 2023
 
-### Character set
+### charset - Character set
 
 [![Character set](./img/charset.png)](../../dist/index.html?database=apps&example=test/charset) (c) Marco Vieth
 
@@ -43,7 +43,7 @@ Links:
 
 [![CPC Basic](./img/cpcbasic.png)](../../dist/index.html?database=apps&example=test/cpcbasic)
 
-### Circles
+### circles - Circles
 
 [![Drawing circles](./img/circles.png)](../../dist/index.html?database=apps&example=test/circles) (c) Marco Vieth
 
@@ -62,7 +62,7 @@ c.c=3: c.iv%=50: gosub 9010: 'waitOrKey (c.iv% 1/50 sec, or until keypress, retu
 c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 ```
 
-### CPC MHz
+### cpcmhz - CPC MHz
 
 [![CPC MHz](./img/cpcmhz.png)](../../dist/index.html?database=apps&example=test/cpcmhz) (c) Marco Vieth
 
@@ -94,11 +94,11 @@ c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 
 [![Extended RAM Test](./img/eramtst.png)](../../dist/index.html?database=apps&example=test/eramtst) (c) TFM / FutureSoft, 2014
 
-### Fancy copychr$
+### fancy - Fancy copychr$
 
 [![Fancy copychr$](./img/fancy.png)](../../dist/index.html?database=apps&example=test/fancy) (c) Marco Vieth
 
-### Fill
+### fill - Fill
 
 [![Fill](./img/fill.png)](../../dist/index.html?database=apps&example=test/fill) (c)
 
@@ -110,19 +110,19 @@ c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 
 [![Jump Test 1](./img/jump1.png)](../../dist/index.html?database=apps&example=test/jump1) (c)
 
-### Keyboard
+### keyboard - Keyboard
 
 [![Keyboard](./img/keyboard.png)](../../dist/index.html?database=apps&example=test/keyboard) (c) Marco Vieth
 
-### labyrinth - Labyrinth
+### labyrint - Labyrinth
 
-[![Labyrinth](./img/labyrinth.png)](../../dist/index.html?database=apps&example=test/labyrinth)
+[![Labyrinth](./img/labyrint.png)](../../dist/index.html?database=apps&example=test/labyrint)
 
-### landscape - Landscape
+### landscap - Landscape
 
-[![Landscape](./img/landscape.png)](../../dist/index.html?database=apps&example=test/landscape)
+[![Landscape](./img/landscap.png)](../../dist/index.html?database=apps&example=test/landscap)
 
-### Line Mask
+### linemask - Line Mask
 
 [![Line Mask](./img/linemask.png)](../../dist/index.html?database=apps&example=test/linemask) (c) Marco Vieth
 
@@ -130,7 +130,7 @@ c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 
 [![Mouse escape](./img/mouse.png)](../../dist/index.html?database=apps&example=test/mouse)
 
-### Mouse Painting
+### mousepa - Mouse Painting
 
 [![Mouse Painting](./img/mousepa.png)](../../dist/index.html?database=apps&example=test/mousepa) (c) Marco Vieth
 
@@ -142,27 +142,31 @@ c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 
 [![Pie Chart](./img/piechart.png)](../../dist/index.html?database=apps&example=test/piechart)
 
-### Pixel Test (Mode 0)
+### pixeltst - Pixel Test (Mode 0)
 
 [![Pixel Test (Mode 0)](./img/pixeltst.png)](../../dist/index.html?database=apps&example=test/pixeltst) (c) Marco Vieth
 
-### RAM Test
+### ramtest - RAM Test
 
 [![RAM Test](./img/ramtest.png)](../../dist/index.html?database=apps&example=test/ramtest) (c) Marco Vieth
 
-### rastercircle - Raster Circle
+### rasterci - Raster Circle
 
-[![Raster Circle](./img/rastercircle.png)](../../dist/index.html?database=apps&example=test/rastercircle)
+[![Raster Circle](./img/rasterci.png)](../../dist/index.html?database=apps&example=test/rasterci)
 
-### Rectangles Test
+### rectangl - Rectangles Test
 
-[![Rectangles Test](./img/rectangles.png)](../../dist/index.html?database=apps&example=test/rectangles) (c) Marco Vieth
+[![Rectangles Test](./img/rectangl.png)](../../dist/index.html?database=apps&example=test/rectangl) (c) Marco Vieth
 
-### Reference Timings
+### reftime - Reference Timings
 
 [![Reference Timings](./img/reftime.png)](../../dist/index.html?database=apps&example=test/reftime) (c) Marco Vieth
 
-### Screen Memory Test
+### rot13 - ROT13
+
+[![ROT13](./img/rot13.png)](../../dist/index.html?database=apps&example=test/rot13) (c) Marco Vieth, 2023
+
+### scrtest - Screen Memory Test
 
 [![Screen Memory Test](./img/scrtest.png)](../../dist/index.html?database=apps&example=test/scrtest) (c) Marco Vieth
 
@@ -184,15 +188,15 @@ c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 
 [![Snake 4 Two](./img/snake42.png)](../../dist/index.html?database=apps&example=test/snake42)
 
-### soundtest1 - Sound Test 1
+### soundte1 - Sound Test 1
 
-[![Sound Test 1](./img/soundtest1.png)](../../dist/index.html?database=apps&example=test/soundtest1)
+[![Sound Test 1](./img/soundte1.png)](../../dist/index.html?database=apps&example=test/soundte1)
 
 ### sphere - Sphere
 
 [![Sphere](./img/sphere.png)](../../dist/index.html?database=apps&example=test/sphere)
 
-### Stars Test 1 and 2
+### stars - Stars Test 1 and 2
 
 [![Stars Test 1 and 2](./img/stars.png)](../../dist/index.html?database=apps&example=test/stars) (c)
 

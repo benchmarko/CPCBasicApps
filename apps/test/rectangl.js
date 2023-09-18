@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-100 REM Rectangles Test
+100 REM rectangl - Rectangles Test
 110 REM Marco Vieth, 2019
 113 clear:defint a-z
 115 c.c=1:gosub 9010:'initCpcLib

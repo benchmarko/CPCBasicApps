@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-100 REM Landscape (Landschaft)
+100 REM landscap - Landscape (Landschaft)
 101 REM
 105 CLEAR:defint a-z
 106 c.c=1:gosub 9010:'initCpcLib

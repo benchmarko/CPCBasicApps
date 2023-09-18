@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-50 rem Simple Labyrinth
+50 rem simple - Simple Labyrinth
 60 rem Idea from: https://scruss.com/blog/tag/amstrad/
 70 clear:defint a-z
 75 c.c=1:gosub 9010:'initCpcLib

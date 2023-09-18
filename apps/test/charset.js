@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-100 REM Character set
+100 REM charset - Character set
 105 rem Marco Vieth
 106 defint a-z
 107 c.c=1:gosub 9010:'initCpcLib

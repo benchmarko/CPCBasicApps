@@ -10,7 +10,7 @@ Links:
 
 ## Some Demo Highlights
 
-### 10 PRINT
+### 10print - 10 PRINT
 
 [![10 Print](./img/10print.png)](../../dist/index.html?database=apps&example=demo/10print)
 
