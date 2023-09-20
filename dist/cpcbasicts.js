@@ -853,6 +853,13 @@ define("Utils", ["require", "exports"], function (require, exports) {
             var index = str.indexOf(char);
             return index >= 0 ? [str.slice(0, index), str.slice(index + 1)] : [str]; // eslint-disable-line array-element-newline
         };
+        Utils.string2Uint8Array = function (data) {
+            var buf = new ArrayBuffer(data.length), view = new Uint8Array(buf);
+            for (var i = 0; i < data.length; i += 1) {
+                view[i] = data.charCodeAt(i);
+            }
+            return view;
+        };
         Utils.composeError = function (name, errorObject, message, value, pos, len, line, hidden) {
             var customError = errorObject;
             customError.name = name;
@@ -5929,7 +5936,7 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                         + combinedLabels
                         + " o.vmGoto(o.startLine ? o.startLine : \"start\"); break;\ncase \"start\":\n"
                         + output
-                        + "\ncase \"end\": o.vmStop(\"end\", 90); break;\ndefault: o.error(8); o.vmGoto(\"end\"); break;\n}}\n";
+                        + "\ncase \"end\": o.line=\"end\"; o.vmStop(\"end\", 90); break;\ndefault: o.error(8); o.vmGoto(\"end\"); break;\n}}\n";
                 }
                 else {
                     output = combinedData + output;
@@ -7117,7 +7124,10 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             else if (firstSector === 0x41) {
                 format = "system";
             }
-            else if ((firstSector === 0x01) && (diskInfo.tracks === 80)) { // big780k
+            else if ((firstSector === 0x91) && (diskInfo.tracks === 80)) { // parados80
+                format = "parados80";
+            }
+            else if ((firstSector === 0x01) && (diskInfo.tracks === 80)) { // big780k (usually diskInfo.heads: 2)
                 format = "big780k";
             }
             else {
@@ -7199,7 +7209,8 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             return dir;
         };
         DiskImage.prototype.convertBlock2Sector = function (block) {
-            var format = this.format, spt = format.spt, blockSectors = 2, logSec = block * blockSectors, // directory is in block 0-1
+            var format = this.format, spt = format.spt, blockSectors = format.bls / 512, // usually 2
+            logSec = block * blockSectors, // directory is in block 0-1
             pos = {
                 track: Math.floor(logSec / spt) + format.off,
                 head: 0,
@@ -7208,7 +7219,8 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             return pos;
         };
         DiskImage.prototype.readDirectory = function () {
-            var directorySectors = 4, extents = [], format = this.determineFormat(), off = format.off, firstSector = format.firstSector;
+            var directorySectors = 4, // could be determined from al0,al1
+            extents = [], format = this.determineFormat(), off = format.off, firstSector = format.firstSector;
             this.format = format;
             this.seekTrack(off, 0);
             for (var i = 0; i < directorySectors; i += 1) {
@@ -7230,7 +7242,8 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             }
         };
         DiskImage.prototype.readBlock = function (block) {
-            var diskInfo = this.diskInfo, blockSectors = 2, pos = this.convertBlock2Sector(block);
+            var diskInfo = this.diskInfo, blockSectors = this.format.bls / 512, // usually 2
+            pos = this.convertBlock2Sector(block);
             var out = "";
             if (pos.track >= diskInfo.tracks) {
                 Utils_11.Utils.console.error(this.composeError({}, "Block " + block + ": Track out of range", String(pos.track)));
@@ -7246,11 +7259,16 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             return out;
         };
         DiskImage.prototype.readExtents = function (fileExtents) {
-            var recPerBlock = 8;
+            var recPerBlock = this.format.bls / 128; // usually 8
             var out = "";
             for (var i = 0; i < fileExtents.length; i += 1) {
                 var extent = fileExtents[i], blocks = extent.blocks;
                 var records = extent.records;
+                if (extent.extent > 0) {
+                    if (recPerBlock > 8) { // fast hack for parados: adapt records
+                        records += extent.extent * 128;
+                    }
+                }
                 for (var blockIndex = 0; blockIndex < blocks.length; blockIndex += 1) {
                     var block = this.readBlock(blocks[blockIndex]);
                     if (records < recPerBlock) { // block with some remaining data
@@ -7421,6 +7439,13 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
                 parentRef: "data",
                 firstSector: 0x00
             },
+            parados80: {
+                parentRef: "data",
+                tracks: 80,
+                firstSector: 0x91,
+                spt: 10,
+                bls: 2048
+            },
             big780k: {
                 parentRef: "data",
                 al0: 0x80,
@@ -7579,6 +7604,50 @@ define("View", ["require", "exports", "Utils"], function (require, exports, Util
             element.checked = checked;
             return this;
         };
+        View.prototype.setAreaInputList = function (id, inputs) {
+            var element = View.getElementByIdAs(id), childNodes = element.childNodes;
+            while (childNodes.length && childNodes[0].nodeType !== Node.ELEMENT_NODE) { // remove all non-element nodes
+                element.removeChild(element.firstChild);
+            }
+            for (var i = 0; i < inputs.length; i += 1) {
+                var item = inputs[i];
+                var input = void 0, label = void 0;
+                if (i * 2 >= childNodes.length) {
+                    input = window.document.createElement("input");
+                    input.type = "radio";
+                    input.id = "galleryItem" + i;
+                    input.name = "gallery";
+                    input.value = item.value;
+                    input.checked = item.checked;
+                    label = window.document.createElement("label");
+                    label.setAttribute("for", "galleryItem" + i);
+                    label.setAttribute("style", 'background: url("' + item.imgUrl + '"); background-size: cover');
+                    label.setAttribute("title", item.title);
+                    element.appendChild(input);
+                    element.appendChild(label);
+                }
+                else {
+                    input = childNodes[i * 2];
+                    if (input.value !== item.value) {
+                        if (Utils_12.Utils.debug > 3) {
+                            Utils_12.Utils.console.debug("setInputList: " + id + ": value changed for index " + i + ": " + item.value);
+                        }
+                        input.value = item.value;
+                        label = childNodes[i * 2 + 1];
+                        label.setAttribute("style", 'background: url("' + item.imgUrl + '");');
+                        label.setAttribute("title", item.title);
+                    }
+                    if (input.checked !== item.checked) {
+                        input.checked = item.checked;
+                    }
+                }
+            }
+            // remove additional items
+            while (element.childElementCount > inputs.length * 2) {
+                element.removeChild(element.lastChild);
+            }
+            return this;
+        };
         View.prototype.setSelectOptions = function (id, options) {
             var element = View.getElementByIdAs(id);
             for (var i = 0; i < options.length; i += 1) {
@@ -7610,6 +7679,19 @@ define("View", ["require", "exports", "Utils"], function (require, exports, Util
             // remove additional select options
             element.options.length = options.length;
             return this;
+        };
+        View.prototype.getSelectOptions = function (id) {
+            var element = View.getElementByIdAs(id), elementOptions = element.options, options = [];
+            for (var i = 0; i < elementOptions.length; i += 1) {
+                var elementOption = elementOptions[i];
+                options.push({
+                    value: elementOption.value,
+                    text: elementOption.text,
+                    title: elementOption.title,
+                    selected: elementOption.selected
+                });
+            }
+            return options;
         };
         View.prototype.getSelectValue = function (id) {
             var element = View.getElementByIdAs(id);
@@ -9124,6 +9206,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             this.offset = 0; // screen offset
             this.borderWidth = 4;
             this.needUpdate = false;
+            this.colorValues = [];
             this.currentInks = [];
             this.speedInk = [];
             this.inkSet = 0;
@@ -9147,6 +9230,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             this.gTransparent = false;
             this.options = {
                 charset: options.charset,
+                colors: options.colors,
                 onClickKey: options.onClickKey
             };
             this.fnUpdateCanvasHandler = this.updateCanvas.bind(this);
@@ -9162,7 +9246,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             this.width = width;
             this.height = height;
             this.dataset8 = new Uint8Array(new ArrayBuffer(width * height)); // array with pen values
-            this.colorValues = Canvas.extractAllColorValues(Canvas.colors);
+            this.setColors(this.options.colors);
             this.animationTimeoutId = undefined;
             this.animationFrame = undefined;
             if (this.canvas.getContext) { // not available on e.g. IE8
@@ -9196,7 +9280,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             this.speedInk[0] = 10;
             this.speedInk[1] = 10;
             this.speedInkCount = this.speedInk[this.inkSet];
-            this.canvas.style.borderColor = Canvas.colors[this.currentInks[this.inkSet][16]];
+            this.canvas.style.borderColor = this.options.colors[this.currentInks[this.inkSet][16]];
             this.setGPen(1);
             this.setGPaper(0);
             this.resetCustomChars();
@@ -9219,12 +9303,14 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
                 parseInt(color.substring(5, 7), 16)
             ];
         };
-        Canvas.extractAllColorValues = function (colors) {
-            var colorValues = [];
+        Canvas.extractAllColorValues = function (colors, colorValues) {
+            //const colorValues: number[][] = [];
             for (var i = 0; i < colors.length; i += 1) {
                 colorValues[i] = Canvas.extractColorValues(colors[i]);
             }
-            return colorValues;
+        };
+        Canvas.prototype.setColors = function (colors) {
+            Canvas.extractAllColorValues(colors, this.colorValues);
         };
         Canvas.prototype.setAlpha = function (alpha) {
             var buf8 = this.imageData.data, length = this.dataset8.length; // or: this.width * this.height
@@ -9358,7 +9444,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
                 }
                 // check border ink
                 if (this.currentInks[newInkSet][16] !== this.currentInks[currentInkSet][16]) {
-                    this.canvas.style.borderColor = Canvas.colors[this.currentInks[newInkSet][16]];
+                    this.canvas.style.borderColor = this.options.colors[this.currentInks[newInkSet][16]];
                 }
             }
         };
@@ -9774,7 +9860,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
         Canvas.prototype.setBorder = function (ink1, ink2) {
             var needInkUpdate = this.setInk(16, ink1, ink2);
             if (needInkUpdate) {
-                this.canvas.style.borderColor = Canvas.colors[this.currentInks[this.inkSet][16]];
+                this.canvas.style.borderColor = this.options.colors[this.currentInks[this.inkSet][16]];
             }
         };
         Canvas.prototype.setGPen = function (gPen) {
@@ -10035,41 +10121,6 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
         Canvas.prototype.getCanvasElement = function () {
             return this.canvas;
         };
-        // http://www.cpcwiki.eu/index.php/CPC_Palette
-        Canvas.colors = [
-            "#000000",
-            "#000080",
-            "#0000FF",
-            "#800000",
-            "#800080",
-            "#8000FF",
-            "#FF0000",
-            "#FF0080",
-            "#FF00FF",
-            "#008000",
-            "#008080",
-            "#0080FF",
-            "#808000",
-            "#808080",
-            "#8080FF",
-            "#FF8000",
-            "#FF8080",
-            "#FF80FF",
-            "#00FF00",
-            "#00FF80",
-            "#00FFFF",
-            "#80FF00",
-            "#80FF80",
-            "#80FFFF",
-            "#FFFF00",
-            "#FFFF80",
-            "#FFFFFF",
-            "#808080",
-            "#FF00FF",
-            "#FFFF80",
-            "#000080",
-            "#00FF80" //  31 Sea Green (same as 19)
-        ];
         // mode 0: pen 0-15,16=border; inks for pen 14,15 are alternating: "1,24", "16,11"
         Canvas.defaultInks = [
             [1, 24, 20, 6, 26, 0, 2, 8, 10, 12, 14, 16, 18, 22, 1, 16, 1],
@@ -10521,6 +10572,7 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
                 onCpcButtonClick: this.onCpcButtonClick,
                 onConvertButtonClick: this.onConvertButtonClick,
                 onSettingsButtonClick: this.onSettingsButtonClick,
+                onGalleryButtonClick: this.onGalleryButtonClick,
                 onKbdButtonClick: this.onKbdButtonClick,
                 onConsoleButtonClick: this.onConsoleButtonClick,
                 onParseButtonClick: this.onParseButtonClick,
@@ -10537,6 +10589,7 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
                 onResetButtonClick: this.onResetButtonClick,
                 onParseRunButtonClick: this.onParseRunButtonClick,
                 onHelpButtonClick: CommonEventHandler.onHelpButtonClick,
+                onGalleryItemClick: this.onGalleryItemClick,
                 onInputTextClick: CommonEventHandler.onNothing,
                 onOutputTextClick: CommonEventHandler.onNothing,
                 onResultTextClick: CommonEventHandler.onNothing,
@@ -10544,6 +10597,7 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
                 onOutputTextChange: this.onOutputTextChange,
                 onReloadButtonClick: this.onReloadButtonClick,
                 onDatabaseSelectChange: this.onDatabaseSelectChange,
+                onDirectorySelectChange: this.onDirectorySelectChange,
                 onExampleSelectChange: this.onExampleSelectChange,
                 onVarSelectChange: this.onVarSelectChange,
                 onKbdLayoutSelectChange: this.onKbdLayoutSelectChange,
@@ -10614,6 +10668,11 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
         CommonEventHandler.prototype.onSettingsButtonClick = function () {
             this.toogleHidden("settingsArea", "showSettings", "flex");
         };
+        CommonEventHandler.prototype.onGalleryButtonClick = function () {
+            if (this.toogleHidden("galleryArea", "showGallery", "flex")) {
+                this.controller.setGalleryAreaInputs();
+            }
+        };
         CommonEventHandler.prototype.onKbdButtonClick = function () {
             if (this.toogleHidden("kbdArea", "showKbd", "flex")) {
                 if (this.view.getHidden("kbdArea")) { // on old browsers, display "flex" is not available, so set "block" if still hidden
@@ -10679,6 +10738,12 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
         CommonEventHandler.onHelpButtonClick = function () {
             window.open("https://github.com/benchmarko/CPCBasicTS/#readme");
         };
+        CommonEventHandler.prototype.onGalleryItemClick = function (event) {
+            var target = View_5.View.getEventTarget(event), value = target.value;
+            this.view.setSelectValue("exampleSelect", value);
+            this.toogleHidden("galleryArea", "showGallery", "flex"); // close
+            this.onExampleSelectChange();
+        };
         CommonEventHandler.onNothing = function () {
             // nothing
         };
@@ -10715,6 +10780,9 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
         };
         CommonEventHandler.prototype.onDatabaseSelectChange = function () {
             this.controller.onDatabaseSelectChange();
+        };
+        CommonEventHandler.prototype.onDirectorySelectChange = function () {
+            this.controller.onDirectorySelectChange();
         };
         CommonEventHandler.prototype.onExampleSelectChange = function () {
             this.controller.onExampleSelectChange();
@@ -10791,7 +10859,8 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
             }
             if (id) {
                 if (!target.disabled) { // check needed for IE which also fires for disabled buttons
-                    var handler = "on" + Utils_18.Utils.stringCapitalize(id) + Utils_18.Utils.stringCapitalize(type);
+                    var idNoNum = id.replace(/\d+$/, ""), // remove a trailing number
+                    handler = "on" + Utils_18.Utils.stringCapitalize(idNoNum) + Utils_18.Utils.stringCapitalize(type);
                     if (Utils_18.Utils.debug) {
                         Utils_18.Utils.console.debug("fnCommonEventHandler: handler=" + handler);
                     }
@@ -12256,12 +12325,15 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.vmAdaptFilename = function (name, err) {
             this.vmAssertString(name, err);
             name = name.replace(/ /g, ""); // remove spaces
-            if (name.indexOf("!") === 0) {
+            if (name[0] === "!") {
                 name = name.substring(1); // remove preceding "!"
             }
             var index = name.indexOf(":");
             if (index >= 0) {
                 name = name.substring(index + 1); // remove user and drive letter including ":"
+            }
+            if (name.endsWith(".")) {
+                name = name.substring(0, name.length - 1); // remove training "."
             }
             name = name.toLowerCase();
             if (!name) {
@@ -14854,17 +14926,27 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             var win = this.windowDataList[8];
             win.right = win.left + width;
         };
+        CpcVm.forceInRange = function (num, min, max) {
+            if (num < min) {
+                num = min;
+            }
+            else if (num > max) {
+                num = max;
+            }
+            return num;
+        };
         CpcVm.prototype.window = function (stream, left, right, top, bottom) {
             stream = this.vmInRangeRound(stream, 0, 7, "WINDOW");
             left = this.vmInRangeRound(left, 1, 255, "WINDOW");
             right = this.vmInRangeRound(right, 1, 255, "WINDOW");
             top = this.vmInRangeRound(top, 1, 255, "WINDOW");
             bottom = this.vmInRangeRound(bottom, 1, 255, "WINDOW");
-            var win = this.windowDataList[stream];
-            win.left = Math.min(left, right) - 1;
-            win.right = Math.max(left, right) - 1;
-            win.top = Math.min(top, bottom) - 1;
-            win.bottom = Math.max(top, bottom) - 1;
+            var win = this.windowDataList[stream], winData = CpcVm.winData[this.modeValue];
+            // make left and top the smaller; make sure the window fits on the screen
+            win.left = CpcVm.forceInRange(Math.min(left, right) - 1, winData.left, winData.right);
+            win.right = CpcVm.forceInRange(Math.max(left, right) - 1, winData.left, winData.right);
+            win.top = CpcVm.forceInRange(Math.min(top, bottom) - 1, winData.top, winData.bottom);
+            win.bottom = CpcVm.forceInRange(Math.max(top, bottom) - 1, winData.top, winData.bottom);
             win.pos = 0;
             win.vpos = 0;
         };
@@ -15238,7 +15320,7 @@ define("CpcVmRsx", ["require", "exports", "Utils"], function (require, exports, 
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("FileHandler", ["require", "exports", "Utils", "DiskImage"], function (require, exports, Utils_23, DiskImage_1) {
+define("FileHandler", ["require", "exports", "Utils", "DiskImage", "ZipFile"], function (require, exports, Utils_23, DiskImage_1, ZipFile_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FileHandler = void 0;
@@ -15275,64 +15357,101 @@ define("FileHandler", ["require", "exports", "Utils", "DiskImage"], function (re
             ].join(";");
         };
         // starting with (line) number, or 7 bit ASCII characters without control codes except \x1a=EOF
-        FileHandler.prototype.fnLoad2 = function (data, name, type, imported) {
-            var header, storageName = this.adaptFilename(name, "FILE");
-            storageName = FileHandler.fnLocalStorageName(storageName);
-            if (type === "text/plain") {
-                header = FileHandler.createMinimalAmsdosHeader("A", 0, data.length);
+        FileHandler.prototype.processZipFile = function (uint8Array, name, imported) {
+            var zip;
+            try {
+                zip = new ZipFile_1.ZipFile(uint8Array, name); // rather data
             }
-            else {
-                if (type === "application/x-zip-compressed" || type === "cpcBasic/binary") { // are we a file inside zip?
-                    // empty
+            catch (e) {
+                Utils_23.Utils.console.error(e);
+                if (e instanceof Error) {
+                    this.outputError(e, true);
                 }
-                else { // e.g. "data:application/octet-stream;base64,..."
-                    var index = data.indexOf(",");
-                    if (index >= 0) {
-                        var info1 = data.substring(0, index);
-                        data = data.substring(index + 1); // remove meta prefix
-                        if (info1.indexOf("base64") >= 0) {
-                            data = Utils_23.Utils.atob(data); // decode base64
-                        }
-                    }
-                }
-                header = DiskImage_1.DiskImage.parseAmsdosHeader(data);
-                if (header) {
-                    data = data.substring(0x80); // remove header
-                }
-                else if (FileHandler.reRegExpIsText.test(data)) {
-                    header = FileHandler.createMinimalAmsdosHeader("A", 0, data.length);
-                }
-                else if (DiskImage_1.DiskImage.testDiskIdent(data.substring(0, 8))) { // disk image file?
+            }
+            if (zip) {
+                var zipDirectory = zip.getZipDirectory(), entries = Object.keys(zipDirectory);
+                for (var i = 0; i < entries.length; i += 1) {
+                    var name2 = entries[i];
+                    var data2 = void 0;
                     try {
-                        var dsk = new DiskImage_1.DiskImage({
-                            data: data,
-                            diskName: name
-                        }), dir = dsk.readDirectory(), diskFiles = Object.keys(dir);
-                        for (var i = 0; i < diskFiles.length; i += 1) {
-                            var fileName = diskFiles[i];
-                            try { // eslint-disable-line max-depth
-                                data = dsk.readFile(dir[fileName]);
-                                this.fnLoad2(data, fileName, "cpcBasic/binary", imported); // recursive
-                            }
-                            catch (e) {
-                                Utils_23.Utils.console.error(e);
-                                if (e instanceof Error) { // eslint-disable-line max-depth
-                                    this.outputError(e, true);
-                                }
-                            }
-                        }
+                        data2 = zip.readData(name2);
                     }
                     catch (e) {
                         Utils_23.Utils.console.error(e);
-                        if (e instanceof Error) {
+                        if (e instanceof Error) { // eslint-disable-line max-depth
                             this.outputError(e, true);
                         }
                     }
-                    header = undefined; // ignore dsk file
+                    if (data2) {
+                        this.fnLoad2(data2, name2, "", imported); // type not known but without meta
+                    }
                 }
-                else { // binary
+            }
+        };
+        FileHandler.prototype.processDskFile = function (data, name, imported) {
+            try {
+                var dsk = new DiskImage_1.DiskImage({
+                    data: data,
+                    diskName: name
+                }), dir = dsk.readDirectory(), diskFiles = Object.keys(dir);
+                for (var i = 0; i < diskFiles.length; i += 1) {
+                    var fileName = diskFiles[i];
+                    try { // eslint-disable-line max-depth
+                        data = dsk.readFile(dir[fileName]);
+                        this.fnLoad2(data, fileName, "", imported); // recursive
+                    }
+                    catch (e) {
+                        Utils_23.Utils.console.error(e);
+                        if (e instanceof Error) { // eslint-disable-line max-depth
+                            this.outputError(e, true);
+                        }
+                    }
+                }
+            }
+            catch (e) {
+                Utils_23.Utils.console.error(e);
+                if (e instanceof Error) {
+                    this.outputError(e, true);
+                }
+            }
+        };
+        FileHandler.prototype.fnLoad2 = function (data, name, type, imported) {
+            if (data instanceof Uint8Array) { // FileSelect filereader zip file?
+                this.processZipFile(data, name, imported);
+                return;
+            }
+            var header, storageName = this.adaptFilename(name, "FILE");
+            storageName = FileHandler.fnLocalStorageName(storageName);
+            if (type === "") { // detetermine type
+                header = DiskImage_1.DiskImage.parseAmsdosHeader(data);
+                if (header) {
+                    type = "H"; // with header
+                    data = data.substring(0x80); // remove header
+                }
+                else if (FileHandler.reRegExpIsText.test(data)) {
+                    type = "A";
+                }
+                else if (DiskImage_1.DiskImage.testDiskIdent(data.substring(0, 8))) { // disk image file?
+                    type = "X";
+                }
+            }
+            switch (type) {
+                case "A": // "text/plain"
+                case "B": // binary?
+                    header = FileHandler.createMinimalAmsdosHeader(type, 0, data.length);
+                    break;
+                case "Z": // zip file?
+                    this.processZipFile(Utils_23.Utils.string2Uint8Array(data), name, imported);
+                    break;
+                case "X": // dsk file?
+                    this.processDskFile(data, name, imported);
+                    break;
+                case "H": // with header?
+                    break;
+                default:
+                    Utils_23.Utils.console.warn("fnLoad2: " + name + ": Unknown file type: " + type + ", assuming B");
                     header = FileHandler.createMinimalAmsdosHeader("B", 0, data.length);
-                }
+                    break;
             }
             if (header) {
                 var meta = FileHandler.joinMeta(header);
@@ -15363,21 +15482,19 @@ define("FileHandler", ["require", "exports", "Utils", "DiskImage"], function (re
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("FileSelect", ["require", "exports", "Utils", "ZipFile", "View"], function (require, exports, Utils_24, ZipFile_1, View_6) {
+define("FileSelect", ["require", "exports", "Utils", "View"], function (require, exports, Utils_24, View_6) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FileSelect = void 0;
     var FileSelect = /** @class */ (function () {
         function FileSelect(options) {
             this.fnEndOfImport = {};
-            this.outputError = {};
             this.fnLoad2 = {};
             this.files = {}; // = dataTransfer ? dataTransfer.files : ((event.target as any).files as FileList), // dataTransfer for drag&drop, target.files for file input
             this.fileIndex = 0;
             this.imported = []; // imported file names
             this.file = {}; // current file
             this.fnEndOfImport = options.fnEndOfImport;
-            this.outputError = options.outputError;
             this.fnLoad2 = options.fnLoad2;
         }
         FileSelect.prototype.fnReadNextFile = function (reader) {
@@ -15403,39 +15520,31 @@ define("FileSelect", ["require", "exports", "Utils", "ZipFile", "View"], functio
             }
         };
         FileSelect.prototype.fnOnLoad = function (event) {
-            var reader = event.target, data = (reader && reader.result) || null, file = this.file, name = file.name, type = file.type;
+            var reader = event.target, file = this.file, name = file.name;
+            var data = (reader && reader.result) || null, type = file.type;
             if (type === "application/x-zip-compressed" && data instanceof ArrayBuffer) {
-                var zip = void 0;
-                try {
-                    zip = new ZipFile_1.ZipFile(new Uint8Array(data), name); // rather data
-                }
-                catch (e) {
-                    Utils_24.Utils.console.error(e);
-                    if (e instanceof Error) {
-                        this.outputError(e, true);
-                    }
-                }
-                if (zip) {
-                    var zipDirectory = zip.getZipDirectory(), entries = Object.keys(zipDirectory);
-                    for (var i = 0; i < entries.length; i += 1) {
-                        var name2 = entries[i];
-                        var data2 = void 0;
-                        try {
-                            data2 = zip.readData(name2);
-                        }
-                        catch (e) {
-                            Utils_24.Utils.console.error(e);
-                            if (e instanceof Error) { // eslint-disable-line max-depth
-                                this.outputError(e, true);
-                            }
-                        }
-                        if (data2) {
-                            this.fnLoad2(data2, name2, type, this.imported);
-                        }
-                    }
-                }
+                type = "Z";
+                this.fnLoad2(new Uint8Array(data), name, type, this.imported);
             }
             else if (typeof data === "string") {
+                if (type === "text/plain") { // "text/plain"
+                    type = "A";
+                }
+                else if (data.indexOf("data:") === 0) {
+                    // check for meta info in data: data:application/octet-stream;base64, or: data:text/javascript;base64,
+                    var index = data.indexOf(",");
+                    if (index >= 0) {
+                        var info1 = data.substring(0, index);
+                        // remove meta prefix
+                        data = data.substring(index + 1);
+                        if (info1.indexOf("base64") >= 0) {
+                            data = Utils_24.Utils.atob(data); // decode base64
+                        }
+                        if (info1.indexOf("text/") >= 0) {
+                            type = "A";
+                        }
+                    }
+                }
                 this.fnLoad2(data, name, type, this.imported);
             }
             else {
@@ -15566,12 +15675,15 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             view.setHidden("kbdArea", !model.getProperty("showKbd"), "flex");
             view.setHidden("kbdLayoutArea", model.getProperty("showKbd"), "inherit"); // kbd visible => kbdlayout invisible
             view.setHidden("cpcArea", false); // make sure canvas is not hidden (allows to get width, height)
+            var palette = model.getProperty("palette");
             this.canvas = new Canvas_1.Canvas({
                 charset: cpcCharset_1.cpcCharset,
+                colors: palette === "grey" ? Controller.paletteGrey : Controller.paletteColors,
                 onClickKey: this.fnPutKeyInBufferHandler
             });
             view.setHidden("cpcArea", !model.getProperty("showCpc"));
             view.setHidden("settingsArea", !model.getProperty("showSettings"), "flex");
+            view.setHidden("galleryArea", !model.getProperty("showGallery"), "flex");
             view.setHidden("convertArea", !model.getProperty("showConvert"), "flex");
             view.setInputChecked("implicitLinesInput", model.getProperty("implicitLines"));
             view.setInputChecked("arrayBoundsInput", model.getProperty("arrayBounds"));
@@ -15694,19 +15806,54 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             }
             this.view.setSelectOptions(select, items);
         };
-        Controller.prototype.setExampleSelectOptions = function () {
-            var maxTitleLength = 160, maxTextLength = 60, // (32 visible?)
-            select = "exampleSelect", items = [], example = this.model.getProperty("example"), allExamples = this.model.getAllExamples();
-            var exampleSelected = false;
+        Controller.getPathFromExample = function (example) {
+            var index = example.lastIndexOf("/");
+            var path = "";
+            if (index >= 0) {
+                path = example.substring(0, index);
+            }
+            return path;
+        };
+        Controller.getNameFromExample = function (example) {
+            var index = example.lastIndexOf("/");
+            var name = example;
+            if (index >= 0) {
+                name = example.substring(index + 1);
+            }
+            return name;
+        };
+        Controller.prototype.setDirectorySelectOptions = function () {
+            var select = "directorySelect", items = [], allExamples = this.model.getAllExamples(), examplePath = Controller.getPathFromExample(this.model.getProperty("example")), directorySeen = {};
             for (var key in allExamples) {
                 if (allExamples.hasOwnProperty(key)) {
-                    var exampleEntry = allExamples[key];
+                    var exampleEntry = allExamples[key], value = Controller.getPathFromExample(exampleEntry.key);
+                    if (!directorySeen[value]) {
+                        var item = {
+                            value: value,
+                            text: value,
+                            title: value,
+                            selected: value === examplePath
+                        };
+                        items.push(item);
+                        directorySeen[value] = true;
+                    }
+                }
+            }
+            this.view.setSelectOptions(select, items);
+        };
+        Controller.prototype.setExampleSelectOptions = function () {
+            var maxTitleLength = 160, maxTextLength = 60, // (32 visible?)
+            select = "exampleSelect", items = [], exampleName = Controller.getNameFromExample(this.model.getProperty("example")), allExamples = this.model.getAllExamples(), directoryName = this.view.getSelectValue("directorySelect");
+            var exampleSelected = false;
+            for (var key in allExamples) {
+                if (allExamples.hasOwnProperty(key) && (Controller.getPathFromExample(key) === directoryName)) {
+                    var exampleEntry = allExamples[key], exampleName2 = Controller.getNameFromExample(exampleEntry.key);
                     if (exampleEntry.meta !== "D") { // skip data files
-                        var title = (exampleEntry.key + ": " + exampleEntry.title).substring(0, maxTitleLength), item = {
-                            value: exampleEntry.key,
+                        var title = (exampleName2 + ": " + exampleEntry.title).substring(0, maxTitleLength), item = {
+                            value: exampleName2,
                             title: title,
                             text: title.substring(0, maxTextLength),
-                            selected: exampleEntry.key === example
+                            selected: exampleName2 === exampleName
                         };
                         if (item.selected) {
                             exampleSelected = true;
@@ -15719,6 +15866,19 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 items[0].selected = true; // if example is not found, select first element
             }
             this.view.setSelectOptions(select, items);
+        };
+        Controller.prototype.setGalleryAreaInputs = function () {
+            var database = this.model.getDatabase(), directory = this.view.getSelectValue("directorySelect"), options = this.view.getSelectOptions("exampleSelect"), inputs = [];
+            for (var i = 0; i < options.length; i += 1) {
+                var item = options[i], input = {
+                    value: item.value,
+                    title: item.title,
+                    checked: item.selected,
+                    imgUrl: database.src + "/" + directory + "/img/" + item.value + ".png"
+                };
+                inputs.push(input);
+            }
+            this.view.setAreaInputList("galleryAreaItems", inputs);
         };
         Controller.prototype.setVarSelectOptions = function (select, variables) {
             var maxVarLength = 35, varNames = variables.getAllVariableNames(), items = [], fnSortByStringProperties = function (a, b) {
@@ -15783,6 +15943,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 }
             }
             if (database === "storage") {
+                this.setDirectorySelectOptions();
                 this.setExampleSelectOptions();
             }
             else {
@@ -16143,41 +16304,52 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         Controller.prototype.fnPrintDirectoryEntries = function (stream, dir, sort) {
             // first, format names
             for (var i = 0; i < dir.length; i += 1) {
-                var key = dir[i], parts = key.split(".");
+                var parts = dir[i].split(".");
+                dir[i] = parts[0].padEnd(8, " ") + "." + (parts.length >= 2 ? parts[1] : "").padEnd(3, " ");
+                /*
                 if (parts.length === 2) {
                     dir[i] = parts[0].padEnd(8, " ") + "." + parts[1].padEnd(3, " ");
                 }
+                */
             }
             if (sort) {
                 dir.sort();
             }
-            this.vm.print(stream, "\r\n");
+            this.vm.print(stream, "\r\nDrive A: user  0\r\n\r\n");
             for (var i = 0; i < dir.length; i += 1) {
                 var key = dir[i] + "  ";
                 this.vm.print(stream, key);
             }
-            this.vm.print(stream, "\r\n");
+            this.vm.print(stream, "\r\n\r\n999K free\r\n\r\n");
         };
         Controller.prototype.fnFileCat = function (paras) {
-            var stream = paras.stream, dir = Controller.fnGetStorageDirectoryEntries();
-            this.fnPrintDirectoryEntries(stream, dir, true);
+            var stream = paras.stream, dirList = Controller.fnGetStorageDirectoryEntries();
+            this.fnPrintDirectoryEntries(stream, dirList, true);
             // currently only from localstorage
             this.vm.vmStop("", 0, true);
         };
         Controller.prototype.fnFileDir = function (paras) {
-            var stream = paras.stream, example = this.model.getProperty("example"), // if we have a fileMask, include also example names from same directory
-            lastSlash = example.lastIndexOf("/");
-            var fileMask = paras.fileMask ? Controller.fnLocalStorageName(paras.fileMask) : "", dir = Controller.fnGetStorageDirectoryEntries(fileMask), path = "";
+            var stream = paras.stream, example = this.model.getProperty("example"), lastSlash = example.lastIndexOf("/");
+            var fileMask = paras.fileMask ? Controller.fnLocalStorageName(paras.fileMask) : "";
+            var dirList = Controller.fnGetStorageDirectoryEntries(fileMask);
+            var path = "";
             if (lastSlash >= 0) {
                 path = example.substring(0, lastSlash) + "/";
                 fileMask = path + (fileMask ? fileMask : "*.*"); // only in same directory
             }
-            var dir2 = this.fnGetExampleDirectoryEntries(fileMask); // also from examples
-            for (var i = 0; i < dir2.length; i += 1) {
-                dir2[i] = dir2[i].substring(path.length); // remove preceding path including "/"
+            var fileExists = {};
+            for (var i = 0; i < dirList.length; i += 1) {
+                fileExists[dirList[i]] = true;
             }
-            dir = dir2.concat(dir); // combine
-            this.fnPrintDirectoryEntries(stream, dir, false);
+            var dirListEx = this.fnGetExampleDirectoryEntries(fileMask); // also from examples
+            for (var i = 0; i < dirListEx.length; i += 1) {
+                var file = dirListEx[i].substring(path.length); // remove preceding path including "/"
+                if (!fileExists[file]) { // ignore duplicates
+                    fileExists[file] = true;
+                    dirList.push(file);
+                }
+            }
+            this.fnPrintDirectoryEntries(stream, dirList, false);
             this.vm.vmStop("", 0, true);
         };
         Controller.prototype.fnFileEra = function (paras) {
@@ -16330,6 +16502,16 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 else if (type === "G") { // Hisoft Devpac GENA3 Z80 Assember
                     input = Controller.asmGena3Convert(input);
                 }
+                else if (type === "X") { // (Extended) Disk image file
+                    var fileHandler = this.fileHandler || this.createFileHandler(), imported = [];
+                    fileHandler.fnLoad2(input, inFile.name, type, imported); // no meta in data
+                    input = "1 ' " + imported.join(", "); // imported files
+                }
+                else if (type === "Z") { // ZIP file
+                    var fileHandler = this.fileHandler || this.createFileHandler(), imported = [];
+                    fileHandler.fnLoad2(input, inFile.name, type, imported);
+                    input = "1 ' " + imported.join(", "); // imported files
+                }
             }
             if (inFile.fnFileCallback) {
                 try {
@@ -16456,7 +16638,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             var url;
             if (exampleEntry && exampleEntry.loaded) {
                 this.model.setProperty("example", example);
-                url = example; //TTT
+                url = example;
                 var fnExampleLoaded = this.createFnExampleLoaded(example, url, inFile);
                 fnExampleLoaded("", example, true);
             }
@@ -16793,7 +16975,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     var code = tokens.charCodeAt(i);
                     if (code > 255) {
                         Utils_25.Utils.console.warn("Put token in memory: addr=" + (addr + i) + ", code=" + code + ", char=" + tokens.charAt(i));
-                        code = 0x20; //TTT
+                        code = 0x20;
                     }
                     this.vm.poke(addr + i, code);
                 }
@@ -17311,7 +17493,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         Controller.prototype.adaptFilename = function (name, err) {
             return this.vm.vmAdaptFilename(name, err);
         };
-        Controller.prototype.initDropZone = function () {
+        Controller.prototype.createFileHandler = function () {
             if (!this.fileHandler) {
                 this.fileHandler = new FileHandler_1.FileHandler({
                     adaptFilename: this.adaptFilename.bind(this),
@@ -17319,11 +17501,24 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     outputError: this.outputError.bind(this)
                 });
             }
+            return this.fileHandler;
+        };
+        Controller.prototype.initDropZone = function () {
+            var fileHandler = this.fileHandler || this.createFileHandler();
+            /*
+            if (!this.fileHandler) {
+                this.fileHandler = new FileHandler({
+                    adaptFilename: this.adaptFilename.bind(this),
+                    updateStorageDatabase: this.updateStorageDatabase.bind(this),
+                    outputError: this.outputError.bind(this)
+                });
+            }
+            */
             if (!this.fileSelect) {
                 this.fileSelect = new FileSelect_1.FileSelect({
                     fnEndOfImport: this.fnEndOfImport.bind(this),
-                    outputError: this.outputError.bind(this),
-                    fnLoad2: this.fileHandler.fnLoad2.bind(this.fileHandler)
+                    //outputError: this.outputError.bind(this),
+                    fnLoad2: fileHandler.fnLoad2.bind(fileHandler)
                 });
             }
             var dropZone = View_7.View.getElementById1("dropZone");
@@ -17396,22 +17591,21 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     _this.model.setProperty("database", selectedName);
                 }
                 Utils_25.Utils.console.log("fnDatabaseLoaded: database loaded: " + key + ": " + url);
-                _this.setExampleSelectOptions();
-                _this.onExampleSelectChange();
+                _this.setDirectorySelectOptions();
+                _this.onDirectorySelectChange();
             };
         };
         Controller.prototype.createFnDatabaseError = function (url) {
             var _this = this;
             return function (_sFullUrl, key) {
                 Utils_25.Utils.console.error("fnDatabaseError: database error: " + key + ": " + url);
-                _this.setExampleSelectOptions();
-                _this.onExampleSelectChange();
+                _this.setDirectorySelectOptions();
+                _this.onDirectorySelectChange();
                 _this.setInputText("");
                 _this.view.setAreaValue("resultText", "Cannot load database: " + key);
             };
         };
         Controller.prototype.onDatabaseSelectChange = function () {
-            var url;
             var databaseName = this.view.getSelectValue("databaseSelect");
             this.model.setProperty("database", databaseName);
             this.view.setSelectTitleFromSelectedOption("databaseSelect");
@@ -17425,21 +17619,31 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 database.loaded = true;
             }
             if (database.loaded) {
-                this.setExampleSelectOptions();
-                this.onExampleSelectChange();
+                this.setDirectorySelectOptions();
+                this.onDirectorySelectChange();
             }
             else {
                 this.setInputText("#loading database " + databaseName + "...");
-                var exampleIndex = this.model.getProperty("exampleIndex");
-                url = database.src + "/" + exampleIndex;
+                var exampleIndex = this.model.getProperty("exampleIndex"), url = database.src + "/" + exampleIndex;
                 Utils_25.Utils.loadScript(url, this.createFnDatabaseLoaded(url), this.createFnDatabaseError(url), databaseName);
             }
         };
+        Controller.prototype.onDirectorySelectChange = function () {
+            this.setExampleSelectOptions();
+            this.onExampleSelectChange();
+        };
         Controller.prototype.onExampleSelectChange = function () {
-            var vm = this.vm, inFile = vm.vmGetInFileObject(), dataBaseName = this.model.getProperty("database");
+            var vm = this.vm, inFile = vm.vmGetInFileObject(), dataBaseName = this.model.getProperty("database"), directoryName = this.view.getSelectValue("directorySelect");
             vm.closein();
+            if (!this.view.getHidden("galleryArea")) { // close gallery, if open
+                this.view.setHidden("galleryArea", true, "flex");
+                this.model.setProperty("showGallery", false);
+            }
             inFile.open = true;
             var exampleName = this.view.getSelectValue("exampleSelect");
+            if (directoryName) {
+                exampleName = directoryName + "/" + exampleName;
+            }
             var exampleEntry = this.model.getExample(exampleName);
             inFile.command = "run";
             if (exampleEntry && exampleEntry.meta) { // TTT TODO: this is just a workaround, meta is in input now; should change command after loading!
@@ -17510,7 +17714,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             });
             this.vm.vmGoto(0); // reset current line
             this.vm.vmStop("end", 0, true);
-            this.variables.removeAllVariables(); //TTT
+            this.variables.removeAllVariables();
         };
         Controller.prototype.fnImplicitLines = function () {
             var implicitLines = this.model.getProperty("implicitLines");
@@ -17534,6 +17738,75 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.initialLoopTimeout = 1000 - speed * 10;
         };
         Controller.metaIdent = "CPCBasic";
+        // http://www.cpcwiki.eu/index.php/CPC_Palette
+        Controller.paletteColors = [
+            "#000000",
+            "#000080",
+            "#0000FF",
+            "#800000",
+            "#800080",
+            "#8000FF",
+            "#FF0000",
+            "#FF0080",
+            "#FF00FF",
+            "#008000",
+            "#008080",
+            "#0080FF",
+            "#808000",
+            "#808080",
+            "#8080FF",
+            "#FF8000",
+            "#FF8080",
+            "#FF80FF",
+            "#00FF00",
+            "#00FF80",
+            "#00FFFF",
+            "#80FF00",
+            "#80FF80",
+            "#80FFFF",
+            "#FFFF00",
+            "#FFFF80",
+            "#FFFFFF",
+            "#808080",
+            "#FF00FF",
+            "#FFFF80",
+            "#000080",
+            "#00FF80" //  31 Sea Green (same as 19)
+        ];
+        Controller.paletteGrey = [
+            "#000000",
+            "#0A0A0A",
+            "#131313",
+            "#1D1D1D",
+            "#262626",
+            "#303030",
+            "#393939",
+            "#434343",
+            "#4C4C4C",
+            "#575757",
+            "#606060",
+            "#6A6A6A",
+            "#737373",
+            "#7D7D7D",
+            "#868686",
+            "#909090",
+            "#999999",
+            "#A3A3A3",
+            "#ACACAC",
+            "#B5B5B5",
+            "#BFBFBF",
+            "#C9C9C9",
+            "#D2D2D2",
+            "#DCDCDC",
+            "#E5E5E5",
+            "#EFEFEF",
+            "#F8F8F8",
+            "#7D7D7D",
+            "#434343",
+            "#EFEFEF",
+            "#A0A0A0",
+            "#B5B5B5"
+        ];
         Controller.defaultExtensions = [
             "",
             "bas",
@@ -17549,8 +17822,8 @@ define("cpcconfig", ["require", "exports"], function (require, exports) {
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.cpcconfig = void 0;
     exports.cpcconfig = {
-        //databaseDirs: "./examples,https://benchmarko.github.io/CPCBasicApps/apps,storage",
-        databaseDirs: "./examples,../../CPCBasicApps/apps,storage",
+        databaseDirs: "./examples,https://benchmarko.github.io/CPCBasicApps/apps,storage",
+        //databaseDirs: "./examples,../../CPCBasicApps/apps,storage", // local test
         // just an example, not the full list of moved examples...
         redirectExamples: {
             "examples/art": {
@@ -17765,8 +18038,10 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
             showConsole: false,
             showConvert: false,
             showSettings: false,
+            showGallery: false,
             sound: true,
             speed: 100,
+            palette: "color",
             trace: false // trace code
         };
         return cpcBasic;
