@@ -9,15 +9,20 @@ cpcBasic.addItem("", function () { /*
 100 REM Adventure Interpreter
 110 'ueberarbeitet: 1.6.1988
 120 '
+125 if f.needsel=1 then 174
 130 MODE 1:INK 1,24:INK 0,1:BORDER 1:PEN 1:PAPER 0
 140 'IF PEEK(&A200)<>223 THEN MEMORY &A200-1:LOAD"!FILL464.BIN":'Fill:call &a200,farb
 150 CLEAR:DEFINT a-z:CLOSEIN:CLOSEOUT
 160 |TAPE:OPENOUT"!a":MEMORY HIMEM-1:closeout:|DISC
-170 MODE 1
-172 |DIR, "*.ADV"
-173 INPUT"Adventurename (ohne .ADV):";n$
-175 PRINT"Bitte warten ..."
-180 CLOSEIN:OPENIN n$+".ADV"
+165 MODE 1
+170 PRINT "Adventure Interpreter"
+171 PRINT:PRINT "Adventure laden"
+172 '|DIR, "*.ADV": INPUT"Adventurename (ohne .ADV):";n$
+173 f.col=4:f.row=4:f.msk$="*.ADV"
+174 f.needsel=1: gosub 9510:n$=f.f$: f.needsel=0:'file select done
+175 if upper$(right$(n$,4))<>".ADV" then n$=n$+".ADV"
+178 PRINT"Bitte warten ..."
+180 CLOSEIN:OPENIN n$
 190 INPUT #9,na$:INPUT #9,ve$:INPUT #9,cr$:INPUT #9,wl
 200 INPUT #9,ar:INPUT #9,ao:INPUT #9,av:INPUT #9,am:INPUT #9,sp:INPUT #9,af
 210 DIM ra$(ar),ob$(ao),rn$(ao),ob(ao),o(ao),ve$(av),vel$(av),ms$(am),du(ar,6),d(ar,6),bc$(av,ao),ac$(av,ao),fl(af)
@@ -284,4 +289,7 @@ SIE HABEN ES GESCHAFFT !"
 2630 'Grafik:
 2640 PLOT 0,0:DRAW 280,0:DRAW 280,142:DRAW 0,142:DRAW 0,0
 2650 RETURN
+9500 'filesel will be merged...
+9510 chain merge "filesel"
+9520 return
 */ });

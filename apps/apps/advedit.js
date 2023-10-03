@@ -9,6 +9,7 @@ cpcBasic.addItem("", function () { /*
 100 REM Adventure Editor
 110 'ueberarbeitet: 1./2.6.1988
 120 '
+125 if f.needsel=1 then gosub 1918:goto 180
 130 CLEAR:MEMORY &9FFF:|TAPE:OPENOUT"!Dummy":MEMORY HIMEM-1:CLOSEOUT:|DISC:SPEED WRITE 1
 140 MODE 1:CLEAR:DEFINT a-z:a=80:w=8:'Window Daten ausdrucken
 150 DIM ra$(a),ob$(a),rn$(a),ob(a),ve$(a),m$(a),ac$(30,a),bc$(30,a),ad$(20),du(a,6),r$(6)
@@ -208,15 +209,17 @@ erforderliche Eingabelaenge: ";wl
 1890 PRINT TAB(10);
 1900 mi=1:ma=3:GOSUB 2490
 1910 IF t=3 THEN RETURN:'HMen
-1915 if t=1 then |DIR, "*.ADV"
-1920 INPUT"
-Filename (ohne .ADV): ";n$
+1915 'if t=1 then |DIR, "*.ADV"
+1916 f.col=4:f.row=4+6:f.msk$="*.ADV"
+1918 f.needsel=1: gosub 9510:n$=f.f$: f.needsel=0:'file select done
+1920 'PRINT:INPUT"Filename (ohne .ADV): ";n$
+1925 if upper$(right$(n$,4))<>".ADV" then n$=n$+".ADV"
 1930 PRINT"
 
 Bitte warten.
 ":ON t GOTO 2070,1940
 1940 PRINT"Speicherung laeuft ..."
-1950 OPENOUT n$+".ADV"
+1950 OPENOUT n$
 1960 PRINT#9,na$:PRINT#9,ve$:PRINT#9,cr$:PRINT#9,wl
 1970 PRINT#9,ar:PRINT#9,ao:PRINT#9,av:PRINT#9,am:PRINT#9,sp:PRINT#9,af
 1980 FOR i=1 TO ar:PRINT#9,ra$(i):NEXT
@@ -229,7 +232,7 @@ Bitte warten.
 2050 CLOSEOUT
 2060 RETURN:'HMen
 2070 PRINT"Daten werden geladen ..."
-2080 OPENIN n$+".ADV"
+2080 OPENIN n$
 2090 INPUT#9,na$:INPUT#9,ve$:INPUT#9,cr$:INPUT#9,wl
 2100 INPUT#9,ar:INPUT#9,ao:INPUT#9,av:INPUT#9,am:INPUT#9,sp:INPUT#9,af
 2110 FOR i=1 TO ar:INPUT#9,ra$(i):NEXT
@@ -299,4 +302,7 @@ Anzahl Flags";af
 2670 'Daten fuer MODE1 fast
 2680 'DATA 21,28,A0,22,D4,BD,21,C4,B7,11,2F,B7,3A,39,B9,FE,F3,CC,21,A0,ED,53,55,A0,22,3A,A0,23,23,22,42,A0,C9,21,C9,B1,11,8F,B2,C9,4F,44,16,00,62,5D,29,29,19,29,29,29,29,58,19,19,ED,5B,00,00,19,7C,E6,07,67,3A,00,00,84,67,EB,69,26,00,4C,29
 2690 'DATA 29,29,06,38,09,DD,2E,08,3A,00,00,DD,67,01,88,02,D5,E5,6E,60,AF,CB,05,30,01,B1,CB,09,30,F7,DD,A4,12,13,10,F0,44,E1,23,D1,7A,C6,08,57,DD,2D,20,E0,C9
+9500 'filesel will be merged...
+9510 chain merge "filesel"
+9520 return
 */ });

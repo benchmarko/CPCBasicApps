@@ -4,7 +4,7 @@
 
 cpcBasic.addItem("", function () { /*
 1 rem cpcorgan - CPC organ (CPC-Orgel)
-2 rem (c) Oliver Heggelbacher
+2 rem (c) Oliver Heggelbacher, 1985
 4 rem Modifications: make comments out of lines which are not reached; delays
 5 rem
 10 :
@@ -32,7 +32,10 @@ cpcBasic.addItem("", function () { /*
 230 ':
 240 ':      Eingabe der Uhrzeit
 250 ':
-260 INK 0,19 : INK 1,0 : PAPER 0 : PEN 1 : MODE 2 : INPUT "Uhrzeit (Stunden,Minuten,Sekunden) ";st,mi,se      
+260 INK 0,19 : INK 1,0 : PAPER 0 : PEN 1 : MODE 2
+262 print "Uhrzeit eingeben (J/N) ? ";
+263 t$="":while t$<>"J" and t$<>"N":t$=upper$(inkey$):wend:print t$
+265 if t$="J" then INPUT "Uhrzeit (Stunden,Minuten,Sekunden) ";st,mi,se    
 270 IF st>23 OR MI>59 OR se>59 OR st<0 OR mi<0 OR se<0 THEN 260   
 280 EVERY 50 GOSUB 2270
 290 GOTO 350
@@ -60,7 +63,7 @@ cpcBasic.addItem("", function () { /*
 510 k(3,0)=0 : k(3,1)=3      
 520 DATA q,2,w,3,e,r,5,t,6,y,7,u,i
 530 DATA 9,o,0,p,@,^,[,a,z,s,x,c
-540 DATA f,v,g,b,n,j,m,k,",",l,"."
+540 DATA f,v,g,b,n,h,m,j,",",k,"."
 550 :
 560 SYMBOL AFTER 48
 570 SYMBOL 48,126,66,66,66,66,66,126,0
@@ -151,7 +154,8 @@ cpcBasic.addItem("", function () { /*
 1420 j=1
 1430 SPEED KEY 255,255 
 1440 a$=INKEY$ : IF a$="" OR a$<CHR$(44) OR a$=CHR$(127) THEN 1440 ELSE IF a$=";" THEN 1540 ELSE IF a$="\" THEN 1700 ELSE IF a$="]"THEN 1840 ELSE IF a$="}" THEN 1930  
-1450 a=ASC(UPPER$(a$))-44 : b=k(a,0) : c=k(a,1)+o
+1450 a=ASC(UPPER$(a$))-44 : if a>50 then 1440 else b=k(a,0) : c=k(a,1)+o
+1455 locate #1,2,15:?#1,b;",";c;" ";
 1460 IF n(b,c)<>0 THEN SOUND 128+j,n(b,c),0,0,2,2,ra      
 1470 j=j*2 : IF j>4 THEN j=1 
 1480 GOTO 1440
@@ -223,7 +227,7 @@ cpcBasic.addItem("", function () { /*
 2140 REM  falsche Parametereingabe
 2150 REM
 2160 LOCATE #4,2,8 : PRINT #4,"geht nicht!!" 
-2170 FOR t = 1 TO 1000 : NEXT t
+2170 FOR t = 1 TO 1000/10 : call &bd19 : NEXT t
 2180 LOCATE #4,2,8 : PRINT #4,"            "
 2190 RETURN
 2200 '^^^    

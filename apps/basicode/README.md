@@ -22,62 +22,62 @@ There is also an excellent [BASICODE Interpreter](https://robhagemans.github.io/
 
 The library, which is merged to all ather programs.
 
-### BC Help (BC Hilfe)
+### bchelp - BC Help (BC Hilfe)
 
 [![BC Help](./img/bchelp.png)](../../dist/index.html?database=apps&example=basicode/bchelp) (c) Hannes Frank
 
-### Countries
+### countries - Countries
 
 [![Countries](./img/countries.png)](../../dist/index.html?database=apps&example=basicode/countries) (c) J van Noort, 1989
 
 Information about 178 countries in Dutch language.
 
-### Doctor
+### doctor - Doctor
 
 [![Doctor](./img/doctor.png)](../../dist/index.html?database=apps&example=basicode/doctor) (c) Andreas Garten, 1991
 
 Ask the doctor ("Der kleine Hausarzt") in German language.
 
-### Ellipses
+### ellipses - Ellipses
 
 [![Ellipses](./img/ellipses.png)](../../dist/index.html?database=apps&example=basicode/ellipses)
 [![Ellipses](./img/ellipses2.png)](../../dist/index.html?database=apps&example=basicode/ellipses) (c) Jaap Wieles
 
-### Figures
+### figures - Figures
 
 [![Figures](./img/figures.png)](../../dist/index.html?database=apps&example=basicode/figures)
 [![Figures](./img/figures2.png)](../../dist/index.html?database=apps&example=basicode/figures) (c) Roland van Vugt, 1986
 
-### Friendship
+### friendsh - Friendship
 
 [![Friendship](./img/friendsh.png)](../../dist/index.html?database=apps&example=basicode/friendsh) (c) Walther van den Elshout / Detlev Winkel, 1991
 
-### Function Plotting
+### funcplot - Function Plotting
 
 [![Function Plotting](./img/funcplot.png)](../../dist/index.html?database=apps&example=basicode/funcplot) (c) Hannes Frank
 
-### Impossible Figures
+### imposfig - Impossible Figures
 
 [![Impossible Figures](./img/imposfig.png)](../../dist/index.html?database=apps&example=basicode/imposfig)
 [![Impossible Figures](./img/imposfig2.png)](../../dist/index.html?database=apps&example=basicode/imposfig) (c) Thomas Schäfer, 1991
 
-### Nonius
+### nonius - Nonius
 
 [![Nonius](./img/nonius.png)](../../dist/index.html?database=apps&example=basicode/nonius) (c) H.J. Pootjes, 1990
 
 Do you know how to use a Vernier scale? With this program you can practice it. Explanations are in Dutch language.
 
-### Reaction
+### reaction - Reaction
 
 [![Reaction](./img/reaction.png)](../../dist/index.html?database=apps&example=basicode/reaction) (c) Ch.W. Brederode, 1989
 
 Translated by Ronald Knak.
 
-### Rotation
+### rotation - Rotation
 
 [![Rotation](./img/rotation.png)](../../dist/index.html?database=apps&example=basicode/rotation) (c) Thomas Rademacher, 2003
 
-### RSA 1, 2, 3
+### rsa1 - RSA 1, 2, 3
 
 [![RSA 1](./img/rsa1.png)](../../dist/index.html?database=apps&example=basicode/rsa1) (c) Friedrich Dormeier, 1991
 
@@ -85,11 +85,11 @@ Translated by Ronald Knak.
 
 [![RSA 3](./img/rsa3.png)](../../dist/index.html?database=apps&example=basicode/rsa3) (c) Friedrich Dormeier, 1991
 
-### Tennis
+### tennis - Tennis
 
 [![Tennis](./img/tennis.png)](../../dist/index.html?database=apps&example=basicode/tennis) (c) Abdon Pijpelink
 
-### Typen
+### typen - Typen
 
 [![Typen](./img/typen.png)](../../dist/index.html?database=apps&example=basicode/typen)
 [![Typen](./img/typen2.png)](../../dist/index.html?database=apps&example=basicode/typen) (c) Rene Derkx, 1990

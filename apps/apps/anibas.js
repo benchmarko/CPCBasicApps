@@ -11,7 +11,7 @@ cpcBasic.addItem("", function () { /*
 100 'Animator (v3.2) - Basic
 110 '25.11.1991  (8.3.1991 11.11.1989  5.,6.11.89)
 120 '
-130 MODE 1
+130 MODE 1:border 1
 140 CLEAR:DEFINT a-z
 150 xm!=2.5:ym!=2.5:xv!=0:yv!=-114:'Korrekturfaktoren (m=Mult.,v=Verschiebung)
 160 aniblk=&8000
@@ -20,7 +20,7 @@ cpcBasic.addItem("", function () { /*
 200 PRINT
 205 '|DIR,"*.AND"
 210 'INPUT"Filename (ohne .AND): ";t$
-212 f.col=4:f.row=4:f.msk$="*.AND":gosub 10000:t$=f.f$
+212 f.col=4:f.row=4:f.msk$="*.AND":gosub 9510:t$=f.f$
 214 IF t$="" then 220
 216 if upper$(right$(t$,4))<>".AND" then t$=t$+".AND" 
 218 MEMORY &7FFF:LOAD t$,aniblk
@@ -66,26 +66,7 @@ cpcBasic.addItem("", function () { /*
 540 NEXT i
 550 GOTO 470
 560 REM
-9990 'file select
-10000 f.st=6:f.t$="":f.f$=""
-10010 if f.col=0 then f.col=26
-10020 if f.row=0 then f.row=1
-10030 window #f.st,f.col,f.col+14,f.row,25
-10040 window swap f.st,0
-10050 |dir,f.msk$
-10060 window swap f.st,0
-10070 f.r=f.row:f.rmax=f.r
-10080 while f.r<=25
-10090 locate #f.st,9,f.r-f.row+1:ch$=copychr$(#f.st)
-10100 if ch$="." then f.rmax=f.r:locate f.col-2,f.r:print chr$(45+f.r-f.row);
-10110 f.r=f.r+1
-10120 wend
-10130 locate f.col-2,f.rmax+4:print "Select: ";
-10140 f.t$=inkey$:if f.t$="" then 10140
-10150 if f.t$=chr$(13) then locate f.col-2,f.rmax+5:input "Name";f.f$:goto 10190
-10160 f.t$=upper$(f.t$):f.r=asc(f.t$)-45:if f.r<1 or f.r>=f.rmax then 10140
-10170 ?f.t$;
-10180 f.f$="":for f.c=1 to 12:locate #f.st,f.c,f.r+1:f.f$=f.f$+copychr$(#f.st):next
-10190 return
-10200 rem
+9500 'filesel will be merged...
+9510 chain merge "filesel"
+9520 return
 */ });

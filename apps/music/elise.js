@@ -5,7 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 rem elise - Fuer Elise (Ludwig van Beethoven)
 2 rem (c) Jujstronic Software, 1985 (taken from the game Citylander)
-3 rem youtube: https://www.youtube.com/watch?v=qotloiNF-M4 (Line Rider - Für Elise - Ludwig Beethoven)
+3 rem youtube: https://youtu.be/qotloiNF-M4 (Line Rider - Für Elise - Ludwig Beethoven)
 4 rem Modifications: sound playback and data rewritten (somehow shorter)
 5 rem
 1800 mode 1

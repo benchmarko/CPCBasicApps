@@ -35,7 +35,7 @@ Links:
 
 [![Big Factorials (Berechnung grosser Fakultaeten)](./img/factorials.png)](../../dist/index.html?database=apps&example=math/factorials)
 
-### Fractals
+### fractals - Fractals
 
 [![Fractals](./img/fractals.png)](../../dist/index.html?database=apps&example=math/fractals) (c) A. Mueller & CPC Internat., 1992
 

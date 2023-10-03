@@ -6,9 +6,9 @@ cpcBasic.addItem("", function () { /*
 1 rem cancan - Can-Can (Infernal Galop, Jacques Offenbach)
 2 rem (The Schneider CPC 6128 Demo Music)
 3 rem
-4 rem On youtube: https://www.youtube.com/watch?v=wYsn9JhEIbs (CANCAN roby fisarmonica (Galop Infernal))
+4 rem On youtube: https://youtu.be/wYsn9JhEIbs (CANCAN roby fisarmonica (Galop Infernal))
 5 rem Or: https://youtu.be/okQRnHvw3is?t=61 (Offenbach - Infernal Galop)
-6 rem Or: https://www.youtube.com/watch?v=oiFHt_ITVaM (Line Rider - Can Can (Galop Infernal - Offenbach) ;)
+6 rem Or: https://youtu.be/oiFHt_ITVaM (Line Rider - Can Can (Galop Infernal - Offenbach) ;)
 7 rem
 2310 mode 1
 2312 window #1,9,38,10,24

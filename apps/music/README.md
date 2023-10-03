@@ -16,9 +16,11 @@ Links:
 
 A fantastic tune! One of my favorites.
 
-### axelf- Axel F
+### axelf - Axel F
 
 [![Axel F](./img/axelf.png)](../../dist/index.html?database=apps&example=music/axelf) by Harold Faltermeyer
+
+- [Axel F - Harold Faltermeyer (Original Version)](https://youtu.be/dASqLXiuomY)
 
 ### bach - Bach
 
@@ -26,12 +28,18 @@ A fantastic tune! One of my favorites.
 
 Johann Sebastian Bach: "Wohl mir,dass ich Jesum habe"
 
-### cancan -Cancan
+- [VOCES8: Jesus bleibet meine Freude - JS Bach](https://youtu.be/T5Df7f_BLU8)
+
+### cancan - Cancan
 
 [![Cancan](./img/cancan.png)](../../dist/index.html?database=apps&example=music/cancan)
 
 Can Can (Infernal Galop) by Jacques Offenbach.
 The Schneider CPC 6128 Demo Music.
+
+- [CANCAN roby fisarmonica (Galop Infernal)](https://youtu.be/wYsn9JhEIbs)
+- [Offenbach - Infernal Galop](https://youtu.be/okQRnHvw3is?t=61)
+- [Line Rider - Can Can (Galop Infernal - Offenbach](https://youtu.be/oiFHt_ITVaM)
 
 ### clarinet - Clarinet
 
@@ -39,7 +47,10 @@ The Schneider CPC 6128 Demo Music.
 
 Clarinet (Klarinettenmuck'l, Jaroslav Skabrada)
 
-### cpcorgan -CPC Organ
+- [Klarinetten Muckl -Klarinettenmuckl](https://youtu.be/2ho-nZ5x_mo)
+- [Klarinettenmuckl, Clarinet and Piano](https://youtu.be/aQfh9IBRSnQ?t=24)
+
+### cpcorgan - CPC Organ
 
 [![CPC Organ](./img/cpcorgan.png)](../../dist/index.html?database=apps&example=music/cpcorgan)
 [![CPC Organ](./img/cpcorgan2.png)](../../dist/index.html?database=apps&example=music/cpcorgan) (c) Oliver Heggelbacher
@@ -56,6 +67,8 @@ CPC Organ (CPC-Orgel) (an app)
 
 "Fuer Elise" by Ludwig van Beethoven. Taken from the game Citylander by Jujstronic Software. I have optimized the code a bit.
 
+- [Line Rider - Für Elise - Ludwig Beethoven](https://youtu.be/qotloiNF-M4)
+
 ### menuett - Menuett
 
 [![Menuett](./img/menuett.png)](../../dist/index.html?database=apps&example=music/menuett) (c) mIC-Software
@@ -68,11 +81,11 @@ Menuett (Minuet) by James Hook
 
 Dance Mexicana (Jarabe Tapatio, Mexican Hat Dance)
 
-### rocking -Rocking CPC
+### rocking - Rocking CPC
 
 [![Rocking CPC](./img/rocking.png)](../../dist/index.html?database=apps&example=music/rocking) (c) Manfred Lipowski, 1987
 
-### roxette -Roxette
+### roxette - Roxette
 
 [![Roxette](./img/roxette.png)](../../dist/index.html?database=apps&example=music/roxette) (c) Roald (Mr.Lou) Strauss
 

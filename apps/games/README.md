@@ -10,17 +10,17 @@ Links:
 
 ## Some Games Highlights
 
-### 3D-Four In A Row (TODO)
+### 3dfour - 3D-Four In A Row (TODO)
 
 [![3D-Four In A Row](./img/3dfour.png)](../../dist/index.html?database=apps&example=games/3dfour)
 [![3D-Four In A Row](./img/3dfour2.png)](../../dist/index.html?database=apps&example=games/3dfour) (c) Dudley Brooke, 1987
 
-### Art War
+### artwar - Art War
 
 [![Art War](./img/artwar.png)](../../dist/index.html?database=apps&example=games/artwar)
 [![Art War](./img/artwar2.png)](../../dist/index.html?database=apps&example=games/artwar) (c) Sakis Kaffesakis, 2021
 
-### Atombunker
+### atombu - Atombunker
 
 [![Atombunker](./img/atombu.png)](../../dist/index.html?database=apps&example=games/atombu)
 [![Atombunker](./img/atombu2.png)](../../dist/index.html?database=apps&example=games/atombu) (c) Marco Vieth, 1986
@@ -36,80 +36,80 @@ Additional files:
 - atombu1.dat
 - atombu2.dat
 
-### Ball Cracker
+### ballcra - Ball Cracker
 
 [![Ball Cracker](./img/ballcra.png)](../../dist/index.html?database=apps&example=games/ballcra) (c)
 
-### Balloon
+### balloon - Balloon
 
 [![Balloon](./img/balloon.png)](../../dist/index.html?database=apps&example=games/balloon) (c)
 
-### BASIC Game 2
+### basgame2 - BASIC Game 2
 
 [![BASIC Game 2](./img/basgame2.png)](../../dist/index.html?database=apps&example=games/basgame2) (c) Roald (Mr.Lou) Strauss
 
 Unfinished BASIC game 2.
 
-### Budrumi
+### budrumi - Budrumi
 
 [![Budrumi](./img/budrumi.png)](../../dist/index.html?database=apps&example=games/budrumi)
 [![Budrumi](./img/budrumi2.png)](../../dist/index.html?database=apps&example=games/budrumi) (c) Sakis Kaffesakis, 2021
 
-### Canyons of Cannons
+### canyons - Canyons of Cannons
 
 [![Canyons of Cannons](./img/canyons.png)](../../dist/index.html?database=apps&example=games/canyons) (c) Ingo Pax, 1985
 
-### Car Drive (Autofahren)
+### cardrive - Car Drive (Autofahren)
 
 [![Car Drive (Autofahren)](./img/cardrive.png)](../../dist/index.html?database=apps&example=games/cardrive) (c)
 
-### Card Games
+### cards - Card Games
 
 [![Cards](./img/cards.png)](../../dist/index.html?database=apps&example=games/cards) (c)
 
 Some card games: Blackjack ("17 und 4") and Memory.
 
-### Catch
+### catch - Catch
 
 [![Catch](./img/catch.png)](../../dist/index.html?database=apps&example=games/catch) (c) PC Amstrad International, 1990
 
-### Citylander
+### cityland - Citylander
 
 [![Citylander](./img/cityland.png)](../../dist/index.html?database=apps&example=games/cityland) (c) Jujstronic Software, 1985
 
 The tune [Fuer Elise](../../dist/index.html?database=apps&example=music/elise) by Ludwig van Beethoven can also be played separately.
 
-### Clear Path
+### clearpa - Clear Path
 
 [![Clear Path](./img/clearpa.png)](../../dist/index.html?database=apps&example=games/clearpa) (c) Peter Goode, 1984
 
 A lander clone from [The Amstrad Program Book](https://archive.org/details/Amstrad_Program_Book_The_1984_Phoenix_Publishing_Associates/mode/2up) by Peter Goode, improved by [Im Wald](http://cpc-live.com/forum/index.php/topic,958.msg8133.html#msg8133).
 
-### Connect 4 (Tower: 4 Gewinnt)
+### connect4 - Connect 4 (Tower: 4 Gewinnt)
 
 [![Connect 4](./img/connect4.png)](../../dist/index.html?database=apps&example=games/connect4)
 [![Connect 4](./img/connect4_2.png)](../../dist/index.html?database=apps&example=games/connect4&input=%0d2330) (c) O. Zabel
 
-### Copter Patrol
+### copter - Copter Patrol
 
 [![Copter Patrol](./img/copter.png)](../../dist/index.html?database=apps&example=games/copter)
 [![Copter Patrol](./img/copter2.png)](../../dist/index.html?database=apps&example=games/copter&input=%20me%0d%0d%20) (c) Christian Moeller, 1985
 
-### CPCanabalt
+### canabalt - CPCanabalt
 
 [![CPCanabalt](./img/canabalt.png)](../../dist/index.html?database=apps&example=games/canabalt) (c) Logiker, 2019
 
 From the [BASIC 10-Liner Contest 2019](https://gkanold.wixsite.com/homeputerium/kopie-von-games-list-2019-2).
 
-### Crib (Cribbage v1)
+### crib - Crib (Cribbage v1)
 
 [![Crib](./img/crib.png)](../../dist/index.html?database=apps&example=games/crib) (c)
 
-### Cribbage (v2)
+### cribbage - Cribbage (v2)
 
 [![Cribbage](./img/cribbage.png)](../../dist/index.html?database=apps&example=games/cribbage) (c) Nick Herrick, 1986
 
-### Dambusters
+### dambust - Dambusters
 
 [![Dambusters](./img/dambust.png)](../../dist/index.html?database=apps&example=games/dambust)
 [![Dambusters](./img/dambust2.png)](../../dist/index.html?database=apps&example=games/dambust) (c) Paul Stanley, 1984

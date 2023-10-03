@@ -5,9 +5,10 @@
 cpcBasic.addItem("", function () { /*
 1 rem bach - Wohl mir,dass ich Jesum habe (J. S. Bach)
 2 rem (c) Wolfgang Volz
-4 rem
-5 rem Modifications: call &bd19
-6 rem
+4 rem on youtube: https://youtu.be/T5Df7f_BLU8
+5 rem
+6 rem Modifications: call &bd19
+7 rem
 10 '**********************************
 20 '**Orgel im Strassburger Muenster** 
 30 '**            und               **
@@ -93,7 +94,7 @@ cpcBasic.addItem("", function () { /*
 830 GOTO 800
 840 'Takt 8
 850 DATA 0,159,0,213,638,253,851,319,851,253,1012,213,-1,1
-860 WHILE SQ(1)>127:WEND     
+860 WHILE SQ(1)>127:call &bd19:WEND     
 870 READ a,b
 880 IF a=-1 THEN RETURN
 890 SOUND 1,a/h,b*s,7

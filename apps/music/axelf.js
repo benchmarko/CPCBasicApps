@@ -5,7 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 rem axelf - Axel F (Harold Faltermeyer)
 2 rem
-3 rem youtube: https://www.youtube.com/watch?v=dASqLXiuomY
+3 rem youtube: https://youtu.be/dASqLXiuomY
 4 rem Modifications: some delay; NEXT n without u
 5 rem
 300 'Axel:

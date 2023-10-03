@@ -164,6 +164,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Eliza (Boss)"
 	},
 	{
+		"key": "apps/filesel",
+		"title": "File Select  (Library)"
+	},
+	{
 		"key": "apps/geogra",
 		"title": "Geographics (Erkunde)"
 	},

@@ -130,7 +130,7 @@ Additional files: Three example drawings:
 
 Efficiency calculation of heating
 
-### Lifespan (Lebenserwartung)
+### lifespan - Lifespan (Lebenserwartung)
 
 [![Lifespan](./img/lifespan.png)](../../dist/index.html?database=apps&example=apps/lifespan) (c)
 
@@ -181,7 +181,7 @@ Write a number in English, German or Bavarian
 [![Time Tester](./img/timetest.png)](../../dist/index.html?database=apps&example=apps/timetest)
 [![Time Tester](./img/timetest2.png)](../../dist/index.html?database=apps&example=apps/timetest) (c) K.H. Denham, 1986
 
-### VIDI
+### vidi - VIDI (Videocassette Database)
 
 [![VIDI](./img/vidi.png)](../../dist/index.html?database=apps&example=apps/vidi)
 [![VIDI](./img/vidi2.png)](../../dist/index.html?database=apps&example=apps/vidi) (c) Marco Vieth, 1988
