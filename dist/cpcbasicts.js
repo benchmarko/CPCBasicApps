@@ -3912,7 +3912,7 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
             if (!this.hasColons) {
                 for (var i = 1; i < args.length; i += 1) { // start with 1
                     var arg = args[i].trim();
-                    if (!arg.startsWith("ELSE") && !arg.startsWith("'") && arg !== "") { //TTT arg !== "\n"
+                    if (!arg.startsWith("ELSE") && !arg.startsWith("'") && arg !== "") {
                         args[i] = ":" + args[i];
                     }
                 }
@@ -3997,7 +3997,7 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
                         value += CodeGeneratorBasic.fnWs(token) + token.value;
                     }
                     else {
-                        value += CodeGeneratorBasic.fnSpace1(CodeGeneratorBasic.fnWs(token) + token.value); //TTT
+                        value += CodeGeneratorBasic.fnSpace1(CodeGeneratorBasic.fnWs(token) + token.value);
                     }
                 }
             }
@@ -4027,14 +4027,9 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
             return CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase() + CodeGeneratorBasic.fnSpace1(this.combineArgsWithColon(this.fnParseArgs(node.args)));
         };
         CodeGeneratorBasic.prototype.fnIf = function (node) {
-            /*
-            const elseNode = node.args && node.args.length && node.args[node.args.length - 1].type === "else" ? (node.args.pop() as ParserNode);
-            elseArgs = node.args && node.args.length && node.args[node.args.length - 1].type === "else" ? (node.args.pop() as ParserNode).args : undefined,
-            */
             var nodeArgs = this.fnParseArgs(node.args), partName = nodeArgs.shift(); // "then"/"goto"
             return CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase() + CodeGeneratorBasic.fnSpace1(this.parseNode(node.right))
                 + CodeGeneratorBasic.fnSpace1(partName) + CodeGeneratorBasic.fnSpace1(this.combineArgsWithColon(nodeArgs));
-            //+ elseArgs ? CodeGeneratorBasic.fnWs(node) + node.type.toUpperCase()
         };
         CodeGeneratorBasic.prototype.inputLineInput = function (node) {
             var nodeArgs = node.args ? this.fnParseArgs(node.args) : [], // also for clear input, which has no args
@@ -5236,7 +5231,7 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             this.defScopeArgs = {}; // collect DEF scope args
             var nodeArgs = this.fnParseArgs(node.args);
             this.defScopeArgs.collectDone = true; // collection done => now use them
-            var expression = this.fnParseOneArg(expressionArg); //this.fnParseOneArg(node.right);
+            var expression = this.fnParseOneArg(expressionArg);
             this.defScopeArgs = undefined;
             this.fnPropagateStaticTypes(node, node.right, expressionArg, "II RR IR RI $$");
             var value;
@@ -5327,7 +5322,6 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             }
             node.pv = name + "(" + nodeArgs.join(", ") + ")";
         };
-        // TODO: complexity
         // eslint-disable-next-line complexity
         CodeGeneratorJs.prototype.fnFor = function (node) {
             var nodeArgs = this.fnParseArgs(node.args), varName = nodeArgs[0], label = this.fnGetForLabel();
@@ -5857,11 +5851,6 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                 if (node.args) {
                     this.fnPrecheckTree(node.args, countMap); // recursive
                 }
-                /*
-                if (node.args2) { // for "ELSE"
-                    this.fnPrecheckTree(node.args2, countMap); // recursive
-                }
-                */
             }
         };
         //
@@ -7540,7 +7529,7 @@ define("View", ["require", "exports", "Utils"], function (require, exports, Util
             return element.className.indexOf("displayNone") >= 0;
         };
         View.prototype.setHidden = function (id, hidden, display) {
-            // optional display: block or flex
+            // optional display: block or flex or inherit
             var element = View.getElementById1(id), displayVisible = "display" + Utils_12.Utils.stringCapitalize(display || "block");
             if (hidden) {
                 if (element.className.indexOf("displayNone") < 0) {
@@ -7604,6 +7593,19 @@ define("View", ["require", "exports", "Utils"], function (require, exports, Util
             element.checked = checked;
             return this;
         };
+        /*
+        getInputDisabled(id: string): boolean { // eslint-disable-line class-methods-use-this
+            const element = View.getElementByIdAs<HTMLInputElement>(id);
+    
+            return element.disabled;
+        }
+        setInputDisabled(id: string, disabled: boolean): this {
+            const element = View.getElementByIdAs<HTMLInputElement>(id);
+    
+            element.disabled = disabled;
+            return this;
+        }
+        */
         View.prototype.setAreaInputList = function (id, inputs) {
             var element = View.getElementByIdAs(id), childNodes = element.childNodes;
             while (childNodes.length && childNodes[0].nodeType !== Node.ELEMENT_NODE) { // remove all non-element nodes
@@ -7769,6 +7771,7 @@ define("View", ["require", "exports", "Utils"], function (require, exports, Util
         };
         View.requestFullscreenForId = function (id) {
             var element = View.getElementById1(id), anyEl = element, requestMethod = element.requestFullscreen || anyEl.webkitRequestFullscreen || anyEl.mozRequestFullscreen || anyEl.msRequestFullscreen;
+            //parameter = anyEl.webkitRequestFullscreen ? (Element as any).ALLOW_KEYBOARD_INPUT : undefined; // does this work?
             if (requestMethod) {
                 requestMethod.call(element); // can we ALLOW_KEYBOARD_INPUT?
             }
@@ -7814,7 +7817,9 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
                 ctrl: {},
                 repeat: {}
             }; // cpc keys to expansion tokens for normal, shift, ctrl; also repeat
-            var cpcArea = View_1.View.getElementById1("cpcArea");
+            //TTT
+            var name = "cpcCanvas", //"cpcCanvasDiv", //"cpcArea"
+            cpcArea = View_1.View.getElementById1(name);
             cpcArea.addEventListener("keydown", this.onCpcAreaKeydown.bind(this), false);
             cpcArea.addEventListener("keyup", this.oncpcAreaKeyup.bind(this), false);
             var textArea = View_1.View.getElementById1("textArea");
@@ -9195,7 +9200,6 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Canvas = void 0;
     var Canvas = /** @class */ (function () {
-        //setOptions(options: CanvasOptions): void { }
         function Canvas(options) {
             this.fps = 15; // FPS for canvas update
             this.customCharset = {};
@@ -9230,8 +9234,8 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             this.gTransparent = false;
             this.options = {
                 charset: options.charset,
-                colors: options.colors,
-                onClickKey: options.onClickKey
+                palette: options.palette,
+                onCanvasClick: options.onCanvasClick
             };
             this.fnUpdateCanvasHandler = this.updateCanvas.bind(this);
             this.fnUpdateCanvas2Handler = this.updateCanvas2.bind(this);
@@ -9246,7 +9250,10 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             this.width = width;
             this.height = height;
             this.dataset8 = new Uint8Array(new ArrayBuffer(width * height)); // array with pen values
-            this.setColors(this.options.colors);
+            if (!Canvas.palettes[this.options.palette]) {
+                Canvas.computePalette(this.options.palette);
+            }
+            this.setColorValues(Canvas.palettes[this.options.palette]);
             this.animationTimeoutId = undefined;
             this.animationFrame = undefined;
             if (this.canvas.getContext) { // not available on e.g. IE8
@@ -9273,6 +9280,12 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             }
             this.reset();
         }
+        Canvas.prototype.applyBorderColor = function () {
+            this.canvas.style.borderColor = Canvas.palettes[this.options.palette][this.currentInks[this.inkSet][16]];
+        };
+        Canvas.prototype.setOnCanvasClick = function (onCanvasClickHandler) {
+            this.options.onCanvasClick = onCanvasClickHandler;
+        };
         Canvas.prototype.reset = function () {
             this.changeMode(1);
             this.inkSet = 0;
@@ -9280,7 +9293,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             this.speedInk[0] = 10;
             this.speedInk[1] = 10;
             this.speedInkCount = this.speedInk[this.inkSet];
-            this.canvas.style.borderColor = this.options.colors[this.currentInks[this.inkSet][16]];
+            this.applyBorderColor();
             this.setGPen(1);
             this.setGPaper(0);
             this.resetCustomChars();
@@ -9289,6 +9302,32 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
         };
         Canvas.prototype.resetCustomChars = function () {
             this.customCharset = {}; // symbol
+        };
+        Canvas.computePalette = function (palette) {
+            if (palette === "green" || palette === "grey") {
+                var colorPalette = Canvas.palettes.color, colorValues = [], monoPalette = [];
+                Canvas.extractAllColorValues(colorPalette, colorValues);
+                for (var i = 0; i < colorPalette.length; i += 1) {
+                    // https://en.wikipedia.org/wiki/Luma_(video)
+                    // (0.299 * R) + (0.587 * G) + (0.114 * B);
+                    var monoValue = (0.299 * colorValues[i][0] + 0.587 * colorValues[i][1] + 0.114 * colorValues[i][2]) | 0, // eslint-disable-line no-bitwise
+                    monoHex = monoValue.toString(16).toUpperCase().padStart(2, "0");
+                    monoPalette[i] = palette === "green" ? "#00" + monoHex + "00" : "#" + monoHex + monoHex + monoHex;
+                }
+                Canvas.palettes[palette] = monoPalette;
+            }
+        };
+        Canvas.prototype.setPalette = function (palette) {
+            if (palette !== this.options.palette) {
+                this.options.palette = palette;
+                if (!Canvas.palettes[this.options.palette]) {
+                    Canvas.computePalette(this.options.palette);
+                }
+                this.setColorValues(Canvas.palettes[this.options.palette]);
+                this.updateColorMap();
+                this.setNeedUpdate();
+                this.applyBorderColor();
+            }
         };
         Canvas.isLittleEndian = function () {
             // https://gist.github.com/TooTallNate/4750953
@@ -9304,13 +9343,12 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             ];
         };
         Canvas.extractAllColorValues = function (colors, colorValues) {
-            //const colorValues: number[][] = [];
             for (var i = 0; i < colors.length; i += 1) {
                 colorValues[i] = Canvas.extractColorValues(colors[i]);
             }
         };
-        Canvas.prototype.setColors = function (colors) {
-            Canvas.extractAllColorValues(colors, this.colorValues);
+        Canvas.prototype.setColorValues = function (palette) {
+            Canvas.extractAllColorValues(palette, this.colorValues);
         };
         Canvas.prototype.setAlpha = function (alpha) {
             var buf8 = this.imageData.data, length = this.dataset8.length; // or: this.width * this.height
@@ -9444,7 +9482,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
                 }
                 // check border ink
                 if (this.currentInks[newInkSet][16] !== this.currentInks[currentInkSet][16]) {
-                    this.canvas.style.borderColor = this.options.colors[this.currentInks[newInkSet][16]];
+                    this.applyBorderColor();
                 }
             }
         };
@@ -9470,53 +9508,73 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
         Canvas.prototype.getMousePos = function (event) {
             var anyDoc = document, isFullScreen = Boolean(document.fullscreenElement || anyDoc.mozFullScreenElement || anyDoc.webkitFullscreenElement || anyDoc.msFullscreenElement), rect = this.canvas.getBoundingClientRect();
             if (isFullScreen) {
-                var rectwidth = rect.right - rect.left - this.borderWidth * 2, rectHeight = rect.bottom - rect.top - this.borderWidth * 2, ratioX = rectwidth / this.canvas.width, ratioY = rectHeight / this.canvas.height, minRatio = ratioX <= ratioY ? ratioX : ratioY, diffX = rectwidth - (this.canvas.width * minRatio), diffY = rectHeight - (this.canvas.height * minRatio);
+                var areaX = 0, //TTT
+                areaY = 0, rectwidth = rect.right - rect.left - (this.borderWidth + areaX) * 2, rectHeight = rect.bottom - rect.top - (this.borderWidth + areaY) * 2, ratioX = rectwidth / this.canvas.width, ratioY = rectHeight / this.canvas.height, minRatio = ratioX <= ratioY ? ratioX : ratioY, diffX = rectwidth - (this.canvas.width * minRatio), diffY = rectHeight - (this.canvas.height * minRatio);
                 return {
                     x: (event.clientX - this.borderWidth - rect.left - diffX / 2) / ratioX * ratioX / minRatio,
                     y: (event.clientY - this.borderWidth - rect.top - diffY / 2) / ratioY * ratioY / minRatio
                 };
             }
+            /*
+            // alternative, when using scaling, maybe with other aspect ratio
+            if (isFullScreen) {
+                const areaX = 0, //TTT
+                    areaY = 0,
+                    rectwidth = rect.right - rect.left - (this.borderWidth + areaX) * 2,
+                    rectHeight = rect.bottom - rect.top - (this.borderWidth + areaY) * 2,
+                    ratioX = rectwidth / this.canvas.width,
+                    ratioY = rectHeight / this.canvas.height,
+                    //minRatio = ratioX <= ratioY ? ratioX : ratioY,
+                    diffX = rectwidth - (this.canvas.width * ratioX), //rectwidth - (this.canvas.width * minRatio),
+                    diffY = rectHeight - (this.canvas.height * ratioY); //rectHeight - (this.canvas.height * minRatio);
+    
+                return {
+                    //x: (event.clientX - this.borderWidth - rect.left - diffX / 2) / ratioX * ratioX / minRatio,
+                    //y: (event.clientY - this.borderWidth - rect.top - diffY / 2) / ratioY * ratioY / minRatio
+                    x: (event.clientX - this.borderWidth - rect.left - diffX / 2) / ratioX * ratioX / ratioX,
+                    y: (event.clientY - this.borderWidth - rect.top - diffY / 2) / ratioY * ratioY / ratioY
+                };
+            }
+            */
             return {
                 x: (event.clientX - this.borderWidth - rect.left) / (rect.right - rect.left - this.borderWidth * 2) * this.canvas.width,
                 y: (event.clientY - this.borderWidth - rect.top) / (rect.bottom - rect.top - this.borderWidth * 2) * this.canvas.height
             };
         };
-        Canvas.prototype.canvasClickAction2 = function (event) {
-            var pos = this.getMousePos(event);
-            var x = pos.x, y = pos.y, char;
+        Canvas.prototype.canvasClickAction = function (event) {
+            var pos = this.getMousePos(event), 
             /* eslint-disable no-bitwise */
-            x |= 0; // force integer
-            y |= 0;
+            x = pos.x | 0, // force integer
+            y = pos.y | 0;
             /* eslint-enable no-bitwise */
-            if (x >= 0 && x <= 639 && y >= 0 && y <= 399) {
-                var charWidth = this.modeData.pixelWidth * 8, charHeight = this.modeData.pixelHeight * 8, 
-                /* eslint-disable no-bitwise */
-                xTxt = (x / charWidth) | 0, yTxt = (y / charHeight) | 0;
-                /* eslint-enable no-bitwise */
-                char = this.readChar(xTxt, yTxt, 1, 0); // TODO: currently we use pen 1, paper 0
-                if (char < 0 && event.detail === 2) { // no char but mouse double click?
-                    char = 13; // use CR
-                }
-                if (char >= 0 && this.options.onClickKey) { // call click handler (put char in keyboard input buffer)
-                    this.options.onClickKey(String.fromCharCode(char));
+            if (this.options.onCanvasClick) {
+                if (x >= 0 && x <= this.width - 1 && y >= 0 && y <= this.height - 1) {
+                    var charWidth = this.modeData.pixelWidth * 8, charHeight = this.modeData.pixelHeight * 8, 
+                    /* eslint-disable no-bitwise */
+                    xTxt = (x / charWidth) | 0, yTxt = (y / charHeight) | 0;
+                    /* eslint-enable no-bitwise */
+                    this.options.onCanvasClick(event, x, y, xTxt, yTxt);
                 }
             }
+            /*
             // for graphics coordinates, adapt origin
             x -= this.xOrig;
             y = this.height - 1 - (y + this.yOrig);
+    
             if (this.xPos === 1000 && this.yPos === 1000) { // only activate move if pos is 1000, 1000
                 this.move(x, y);
             }
-            if (Utils_15.Utils.debug > 0) {
-                Utils_15.Utils.console.debug("onCpcCanvasClick: x", pos.x, "y", pos.y, "x - xOrig", x, "y - yOrig", y, "char", char, "char", (char !== undefined ? String.fromCharCode(char) : "?"), "detail", event.detail);
+            if (Utils.debug > 0) {
+                Utils.console.debug("canvasClickAction: x", pos.x, "y", pos.y, "x - xOrig", x, "y - yOrig", y, "detail", event.detail);
             }
+            */
         };
         Canvas.prototype.onCpcCanvasClick = function (event) {
             if (!this.hasFocus) {
                 this.setFocusOnCanvas();
             }
             else {
-                this.canvasClickAction2(event);
+                this.canvasClickAction(event);
             }
             event.stopPropagation();
         };
@@ -9860,7 +9918,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
         Canvas.prototype.setBorder = function (ink1, ink2) {
             var needInkUpdate = this.setInk(16, ink1, ink2);
             if (needInkUpdate) {
-                this.canvas.style.borderColor = this.options.colors[this.currentInks[this.inkSet][16]];
+                this.applyBorderColor();
             }
         };
         Canvas.prototype.setGPen = function (gPen) {
@@ -10021,6 +10079,12 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             this.yOrig = yOrig;
             this.move(0, 0);
         };
+        Canvas.prototype.getXOrigin = function () {
+            return this.xOrig;
+        };
+        Canvas.prototype.getYOrigin = function () {
+            return this.yOrig;
+        };
         Canvas.prototype.setGWindow = function (xLeft, xRight, yTop, yBottom) {
             var pixelWidth = 8, // force byte boundaries: always 8 x/byte
             pixelHeight = this.modeData.pixelHeight; // usually 2, anly for mode 3 we have 1
@@ -10121,6 +10185,44 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
         Canvas.prototype.getCanvasElement = function () {
             return this.canvas;
         };
+        // http://www.cpcwiki.eu/index.php/CPC_Palette
+        // (green and gray palette will be computed if needed)
+        Canvas.palettes = {
+            color: [
+                "#000000",
+                "#000080",
+                "#0000FF",
+                "#800000",
+                "#800080",
+                "#8000FF",
+                "#FF0000",
+                "#FF0080",
+                "#FF00FF",
+                "#008000",
+                "#008080",
+                "#0080FF",
+                "#808000",
+                "#808080",
+                "#8080FF",
+                "#FF8000",
+                "#FF8080",
+                "#FF80FF",
+                "#00FF00",
+                "#00FF80",
+                "#00FFFF",
+                "#80FF00",
+                "#80FF80",
+                "#80FFFF",
+                "#FFFF00",
+                "#FFFF80",
+                "#FFFFFF",
+                "#808080",
+                "#FF00FF",
+                "#FFFF80",
+                "#000080",
+                "#00FF80" //  31 Sea Green (same as 19)
+            ]
+        };
         // mode 0: pen 0-15,16=border; inks for pen 14,15 are alternating: "1,24", "16,11"
         Canvas.defaultInks = [
             [1, 24, 20, 6, 26, 0, 2, 8, 10, 12, 14, 16, 18, 22, 1, 16, 1],
@@ -10156,26 +10258,42 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
 // (c) Marco Vieth, 2022
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("TextCanvas", ["require", "exports", "Utils", "View"], function (require, exports, Utils_16, View_4) {
+define("TextCanvas", ["require", "exports", "View"], function (require, exports, View_4) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.TextCanvas = void 0;
     var TextCanvas = /** @class */ (function () {
         function TextCanvas(options) {
             this.fps = 15; // FPS for canvas update
+            this.borderWidth = 1;
             this.needTextUpdate = false;
             this.textBuffer = []; // textbuffer characters at row,column
             this.hasFocus = false; // canvas has focus
             this.options = {
-                onClickKey: options.onClickKey
+                onCanvasClick: options.onCanvasClick
             };
             this.fnUpdateTextCanvasHandler = this.updateTextCanvas.bind(this);
             this.fnUpdateTextCanvas2Handler = this.updateTextCanvas2.bind(this);
             this.textText = View_4.View.getElementById1("textText"); // View.setAreaValue()
+            this.cols = parseFloat(this.textText.getAttribute("cols") || "0");
+            this.rows = parseFloat(this.textText.getAttribute("rows") || "0");
             this.animationTimeoutId = undefined;
             this.animationFrame = undefined;
             this.reset();
         }
+        /*
+        private static readonly cpc2Unicode =
+        "................................ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]\u2195_`abcdefghijklmnopqrstuvwxyz{|}~\u2591"
+        + "\u00A0\u2598\u259D\u2580\u2596\u258C\u259E\u259B\u2597\u259A\u2590\u259C\u2584\u2599\u259F\u2588\u00B7\u2575\u2576\u2514\u2577\u2502\u250C"
+        + "\u251C\u2574\u2518\u2500\u2534\u2510\u2524\u252C\u253C\u005E\u00B4\u00A8\u00A3\u00A9\u00B6\u00A7\u2018\u00BC\u00BD\u00BE\u00B1\u00F7\u00AC"
+        + "\u00BF\u00A1\u03B1\u03B2\u03B3\u03B4\u03B5\u03B8\u03BB\u03BC\u03C0\u03C3\u03C6\u03C8\u03C7\u03C9\u03A3\u03A9\u1FBA0\u1FBA1\u1FBA3\u1FBA2\u1FBA7"
+        + "\u1FBA5\u1FBA6\u1FBA4\u1FBA8\u1FBA9\u1FBAE\u2573\u2571\u2572\u1FB95\u2592\u23BA\u23B9\u23BD\u23B8\u25E4\u25E5\u25E2\u25E3\u1FB8E\u1FB8D\u1FB8F"
+        + "\u1FB8C\u1FB9C\u1FB9D\u1FB9E\u1FB9F\u263A\u2639\u2663\u2666\u2665\u2660\u25CB\u25CF\u25A1\u25A0\u2642\u2640\u2669\u266A\u263C\uFFBDB\u2B61\u2B63"
+        + "\u2B60\u2B62\u25B2\u25BC\u25B6\u25C0\u1FBC6\u1FBC5\u1FBC7\u1FBC8\uFFBDC\uFFBDD\u2B65\u2B64";
+        */
+        TextCanvas.prototype.setOnCanvasClick = function (onCanvasClickHandler) {
+            this.options.onCanvasClick = onCanvasClickHandler;
+        };
         TextCanvas.prototype.reset = function () {
             this.resetTextBuffer();
             this.setNeedTextUpdate();
@@ -10211,6 +10329,30 @@ define("TextCanvas", ["require", "exports", "Utils", "View"], function (require,
                 this.animationTimeoutId = undefined;
             }
         };
+        /*
+        // eslint-disable-next-line class-methods-use-this
+        private test1(tooWide: number[]) {
+            const tooWide = [132,134,135,136,137,139,141,142,224,225,226,227,245],
+                cpc2Unicode = TextCanvas.cpc2Unicode;
+            let out = "";
+    
+            for (let i = 0; i <= 255; i += 1) {
+                if (tooWide.indexOf(i) >= 0) {
+                    out += ".";
+                } else {
+                    const ch1 = cpc2Unicode[i],
+                        code1 = cpc2Unicode.charCodeAt(i);
+    
+                    if (code1 > 127) {
+                        out += "\\u" + code1.toString(16).toUpperCase().padStart(4, "0");
+                    } else {
+                        out += ch1;
+                    }
+                }
+            }
+            console.log(out); //TTT
+        }
+        */
         TextCanvas.prototype.updateTextWindow = function () {
             var textBuffer = this.textBuffer, cpc2Unicode = TextCanvas.cpc2Unicode;
             var out = "";
@@ -10236,37 +10378,98 @@ define("TextCanvas", ["require", "exports", "Utils", "View"], function (require,
             this.hasFocus = true;
         };
         // eslint-disable-next-line class-methods-use-this
-        TextCanvas.prototype.getMousePos = function (event) {
-            var borderWidth = 1, // TODO
+        TextCanvas.prototype.getMousePos = function (event, canvasWidth, canvasHeight) {
+            var //padding = 0, //2, // TODO
             rect = this.textText.getBoundingClientRect(), pos = {
-                x: event.clientX - borderWidth - rect.left,
-                y: event.clientY - borderWidth - rect.top
+                x: (event.clientX - this.borderWidth - rect.left) / (rect.right - rect.left - this.borderWidth * 2) * canvasWidth,
+                y: (event.clientY - this.borderWidth - rect.top) / (rect.bottom - rect.top - this.borderWidth * 2) * canvasHeight
             };
             return pos;
         };
-        TextCanvas.prototype.canvasClickAction2 = function (event) {
-            var target = View_4.View.getEventTarget(event), style = window.getComputedStyle(target, null).getPropertyValue("font-size"), fontSize = parseFloat(style), pos = this.getMousePos(event), charWidth = (fontSize + 1.4) / 2, charHeight = fontSize + 2.25, // TODO
-            x = pos.x, y = pos.y, 
+        TextCanvas.prototype.canvasClickAction = function (event) {
+            var canvasWidth = 640, canvasHeight = 400, pos = this.getMousePos(event, canvasWidth, canvasHeight), 
             /* eslint-disable no-bitwise */
-            xTxt = (x / charWidth) | 0, yTxt = (y / charHeight) | 0;
+            x = pos.x | 0, // force integer
+            y = pos.y | 0;
             /* eslint-enable no-bitwise */
-            if (Utils_16.Utils.debug > 0) {
-                Utils_16.Utils.console.debug("canvasClickAction2: x=" + x + ", y=" + y + ", xTxt=" + xTxt + ", yTxt=" + yTxt);
-            }
-            var char = this.getCharFromTextBuffer(xTxt, yTxt); // is there a character an the click position?
-            if (char === undefined && event.detail === 2) { // no char but mouse double click?
-                char = 13; // use CR
-            }
-            if (char !== undefined && this.options.onClickKey) { // call click handler (put char in keyboard input buffer)
-                this.options.onClickKey(String.fromCharCode(char));
+            if (this.options.onCanvasClick) {
+                /*
+                const target = View.getEventTarget<HTMLElement>(event),
+                    style = window.getComputedStyle(target, null).getPropertyValue("font-size"),
+                    fontSize = parseFloat(style),
+                    charWidth = (fontSize * 1.1075) / 2, //(fontSize + 1.4) / 2,
+                    charHeight = fontSize * 1.125, //+ 2.25, // TODO
+                */
+                var charWidth = canvasWidth / this.cols, charHeight = canvasHeight / this.rows, 
+                /* eslint-disable no-bitwise */
+                xTxt = (x / charWidth) | 0, yTxt = (y / charHeight) | 0;
+                /* eslint-enable no-bitwise */
+                this.options.onCanvasClick(event, x, y, xTxt, yTxt);
             }
         };
+        /*
+        private getMousePos_old1(event: MouseEvent) {
+            const padding = 0, //2, // TODO
+                rect = this.textText.getBoundingClientRect(),
+                pos = {
+                    x: event.clientX - this.borderWidth - padding - rect.left,
+                    y: event.clientY - this.borderWidth - padding - rect.top
+                };
+    
+            return pos;
+        }
+    
+        private canvasClickAction_old1(event: MouseEvent) {
+            const pos = this.getMousePos(event),
+                canvasWidth = 640,
+                canvasHeight = 400,
+                x = pos.x,
+                y = pos.y;
+    
+            if (this.options.onCanvasClick) {
+                const target = View.getEventTarget<HTMLElement>(event),
+                    style = window.getComputedStyle(target, null).getPropertyValue("font-size"),
+                    fontSize = parseFloat(style),
+                    charWidth = (fontSize * 1.1075) / 2, //(fontSize + 1.4) / 2,
+                    charHeight = fontSize * 1.125, //+ 2.25, // TODO
+                    / * eslint-disable no-bitwise * /
+                    xTxt = (x / charWidth) | 0,
+                    yTxt = (y / charHeight) | 0,
+                    //TODO
+                    rect = this.textText.getBoundingClientRect(),
+                    x2 = ((event.clientX - this.borderWidth - rect.left) / (rect.right - rect.left - this.borderWidth * 2) * canvasWidth) | 0,
+                    y2 = ((event.clientY - this.borderWidth - rect.top) / (rect.bottom - rect.top - this.borderWidth * 2) * canvasHeight) | 0;
+                    / * eslint-enable no-bitwise * /
+                    / *
+                    scaleX = canvasWidth / rect.width,
+                    scaleY = canvasHeight / rect.height,
+                    x2 = (x * scaleX) | 0, // force integer
+                    y2 = (y * scaleY) | 0;
+                    * /
+    
+                this.options.onCanvasClick(event, x2, y2, xTxt, yTxt);
+            }
+    
+            / *
+            // for graphics coordinates, adapt origin
+            x -= this.xOrig;
+            y = this.height - 1 - (y + this.yOrig);
+    
+            if (this.xPos === 1000 && this.yPos === 1000) { // only activate move if pos is 1000, 1000
+                this.move(x, y);
+            }
+            if (Utils.debug > 0) {
+                Utils.console.debug("canvasClickAction: x", pos.x, "y", pos.y, "x - xOrig", x, "y - yOrig", y, "detail", event.detail);
+            }
+            * /
+        }
+        */
         TextCanvas.prototype.onTextCanvasClick = function (event) {
             if (!this.hasFocus) {
                 this.setFocusOnCanvas();
             }
             else {
-                this.canvasClickAction2(event);
+                this.canvasClickAction(event);
             }
             event.stopPropagation();
         };
@@ -10365,6 +10568,17 @@ define("TextCanvas", ["require", "exports", "Utils", "View"], function (require,
             var width = right + 1 - left, height = bottom + 1 - top;
             this.fillTextBox(left, top, width, height);
         };
+        TextCanvas.prototype.setMode = function (_mode, right, bottom) {
+            var cols = right + 1, rows = bottom + 1;
+            if (this.cols !== cols) {
+                this.cols = cols;
+                this.textText.setAttribute("cols", String(cols));
+            }
+            if (this.rows !== rows) {
+                this.rows = rows;
+                this.textText.setAttribute("rows", String(rows));
+            }
+        };
         TextCanvas.prototype.clearFullWindow = function () {
             this.resetTextBuffer();
             this.setNeedTextUpdate();
@@ -10385,21 +10599,17 @@ define("TextCanvas", ["require", "exports", "Utils", "View"], function (require,
             }
             this.fillTextBox(left, top, width, 1);
         };
-        // CPC Unicode map for text mode (https://www.unicode.org/L2/L2019/19025-terminals-prop.pdf AMSCPC.TXT) incomplete
-        TextCanvas.cpc2Unicode = "................................ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]\u2195_`abcdefghijklmnopqrstuvwxyz{|}~\u2591"
-            + "\u00A0\u2598\u259D\u2580\u2596\u258C\u259E\u259B\u2597\u259A\u2590\u259C\u2584\u2599\u259F\u2588\u00B7\u2575\u2576\u2514\u2577\u2502\u250C"
-            + "\u251C\u2574\u2518\u2500\u2534\u2510\u2524\u252C\u253C\u005E\u00B4\u00A8\u00A3\u00A9\u00B6\u00A7\u2018\u00BC\u00BD\u00BE\u00B1\u00F7\u00AC"
-            + "\u00BF\u00A1\u03B1\u03B2\u03B3\u03B4\u03B5\u03B8\u03BB\u03BC\u03C0\u03C3\u03C6\u03C8\u03C7\u03C9\u03A3\u03A9\u1FBA0\u1FBA1\u1FBA3\u1FBA2\u1FBA7"
-            + "\u1FBA5\u1FBA6\u1FBA4\u1FBA8\u1FBA9\u1FBAE\u2573\u2571\u2572\u1FB95\u2592\u23BA\u23B9\u23BD\u23B8\u25E4\u25E5\u25E2\u25E3\u1FB8E\u1FB8D\u1FB8F"
-            + "\u1FB8C\u1FB9C\u1FB9D\u1FB9E\u1FB9F\u263A\u2639\u2663\u2666\u2665\u2660\u25CB\u25CF\u25A1\u25A0\u2642\u2640\u2669\u266A\u263C\uFFBDB\u2B61\u2B63"
-            + "\u2B60\u2B62\u25B2\u25BC\u25B6\u25C0\u1FBC6\u1FBC5\u1FBC7\u1FBC8\uFFBDC\uFFBDD\u2B65\u2B64";
+        // CPC Unicode map for text mode (https://www.unicode.org/L2/L2019/19025-terminals-prop.pdf AMSCPC.TXT) incomplete; wider chars replaed by "."
+        // tooWide = [132,134,135,136,137,139,141,142,224,225,226,227,245];
+        // For equal height we set line-height: 15px;
+        TextCanvas.cpc2Unicode = "................................ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]\u2195_`abcdefghijklmnopqrstuvwxyz{|}~\u2591\u00A0\u2598\u259D\u2580.\u258C....\u2590.\u2584..\u2588\u00B7\u2575\u2576\u2514\u2577\u2502\u250C\u251C\u2574\u2518\u2500\u2534\u2510\u2524\u252C\u253C^\u00B4\u00A8\u00A3\u00A9\u00B6\u00A7\u2018\u00BC\u00BD\u00BE\u00B1\u00F7\u00AC\u00BF\u00A1\u03B1\u03B2\u03B3\u03B4\u03B5\u03B8\u03BB\u03BC\u03C0\u03C3\u03C6\u03C8\u03C7\u03C9\u03A3\u03A9\u1FBA0\u1FBA1\u1FBA3\u1FBA2\u1FBA7\u1FBA5\u1FBA6\u1FBA4\u1FBA8\u1FBA9\u1FBAE\u2573\u2571\u2572\u1FB95\u2592\u23BA\u23B9\u23BD\u23B8....\u1FB8E\u1FB8D\u1FB8F\u1FB8C\u1FB9C\u1FB9D\u1FB9E\u1FB9F\u263A.\u2663\u2666\u2665\u2660\u25CB\u25CF\u25A1\u25A0\u2642\u2640";
         return TextCanvas;
     }());
     exports.TextCanvas = TextCanvas;
 });
 // NodeAdapt.ts - Adaptations for nodeJS
 //
-define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports, Utils_17) {
+define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports, Utils_16) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.NodeAdapt = void 0;
@@ -10452,7 +10662,7 @@ define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports,
                         if (type === "option") {
                             return {};
                         }
-                        Utils_17.Utils.console.error("createElement: unknown type", type);
+                        Utils_16.Utils.console.error("createElement: unknown type", type);
                         return {};
                     }
                 },
@@ -10477,7 +10687,7 @@ define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports,
             view.prototype.setAreaValue = function (id, value) {
                 if (id === "resultText") {
                     if (value) {
-                        Utils_17.Utils.console.log(value);
+                        Utils_16.Utils.console.log(value);
                     }
                 }
                 return setAreaValueOrig(id, value);
@@ -10486,7 +10696,7 @@ define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports,
             // readline?
             var controller = nodeExports.Controller;
             controller.prototype.startWithDirectInput = function () {
-                Utils_17.Utils.console.log("We are ready.");
+                Utils_16.Utils.console.log("We are ready.");
             };
             //
             function isUrl(s) {
@@ -10507,7 +10717,7 @@ define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports,
                         fnDataLoaded(undefined, data);
                     });
                 }).on("error", function (err) {
-                    Utils_17.Utils.console.log("Error: " + err.message);
+                    Utils_16.Utils.console.log("Error: " + err.message);
                     fnDataLoaded(err);
                 });
             }
@@ -10520,7 +10730,7 @@ define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports,
                     fnEval('module = require("module");'); // to trick TypeScript
                     modulePath = module.path || "";
                     if (!modulePath) {
-                        Utils_17.Utils.console.warn("nodeReadFile: Cannot determine module path");
+                        Utils_16.Utils.console.warn("nodeReadFile: Cannot determine module path");
                     }
                 }
                 var name2 = modulePath ? modulePath + "/" + name : name;
@@ -10530,7 +10740,7 @@ define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports,
             utils.loadScript = function (fileOrUrl, fnSuccess, _fnError, key) {
                 var fnLoaded = function (error, data) {
                     if (error) {
-                        Utils_17.Utils.console.error("file error: ", error);
+                        Utils_16.Utils.console.error("file error: ", error);
                     }
                     if (data) {
                         fnEval(data); // load js (for nodeJs)
@@ -10553,7 +10763,7 @@ define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports,
 // CommonEventHandler.ts - Common event handler for browser events
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
-define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (require, exports, Utils_18, View_5) {
+define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (require, exports, Utils_17, View_5) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CommonEventHandler = void 0;
@@ -10562,7 +10772,6 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
             this.fnUserAction = undefined;
             /* eslint-disable no-invalid-this */
             this.handlers = {
-                onSpecialButtonClick: this.onSpecialButtonClick,
                 onInputButtonClick: this.onInputButtonClick,
                 onInp2ButtonClick: this.onInp2ButtonClick,
                 onOutputButtonClick: this.onOutputButtonClick,
@@ -10573,6 +10782,7 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
                 onConvertButtonClick: this.onConvertButtonClick,
                 onSettingsButtonClick: this.onSettingsButtonClick,
                 onGalleryButtonClick: this.onGalleryButtonClick,
+                onMoreButtonClick: this.onMoreButtonClick,
                 onKbdButtonClick: this.onKbdButtonClick,
                 onConsoleButtonClick: this.onConsoleButtonClick,
                 onParseButtonClick: this.onParseButtonClick,
@@ -10602,13 +10812,17 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
                 onVarSelectChange: this.onVarSelectChange,
                 onKbdLayoutSelectChange: this.onKbdLayoutSelectChange,
                 onVarTextChange: this.onVarTextChange,
+                onDebugInputChange: this.onDebugInputChange,
                 onImplicitLinesInputChange: this.onImplicitLinesInputChange,
                 onArrayBoundsInputChange: this.onArrayBoundsInputChange,
+                onConsoleLogInputChange: this.onConsoleLogInputChange,
                 onTraceInputChange: this.onTraceInputChange,
+                onAutorunInputChange: this.onAutorunInputChange,
+                onSoundInputChange: this.onSoundInputChange,
                 onSpeedInputChange: this.onSpeedInputChange,
+                onPaletteSelectChange: this.onPaletteSelectChange,
                 onScreenshotButtonClick: this.onScreenshotButtonClick,
                 onEnterButtonClick: this.onEnterButtonClick,
-                onSoundButtonClick: this.onSoundButtonClick,
                 onFullscreenButtonClick: CommonEventHandler.onFullscreenButtonClick,
                 onCpcCanvasClick: this.onCpcCanvasClick,
                 onWindowClick: this.onWindowClick,
@@ -10619,32 +10833,23 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
             this.view = view;
             this.controller = controller;
         }
-        CommonEventHandler.prototype.toogleHidden = function (id, prop, display) {
-            var visible = !this.model.getProperty(prop);
-            this.model.setProperty(prop, visible);
-            this.view.setHidden(id, !visible, display);
-            return visible;
-        };
         CommonEventHandler.prototype.fnSetUserAction = function (fnAction) {
             this.fnUserAction = fnAction;
         };
-        CommonEventHandler.prototype.onSpecialButtonClick = function () {
-            this.toogleHidden("specialArea", "showSpecial");
-        };
         CommonEventHandler.prototype.onInputButtonClick = function () {
-            this.toogleHidden("inputArea", "showInput");
+            this.controller.toggleAreaHidden("inputArea");
         };
         CommonEventHandler.prototype.onInp2ButtonClick = function () {
-            this.toogleHidden("inp2Area", "showInp2");
+            this.controller.toggleAreaHidden("inp2Area");
         };
         CommonEventHandler.prototype.onOutputButtonClick = function () {
-            this.toogleHidden("outputArea", "showOutput");
+            this.controller.toggleAreaHidden("outputArea");
         };
         CommonEventHandler.prototype.onResultButtonClick = function () {
-            this.toogleHidden("resultArea", "showResult");
+            this.controller.toggleAreaHidden("resultArea");
         };
         CommonEventHandler.prototype.onTextButtonClick = function () {
-            if (this.toogleHidden("textArea", "showText")) {
+            if (this.controller.toggleAreaHidden("textArea")) {
                 this.controller.startUpdateTextCanvas();
             }
             else {
@@ -10652,10 +10857,10 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
             }
         };
         CommonEventHandler.prototype.onVariableButtonClick = function () {
-            this.toogleHidden("variableArea", "showVariable");
+            this.controller.toggleAreaHidden("variableArea");
         };
         CommonEventHandler.prototype.onCpcButtonClick = function () {
-            if (this.toogleHidden("cpcArea", "showCpc")) {
+            if (this.controller.toggleAreaHidden("cpcArea")) {
                 this.controller.startUpdateCanvas();
             }
             else {
@@ -10663,21 +10868,21 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
             }
         };
         CommonEventHandler.prototype.onConvertButtonClick = function () {
-            this.toogleHidden("convertArea", "showConvert", "flex");
+            this.controller.toggleAreaHidden("convertArea");
         };
         CommonEventHandler.prototype.onSettingsButtonClick = function () {
-            this.toogleHidden("settingsArea", "showSettings", "flex");
+            this.controller.toggleAreaHidden("settingsArea");
         };
         CommonEventHandler.prototype.onGalleryButtonClick = function () {
-            if (this.toogleHidden("galleryArea", "showGallery", "flex")) {
+            if (this.controller.toggleAreaHidden("galleryArea")) {
                 this.controller.setGalleryAreaInputs();
             }
         };
+        CommonEventHandler.prototype.onMoreButtonClick = function () {
+            this.controller.toggleAreaHidden("moreArea");
+        };
         CommonEventHandler.prototype.onKbdButtonClick = function () {
-            if (this.toogleHidden("kbdArea", "showKbd", "flex")) {
-                if (this.view.getHidden("kbdArea")) { // on old browsers, display "flex" is not available, so set "block" if still hidden
-                    this.view.setHidden("kbdArea", false);
-                }
+            if (this.controller.toggleAreaHidden("kbdArea")) {
                 this.controller.virtualKeyboardCreate(); // maybe draw it
                 this.view.setHidden("kbdLayoutArea", true, "inherit"); // kbd visible => kbdlayout invisible
             }
@@ -10686,7 +10891,7 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
             }
         };
         CommonEventHandler.prototype.onConsoleButtonClick = function () {
-            this.toogleHidden("consoleArea", "showConsole");
+            this.controller.toggleAreaHidden("consoleArea");
         };
         CommonEventHandler.prototype.onParseButtonClick = function () {
             this.controller.startParse();
@@ -10741,7 +10946,7 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
         CommonEventHandler.prototype.onGalleryItemClick = function (event) {
             var target = View_5.View.getEventTarget(event), value = target.value;
             this.view.setSelectValue("exampleSelect", value);
-            this.toogleHidden("galleryArea", "showGallery", "flex"); // close
+            this.controller.toggleAreaHidden("galleryArea"); // close
             this.onExampleSelectChange();
         };
         CommonEventHandler.onNothing = function () {
@@ -10756,7 +10961,7 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
                 window.navigator.clipboard.writeText(textText.value);
             }
             else {
-                Utils_18.Utils.console.warn("Copy to clipboard not available");
+                Utils_17.Utils.console.warn("Copy to clipboard not available");
             }
         };
         CommonEventHandler.prototype.onOutputTextChange = function () {
@@ -10798,8 +11003,19 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
             this.view.setHidden("kbdAlpha", value === "num");
             this.view.setHidden("kbdNum", value === "alpha");
         };
+        CommonEventHandler.prototype.onPaletteSelectChange = function () {
+            var value = this.view.getSelectValue("paletteSelect");
+            this.model.setProperty("palette", value);
+            this.view.setSelectTitleFromSelectedOption("paletteSelect");
+            this.controller.setPalette(value);
+        };
         CommonEventHandler.prototype.onVarTextChange = function () {
             this.controller.changeVariable();
+        };
+        CommonEventHandler.prototype.onDebugInputChange = function () {
+            var debug = this.view.getInputValue("debugInput");
+            this.model.setProperty("debug", Number(debug));
+            Utils_17.Utils.debug = Number(debug);
         };
         CommonEventHandler.prototype.onImplicitLinesInputChange = function () {
             var checked = this.view.getInputChecked("implicitLinesInput");
@@ -10811,10 +11027,26 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
             this.model.setProperty("arrayBounds", checked);
             this.controller.fnArrayBounds();
         };
+        CommonEventHandler.prototype.onConsoleLogInputChange = function () {
+            var checked = this.view.getInputChecked("consoleLogInput");
+            this.model.setProperty("showConsole", checked);
+            if (checked && this.view.getHidden("consoleBox")) {
+                this.view.setHidden("consoleBox", !checked); // make sure the box around is visible
+            }
+        };
         CommonEventHandler.prototype.onTraceInputChange = function () {
             var checked = this.view.getInputChecked("traceInput");
             this.model.setProperty("trace", checked);
             this.controller.fnTrace();
+        };
+        CommonEventHandler.prototype.onAutorunInputChange = function () {
+            var checked = this.view.getInputChecked("autorunInput");
+            this.model.setProperty("autorun", checked);
+        };
+        CommonEventHandler.prototype.onSoundInputChange = function () {
+            var checked = this.view.getInputChecked("soundInput");
+            this.model.setProperty("sound", checked);
+            this.controller.setSoundActive();
         };
         CommonEventHandler.prototype.onSpeedInputChange = function () {
             var speed = this.view.getInputValue("speedInput");
@@ -10832,14 +11064,11 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
         CommonEventHandler.prototype.onEnterButtonClick = function () {
             this.controller.startEnter();
         };
-        CommonEventHandler.prototype.onSoundButtonClick = function () {
-            this.model.setProperty("sound", !this.model.getProperty("sound"));
-            this.controller.setSoundActive();
-        };
         CommonEventHandler.onFullscreenButtonClick = function () {
-            var switched = View_5.View.requestFullscreenForId("cpcCanvas");
+            var switched = View_5.View.requestFullscreenForId("cpcCanvas"); // make sure to use an element with tabindex set to get keyboard events
+            //const switched = View.requestFullscreenForId("cpcCanvasDiv");
             if (!switched) {
-                Utils_18.Utils.console.warn("Switch to fullscreen not available");
+                Utils_17.Utils.console.warn("Switch to fullscreen not available");
             }
         };
         CommonEventHandler.prototype.onCpcCanvasClick = function (event) {
@@ -10860,21 +11089,21 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
             if (id) {
                 if (!target.disabled) { // check needed for IE which also fires for disabled buttons
                     var idNoNum = id.replace(/\d+$/, ""), // remove a trailing number
-                    handler = "on" + Utils_18.Utils.stringCapitalize(idNoNum) + Utils_18.Utils.stringCapitalize(type);
-                    if (Utils_18.Utils.debug) {
-                        Utils_18.Utils.console.debug("fnCommonEventHandler: handler=" + handler);
+                    handler = "on" + Utils_17.Utils.stringCapitalize(idNoNum) + Utils_17.Utils.stringCapitalize(type);
+                    if (Utils_17.Utils.debug) {
+                        Utils_17.Utils.console.debug("fnCommonEventHandler: handler=" + handler);
                     }
                     if (handler in this.handlers) {
                         this.handlers[handler].call(this, event);
                     }
                     else if (!handler.endsWith("SelectClick") && !handler.endsWith("InputClick")) { // do not print all messages
-                        Utils_18.Utils.console.log("Event handler not found:", handler);
+                        Utils_17.Utils.console.log("Event handler not found:", handler);
                     }
                 }
             }
             else if (target.getAttribute("data-key") === null) { // not for keyboard buttons
-                if (Utils_18.Utils.debug) {
-                    Utils_18.Utils.console.debug("Event handler for", type, "unknown target:", target.tagName, target.id);
+                if (Utils_17.Utils.debug) {
+                    Utils_17.Utils.console.debug("Event handler for", type, "unknown target:", target.tagName, target.id);
                 }
             }
             if (type === "click") { // special
@@ -10927,7 +11156,7 @@ define("Random", ["require", "exports"], function (require, exports) {
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("Sound", ["require", "exports", "Utils"], function (require, exports, Utils_19) {
+define("Sound", ["require", "exports", "Utils"], function (require, exports, Utils_18) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Sound = void 0;
@@ -10952,7 +11181,7 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
                     rendevousMask: 0
                 };
             }
-            if (Utils_19.Utils.debug > 1) {
+            if (Utils_18.Utils.debug > 1) {
                 this.debugLogList = []; // access: cpcBasic.controller.sound.debugLog
             }
         }
@@ -11124,7 +11353,7 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
             var maxVolume = 15, i100ms2sec = 100, // time duration unit: 1/100 sec=10 ms, convert to sec
             ctx = this.context, toneEnv = soundData.toneEnv;
             var volEnv = soundData.volEnv, volEnvRepeat = 1;
-            if (Utils_19.Utils.debug > 1) {
+            if (Utils_18.Utils.debug > 1) {
                 this.debugLog("scheduleNote: " + oscillator + " " + fTime);
             }
             var oscillatorNode = ctx.createOscillator();
@@ -11132,8 +11361,8 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
             oscillatorNode.frequency.value = (soundData.period >= 3) ? 62500 / soundData.period : 0;
             oscillatorNode.connect(this.gainNodes[oscillator]);
             if (fTime < ctx.currentTime) {
-                if (Utils_19.Utils.debug) {
-                    Utils_19.Utils.console.debug("Test: sound: scheduleNote:", fTime, "<", ctx.currentTime);
+                if (Utils_18.Utils.debug) {
+                    Utils_18.Utils.console.debug("Test: sound: scheduleNote:", fTime, "<", ctx.currentTime);
                 }
             }
             var volume = soundData.volume, gain = this.gainNodes[oscillator].gain, fVolume = volume / maxVolume;
@@ -11192,7 +11421,7 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
                         this.stopOscillator(i);
                     }
                     queue.soundData.push(soundData); // just a reference
-                    if (Utils_19.Utils.debug > 1) {
+                    if (Utils_18.Utils.debug > 1) {
                         this.debugLog("sound: " + i + " " + state + ":" + queue.soundData.length);
                     }
                     this.updateQueueStatus(i, queue);
@@ -11266,7 +11495,7 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
             if (!queues.length) {
                 return;
             }
-            if (Utils_19.Utils.debug > 1) {
+            if (Utils_18.Utils.debug > 1) {
                 this.debugLog("release: " + releaseMask);
             }
             for (var i = 0; i < 3; i += 1) {
@@ -11308,8 +11537,8 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
                 var mergerNode = this.mergerNode, context = this.context;
                 mergerNode.connect(context.destination);
                 this.isSoundOn = true;
-                if (Utils_19.Utils.debug) {
-                    Utils_19.Utils.console.debug("soundOn: Sound switched on");
+                if (Utils_18.Utils.debug) {
+                    Utils_18.Utils.console.debug("soundOn: Sound switched on");
                 }
             }
         };
@@ -11318,8 +11547,8 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
                 var mergerNode = this.mergerNode, context = this.context;
                 mergerNode.disconnect(context.destination);
                 this.isSoundOn = false;
-                if (Utils_19.Utils.debug) {
-                    Utils_19.Utils.console.debug("soundOff: Sound switched off");
+                if (Utils_18.Utils.debug) {
+                    Utils_18.Utils.console.debug("soundOff: Sound switched off");
                 }
             }
         };
@@ -11331,7 +11560,7 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("ZipFile", ["require", "exports", "Utils"], function (require, exports, Utils_20) {
+define("ZipFile", ["require", "exports", "Utils"], function (require, exports, Utils_19) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ZipFile = void 0;
@@ -11346,7 +11575,7 @@ define("ZipFile", ["require", "exports", "Utils"], function (require, exports, U
         };
         ZipFile.prototype.composeError = function (error, message, value, pos) {
             message = this.zipName + ": " + message; // put zipname in message
-            return Utils_20.Utils.composeError("ZipFile", error, message, value, pos);
+            return Utils_19.Utils.composeError("ZipFile", error, message, value, pos);
         };
         ZipFile.prototype.subArr = function (begin, length) {
             var data = this.data, end = begin + length;
@@ -11454,7 +11683,7 @@ define("ZipFile", ["require", "exports", "Utils"], function (require, exports, U
                 cdfh.timestamp = new Date(((dostime >> 25) & 0x7F) + 1980, ((dostime >> 21) & 0x0F) - 1, (dostime >> 16) & 0x1F, (dostime >> 11) & 0x1F, (dostime >> 5) & 0x3F, (dostime & 0x1F) << 1).getTime(); // eslint-disable-line no-bitwise
                 // local file header... much more info
                 if (this.readUInt(cdfh.localOffset) !== lfhSignature) {
-                    Utils_20.Utils.console.error("Zip: readZipDirectory: LFH signature not found at offset", cdfh.localOffset);
+                    Utils_19.Utils.console.error("Zip: readZipDirectory: LFH signature not found at offset", cdfh.localOffset);
                 }
                 var lfhExtrafieldLength = this.readUShort(cdfh.localOffset + 28); // extra field length
                 cdfh.dataStart = cdfh.localOffset + lfhLen + cdfh.name.length + lfhExtrafieldLength;
@@ -11706,7 +11935,7 @@ define("ZipFile", ["require", "exports", "Utils"], function (require, exports, U
                 throw this.composeError(Error(), "Zip: readData: compression method not supported:" + cdfh.compressionMethod, "", 0);
             }
             if (dataUTF8.length !== cdfh.size) { // assert
-                Utils_20.Utils.console.error("Zip: readData: different length 2!");
+                Utils_19.Utils.console.error("Zip: readData: different length 2!");
             }
             return dataUTF8;
         };
@@ -11718,7 +11947,7 @@ define("ZipFile", ["require", "exports", "Utils"], function (require, exports, U
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, exports, Utils_21, Random_1) {
+define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, exports, Utils_20, Random_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CpcVm = void 0;
@@ -11779,7 +12008,14 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.soundClass = options.sound;
             this.variables = options.variables;
             this.quiet = Boolean(options.quiet);
+            this.onClickKey = options.onClickKey;
             this.random = new Random_1.Random();
+            if (this.canvas) {
+                this.canvas.setOnCanvasClick(this.onCanvasClickCallback.bind(this));
+            }
+            if (this.textCanvas) {
+                this.textCanvas.setOnCanvasClick(this.onCanvasClickCallback.bind(this));
+            }
             this.stopCount = this.initialStop;
             this.stopEntry = {
                 reason: "",
@@ -12003,6 +12239,46 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.closeout();
             this.cursor(stream, 0);
             this.labelList.length = 0;
+            this.gosubStack.length = 0;
+            this.restore(); // restore data line index
+            this.errorGotoLine = 0;
+            this.errorResumeLine = 0;
+            this.soundClass.resetQueue();
+            this.soundData.length = 0;
+        };
+        CpcVm.prototype.onCanvasClickCallback = function (event, x, y, xTxt, yTxt) {
+            // for graphics coordinates, adapt origin
+            var height = 400; //TTT
+            var char = -1;
+            x -= this.canvas.getXOrigin();
+            y = height - 1 - (y + this.canvas.getYOrigin());
+            if (this.canvas.getXpos() === 1000 && this.canvas.getYpos() === 1000) { // only activate move if pos is 1000, 1000
+                this.canvas.move(x, y);
+            }
+            if (this.onClickKey) {
+                var isTextCanvas = event.target && event.target.type === "textarea"; //fast hack; this.textCanvas.textText === event.target
+                if (isTextCanvas) {
+                    char = this.textCanvas.readChar(xTxt, yTxt);
+                }
+                else {
+                    for (var stream = 0; stream < CpcVm.streamCount - 2; stream += 1) { // check all window streams
+                        var win = this.windowDataList[stream];
+                        char = this.canvas.readChar(xTxt, yTxt, win.pen, win.paper);
+                        if (char > 0 && char !== 32) {
+                            break; // found some char
+                        }
+                    }
+                }
+                if ((char < 0 || char === 32 || char === 143) && event.detail === 2) { // no (useful) char but mouse double click?
+                    char = 13; // use CR
+                }
+                if (char >= 0) { // call click handler (put char in keyboard input buffer)
+                    this.onClickKey(String.fromCharCode(char));
+                }
+            }
+            if (Utils_20.Utils.debug > 0) {
+                Utils_20.Utils.console.debug("onCanvasClickCallback: x", x, "y", y, "xTxt", xTxt, "yTxt", yTxt, "char", char);
+            }
         };
         CpcVm.prototype.vmGetAllVariables = function () {
             return this.variables.getAllVariables();
@@ -12051,7 +12327,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.vmAssertNumber(n, err);
             if (n < min || n > max) {
                 if (!this.quiet) {
-                    Utils_21.Utils.console.warn("vmAssertInRange: number not in range:", min + "<=" + n + "<=" + max);
+                    Utils_20.Utils.console.warn("vmAssertInRange: number not in range:", min + "<=" + n + "<=" + max);
                 }
                 throw this.vmComposeError(Error(), 5, err + " " + n); // 5=Improper argument
             }
@@ -12066,7 +12342,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             n = this.vmRound(n, err);
             if (n < min || n > max) {
                 if (!this.quiet) {
-                    Utils_21.Utils.console.warn("vmInRangeRound: number not in range:", min + "<=" + n + "<=" + max);
+                    Utils_20.Utils.console.warn("vmInRangeRound: number not in range:", min + "<=" + n + "<=" + max);
                 }
                 throw this.vmComposeError(Error(), n < -32768 || n > 32767 ? 6 : 5, err + " " + n); // 6=Overflow, 5=Improper argument
             }
@@ -12079,7 +12355,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             if (n < min || n > max) {
                 if (!this.quiet) {
-                    Utils_21.Utils.console.warn("vmLineInRange: number not in range:", min + "<=" + n + "<=" + max);
+                    Utils_20.Utils.console.warn("vmLineInRange: number not in range:", min + "<=" + n + "<=" + max);
                 }
                 throw this.vmComposeError(Error(), 5, err + " " + n); // 5=Improper argument
             }
@@ -12121,7 +12397,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             else if (type === "$") { // string
                 if (typeof value !== "string") {
                     if (!this.quiet) {
-                        Utils_21.Utils.console.warn("vmAssign: expected string but got:", value);
+                        Utils_20.Utils.console.warn("vmAssign: expected string but got:", value);
                     }
                     throw this.vmComposeError(Error(), 13, "type " + type + "=" + value); // "Type mismatch"
                 }
@@ -12249,7 +12525,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.vmStop = function (reason, priority, force, paras) {
             var defaultPriority = CpcVm.stopPriority[reason];
             if (defaultPriority === undefined) {
-                Utils_21.Utils.console.warn("Programming error: vmStop: Unknown reason:", reason);
+                Utils_20.Utils.console.warn("Programming error: vmStop: Unknown reason:", reason);
             }
             priority = priority || 0;
             if (priority !== 0) {
@@ -12262,8 +12538,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
         };
         CpcVm.prototype.vmNotImplemented = function (name) {
-            if (Utils_21.Utils.debug > 0) {
-                Utils_21.Utils.console.debug("Not implemented:", name);
+            if (Utils_20.Utils.debug > 0) {
+                Utils_20.Utils.console.debug("Not implemented:", name);
             }
         };
         CpcVm.prototype.vmUsingStringFormat = function (format, arg) {
@@ -12301,7 +12577,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 str = arg.toFixed(decimals);
             }
             if (format.indexOf(",") >= 0) { // contains comma => insert thousands separator
-                str = Utils_21.Utils.numberWithCommas(str);
+                str = Utils_20.Utils.numberWithCommas(str);
             }
             var padLen = format.length - str.length, pad = (padLen > 0) ? padChar.repeat(padLen) : "";
             str = pad + str;
@@ -12449,7 +12725,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.atn = function (n) {
             this.vmAssertNumber(n, "ATN");
             n = Math.atan(n);
-            return this.degFlag ? Utils_21.Utils.toDegrees(n) : n;
+            return this.degFlag ? Utils_20.Utils.toDegrees(n) : n;
         };
         CpcVm.prototype.auto = function (line, increment) {
             line = line === undefined ? 10 : this.vmLineInRange(line, "AUTO");
@@ -12662,8 +12938,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     this.vmSetRamSelect(args.length);
                     break;
                 default:
-                    if (Utils_21.Utils.debug > 0) {
-                        Utils_21.Utils.console.debug("Ignored: CALL", addr, args);
+                    if (Utils_20.Utils.debug > 0) {
+                        Utils_20.Utils.console.debug("Ignored: CALL", addr, args);
                     }
                     break;
             }
@@ -12714,7 +12990,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.vmResetTimers();
             this.ei();
             this.vmSetStartLine(0);
-            this.errorCode = 0;
+            //this.errorCode = 0;
             this.breakGosubLine = 0;
             this.breakResumeLine = 0;
             this.errorGotoLine = 0;
@@ -12757,7 +13033,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             if (outFile.open) {
                 if (outFile.command !== "openout") {
                     if (!this.quiet) {
-                        Utils_21.Utils.console.warn("closeout: command=", outFile.command); // should not occur
+                        Utils_20.Utils.console.warn("closeout: command=", outFile.command); // should not occur
                     }
                 }
                 if (!outFile.fileData.length) { // openout without data?
@@ -12816,7 +13092,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         };
         CpcVm.prototype.cos = function (n) {
             this.vmAssertNumber(n, "COS");
-            return Math.cos((this.degFlag) ? Utils_21.Utils.toRadians(n) : n);
+            return Math.cos((this.degFlag) ? Utils_20.Utils.toRadians(n) : n);
         };
         CpcVm.prototype.creal = function (n) {
             this.vmAssertNumber(n, "CREAL");
@@ -12984,7 +13260,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             else { // 0
                 if (!this.quiet) {
-                    Utils_21.Utils.console.warn("ENT: toneEnv", toneEnv);
+                    Utils_20.Utils.console.warn("ENT: toneEnv", toneEnv);
                 }
                 throw this.vmComposeError(Error(), 5, "ENT " + toneEnv); // Improper argument
             }
@@ -13065,7 +13341,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 }
                 else {
                     if (!this.quiet) {
-                        Utils_21.Utils.console.warn("erase: Array variable not found:", args[i]);
+                        Utils_20.Utils.console.warn("erase: Array variable not found:", args[i]);
                     }
                     throw this.vmComposeError(Error(), 5, "ERASE " + args[i]); // Improper argument
                 }
@@ -13094,10 +13370,10 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 this.vmStop("error", 50);
             }
             if (!this.quiet) {
-                Utils_21.Utils.console.log("BASIC error(" + err + "):", errorWithInfo + (hidden ? " (hidden: " + hidden + ")" : ""));
+                Utils_20.Utils.console.log("BASIC error(" + err + "):", errorWithInfo + (hidden ? " (hidden: " + hidden + ")" : ""));
             }
             var traceLine = this.line, sourceMapEntry = this.sourceMap[traceLine], pos = sourceMapEntry && sourceMapEntry[0], len = sourceMapEntry && sourceMapEntry[1];
-            return Utils_21.Utils.composeError("CpcVm", error, errorString, errInfo, pos, len, this.line, hidden);
+            return Utils_20.Utils.composeError("CpcVm", error, errorString, errInfo, pos, len, this.line, hidden);
         };
         CpcVm.prototype.error = function (err, errInfo) {
             err = this.vmInRangeRound(err, 0, 255, "ERROR"); // could trigger another error
@@ -13215,8 +13491,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.vmInputCallback = function () {
             var inputParas = this.vmGetStopObject().paras, stream = inputParas.stream, input = inputParas.input, inputValues = input.split(","), convertedInputValues = [], types = inputParas.types;
             var inputOk = true;
-            if (Utils_21.Utils.debug > 0) {
-                Utils_21.Utils.console.debug("vmInputCallback:", input);
+            if (Utils_20.Utils.debug > 0) {
+                Utils_20.Utils.console.debug("vmInputCallback:", input);
             }
             if (types && (inputValues.length === types.length)) {
                 for (var i = 0; i < types.length; i += 1) {
@@ -13416,8 +13692,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         // let
         CpcVm.prototype.vmLineInputCallback = function () {
             var inputParas = this.vmGetStopObject().paras, input = inputParas.input;
-            if (Utils_21.Utils.debug > 0) {
-                Utils_21.Utils.console.debug("vmLineInputCallback:", input);
+            if (Utils_20.Utils.debug > 0) {
+                Utils_20.Utils.console.debug("vmLineInputCallback:", input);
             }
             this.vmSetInputValues([input]);
             this.cursor(inputParas.stream, 0);
@@ -13497,8 +13773,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     if (isNaN(length_1)) {
                         length_1 = input.length; // only valid after atob()
                     }
-                    if (Utils_21.Utils.debug > 1) {
-                        Utils_21.Utils.console.debug("vmLoadCallback:", inFile.name + ": putting data in memory", start, "-", start + length_1);
+                    if (Utils_20.Utils.debug > 1) {
+                        Utils_20.Utils.console.debug("vmLoadCallback:", inFile.name + ": putting data in memory", start, "-", start + length_1);
                     }
                     for (var i = 0; i < length_1; i += 1) {
                         var byte = input.charCodeAt(i);
@@ -13582,7 +13858,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             else if (args.length === 1) { // if just one argument, return it, even if it is a string
                 if (typeof args[0] !== "number" && !this.quiet) {
-                    Utils_21.Utils.console.warn("MAX: Not a number:", args[0]);
+                    Utils_20.Utils.console.warn("MAX: Not a number:", args[0]);
                 }
                 return args[0];
             }
@@ -13640,7 +13916,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             else if (args.length === 1) { // if just one argument, return it, even if it is a string
                 if (typeof args[0] !== "number" && !this.quiet) {
-                    Utils_21.Utils.console.warn("MIN: Not a number:", args[0]);
+                    Utils_20.Utils.console.warn("MIN: Not a number:", args[0]);
                 }
                 return args[0];
             }
@@ -13667,6 +13943,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.outBuffer = ""; // clear console
             this.canvas.setMode(mode); // does not clear canvas
             this.canvas.clearFullWindow(); // always with paper 0 (SCR MODE CLEAR)
+            var winData = CpcVm.winData[this.modeValue];
+            this.textCanvas.setMode(mode, winData.right, winData.bottom);
             this.textCanvas.clearFullWindow();
         };
         CpcVm.prototype.move = function (x, y, gPen, gColMode) {
@@ -13718,8 +13996,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             n = this.vmInRangeRound(n, 0, 255, "ON GOSUB");
             var line;
             if (!n || n > args.length) { // out of range? => continue with line after onGosub
-                if (Utils_21.Utils.debug > 1) {
-                    Utils_21.Utils.console.debug("onGosub: out of range: n=" + n + " in " + this.line);
+                if (Utils_20.Utils.debug > 1) {
+                    Utils_20.Utils.console.debug("onGosub: out of range: n=" + n + " in " + this.line);
                 }
                 line = retLabel;
             }
@@ -13740,8 +14018,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             n = this.vmInRangeRound(n, 0, 255, "ON GOTO");
             var line;
             if (!n || n > args.length) { // out of range? => continue with line after onGoto
-                if (Utils_21.Utils.debug > 1) {
-                    Utils_21.Utils.console.debug("onGoto: out of range: n=" + n + " in " + this.line);
+                if (Utils_20.Utils.debug > 1) {
+                    Utils_20.Utils.console.debug("onGoto: out of range: n=" + n + " in " + this.line);
                 }
                 line = retLabel;
             }
@@ -13855,8 +14133,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 this.vmSetCrtcData(byte);
                 this.crtcData[this.crtcReg] = byte;
             }
-            else if (Utils_21.Utils.debug > 0) {
-                Utils_21.Utils.console.debug("OUT", Number(port).toString(16), byte, ": unknown port");
+            else if (Utils_20.Utils.debug > 0) {
+                Utils_20.Utils.console.debug("OUT", Number(port).toString(16), byte, ": unknown port");
             }
         };
         CpcVm.prototype.paper = function (stream, paper) {
@@ -14009,8 +14287,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.vmPrintChars = function (stream, str) {
             var win = this.windowDataList[stream];
             if (!win.textEnabled) {
-                if (Utils_21.Utils.debug > 0) {
-                    Utils_21.Utils.console.debug("vmPrintChars: text output disabled:", str);
+                if (Utils_20.Utils.debug > 0) {
+                    Utils_20.Utils.console.debug("vmPrintChars: text output disabled:", str);
                 }
                 return;
             }
@@ -14037,8 +14315,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             if (char >= this.minCustomChar) {
                 this.symbol.apply(this, paraList);
             }
-            else if (Utils_21.Utils.debug > 0) {
-                Utils_21.Utils.console.debug("vmControlSymbol: define SYMBOL ignored:", char);
+            else if (Utils_20.Utils.debug > 0) {
+                Utils_20.Utils.console.debug("vmControlSymbol: define SYMBOL ignored:", char);
             }
         };
         CpcVm.prototype.vmControlWindow = function (para, stream) {
@@ -14175,7 +14453,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     this.vmLocate(stream, para.charCodeAt(0), para.charCodeAt(1));
                     break;
                 default:
-                    Utils_21.Utils.console.warn("vmHandleControlCode: Unknown control code:", code);
+                    Utils_20.Utils.console.warn("vmHandleControlCode: Unknown control code:", code);
                     break;
             }
             return out;
@@ -14254,7 +14532,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     }
                 }
                 else if (typeof arg === "number") {
-                    str = ((arg >= 0) ? " " : "") + Utils_21.Utils.toPrecision9(arg) + " ";
+                    str = ((arg >= 0) ? " " : "") + Utils_20.Utils.toPrecision9(arg) + " ";
                 }
                 else { // e.g. string
                     str = String(arg);
@@ -14324,8 +14602,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.vmRandomizeCallback = function () {
             var inputParas = this.vmGetStopObject().paras, input = inputParas.input, value = CpcVm.vmVal(input); // convert to number (also binary, hex)
             var inputOk = true;
-            if (Utils_21.Utils.debug > 0) {
-                Utils_21.Utils.console.debug("vmRandomizeCallback:", input);
+            if (Utils_20.Utils.debug > 0) {
+                Utils_20.Utils.console.debug("vmRandomizeCallback:", input);
             }
             if (isNaN(value)) {
                 inputOk = false;
@@ -14359,8 +14637,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 if (n === 0) {
                     n = rndInit;
                 }
-                if (Utils_21.Utils.debug > 1) {
-                    Utils_21.Utils.console.debug("randomize:", n);
+                if (Utils_20.Utils.debug > 1) {
+                    Utils_20.Utils.console.debug("randomize:", n);
                 }
                 this.random.init(n);
             }
@@ -14432,8 +14710,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 this.dataIndex = dataLineIndex[line];
             }
             else {
-                if (Utils_21.Utils.debug > 0) {
-                    Utils_21.Utils.console.debug("restore: search for dataLine >", line);
+                if (Utils_20.Utils.debug > 0) {
+                    Utils_20.Utils.console.debug("restore: search for dataLine >", line);
                 }
                 for (var dataLine in dataLineIndex) { // linear search a data line > line
                     if (dataLineIndex.hasOwnProperty(dataLine)) {
@@ -14447,8 +14725,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     this.dataIndex = dataLineIndex[line];
                 }
                 else {
-                    if (Utils_21.Utils.debug > 0) {
-                        Utils_21.Utils.console.debug("restore", line + ": No DATA found starting at line");
+                    if (Utils_20.Utils.debug > 0) {
+                        Utils_20.Utils.console.debug("restore", line + ": No DATA found starting at line");
                     }
                     this.dataIndex = this.dataList.length;
                 }
@@ -14470,7 +14748,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             var resumeLineIndex = this.labelList.indexOf(this.errorResumeLine);
             if (resumeLineIndex < 0) {
-                Utils_21.Utils.console.error("resumeNext: line not found: " + this.errorResumeLine);
+                Utils_20.Utils.console.error("resumeNext: line not found: " + this.errorResumeLine);
                 this.errorResumeLine = 0;
                 return;
             }
@@ -14615,7 +14893,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         };
         CpcVm.prototype.sin = function (n) {
             this.vmAssertNumber(n, "SIN");
-            return Math.sin((this.degFlag) ? Utils_21.Utils.toRadians(n) : n);
+            return Math.sin((this.degFlag) ? Utils_20.Utils.toRadians(n) : n);
         };
         CpcVm.prototype.sound = function (state, period, duration, volume, volEnv, toneEnv, noise) {
             state = this.vmInRangeRound(state, 1, 255, "SOUND");
@@ -14659,7 +14937,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 str = " ".repeat(n);
             }
             else if (!this.quiet) {
-                Utils_21.Utils.console.log("SPC: negative number ignored:", n);
+                Utils_20.Utils.console.log("SPC: negative number ignored:", n);
             }
             return str;
         };
@@ -14776,7 +15054,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 str = " ".repeat(count);
             }
             else if (!this.quiet) {
-                Utils_21.Utils.console.log("TAB: no tab for value", n);
+                Utils_20.Utils.console.log("TAB: no tab for value", n);
             }
             return str;
         };
@@ -14792,7 +15070,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         };
         CpcVm.prototype.tan = function (n) {
             this.vmAssertNumber(n, "TAN");
-            return Math.tan((this.degFlag) ? Utils_21.Utils.toRadians(n) : n);
+            return Math.tan((this.degFlag) ? Utils_20.Utils.toRadians(n) : n);
         };
         CpcVm.prototype.test = function (x, y) {
             x = this.vmInRangeRound(x, -32768, 32767, "TEST");
@@ -14846,7 +15124,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             if (formatList.length < 2) {
                 if (!this.quiet) {
-                    Utils_21.Utils.console.warn("USING: empty or invalid format:", format);
+                    Utils_20.Utils.console.warn("USING: empty or invalid format:", format);
                 }
                 throw this.vmComposeError(Error(), 5, "USING format " + format); // Improper argument
             }
@@ -14968,7 +15246,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             for (var i = 0; i < args.length; i += 1) {
                 var arg = args[i];
                 if (typeof arg === "number") {
-                    str = Utils_21.Utils.toPrecision9(arg);
+                    str = Utils_20.Utils.toPrecision9(arg);
                 }
                 else {
                     str = '"' + String(arg) + '"';
@@ -15187,7 +15465,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
 // (c) Marco Vieth, 2020
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("CpcVmRsx", ["require", "exports", "Utils"], function (require, exports, Utils_22) {
+define("CpcVmRsx", ["require", "exports", "Utils"], function (require, exports, Utils_21) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CpcVmRsx = void 0;
@@ -15217,7 +15495,7 @@ define("CpcVmRsx", ["require", "exports", "Utils"], function (require, exports, 
             this.vm.vmNotImplemented("|B");
         };
         CpcVmRsx.prototype.basic = function () {
-            Utils_22.Utils.console.log("basic: |BASIC");
+            Utils_21.Utils.console.log("basic: |BASIC");
             this.vm.vmStop("reset", 90);
         };
         CpcVmRsx.prototype.cpm = function () {
@@ -15320,7 +15598,7 @@ define("CpcVmRsx", ["require", "exports", "Utils"], function (require, exports, 
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("FileHandler", ["require", "exports", "Utils", "DiskImage", "ZipFile"], function (require, exports, Utils_23, DiskImage_1, ZipFile_1) {
+define("FileHandler", ["require", "exports", "Utils", "DiskImage", "ZipFile"], function (require, exports, Utils_22, DiskImage_1, ZipFile_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FileHandler = void 0;
@@ -15363,7 +15641,7 @@ define("FileHandler", ["require", "exports", "Utils", "DiskImage", "ZipFile"], f
                 zip = new ZipFile_1.ZipFile(uint8Array, name); // rather data
             }
             catch (e) {
-                Utils_23.Utils.console.error(e);
+                Utils_22.Utils.console.error(e);
                 if (e instanceof Error) {
                     this.outputError(e, true);
                 }
@@ -15377,7 +15655,7 @@ define("FileHandler", ["require", "exports", "Utils", "DiskImage", "ZipFile"], f
                         data2 = zip.readData(name2);
                     }
                     catch (e) {
-                        Utils_23.Utils.console.error(e);
+                        Utils_22.Utils.console.error(e);
                         if (e instanceof Error) { // eslint-disable-line max-depth
                             this.outputError(e, true);
                         }
@@ -15401,7 +15679,7 @@ define("FileHandler", ["require", "exports", "Utils", "DiskImage", "ZipFile"], f
                         this.fnLoad2(data, fileName, "", imported); // recursive
                     }
                     catch (e) {
-                        Utils_23.Utils.console.error(e);
+                        Utils_22.Utils.console.error(e);
                         if (e instanceof Error) { // eslint-disable-line max-depth
                             this.outputError(e, true);
                         }
@@ -15409,7 +15687,7 @@ define("FileHandler", ["require", "exports", "Utils", "DiskImage", "ZipFile"], f
                 }
             }
             catch (e) {
-                Utils_23.Utils.console.error(e);
+                Utils_22.Utils.console.error(e);
                 if (e instanceof Error) {
                     this.outputError(e, true);
                 }
@@ -15441,7 +15719,7 @@ define("FileHandler", ["require", "exports", "Utils", "DiskImage", "ZipFile"], f
                     header = FileHandler.createMinimalAmsdosHeader(type, 0, data.length);
                     break;
                 case "Z": // zip file?
-                    this.processZipFile(Utils_23.Utils.string2Uint8Array(data), name, imported);
+                    this.processZipFile(Utils_22.Utils.string2Uint8Array(data), name, imported);
                     break;
                 case "X": // dsk file?
                     this.processDskFile(data, name, imported);
@@ -15449,20 +15727,20 @@ define("FileHandler", ["require", "exports", "Utils", "DiskImage", "ZipFile"], f
                 case "H": // with header?
                     break;
                 default:
-                    Utils_23.Utils.console.warn("fnLoad2: " + name + ": Unknown file type: " + type + ", assuming B");
+                    Utils_22.Utils.console.warn("fnLoad2: " + name + ": Unknown file type: " + type + ", assuming B");
                     header = FileHandler.createMinimalAmsdosHeader("B", 0, data.length);
                     break;
             }
             if (header) {
                 var meta = FileHandler.joinMeta(header);
                 try {
-                    Utils_23.Utils.localStorage.setItem(storageName, meta + "," + data);
+                    Utils_22.Utils.localStorage.setItem(storageName, meta + "," + data);
                     this.updateStorageDatabase("set", storageName);
-                    Utils_23.Utils.console.log("fnOnLoad: file: " + storageName + " meta: " + meta + " imported");
+                    Utils_22.Utils.console.log("fnOnLoad: file: " + storageName + " meta: " + meta + " imported");
                     imported.push(name);
                 }
                 catch (e) { // maybe quota exceeded
-                    Utils_23.Utils.console.error(e);
+                    Utils_22.Utils.console.error(e);
                     if (e instanceof Error) {
                         if (e.name === "QuotaExceededError") {
                             e.shortMessage = storageName + ": Quota exceeded";
@@ -15482,7 +15760,7 @@ define("FileHandler", ["require", "exports", "Utils", "DiskImage", "ZipFile"], f
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("FileSelect", ["require", "exports", "Utils", "View"], function (require, exports, Utils_24, View_6) {
+define("FileSelect", ["require", "exports", "Utils", "View"], function (require, exports, Utils_23, View_6) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FileSelect = void 0;
@@ -15503,7 +15781,7 @@ define("FileSelect", ["require", "exports", "Utils", "View"], function (require,
                 this.fileIndex += 1;
                 var lastModified = file.lastModified, lastModifiedDate = lastModified ? new Date(lastModified) : file.lastModifiedDate, // lastModifiedDate deprecated, but for old IE
                 text = file.name + " " + (file.type || "n/a") + " " + file.size + " " + (lastModifiedDate ? lastModifiedDate.toLocaleDateString() : "n/a");
-                Utils_24.Utils.console.log(text);
+                Utils_23.Utils.console.log(text);
                 if (file.type === "text/plain") {
                     reader.readAsText(file);
                 }
@@ -15538,7 +15816,7 @@ define("FileSelect", ["require", "exports", "Utils", "View"], function (require,
                         // remove meta prefix
                         data = data.substring(index + 1);
                         if (info1.indexOf("base64") >= 0) {
-                            data = Utils_24.Utils.atob(data); // decode base64
+                            data = Utils_23.Utils.atob(data); // decode base64
                         }
                         if (info1.indexOf("text/") >= 0) {
                             type = "A";
@@ -15548,7 +15826,7 @@ define("FileSelect", ["require", "exports", "Utils", "View"], function (require,
                 this.fnLoad2(data, name, type, this.imported);
             }
             else {
-                Utils_24.Utils.console.warn("Error loading file", name, "with type", type, " unexpected data:", data);
+                Utils_23.Utils.console.warn("Error loading file", name, "with type", type, " unexpected data:", data);
             }
             if (reader) {
                 this.fnReadNextFile(reader);
@@ -15566,7 +15844,7 @@ define("FileSelect", ["require", "exports", "Utils", "View"], function (require,
                 }
             }
             if (msg) {
-                Utils_24.Utils.console.warn(msg);
+                Utils_23.Utils.console.warn(msg);
             }
             if (reader) {
                 this.fnReadNextFile(reader);
@@ -15579,7 +15857,7 @@ define("FileSelect", ["require", "exports", "Utils", "View"], function (require,
             event.preventDefault();
             var dataTransfer = event.dataTransfer, files = dataTransfer ? dataTransfer.files : View_6.View.getEventTarget(event).files; // dataTransfer for drag&drop, target.files for file input
             if (!files || !files.length) {
-                Utils_24.Utils.console.error("fnHandleFileSelect: No files!");
+                Utils_23.Utils.console.error("fnHandleFileSelect: No files!");
                 return;
             }
             this.files = files;
@@ -15592,7 +15870,7 @@ define("FileSelect", ["require", "exports", "Utils", "View"], function (require,
                 this.fnReadNextFile(reader);
             }
             else {
-                Utils_24.Utils.console.warn("fnHandleFileSelect: FileReader API not supported.");
+                Utils_23.Utils.console.warn("fnHandleFileSelect: FileReader API not supported.");
             }
         };
         //TODO: can we use View.attachEventHandler() somehow?
@@ -15607,7 +15885,7 @@ define("FileSelect", ["require", "exports", "Utils", "View"], function (require,
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLexer", "BasicParser", "BasicTokenizer", "Canvas", "CodeGeneratorBasic", "CodeGeneratorJs", "CodeGeneratorToken", "CommonEventHandler", "cpcCharset", "CpcVm", "CpcVmRsx", "Diff", "DiskImage", "FileHandler", "FileSelect", "InputStack", "Keyboard", "TextCanvas", "VirtualKeyboard", "Sound", "Variables", "View"], function (require, exports, Utils_25, BasicFormatter_1, BasicLexer_1, BasicParser_2, BasicTokenizer_1, Canvas_1, CodeGeneratorBasic_1, CodeGeneratorJs_1, CodeGeneratorToken_1, CommonEventHandler_1, cpcCharset_1, CpcVm_1, CpcVmRsx_1, Diff_1, DiskImage_2, FileHandler_1, FileSelect_1, InputStack_1, Keyboard_1, TextCanvas_1, VirtualKeyboard_1, Sound_1, Variables_1, View_7) {
+define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLexer", "BasicParser", "BasicTokenizer", "Canvas", "CodeGeneratorBasic", "CodeGeneratorJs", "CodeGeneratorToken", "CommonEventHandler", "cpcCharset", "CpcVm", "CpcVmRsx", "Diff", "DiskImage", "FileHandler", "FileSelect", "InputStack", "Keyboard", "TextCanvas", "VirtualKeyboard", "Sound", "Variables", "View"], function (require, exports, Utils_24, BasicFormatter_1, BasicLexer_1, BasicParser_2, BasicTokenizer_1, Canvas_1, CodeGeneratorBasic_1, CodeGeneratorJs_1, CodeGeneratorToken_1, CommonEventHandler_1, cpcCharset_1, CpcVm_1, CpcVmRsx_1, Diff_1, DiskImage_2, FileHandler_1, FileSelect_1, InputStack_1, Keyboard_1, TextCanvas_1, VirtualKeyboard_1, Sound_1, Variables_1, View_7) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Controller = void 0;
@@ -15662,35 +15940,28 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.commonEventHandler = new CommonEventHandler_1.CommonEventHandler(model, view, this);
             this.view.attachEventHandler("click", this.commonEventHandler);
             this.view.attachEventHandler("change", this.commonEventHandler);
+            // unhide console box, if console should be shown
             view.setHidden("consoleBox", !model.getProperty("showConsole"));
-            view.setHidden("inputArea", !model.getProperty("showInput"));
-            view.setHidden("inp2Area", !model.getProperty("showInp2"));
-            view.setHidden("outputArea", !model.getProperty("showOutput"));
-            view.setHidden("resultArea", !model.getProperty("showResult"));
-            this.textCanvas = new TextCanvas_1.TextCanvas({
-                onClickKey: this.fnPutKeyInBufferHandler
-            });
-            view.setHidden("textArea", !model.getProperty("showText"));
-            view.setHidden("variableArea", !model.getProperty("showVariable"));
-            view.setHidden("kbdArea", !model.getProperty("showKbd"), "flex");
-            view.setHidden("kbdLayoutArea", model.getProperty("showKbd"), "inherit"); // kbd visible => kbdlayout invisible
-            view.setHidden("cpcArea", false); // make sure canvas is not hidden (allows to get width, height)
+            this.view.setInputChecked("consoleLogInput", model.getProperty("showConsole"));
+            this.textCanvas = new TextCanvas_1.TextCanvas({});
             var palette = model.getProperty("palette");
+            view.setSelectValue("paletteSelect", palette);
+            view.setHidden("cpcArea", false); // make sure canvas area is not hidden when creating canvas object (allows to get width, height)
             this.canvas = new Canvas_1.Canvas({
                 charset: cpcCharset_1.cpcCharset,
-                colors: palette === "grey" ? Controller.paletteGrey : Controller.paletteColors,
-                onClickKey: this.fnPutKeyInBufferHandler
+                palette: palette === "green" || palette === "grey" ? palette : "color"
             });
-            view.setHidden("cpcArea", !model.getProperty("showCpc"));
-            view.setHidden("settingsArea", !model.getProperty("showSettings"), "flex");
-            view.setHidden("galleryArea", !model.getProperty("showGallery"), "flex");
-            view.setHidden("convertArea", !model.getProperty("showConvert"), "flex");
+            view.setHidden("kbdLayoutArea", model.getProperty("showKbd"), "inherit"); // kbd visible => kbdlayout invisible
+            this.initAreas();
+            view.setInputValue("debugInput", String(model.getProperty("debug")));
             view.setInputChecked("implicitLinesInput", model.getProperty("implicitLines"));
             view.setInputChecked("arrayBoundsInput", model.getProperty("arrayBounds"));
             this.variables = new Variables_1.Variables({
                 arrayBounds: model.getProperty("arrayBounds")
             });
             view.setInputChecked("traceInput", model.getProperty("trace"));
+            view.setInputChecked("autorunInput", model.getProperty("autorun"));
+            view.setInputChecked("soundInput", model.getProperty("sound"));
             view.setInputValue("speedInput", String(model.getProperty("speed")));
             this.fnSpeed();
             var kbdLayout = model.getProperty("kbdLayout");
@@ -15708,7 +15979,8 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 textCanvas: this.textCanvas,
                 keyboard: this.keyboard,
                 sound: this.sound,
-                variables: this.variables
+                variables: this.variables,
+                onClickKey: this.fnPutKeyInBufferHandler
             });
             this.vm.vmReset();
             this.rsx = new CpcVmRsx_1.CpcVmRsx(this.vm);
@@ -15747,10 +16019,17 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.initDropZone();
             var example = model.getProperty("example");
             view.setSelectValue("exampleSelect", example);
-            this.initDatabases();
+            this.hasStorageDatabase = this.initDatabases();
         }
+        Controller.prototype.initAreas = function () {
+            for (var id in Controller.areaDefinitions) { // eslint-disable-line guard-for-in
+                var propertyObject = Controller.areaDefinitions[id];
+                this.view.setHidden(id, !this.model.getProperty(propertyObject.property), propertyObject.display);
+            }
+        };
         Controller.prototype.initDatabases = function () {
             var model = this.model, databases = {}, databaseDirs = model.getProperty("databaseDirs").split(",");
+            var hasStorageDatabase = false;
             for (var i = 0; i < databaseDirs.length; i += 1) {
                 var databaseDir = databaseDirs[i], parts = databaseDir.split("/"), name_12 = parts[parts.length - 1];
                 databases[name_12] = {
@@ -15758,9 +16037,13 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     title: databaseDir,
                     src: databaseDir
                 };
+                if (name_12 === "storage") {
+                    hasStorageDatabase = true;
+                }
             }
             this.model.addDatabases(databases);
             this.setDatabaseSelectOptions();
+            return hasStorageDatabase;
         };
         Controller.prototype.onUserAction = function ( /* event, id */) {
             this.commonEventHandler.fnSetUserAction(undefined); // deactivate user action
@@ -15788,7 +16071,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             example.key = key; // maybe changed
             example.script = input;
             example.loaded = true;
-            Utils_25.Utils.console.log("addItem:", key);
+            Utils_24.Utils.console.log("addItem:", key);
             return key;
         };
         Controller.prototype.setDatabaseSelectOptions = function () {
@@ -15910,7 +16193,10 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.view.setSelectOptions(select, items);
         };
         Controller.prototype.updateStorageDatabase = function (action, key) {
-            var database = this.model.getProperty("database"), storage = Utils_25.Utils.localStorage;
+            if (!this.hasStorageDatabase) {
+                return;
+            }
+            var database = this.model.getProperty("database"), storage = Utils_24.Utils.localStorage;
             if (database !== "storage") {
                 this.model.setProperty("database", "storage"); // switch to storage database
             }
@@ -15939,7 +16225,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     }
                 }
                 else {
-                    Utils_25.Utils.console.error("updateStorageDatabase: unknown action", action);
+                    Utils_24.Utils.console.error("updateStorageDatabase: unknown action", action);
                 }
             }
             if (database === "storage") {
@@ -16035,7 +16321,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         Controller.prototype.fnWaitKey = function () {
             var key = this.keyboard.getKeyFromBuffer();
             if (key !== "") { // do we have a key from the buffer already?
-                Utils_25.Utils.console.log("Wait for key:", key);
+                Utils_24.Utils.console.log("Wait for key:", key);
                 this.vm.vmStop("", 0, true);
                 this.removeKeyBoardHandler();
             }
@@ -16152,7 +16438,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             inputParas.input = input;
             var inputOk = false;
             if (key === "\r") {
-                Utils_25.Utils.console.log("fnWaitInput:", input, "reason", stop.reason);
+                Utils_24.Utils.console.log("fnWaitInput:", input, "reason", stop.reason);
                 if (!inputParas.noCRLF) {
                     this.vm.print(stream, "\r\n");
                 }
@@ -16220,7 +16506,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         };
         // merge two scripts with sorted line numbers, lines from script2 overwrite lines from script1
         Controller.prototype.mergeScripts = function (script1, script2) {
-            var lines1 = this.splitLines(Utils_25.Utils.stringTrimEnd(script1)), lines2 = this.splitLines(Utils_25.Utils.stringTrimEnd(script2));
+            var lines1 = this.splitLines(Utils_24.Utils.stringTrimEnd(script1)), lines2 = this.splitLines(Utils_24.Utils.stringTrimEnd(script2));
             var result = [], lineNumber1, lineNumber2;
             while (lines1.length && lines2.length) {
                 lineNumber1 = lineNumber1 || Controller.parseLineNumber(lines1[0]);
@@ -16286,7 +16572,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             return dir;
         };
         Controller.fnGetStorageDirectoryEntries = function (mask) {
-            var storage = Utils_25.Utils.localStorage, dir = [];
+            var storage = Utils_24.Utils.localStorage, dir = [];
             var regExp;
             if (mask) {
                 regExp = Controller.fnPrepareMaskRegExp(mask);
@@ -16306,11 +16592,6 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             for (var i = 0; i < dir.length; i += 1) {
                 var parts = dir[i].split(".");
                 dir[i] = parts[0].padEnd(8, " ") + "." + (parts.length >= 2 ? parts[1] : "").padEnd(3, " ");
-                /*
-                if (parts.length === 2) {
-                    dir[i] = parts[0].padEnd(8, " ") + "." + parts[1].padEnd(3, " ");
-                }
-                */
             }
             if (sort) {
                 dir.sort();
@@ -16353,7 +16634,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.vm.vmStop("", 0, true);
         };
         Controller.prototype.fnFileEra = function (paras) {
-            var stream = paras.stream, storage = Utils_25.Utils.localStorage, fileMask = Controller.fnLocalStorageName(paras.fileMask || ""), dir = Controller.fnGetStorageDirectoryEntries(fileMask);
+            var stream = paras.stream, storage = Utils_24.Utils.localStorage, fileMask = Controller.fnLocalStorageName(paras.fileMask || ""), dir = Controller.fnGetStorageDirectoryEntries(fileMask);
             if (!dir.length) {
                 this.vm.print(stream, fileMask + " not found\r\n");
             }
@@ -16362,19 +16643,19 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 if (storage.getItem(name_13) !== null) {
                     storage.removeItem(name_13);
                     this.updateStorageDatabase("remove", name_13);
-                    if (Utils_25.Utils.debug > 0) {
-                        Utils_25.Utils.console.debug("fnEraseFile: name=" + name_13 + ": removed from localStorage");
+                    if (Utils_24.Utils.debug > 0) {
+                        Utils_24.Utils.console.debug("fnEraseFile: name=" + name_13 + ": removed from localStorage");
                     }
                 }
                 else {
                     this.vm.print(stream, name_13 + " not found\r\n");
-                    Utils_25.Utils.console.warn("fnEraseFile: file not found in localStorage:", name_13);
+                    Utils_24.Utils.console.warn("fnEraseFile: file not found in localStorage:", name_13);
                 }
             }
             this.vm.vmStop("", 0, true);
         };
         Controller.prototype.fnFileRen = function (paras) {
-            var stream = paras.stream, storage = Utils_25.Utils.localStorage, newName = Controller.fnLocalStorageName(paras.newName), oldName = Controller.fnLocalStorageName(paras.oldName), item = storage.getItem(oldName);
+            var stream = paras.stream, storage = Utils_24.Utils.localStorage, newName = Controller.fnLocalStorageName(paras.newName), oldName = Controller.fnLocalStorageName(paras.oldName), item = storage.getItem(oldName);
             if (item !== null) {
                 if (!storage.getItem(newName)) {
                     storage.setItem(newName, item);
@@ -16442,12 +16723,12 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             if (output.error) {
                 this.outputError(output.error);
             }
-            else if (Utils_25.Utils.debug > 1) {
+            else if (Utils_24.Utils.debug > 1) {
                 var outputText = output.text, hex = outputText.split("").map(function (s) { return s.charCodeAt(0).toString(16).toUpperCase().padStart(2, "0"); }).join(","), decoded = this.decodeTokenizedBasic(outputText), diff = Diff_1.Diff.testDiff(input.toUpperCase(), decoded.toUpperCase()); // for testing
-                Utils_25.Utils.console.debug("TokenizerInput (" + name + "):\n" + input);
-                Utils_25.Utils.console.debug("TokenizerHex (" + name + "):\n" + hex);
-                Utils_25.Utils.console.debug("TokenizerDecoded (" + name + "):\n" + decoded);
-                Utils_25.Utils.console.debug("TokenizerDiff (" + name + "):\n" + diff);
+                Utils_24.Utils.console.debug("TokenizerInput (" + name + "):\n" + input);
+                Utils_24.Utils.console.debug("TokenizerHex (" + name + "):\n" + hex);
+                Utils_24.Utils.console.debug("TokenizerDecoded (" + name + "):\n" + decoded);
+                Utils_24.Utils.console.debug("TokenizerDiff (" + name + "):\n" + diff);
             }
             return output.text;
         };
@@ -16477,13 +16758,13 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             return output.text;
         };
         Controller.prototype.loadFileContinue = function (input) {
-            var inFile = this.vm.vmGetInFileObject(), command = inFile.command;
-            var startLine = 0, putInMemory = false, data;
+            var inFile = this.vm.vmGetInFileObject();
+            var data;
             if (input !== null && input !== undefined) {
                 data = Controller.splitMeta(input);
                 input = data.data; // maybe changed
                 if (data.meta.encoding === "base64") {
-                    input = Utils_25.Utils.atob(input); // decode base64
+                    input = Utils_24.Utils.atob(input); // decode base64
                 }
                 var type = data.meta.typeString;
                 if (type === "T") { // tokenized basic?
@@ -16513,16 +16794,20 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     input = "1 ' " + imported.join(", "); // imported files
                 }
             }
+            var command = inFile.command, // create copy of data
+            inFileLine = inFile.line || 0;
+            var putInMemory = false, startLine = 0;
             if (inFile.fnFileCallback) {
                 try {
+                    // the callback could close inFile, so do not use it any more
                     putInMemory = inFile.fnFileCallback(input, data && data.meta);
                 }
                 catch (e) {
-                    Utils_25.Utils.console.warn(e);
+                    Utils_24.Utils.console.warn(e);
                 }
             }
             if (input === undefined) {
-                Utils_25.Utils.console.error("loadFileContinue: File " + inFile.name + ": input undefined!");
+                Utils_24.Utils.console.error("loadFileContinue: File " + inFile.name + ": input undefined!");
                 this.vm.vmStop("stop", 60, true);
                 this.startMainLoop();
                 return;
@@ -16538,9 +16823,9 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     input = this.mergeScripts(this.view.getAreaValue("inputText"), input);
                     this.setInputText(input);
                     this.view.setAreaValue("resultText", "");
-                    startLine = inFile.line || 0;
+                    startLine = inFileLine;
                     this.invalidateScript();
-                    this.fnParseRun();
+                    this.fnParseChain();
                     break;
                 case "load":
                     if (!putInMemory) {
@@ -16555,29 +16840,31 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     this.setInputText(input);
                     this.view.setAreaValue("resultText", "");
                     this.invalidateScript();
+                    this.variables.removeAllVariables();
                     this.vm.vmStop("end", 90);
                     break;
                 case "chain": // TODO: if we have a line number, make sure it is not optimized away when compiling
                     this.setInputText(input);
                     this.view.setAreaValue("resultText", "");
-                    startLine = inFile.line || 0;
+                    startLine = inFileLine;
                     this.invalidateScript();
-                    this.fnParseRun();
+                    this.fnParseChain();
                     break;
                 case "run":
                     if (!putInMemory) {
                         this.setInputText(input);
                         this.view.setAreaValue("resultText", "");
-                        startLine = inFile.line || 0;
+                        startLine = inFileLine;
                         this.fnReset();
                         this.fnParseRun();
                     }
                     else {
                         this.fnReset();
+                        this.vm.clear(); // do we need this?
                     }
                     break;
                 default:
-                    Utils_25.Utils.console.error("loadExample: Unknown command:", command);
+                    Utils_24.Utils.console.error("loadExample: Unknown command:", command);
                     break;
             }
             this.vm.vmSetStartLine(startLine);
@@ -16587,11 +16874,11 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             var _this = this;
             return function (_sFullUrl, key, suppressLog) {
                 if (key !== example) {
-                    Utils_25.Utils.console.warn("fnExampleLoaded: Unexpected", key, "<>", example);
+                    Utils_24.Utils.console.warn("fnExampleLoaded: Unexpected", key, "<>", example);
                 }
                 var exampleEntry = _this.model.getExample(example);
                 if (!suppressLog) {
-                    Utils_25.Utils.console.log("Example", url, (exampleEntry.meta ? exampleEntry.meta + " " : "") + " loaded");
+                    Utils_24.Utils.console.log("Example", url, (exampleEntry.meta ? exampleEntry.meta + " " : "") + " loaded");
                 }
                 var input = exampleEntry.script;
                 _this.model.setProperty("example", inFile.memorizedExample);
@@ -16602,7 +16889,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         Controller.prototype.createFnExampleError = function (example, url, inFile) {
             var _this = this;
             return function () {
-                Utils_25.Utils.console.log("Example", url, "error");
+                Utils_24.Utils.console.log("Example", url, "error");
                 _this.model.setProperty("example", inFile.memorizedExample);
                 _this.vm.vmStop("", 0, true);
                 var error = _this.vm.vmComposeError(Error(), 32, example + " not found"); // TODO: set also derr=146 (xx not found)
@@ -16631,8 +16918,8 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 }
             }
             var example = name;
-            if (Utils_25.Utils.debug > 0) {
-                Utils_25.Utils.console.debug("loadExample: name=" + name + " (current=" + key + ")");
+            if (Utils_24.Utils.debug > 0) {
+                Utils_24.Utils.console.debug("loadExample: name=" + name + " (current=" + key + ")");
             }
             var exampleEntry = this.model.getExample(example); // already loaded
             var url;
@@ -16646,12 +16933,12 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 this.model.setProperty("example", example);
                 var databaseDir = this.model.getDatabase().src;
                 url = databaseDir + "/" + example + ".js";
-                Utils_25.Utils.loadScript(url, this.createFnExampleLoaded(example, url, inFile), this.createFnExampleError(example, url, inFile), example);
+                Utils_24.Utils.loadScript(url, this.createFnExampleLoaded(example, url, inFile), this.createFnExampleError(example, url, inFile), example);
             }
             else { // keep original example in this error case
                 url = example;
                 if (example !== "") { // only if not empty
-                    Utils_25.Utils.console.warn("loadExample: Unknown file:", example);
+                    Utils_24.Utils.console.warn("loadExample: Unknown file:", example);
                     var fnExampleError = this.createFnExampleError(example, url, inFile);
                     fnExampleError();
                 }
@@ -16670,7 +16957,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             return name;
         };
         Controller.tryLoadingFromLocalStorage = function (name) {
-            var storage = Utils_25.Utils.localStorage;
+            var storage = Utils_24.Utils.localStorage;
             var input = null;
             if (name.indexOf(".") >= 0) { // extension specified?
                 input = storage.getItem(name);
@@ -16700,13 +16987,13 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     this.vm.vmStop("fileLoad", 90); // restore
                 }
                 var name_14 = inFile.name;
-                if (Utils_25.Utils.debug > 1) {
-                    Utils_25.Utils.console.debug("fnFileLoad:", inFile.command, name_14, "details:", inFile);
+                if (Utils_24.Utils.debug > 1) {
+                    Utils_24.Utils.console.debug("fnFileLoad:", inFile.command, name_14, "details:", inFile);
                 }
                 var input = Controller.tryLoadingFromLocalStorage(name_14);
                 if (input !== null) {
-                    if (Utils_25.Utils.debug > 0) {
-                        Utils_25.Utils.console.debug("fnFileLoad:", inFile.command, name_14, "from localStorage");
+                    if (Utils_24.Utils.debug > 0) {
+                        Utils_24.Utils.console.debug("fnFileLoad:", inFile.command, name_14, "from localStorage");
                     }
                     this.vm.vmStop("", 0, true);
                     this.loadFileContinue(input);
@@ -16716,7 +17003,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 }
             }
             else {
-                Utils_25.Utils.console.error("fnFileLoad:", inFile.name, "File not open!"); // hopefully isName is defined
+                Utils_24.Utils.console.error("fnFileLoad:", inFile.name, "File not open!"); // hopefully isName is defined
             }
             this.nextLoopTimeOut = this.vm.vmGetTimeUntilFrame(); // wait until next frame
         };
@@ -16758,7 +17045,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             return metaAndData;
         };
         Controller.prototype.fnFileSave = function () {
-            var outFile = this.vm.vmGetOutFileObject(), storage = Utils_25.Utils.localStorage;
+            var outFile = this.vm.vmGetOutFileObject(), storage = Utils_24.Utils.localStorage;
             var defaultExtension = "";
             if (outFile.open) {
                 var type = outFile.typeString, name_15 = outFile.name;
@@ -16786,8 +17073,8 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     }
                     outFile.length = fileData.length; // set length
                 }
-                if (Utils_25.Utils.debug > 0) {
-                    Utils_25.Utils.console.debug("fnFileSave: name=" + name_15 + ": put into localStorage");
+                if (Utils_24.Utils.debug > 0) {
+                    Utils_24.Utils.console.debug("fnFileSave: name=" + name_15 + ": put into localStorage");
                 }
                 var meta = Controller.joinMeta(outFile);
                 storage.setItem(storageName, meta + "," + fileData);
@@ -16797,13 +17084,13 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                         outFile.fnFileCallback(fileData); // close file
                     }
                     catch (e) {
-                        Utils_25.Utils.console.warn(e);
+                        Utils_24.Utils.console.warn(e);
                     }
                 }
                 this.vm.vmResetOutFileHandling(); // make sure it is closed
             }
             else {
-                Utils_25.Utils.console.error("fnFileSave: file not open!");
+                Utils_24.Utils.console.error("fnFileSave: file not open!");
             }
             this.vm.vmStop("", 0, true); // continue
         };
@@ -16864,7 +17151,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         Controller.prototype.outputError = function (error, noSelection) {
             var stream = 0;
             var shortError;
-            if (Utils_25.Utils.isCustomError(error)) {
+            if (Utils_24.Utils.isCustomError(error)) {
                 shortError = error.shortMessage || error.message;
                 if (!noSelection) {
                     var startPos = error.pos || 0, len = error.len || ((error.value !== undefined) ? String(error.value).length : 0), endPos = startPos + len;
@@ -16893,7 +17180,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             }
             var output = this.basicFormatter.renumber(input, paras.newLine || 10, paras.oldLine || 1, paras.step || 10, paras.keep || 65535);
             if (output.error) {
-                Utils_25.Utils.console.warn(output.error);
+                Utils_24.Utils.console.warn(output.error);
                 this.outputError(output.error);
             }
             else {
@@ -16945,7 +17232,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 var time = Date.now();
                 output = this.codeGeneratorJs.generate(input, this.variables);
                 time = Date.now() - time;
-                Utils_25.Utils.console.debug("bench size", input.length, "labels", this.codeGeneratorJs.debugGetLabelsCount(), "loop", i, ":", time, "ms");
+                Utils_24.Utils.console.debug("bench size", input.length, "labels", this.codeGeneratorJs.debugGetLabelsCount(), "loop", i, ":", time, "ms");
                 if (output.error) {
                     break;
                 }
@@ -16954,7 +17241,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         };
         Controller.prototype.fnParse = function () {
             var input = this.view.getAreaValue("inputText"), bench = this.model.getProperty("bench");
-            this.variables.removeAllVariables();
+            // keep variables; this.variables.removeAllVariables();
             var output;
             if (!bench) {
                 output = this.codeGeneratorJs.generate(input, this.variables);
@@ -16974,7 +17261,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 for (var i = 0; i < tokens.length; i += 1) {
                     var code = tokens.charCodeAt(i);
                     if (code > 255) {
-                        Utils_25.Utils.console.warn("Put token in memory: addr=" + (addr + i) + ", code=" + code + ", char=" + tokens.charAt(i));
+                        Utils_24.Utils.console.warn("Put token in memory: addr=" + (addr + i) + ", code=" + code + ", char=" + tokens.charAt(i));
                         code = 0x20;
                     }
                     this.vm.poke(addr + i, code);
@@ -17042,7 +17329,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 data8[i] = data.charCodeAt(i);
             }
             if (typeof Blob === "undefined") {
-                Utils_25.Utils.console.warn("fnDownloadNewFile: Blob undefined");
+                Utils_24.Utils.console.warn("fnDownloadNewFile: Blob undefined");
                 return;
             }
             var blob = new Blob([data8.buffer], {
@@ -17073,11 +17360,11 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     line += 1;
                 }
                 pos += columnNumber;
-                Utils_25.Utils.console.warn("Info: JS Error occurred at line", lineNumber, "column", columnNumber, "pos", pos);
+                Utils_24.Utils.console.warn("Info: JS Error occurred at line", lineNumber, "column", columnNumber, "pos", pos);
                 this.view.setAreaSelection("outputText", pos, pos + 1);
             }
         };
-        Controller.prototype.fnRun = function (paras) {
+        Controller.prototype.fnChain = function (paras) {
             var script = this.view.getAreaValue("outputText"), vm = this.vm;
             var line = paras && paras.first || 0;
             line = line || 0;
@@ -17088,12 +17375,11 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 this.fnFileSave();
             }
             if (!this.fnScript) {
-                vm.clear(); // init variables
                 try {
                     this.fnScript = new Function("o", script); // eslint-disable-line no-new-func
                 }
                 catch (e) {
-                    Utils_25.Utils.console.error(e);
+                    Utils_24.Utils.console.error(e);
                     if (e instanceof Error) {
                         this.selectJsError(script, e);
                         e.shortMessage = "JS " + String(e);
@@ -17101,9 +17387,6 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     }
                     this.fnScript = undefined;
                 }
-            }
-            else {
-                vm.clear(); // we do a clear as well here
             }
             vm.vmReset4Run();
             if (this.fnScript) {
@@ -17126,14 +17409,24 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     }, timeout);
                 }
             }
-            if (Utils_25.Utils.debug > 1) {
-                Utils_25.Utils.console.debug("End of fnRun");
+            if (Utils_24.Utils.debug > 1) {
+                Utils_24.Utils.console.debug("End of fnRun");
             }
+        };
+        Controller.prototype.fnRun = function (paras) {
+            this.vm.clear(); // init variables
+            this.fnChain(paras);
         };
         Controller.prototype.fnParseRun = function () {
             var output = this.fnParse();
             if (!output.error) {
                 this.fnRun();
+            }
+        };
+        Controller.prototype.fnParseChain = function () {
+            var output = this.fnParse();
+            if (!output.error) {
+                this.fnChain();
             }
         };
         Controller.prototype.fnRunPart1 = function (fnScript) {
@@ -17142,28 +17435,28 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             }
             catch (e) {
                 if (e instanceof Error) {
-                    if (e.name === "CpcVm" || e.name === "Variables") { //TTT
+                    if (e.name === "CpcVm" || e.name === "Variables") {
                         var customError = e;
                         if (customError.errCode !== undefined) {
                             customError = this.vm.vmComposeError(customError, customError.errCode, customError.value);
                         }
                         if (!customError.hidden) {
-                            Utils_25.Utils.console.warn(customError);
+                            Utils_24.Utils.console.warn(customError);
                             this.outputError(customError, !customError.pos);
                         }
                         else {
-                            Utils_25.Utils.console.log(customError.message);
+                            Utils_24.Utils.console.log(customError.message);
                         }
                     }
                     else {
-                        Utils_25.Utils.console.error(e);
+                        Utils_24.Utils.console.error(e);
                         this.selectJsError(this.view.getAreaValue("outputText"), e);
                         this.vm.vmComposeError(e, 2, "JS " + String(e)); // generate Syntax Error, set also err and erl and set stop
                         this.outputError(e, true);
                     }
                 }
                 else {
-                    Utils_25.Utils.console.error(e);
+                    Utils_24.Utils.console.error(e);
                 }
             }
         };
@@ -17176,8 +17469,8 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 this.vm.cursor(stream, 0);
                 var inputText = this.view.getAreaValue("inputText");
                 if ((/^\d+($| )/).test(input)) { // start with number?
-                    if (Utils_25.Utils.debug > 0) {
-                        Utils_25.Utils.console.debug("fnDirectInput: insert line=" + input);
+                    if (Utils_24.Utils.debug > 0) {
+                        Utils_24.Utils.console.debug("fnDirectInput: insert line=" + input);
                     }
                     input = this.mergeScripts(inputText, input);
                     this.setInputText(input, true);
@@ -17188,7 +17481,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     this.updateResultText();
                     return false; // continue direct input
                 }
-                Utils_25.Utils.console.log("fnDirectInput: execute:", input);
+                Utils_24.Utils.console.log("fnDirectInput: execute:", input);
                 var codeGeneratorJs = this.codeGeneratorJs;
                 var output = void 0, outputString = void 0;
                 if (inputText && ((/^\d+($| )/).test(inputText) || this.model.getProperty("implicitLines"))) { // do we have a program starting with a line number?
@@ -17224,7 +17517,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                         this.vm.vmSetSourceMap(codeGeneratorJs.getSourceMap());
                     }
                     catch (e) {
-                        Utils_25.Utils.console.error(e);
+                        Utils_24.Utils.console.error(e);
                         if (e instanceof Error) {
                             this.outputError(e, true);
                         }
@@ -17300,7 +17593,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 this.handlers[stop.reason].call(this, stop.paras);
             }
             else {
-                Utils_25.Utils.console.warn("runLoop: Unknown run mode:", stop.reason);
+                Utils_24.Utils.console.warn("runLoop: Unknown run mode:", stop.reason);
                 this.vm.vmStop("error", 50);
             }
             if (stop.reason && stop.reason !== "waitSound" && stop.reason !== "waitKey" && stop.reason !== "waitInput") {
@@ -17392,7 +17685,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             if (canvas.toDataURL) {
                 return canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // here is the most important part because if you do not replace you will get a DOM 18 exception.
             }
-            Utils_25.Utils.console.warn("Screenshot not available");
+            Utils_24.Utils.console.warn("Screenshot not available");
             return "";
         };
         Controller.prototype.fnPutKeysInBuffer = function (keys) {
@@ -17425,6 +17718,32 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             // we support at most 5 arguments
             return fnFunction;
         };
+        Controller.prototype.setPopoversHiddenExcept = function (exceptId) {
+            var areaDefinitions = Controller.areaDefinitions;
+            for (var id in areaDefinitions) {
+                if (id !== exceptId) {
+                    var propertyObject = areaDefinitions[id];
+                    if (propertyObject.isPopover && !this.view.getHidden(id)) {
+                        // we cannot use toggleAreaHidden becasue it would be recursive
+                        this.model.setProperty(propertyObject.property, false);
+                        this.view.setHidden(id, true, propertyObject.display);
+                    }
+                }
+            }
+        };
+        Controller.prototype.toggleAreaHidden = function (id) {
+            var propertyObject = Controller.areaDefinitions[id], propertyName = propertyObject.property, visible = !this.model.getProperty(propertyName);
+            this.model.setProperty(propertyName, visible);
+            this.view.setHidden(id, !visible, propertyObject.display);
+            // on old browsers display "flex" is not available, so set default "" (="block"), if still hidden
+            if (visible && propertyObject.display === "flex" && this.view.getHidden(id)) {
+                this.view.setHidden(id, !visible);
+            }
+            if (visible && propertyObject.isPopover) {
+                this.setPopoversHiddenExcept(id);
+            }
+            return visible;
+        };
         Controller.prototype.changeVariable = function () {
             var par = this.view.getSelectValue("varSelect"), valueString = this.view.getSelectValue("varText"), variables = this.variables;
             var value = variables.getVariable(par);
@@ -17443,37 +17762,40 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 try {
                     var value2 = this.vm.vmAssign(varType, value);
                     variables.setVariable(par, value2);
-                    Utils_25.Utils.console.log("Variable", par, "changed:", variables.getVariable(par), "=>", value);
+                    Utils_24.Utils.console.log("Variable", par, "changed:", variables.getVariable(par), "=>", value);
                 }
                 catch (e) {
-                    Utils_25.Utils.console.warn(e);
+                    Utils_24.Utils.console.warn(e);
                 }
             }
             this.setVarSelectOptions("varSelect", variables);
             this.commonEventHandler.onVarSelectChange(); // title change?
         };
+        Controller.prototype.setPalette = function (palette) {
+            this.canvas.setPalette(palette === "green" || palette === "grey" ? palette : "color");
+        };
         Controller.prototype.setSoundActive = function () {
-            var sound = this.sound, soundButton = View_7.View.getElementById1("soundButton"), active = this.model.getProperty("sound");
-            var text;
+            var sound = this.sound, soundLabel = View_7.View.getElementById1("soundLabel"), active = this.model.getProperty("sound");
+            var text = "";
             if (active) {
                 try {
                     sound.soundOn();
-                    text = (sound.isActivatedByUser()) ? "Sound is on" : "Sound on (waiting)";
                 }
                 catch (e) {
-                    Utils_25.Utils.console.warn("soundOn:", e);
-                    text = "Sound unavailable";
+                    Utils_24.Utils.console.warn("soundOn:", e);
+                    text = "Sound (unavailable)";
                 }
             }
             else {
                 sound.soundOff();
-                text = "Sound is off";
                 var stop_1 = this.vm && this.vm.vmGetStopObject();
                 if (stop_1 && stop_1.reason === "waitSound") {
                     this.vm.vmStop("", 0, true); // do not wait
                 }
             }
-            soundButton.innerText = text;
+            if (text) {
+                soundLabel.innerText = text;
+            }
         };
         Controller.prototype.fnEndOfImport = function (imported) {
             var stream = 0, vm = this.vm;
@@ -17505,19 +17827,9 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         };
         Controller.prototype.initDropZone = function () {
             var fileHandler = this.fileHandler || this.createFileHandler();
-            /*
-            if (!this.fileHandler) {
-                this.fileHandler = new FileHandler({
-                    adaptFilename: this.adaptFilename.bind(this),
-                    updateStorageDatabase: this.updateStorageDatabase.bind(this),
-                    outputError: this.outputError.bind(this)
-                });
-            }
-            */
             if (!this.fileSelect) {
                 this.fileSelect = new FileSelect_1.FileSelect({
                     fnEndOfImport: this.fnEndOfImport.bind(this),
-                    //outputError: this.outputError.bind(this),
                     fnLoad2: fileHandler.fnLoad2.bind(fileHandler)
                 });
             }
@@ -17582,7 +17894,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     _this.model.getDatabase().loaded = true;
                 }
                 else { // should not occur
-                    Utils_25.Utils.console.warn("databaseLoaded: name changed: " + key + " => " + selectedName);
+                    Utils_24.Utils.console.warn("databaseLoaded: name changed: " + key + " => " + selectedName);
                     _this.model.setProperty("database", key);
                     var database = _this.model.getDatabase();
                     if (database) {
@@ -17590,7 +17902,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     }
                     _this.model.setProperty("database", selectedName);
                 }
-                Utils_25.Utils.console.log("fnDatabaseLoaded: database loaded: " + key + ": " + url);
+                Utils_24.Utils.console.log("fnDatabaseLoaded: database loaded: " + key + ": " + url);
                 _this.setDirectorySelectOptions();
                 _this.onDirectorySelectChange();
             };
@@ -17598,7 +17910,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         Controller.prototype.createFnDatabaseError = function (url) {
             var _this = this;
             return function (_sFullUrl, key) {
-                Utils_25.Utils.console.error("fnDatabaseError: database error: " + key + ": " + url);
+                Utils_24.Utils.console.error("fnDatabaseError: database error: " + key + ": " + url);
                 _this.setDirectorySelectOptions();
                 _this.onDirectorySelectChange();
                 _this.setInputText("");
@@ -17611,7 +17923,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.view.setSelectTitleFromSelectedOption("databaseSelect");
             var database = this.model.getDatabase();
             if (!database) {
-                Utils_25.Utils.console.error("onDatabaseSelectChange: database not available:", databaseName);
+                Utils_24.Utils.console.error("onDatabaseSelectChange: database not available:", databaseName);
                 return;
             }
             if (database.text === "storage") { // sepcial handling: browser localStorage
@@ -17625,7 +17937,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             else {
                 this.setInputText("#loading database " + databaseName + "...");
                 var exampleIndex = this.model.getProperty("exampleIndex"), url = database.src + "/" + exampleIndex;
-                Utils_25.Utils.loadScript(url, this.createFnDatabaseLoaded(url), this.createFnDatabaseError(url), databaseName);
+                Utils_24.Utils.loadScript(url, this.createFnDatabaseLoaded(url), this.createFnDatabaseError(url), databaseName);
             }
         };
         Controller.prototype.onDirectorySelectChange = function () {
@@ -17635,23 +17947,21 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         Controller.prototype.onExampleSelectChange = function () {
             var vm = this.vm, inFile = vm.vmGetInFileObject(), dataBaseName = this.model.getProperty("database"), directoryName = this.view.getSelectValue("directorySelect");
             vm.closein();
-            if (!this.view.getHidden("galleryArea")) { // close gallery, if open
-                this.view.setHidden("galleryArea", true, "flex");
-                this.model.setProperty("showGallery", false);
-            }
+            this.setPopoversHiddenExcept(""); // hide all popovers, especially the gallery
             inFile.open = true;
             var exampleName = this.view.getSelectValue("exampleSelect");
             if (directoryName) {
                 exampleName = directoryName + "/" + exampleName;
             }
             var exampleEntry = this.model.getExample(exampleName);
-            inFile.command = "run";
+            var autorun = this.model.getProperty("autorun");
             if (exampleEntry && exampleEntry.meta) { // TTT TODO: this is just a workaround, meta is in input now; should change command after loading!
                 var type = exampleEntry.meta.charAt(0);
                 if (type === "B" || type === "D" || type === "G") { // binary, data only, Gena Assembler?
-                    inFile.command = "load";
+                    autorun = false;
                 }
             }
+            inFile.command = autorun ? "run" : "load";
             if (dataBaseName !== "storage") {
                 exampleName = "/" + exampleName; // load absolute
             }
@@ -17666,33 +17976,26 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         };
         // currently not used. Can be called manually: cpcBasic.controller.exportAsBase64(file);
         Controller.prototype.exportAsBase64 = function (storageName) {
-            var storage = Utils_25.Utils.localStorage;
+            var storage = Utils_24.Utils.localStorage;
             var data = storage.getItem(storageName), out = "";
             if (data !== null) {
                 var index = data.indexOf(","); // metadata separator
                 if (index >= 0) {
                     var meta = data.substring(0, index);
                     data = data.substring(index + 1);
-                    data = Utils_25.Utils.btoa(data);
+                    data = Utils_24.Utils.btoa(data);
                     out = meta + ";base64," + data;
                 }
                 else { // hmm, no meta info
-                    data = Utils_25.Utils.btoa(data);
+                    data = Utils_24.Utils.btoa(data);
                     out = "base64," + data;
                 }
             }
-            Utils_25.Utils.console.log(out);
+            Utils_24.Utils.console.log(out);
             return out;
         };
         Controller.prototype.onCpcCanvasClick = function (event) {
-            if (this.model.getProperty("showSettings")) {
-                this.model.setProperty("showSettings", false);
-                this.view.setHidden("settingsArea", !this.model.getProperty("showSettings"), "flex");
-            }
-            if (this.model.getProperty("showConvert")) {
-                this.model.setProperty("showConvert", false);
-                this.view.setHidden("convertArea", !this.model.getProperty("showConvert"), "flex");
-            }
+            this.setPopoversHiddenExcept(""); // hide all popovers
             this.canvas.onCpcCanvasClick(event);
             this.textCanvas.onWindowClick(event);
             this.keyboard.setActive(true);
@@ -17738,75 +18041,56 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.initialLoopTimeout = 1000 - speed * 10;
         };
         Controller.metaIdent = "CPCBasic";
-        // http://www.cpcwiki.eu/index.php/CPC_Palette
-        Controller.paletteColors = [
-            "#000000",
-            "#000080",
-            "#0000FF",
-            "#800000",
-            "#800080",
-            "#8000FF",
-            "#FF0000",
-            "#FF0080",
-            "#FF00FF",
-            "#008000",
-            "#008080",
-            "#0080FF",
-            "#808000",
-            "#808080",
-            "#8080FF",
-            "#FF8000",
-            "#FF8080",
-            "#FF80FF",
-            "#00FF00",
-            "#00FF80",
-            "#00FFFF",
-            "#80FF00",
-            "#80FF80",
-            "#80FFFF",
-            "#FFFF00",
-            "#FFFF80",
-            "#FFFFFF",
-            "#808080",
-            "#FF00FF",
-            "#FFFF80",
-            "#000080",
-            "#00FF80" //  31 Sea Green (same as 19)
-        ];
-        Controller.paletteGrey = [
-            "#000000",
-            "#0A0A0A",
-            "#131313",
-            "#1D1D1D",
-            "#262626",
-            "#303030",
-            "#393939",
-            "#434343",
-            "#4C4C4C",
-            "#575757",
-            "#606060",
-            "#6A6A6A",
-            "#737373",
-            "#7D7D7D",
-            "#868686",
-            "#909090",
-            "#999999",
-            "#A3A3A3",
-            "#ACACAC",
-            "#B5B5B5",
-            "#BFBFBF",
-            "#C9C9C9",
-            "#D2D2D2",
-            "#DCDCDC",
-            "#E5E5E5",
-            "#EFEFEF",
-            "#F8F8F8",
-            "#7D7D7D",
-            "#434343",
-            "#EFEFEF",
-            "#A0A0A0",
-            "#B5B5B5"
-        ];
+        Controller.areaDefinitions = {
+            consoleArea: {
+                property: "showConsole"
+            },
+            convertArea: {
+                property: "showConvert",
+                display: "flex",
+                isPopover: true
+            },
+            cpcArea: {
+                property: "showCpc"
+            },
+            galleryArea: {
+                property: "showGallery",
+                display: "flex",
+                isPopover: true
+            },
+            inp2Area: {
+                property: "showInp2"
+            },
+            inputArea: {
+                property: "showInput"
+            },
+            kbdArea: {
+                property: "showKbd",
+                display: "flex"
+            },
+            moreArea: {
+                property: "showMore",
+                display: "flex",
+                isPopover: true
+            },
+            outputArea: {
+                property: "showOutput"
+            },
+            resultArea: {
+                property: "showResult"
+            },
+            settingsArea: {
+                property: "showSettings",
+                display: "flex",
+                isPopover: true
+            },
+            textArea: {
+                property: "showText"
+            },
+            variableArea: {
+                property: "showVariable"
+            }
+        };
         Controller.defaultExtensions = [
             "",
             "bas",
@@ -17841,7 +18125,7 @@ define("cpcconfig", ["require", "exports"], function (require, exports) {
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "Model", "View", "NodeAdapt"], function (require, exports, Utils_26, Controller_1, cpcconfig_1, Model_1, View_8, NodeAdapt_1) {
+define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "Model", "View", "NodeAdapt"], function (require, exports, Utils_25, Controller_1, cpcconfig_1, Model_1, View_8, NodeAdapt_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var cpcBasic = /** @class */ (function () {
@@ -17865,7 +18149,7 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
         // can be used for nodeJS
         cpcBasic.fnParseArgs = function (args, config) {
             for (var i = 0; i < args.length; i += 1) {
-                var nameValue = args[i], nameValueList = Utils_26.Utils.split2(nameValue, "="), name_16 = nameValueList[0];
+                var nameValue = args[i], nameValueList = Utils_25.Utils.split2(nameValue, "="), name_16 = nameValueList[0];
                 if (config.hasOwnProperty(name_16)) {
                     var value = nameValueList[1]; // string|number|boolean
                     if (value !== undefined && config.hasOwnProperty(name_16)) {
@@ -17897,7 +18181,7 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
             }
             catch (err) {
                 err.message += ": " + s;
-                Utils_26.Utils.console.error(err);
+                Utils_25.Utils.console.error(err);
             }
             return decoded;
         };
@@ -17928,7 +18212,7 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
             return arg;
         };
         cpcBasic.createDebugUtilsConsole = function (cpcBasicLog) {
-            var currentConsole = Utils_26.Utils.console;
+            var currentConsole = Utils_25.Utils.console;
             return {
                 consoleLog: {
                     value: cpcBasicLog || "" // already something collected?
@@ -17994,16 +18278,16 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
             }
             cpcBasic.view = new View_8.View();
             var debug = Number(cpcBasic.model.getProperty("debug"));
-            Utils_26.Utils.debug = debug;
-            var UtilsConsole = Utils_26.Utils.console, cpcBasicLog = "";
+            Utils_25.Utils.debug = debug;
+            var UtilsConsole = Utils_25.Utils.console, cpcBasicLog = "";
             if (UtilsConsole.cpcBasicLog) {
                 cpcBasicLog = UtilsConsole.cpcBasicLog;
                 UtilsConsole.cpcBasicLog = undefined; // do not log any more to dummy console
             }
-            if (Utils_26.Utils.debug > 1 && cpcBasic.model.getProperty("showConsole")) { // console log window?
+            if (Utils_25.Utils.debug > 0 && cpcBasic.model.getProperty("showConsole")) { // console log window?
                 UtilsConsole = cpcBasic.createDebugUtilsConsole(cpcBasicLog);
-                Utils_26.Utils.console = UtilsConsole;
-                Utils_26.Utils.console.log("CPCBasic log started at", Utils_26.Utils.dateFormat(new Date()));
+                Utils_25.Utils.console = UtilsConsole;
+                Utils_25.Utils.console.log("CPCBasic log started at", Utils_25.Utils.dateFormat(new Date()));
                 UtilsConsole.changeLog(View_8.View.getElementById1("consoleText"));
             }
             if (redirectExamples) {
@@ -18013,35 +18297,37 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
             cpcBasic.controller.onDatabaseSelectChange(); // trigger loading example
         };
         cpcBasic.fnOnLoad = function () {
-            Utils_26.Utils.console.log("CPCBasic started at", Utils_26.Utils.dateFormat(new Date()));
+            Utils_25.Utils.console.log("CPCBasic started at", Utils_25.Utils.dateFormat(new Date()));
             cpcBasic.fnDoStart();
         };
         cpcBasic.config = {
             arrayBounds: false,
+            autorun: true,
             bench: 0,
-            debug: 0,
             databaseDirs: "examples",
             database: "examples",
+            debug: 0,
             example: "cpcbasic",
             exampleIndex: "0index.js",
             implicitLines: false,
             input: "",
             kbdLayout: "alphanum",
+            palette: "color",
+            showConsole: false,
+            showConvert: false,
+            showCpc: true,
+            showGallery: false,
             showInput: true,
             showInp2: false,
-            showCpc: true,
             showKbd: false,
+            showMore: false,
             showOutput: false,
             showResult: false,
             showText: false,
             showVariable: false,
-            showConsole: false,
-            showConvert: false,
             showSettings: false,
-            showGallery: false,
             sound: true,
             speed: 100,
-            palette: "color",
             trace: false // trace code
         };
         return cpcBasic;
@@ -18053,7 +18339,7 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
     if (window.Polyfills.isNodeAvailable) {
         NodeAdapt_1.NodeAdapt.doAdapt();
         cpcBasic.fnOnLoad();
-        Utils_26.Utils.console.debug("End of main.");
+        Utils_25.Utils.console.debug("End of main.");
     }
 });
 //# sourceMappingURL=cpcbasicts.js.map
