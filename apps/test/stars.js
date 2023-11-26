@@ -25,7 +25,7 @@ cpcBasic.addItem("", function () { /*
 41 pens=4^(2-m mod 3)+abs(m=2)
 42 locate 1,1:pen 3:print"Mode";m:pen 1
 43 after 100 gosub 800
-44 move 0,0,1,1
+44 plot -10,0,1:?chr$(23)+chr$(1);: 'move 0,0,1,1 (with BASIC 1.1 only)
 45 FOR i=0 TO 24
 50 x(i)=FNr1(640):y(i)=FNr1(400):s(i)=FNr1(8)+1
 60 PLOT x(i),y(i)

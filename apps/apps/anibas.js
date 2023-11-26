@@ -20,7 +20,7 @@ cpcBasic.addItem("", function () { /*
 200 PRINT
 205 '|DIR,"*.AND"
 210 'INPUT"Filename (ohne .AND): ";t$
-212 f.col=4:f.row=4:f.msk$="*.AND":gosub 9510:t$=f.f$
+212 f.col=4:f.row=4:f.msk$="*.AND":gosub 9540:t$=f.f$
 214 IF t$="" then 220
 216 if upper$(right$(t$,4))<>".AND" then t$=t$+".AND" 
 218 MEMORY &7FFF:LOAD t$,aniblk
@@ -67,6 +67,6 @@ cpcBasic.addItem("", function () { /*
 550 GOTO 470
 560 REM
 9500 'filesel will be merged...
-9510 chain merge "filesel"
-9520 return
+9540 chain merge "filesel"
+9550 return
 */ });

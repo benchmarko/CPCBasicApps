@@ -53,6 +53,10 @@ Links:
 [![Functional Spectrum](./img/funcspec.png)](../../dist/index.html?database=apps&example=math/funcspec)
 [![Functional Spectrum](./img/funcspec2.png)](../../dist/index.html?database=apps&example=math/funcspec&input=6ðððððóóóó)
 
+### graph6 - 3D Hidden Line Removal Graph
+
+[![Nine Digits 2](./img/graph6.png)](../../dist/index.html?database=apps&example=math/graph6)
+
 ### ninedig2 - Nine Digits 2 (tokenized BASIC)
 
 [![Nine Digits 2](./img/ninedig2.png)](../../dist/index.html?database=apps&example=math/ninedig2)

@@ -119,11 +119,19 @@ Check the blog [FILLing them Ol'​ BASIC 10-Liners on a 464](https://www.linked
 
 Interrupt & Sound & Grafik (ISG) Demo
 
+### lifegame - Game of Life
+
+[![Game of Life](./img/lifegame.png)](../../dist/index.html?database=apps&example=demo/lifegame) (c)
+
 ### mondrian - Mondrian
 
 [![Mondrian](./img/mondrian.png)](../../dist/index.html?database=apps&example=demo/mondrian) (c) Out Bush, 2019
 
 An improved version that creates more Mondrian-like paintings. For details, check the [CPCwiki](https://www.cpcwiki.eu/forum/programming/mondrian-next-try-to-get-a-topic/). The first version by SRS is based on [The Joy of Programming: Mondrian Painting](https://www.youtube.com/watch?v=FUp3SffxPzw).
+
+### nicholas - House of St Nicholas
+
+[![nicolas](./img/nicholas.png)](../../dist/index.html?database=apps&example=demo/nicholas) (c)
 
 ### nosmoke - No Smoking (Screen)
 

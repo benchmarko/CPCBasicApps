@@ -16,7 +16,7 @@ cpcBasic.addItem("", function () { /*
 505 ch=65:SYMBOL AFTER ch:hm=HIMEM+(256-ch)*8
 1000 REM initialise,set up m/code,etc
 1010 SPEED INK 30,20:DIM TIM(3,3),SHAPE(36,8),MAZE(1),HI(5),NAME$(5),GRADE$(5):RESTORE 1030:FOR x=1 TO 36:FOR y=1 TO 8:READ shape(x,y):NEXT:NEXT:WINDOW#1,24,39,4,23
-1020 'FOR x=&9C40 TO &9CCF:READ a$:POKE x,VAL("&"+a$):NEXT
+1020 FOR x=&9C40 TO &9CCF:READ a$:POKE x,VAL("&"+a$):NEXT
 1030 DATA 24,17,3,6,-6,-1,-21,-22
 1040 DATA 29,4,4,4,-5,2,-28,-10
 1050 DATA 29,-4,4,-4,-5,-2,-28,10

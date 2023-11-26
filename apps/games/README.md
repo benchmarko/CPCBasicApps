@@ -20,6 +20,10 @@ Links:
 [![Art War](./img/artwar.png)](../../dist/index.html?database=apps&example=games/artwar)
 [![Art War](./img/artwar2.png)](../../dist/index.html?database=apps&example=games/artwar) (c) Sakis Kaffesakis, 2021
 
+### assess - Assessment (Idiotentest)
+
+[![Assessment](./img/assess.png)](../../dist/index.html?database=apps&example=games/assess) (c) Marco Vieth, 198x
+
 ### atombu - Atombunker
 
 [![Atombunker](./img/atombu.png)](../../dist/index.html?database=apps&example=games/atombu)
@@ -49,6 +53,11 @@ Additional files:
 [![BASIC Game 2](./img/basgame2.png)](../../dist/index.html?database=apps&example=games/basgame2) (c) Roald (Mr.Lou) Strauss
 
 Unfinished BASIC game 2.
+
+### bigprice - Big Price (Der Grosse Preis)
+
+[![Big Price](./img/bigprice.png)](../../dist/index.html?database=apps&example=games/bigprice)
+[![Big Price](./img/bigprice2.png)](../../dist/index.html?database=apps&example=games/bigprice) (c)
 
 ### budrumi - Budrumi
 
@@ -85,6 +94,11 @@ The tune [Fuer Elise](../../dist/index.html?database=apps&example=music/elise) b
 
 A lander clone from [The Amstrad Program Book](https://archive.org/details/Amstrad_Program_Book_The_1984_Phoenix_Publishing_Associates/mode/2up) by Peter Goode, improved by [Im Wald](http://cpc-live.com/forum/index.php/topic,958.msg8133.html#msg8133).
 
+### clumsy - Clumsy Control
+
+[![Clumsy Control](./img/clumsy.png)](../../dist/index.html?database=apps&example=games/clumsy)
+[![Clumsy Control](./img/clumsy2.png)](../../dist/index.html?database=apps&example=games/clumsy) (c) ?
+
 ### connect4 - Connect 4 (Tower: 4 Gewinnt)
 
 [![Connect 4](./img/connect4.png)](../../dist/index.html?database=apps&example=games/connect4)
@@ -113,6 +127,10 @@ From the [BASIC 10-Liner Contest 2019](https://gkanold.wixsite.com/homeputerium/
 
 [![Dambusters](./img/dambust.png)](../../dist/index.html?database=apps&example=games/dambust)
 [![Dambusters](./img/dambust2.png)](../../dist/index.html?database=apps&example=games/dambust) (c) Paul Stanley, 1984
+
+### dihunt - Diamond Hunt
+
+[![Diamond Hunt](./img/dihunt.png)](../../dist/index.html?database=apps&example=games/dihunt) (c) Shaun Walton, 1992
 
 ### duel - Duel
 

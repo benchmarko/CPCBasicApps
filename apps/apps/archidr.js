@@ -56,7 +56,7 @@ cpcBasic.addItem("", function () { /*
 500 'PRINT"File name (without.BIL): ";
 510 'INPUT t$
 512 f.col=3:f.row=7:f.msk$="*.BIL"
-515 f.needsel=1: gosub 9510:t$=f.f$:f.needsel=0:'file select done
+515 f.needsel=1: gosub 9540:t$=f.f$:f.needsel=0:'file select done
 520 IF t$="" THEN RETURN
 525 if upper$(right$(t$,4))<>".BIL" then t$=t$+".BIL" 
 530 LOAD t$,buf
@@ -159,6 +159,6 @@ cpcBasic.addItem("", function () { /*
 1500 return
 1510 '
 9500 'filesel will be merged...
-9510 chain merge "filesel"
-9520 return
+9540 chain merge "filesel"
+9550 return
 */ });

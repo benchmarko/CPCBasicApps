@@ -119,6 +119,10 @@ Additional files: Three example drawings:
 
 [![elize](./img/eliza.png)](../../dist/index.html?database=apps&example=apps/eliza) (c) Olaf Hartwig, 1985
 
+### endofmon - End of Month (Monatsende)
+
+[![End of Month](./img/endofmon.png)](../../dist/index.html?database=apps&example=apps/endofmon) (c) Marco Vieth, 198x
+
 ### geogra - Geographics (Erkunde)
 
 [![geogra](./img/geogra.png)](../../dist/index.html?database=apps&example=apps/geogra)
@@ -129,6 +133,10 @@ Additional files: Three example drawings:
 [![Heating](./img/heating.png)](../../dist/index.html?database=apps&example=apps/heating) (c)
 
 Efficiency calculation of heating
+
+### hyphen - Hyphenation (Silbentrennung)
+
+[![Hyphenation (Silbentrennung)](./img/hyphen.png)](../../dist/index.html?database=apps&example=apps/hyphen) (c)
 
 ### lifespan - Lifespan (Lebenserwartung)
 
@@ -157,6 +165,10 @@ This program helps you to create your Morse code.
 [![Multitext CPC](./img/mtext.png)](../../dist/index.html?database=apps&example=apps/mtext)
 [![Multitext CPC](./img/mtext2.png)](../../dist/index.html?database=apps&example=apps/mtext) (c) Rainbow Arts, 1985
 
+### question - Question and Answer
+
+[![Question](./img/question.png)](../../dist/index.html?database=apps&example=apps/question) (c) Marco Vieth, 1988
+
 ### retrols - Retro Loadsheet
 
 [![Retro Loadsheet](./img/retrols.png)](../../dist/index.html?database=apps&example=apps/retrols)
@@ -175,6 +187,11 @@ Write a number in English, German or Bavarian
 ### symbol - Symbol Generator
 
 [![Symbol Generator](./img/symbol.png)](../../dist/index.html?database=apps&example=apps/symbol) (c)
+
+### tester - Tester
+
+[![Tester](./img/tester.png)](../../dist/index.html?database=apps&example=apps/tester)
+[![Tester](./img/tester2.png)](../../dist/index.html?database=apps&example=apps/tester) (c)
 
 ### timetest - Time Tester
 

@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-10 REM DAMBUSTERS
+10 REM dambust - DAMBUSTERS
 20 REM @ PAUL STANLEY.
 22 rem https://cpcrulez.fr/GamesTest/dambusters.htm
 25 rem Modification: delay in 295 and 445

@@ -6,6 +6,7 @@ cpcBasic.addItem("", function () { /*
 1 rem vidi - VIDI: Der Videofilmverwalter
 2 rem (c) Marco Vieth, 1988
 3 rem
+100 rem
 110 rem VIDI - Der Videofilmverwalter (v2.0)
 120 'Marco Vieth, Juli 1988  (29.8.1989 / 17.7.1988)
 130 '

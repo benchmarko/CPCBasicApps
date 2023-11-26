@@ -164,6 +164,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Eliza (Boss)"
 	},
 	{
+		"key": "apps/endofmon",
+		"title": "End of Month (Monatsende)"
+	},
+	{
 		"key": "apps/filesel",
 		"title": "File Select  (Library)"
 	},
@@ -176,6 +180,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Efficiency calculation of heating"
 	},
 	{
+		"key": "apps/hyphen",
+		"title": "Hyphenation (Silbentrennung)"
+	},
+	{
     	"key": "apps/lifespan",
 		"title": "Lifespan (Lebenserwartung)"
 	},
@@ -186,6 +194,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "apps/mtext",
 		"title": "Multitext CPC"
+	},
+	{
+    	"key": "apps/question",
+		"title": "Question and answer"
 	},
 	{
     	"key": "apps/retrols",
@@ -202,6 +214,15 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "apps/symbol",
 		"title": "Define Symbol"
+	},
+	{
+    	"key": "apps/tester",
+		"title": "Tester"
+	},
+	{
+		"key": "apps/tester1.zip",
+		"title": "Tester Data",
+		"meta": "D"
 	},
 	{
     	"key": "apps/timetest",
@@ -370,8 +391,16 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Interrupt/Sound/Graphics Demo"
 	},
 	{
+    	"key": "demo/lifegame",
+		"title": "Game of Life"
+	},
+	{
     	"key": "demo/mondrian",
 		"title": "Mondrian"
+	},
+	{
+    	"key": "demo/nicholas",
+		"title": "House of St Nicholas"
 	},
 	{
     	"key": "demo/nosmoke",
@@ -429,6 +458,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"meta": "D"
 	},
 	{
+    	"key": "games/assess",
+		"title": "Assessment"
+	},
+	{
     	"key": "games/atombu",
 		"title": "Atombunker"
 	},
@@ -462,6 +495,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
     	"key": "games/basgame2",
 		"title": "BASIC Game 2"
+	},
+	{
+    	"key": "games/bigprice",
+		"title": "Big Price (Der Grosse Preis)"
 	},
 	{
     	"key": "games/budrumi",
@@ -501,6 +538,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Clear Path"
 	},
 	{
+		"key": "games/clumsy",
+		"title": "Clumsy Control"
+	},
+	{
 		"key": "games/connect4",
 		"title": "Connect 4 (Tower: 4 Gewinnt)"
 	},
@@ -519,6 +560,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "games/dambust",
 		"title": "Dambusters"
+	},
+	{
+		"key": "games/dihunt",
+		"title": "Diamond Hunt"
 	},
 	{
 		"key": "games/duel",
@@ -601,6 +646,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"key": "games/mchess.dat",
 		"title": "Micro Chess Data",
 		"meta": "D"
+	},
+	{
+		"key": "games/mon10zum",
+		"title": "MonTenZuma"
 	},
 	{
 		"key": "games/olicrown",
@@ -748,6 +797,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Functional Spectrum"
 	},
 	{
+    	"key": "math/graph6",
+		"title": "3D Hidden Line Removel Graph"
+	},
+	{
     	"key": "math/ninedig2",
 		"title": "Nine Digits 2 (tokenized)"
 	},
@@ -846,6 +899,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "test/bmbench8",
 		"title": "BM Benchmark 8"
+	},
+	{
+    	"key": "test/broken",
+		"title": "Broken Keyboard (Kaputt)"
 	},
 	{
     	"key": "test/charset",
@@ -954,6 +1011,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "test/piechart",
 		"title": "Pie Chart"
+	},
+	{
+		"key": "test/pixelscr",
+		"title": "Pixel Scroll"
 	},
 	{
 		"key": "test/pixeltst",

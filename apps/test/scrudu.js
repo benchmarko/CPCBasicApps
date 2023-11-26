@@ -11,7 +11,7 @@ cpcBasic.addItem("", function () { /*
 40 '17.6.1988
 50 '
 55 CLEAR
-60 DEFSTR a-h:DEFINT i-z
+60 DEFSTR a-e,g-h:DEFINT i-z
 65 w=0:'Ausgabewindow
 70 WIDTH 60
 90 '
@@ -70,6 +70,10 @@ cpcBasic.addItem("", function () { /*
 5060 RETURN
 5070 '
 5080 '
+9500 'filesel will be merged...
+9540 chain merge "../apps/filesel"
+9550 return
+17000 '
 17990 'Satzfeld reset
 18000 n=0:ra=0:rb=0:re=0
 18010 FOR i=0 TO 10:g(i)="":NEXT
@@ -122,11 +126,15 @@ cpcBasic.addItem("", function () { /*
 28010 RETURN
 28020 '
 29990 'Initialisieren
-30000 MODE 1:|DIR,"*.VOK":INPUT"Vokabulardatei (ohne .VOK): ";a:if a="" then a="SCRUDU"
-30001 DIM g(10):OPENIN a+".VOK"
-30002 INPUT#9,a1,a2
-30003 WHILE a<>"#":INPUT#9,a:WEND
-30005 INPUT#9,sa,sb,sc,sd,se:'Anzahlen
+30000 MODE 1
+30001 '|DIR,"*.VOK":INPUT"Vokabulardatei (ohne .VOK): ";a:if a="" then a="SCRUDU"
+30003 f.col=4:f.row=4:f.msk$="*.VOK":gosub 9540:a=f.f$
+30004 if a="" then a="SCRUDU"
+30005 if upper$(right$(a,4))<>".VOK" then a=a+".VOK" 
+30006 DIM g(10):OPENIN a: 'OPENIN a+".VOK"
+30007 INPUT#9,a1,a2
+30008 WHILE a<>"#":INPUT#9,a:WEND
+30009 INPUT#9,sa,sb,sc,sd,se:'Anzahlen
 30010 DIM a(sa),b(sb),c(sc),d(sd),e(se):'Art.Adj.Nom.Praep.
 30020 INPUT#9,a:FOR i=1 TO sa:INPUT#9,a(i):NEXT
 30030 INPUT#9,a:FOR i=1 TO sb:INPUT#9,b(i):NEXT

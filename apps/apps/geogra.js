@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-1 rem gegra - Geographics (Erkunde)
+1 rem geogra - Geographics (Erkunde)
 2 rem (c) Prof.Dr.W.Voss, 1984
 3 rem Modifications: uppercase input in 360,550,2550; delay in 430
 4 rem

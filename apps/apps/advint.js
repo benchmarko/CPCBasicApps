@@ -19,7 +19,7 @@ cpcBasic.addItem("", function () { /*
 171 PRINT:PRINT "Adventure laden"
 172 '|DIR, "*.ADV": INPUT"Adventurename (ohne .ADV):";n$
 173 f.col=4:f.row=4:f.msk$="*.ADV"
-174 f.needsel=1: gosub 9510:n$=f.f$: f.needsel=0:'file select done
+174 f.needsel=1: gosub 9540:n$=f.f$: f.needsel=0:'file select done
 175 if upper$(right$(n$,4))<>".ADV" then n$=n$+".ADV"
 178 PRINT"Bitte warten ..."
 180 CLOSEIN:OPENIN n$
@@ -290,6 +290,6 @@ SIE HABEN ES GESCHAFFT !"
 2640 PLOT 0,0:DRAW 280,0:DRAW 280,142:DRAW 0,142:DRAW 0,0
 2650 RETURN
 9500 'filesel will be merged...
-9510 chain merge "filesel"
-9520 return
+9540 chain merge "filesel"
+9550 return
 */ });

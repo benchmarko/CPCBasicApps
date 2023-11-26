@@ -31,6 +31,10 @@ Links:
 [![BM Benchmark 8](./img/bmbench8.png)](../../dist/index.html?database=apps&example=test/bmbench8)
 [![BM Benchmark 8](./img/bmbench8_2.png)](../../dist/index.html?database=apps&example=test/bmbench8) (c) Marco Vieth, 2023
 
+### broken - Broken Keyboard (Kaputt)
+
+[![Broken Keyboard](./img/broken.png)](../../dist/index.html?database=apps&example=test/broken) (c) Marco Vieth
+
 ### charset - Character set
 
 [![Character set](./img/charset.png)](../../dist/index.html?database=apps&example=test/charset) (c) Marco Vieth
@@ -141,6 +145,10 @@ c.c=4: gosub 9010: 'checkMode (return max available mode c.m%=3 or c.m%=2)
 ### piechart - Pie Chart
 
 [![Pie Chart](./img/piechart.png)](../../dist/index.html?database=apps&example=test/piechart)
+
+### pixelscr - Pixel Scroll
+
+[![pixelscr](./img/pixelscr.png)](../../dist/index.html?database=apps&example=test/pixelscr) (c) Marco Vieth
 
 ### pixeltst - Pixel Test (Mode 0)
 
