@@ -800,6 +800,10 @@ cpcBasic.addIndex("apps", function () { /*
     	"key": "math/graph6",
 		"title": "3D Hidden Line Removel Graph"
 	},
+		{
+    	"key": "math/logicals",
+		"title": "Logicals"
+	},
 	{
     	"key": "math/ninedig2",
 		"title": "Nine Digits 2 (tokenized)"

@@ -57,6 +57,8 @@ Links:
 
 ### cpclib - CPC Library
 
+[![CPC Library](./img/cpclib.png)](../../dist/index.html?database=apps&example=test/cpclib) (c) Marco Vieth, 2022
+
 The CPC Library is used by some tests and provides the following functions:
 
 ```basic

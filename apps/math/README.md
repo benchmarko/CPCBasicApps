@@ -55,7 +55,12 @@ Links:
 
 ### graph6 - 3D Hidden Line Removal Graph
 
-[![Nine Digits 2](./img/graph6.png)](../../dist/index.html?database=apps&example=math/graph6)
+[![Line Removal Graph](./img/graph6.png)](../../dist/index.html?database=apps&example=math/graph6) (c) John Valentine, 1988
+
+### logicals - Logicals
+
+[![Logicals](./img/logicals.png)](../../dist/index.html?database=apps&example=math/logicals)
+[![Logicals](./img/logicals2.png)](../../dist/index.html?database=apps&example=math/logicals) (c) marcm200
 
 ### ninedig2 - Nine Digits 2 (tokenized BASIC)
 

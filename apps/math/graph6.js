@@ -39,5 +39,4 @@ cpcBasic.addItem("", function () { /*
 340 NEXT:RETURN
 380 ' ## EXAMPLE REPLACEMENT FOR LINE 150
 400 ' kh=36:g(x,y)=INT(SIN(x*13)*COS(y*10.5)*2)*kh+40
-
 */ });
