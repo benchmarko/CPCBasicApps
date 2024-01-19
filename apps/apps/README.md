@@ -68,6 +68,11 @@ Additional files:
 - archi1.bil: Drawing Set 1
 - archi2.bil: Drawing Set 2
 
+### behavior - Behavior Profiles (Verhaltensprofile)
+
+[![Behavior Profiles](./img/behavior.png)](../../dist/index.html?database=apps&example=apps/behavior)
+[![Behavior Profiles](./img/behavior2.png)](../../dist/index.html?database=apps&example=apps/behavior) (c) Reinhard Bitter
+
 ### blkedit - Block Editor
 
 [![Block Editor](./img/blkedit.png)](../../dist/index.html?database=apps&example=apps/blkedit) (c) "AMSDOS"

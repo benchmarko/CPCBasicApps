@@ -1,0 +1,265 @@
+/* globals cpcBasic */
+
+"use strict";
+
+cpcBasic.addItem("", function () { /*
+1 rem kalaha - Kalaha
+2 rem (c) Eugen Schuelter
+5 rem
+100 '-----------------------------------
+110 '
+120 '        K a l a h a
+130 '
+140 '    (c) Eugen Schuelter
+150 '   4190 Kleve 1
+160 '
+170 '-----------------------------------
+180 '
+190 '-----   Initialisierung   -----
+200 '
+210 DEFINT i-z:DIM p(1,13),kul(13),zug(5),pv(5),gew(5)
+220 MODE 2:PEN 1:CALL &BB4E:CALL &BBBA:CALL &BBFF:INK 0,0
+230 WINDOW#0,5,38,19,24:WINDOW#1,2,39,9,17:BORDER 0
+240 WINDOW#2,3,38,2,8:SOUND 3,3300,210,4:INK 1,0:INK 3,15
+250 ENV 1,3,4,2,14,-1,30:ENT 1,50,2,15:LOCATE#2,1,5
+260 POKE &B1C8,0:POKE &B1D0,18:PRINT#2,"KALAHA":POKE &B1C8,1
+270 POKE &B1D0,68:LOCATE 17,2:PRINT CHR$(164)" Eugen Schuelter"
+280 FOR i=250 TO 290
+290    PLOT RND*640,RND*400,1
+300    MOVE 350,380:DRAW i,490-i
+310    MOVE 260,40:DRAW i+30,510-i,1:NEXT
+320 SPEED INK 3,6:INK 1,12,24
+330 FOR i=0 TO 3:SOUND 7,0,24,0,1,0,1:NEXT
+340 SOUND 7,13,180,0,1,1,30:SOUND 7,3400,9
+350 FOR i=0 TO 27:BORDER i:FOR j=0 TO 40:NEXT j,i
+360 ENV 2,12,1,60,6,-1,125,10,0,125,5,-1,100,2,0,100
+370 ENT -2,3,86,4,16,-17,6:FOR i=0 TO 1200:NEXT
+380 INK 2,5,17:SPEED INK 54,54:PEN 2
+390 SOUND 1,350,0,0,2,2:SOUND 2,703,0,0,2,2:BORDER 0:INK 1,24
+400 LOCATE 1,5:INPUT"Ihr Name ";n$:n$=UPPER$(LEFT$(n$,8))
+410 SOUND 135,2200,200,0,1,1:CLG:IF n$="" THEN n$="NIEMAND"
+420 '
+430 '-----   Zeichnen des Spielbrettes   -----
+440 '
+450 FOR i=0 TO 3:INK i,0:CLS#i:NEXT
+460 PAPER 0:PAPER#1,3:PAPER#2,0
+470 PEN 3:PEN#1,1:PEN#2,1:BORDER 9
+480 FOR i=0 TO 8:READ j,k:DRAWR j,k,1:NEXT
+490 MOVE 5,5:FOR i=0 TO 3:READ j,k:DRAWR j,k,2:NEXT
+500 DATA 0,399,639,0,0,-399,-639,0,2,2,0,395,635,0
+510 DATA 0,-395,-635,0,0,389,628,0,0,-389,-628,0
+520 LOCATE#2,15,1:PRINT#2,"KALAHA":PRINT#2,"     Score"TAB(27)"Zeit"
+530 LOCATE#2,1,4:PEN#2,2:PRINT#2,"Cpu"SPC(13-LEN(n$))n$;
+540 PEN#2,3:PRINT#2,TAB(27)"0000":PLOT 478,318,3
+550 FOR i=0 TO 9:READ j,k,l:MOVE j,k:DRAWR l,0:NEXT
+560 FOR i=0 TO 7:READ j,k,l:MOVE j,k:DRAWR 0,l:NEXT
+570 DATA 444,348,70,444,372,70,444,316,70,250,364,106
+580 DATA 250,388,106,108,372,88,24,314,266,24,342,82
+590 DATA 196,342,94,24,284,266,442,316,56,516,316,56
+600 DATA 248,364,24,356,364,24,106,372,-28,196,372,-28
+610 DATA 24,284,58,292,284,58
+620 CLS#1:PRINT#1,CHR$(22)CHR$(1)
+630 b1$=CHR$(150)+CHR$(154)+CHR$(154)+CHR$(156)
+640 b2$=CHR$(149)+"  "+CHR$(149)
+650 b3$=CHR$(147)+CHR$(154)+CHR$(154)+CHR$(153)
+660 FOR j=1 TO 7 STEP 6:FOR i=8 TO 28 STEP 4
+670    LOCATE#1,i,j:PRINT#1,b1$
+680    LOCATE#1,i,j+1:PRINT#1,b2$
+690    LOCATE#1,i,j+2:PRINT#1,b3$:NEXT i,j
+700 LOCATE#1,3,3:PRINT#1,b1$:LOCATE#1,33,3:PRINT#1,b1$
+710 LOCATE#1,3,7:PRINT#1,b3$:LOCATE#1,33,7:PRINT#1,b3$
+720 FOR i=4 TO 6
+730    LOCATE#1,3,i:PRINT#1,b2$
+740    LOCATE#1,33,i:PRINT#1,b2$:NEXT
+750 PLOT 2,2,1:MOVE 138,184:PRINT CHR$(23)"1":TAG
+760 FOR i=6 TO 1 STEP -1:PRINT i" ";:NEXT
+770 MOVE 140,226:FOR i=1 TO 6:PRINT i" ";:NEXT
+780 TAGOFF:PRINT CHR$(23)"0"
+790 INK 0,13:INK 1,6:INK 2,20
+800 FOR j=0 TO 13:FOR i=0 TO 1
+810    READ p(i,j):NEXT i,j
+820 DATA 34,5,29,8,25,8,21,8,17,8,13,8,9,8
+830 DATA 4,5,9,2,13,2,17,2,21,2,25,2,29,2
+840 PEN#1,0:PRINT#1,CHR$(22)CHR$(0):PEN#2,3:gew(0)=1
+850 ENV 1,1,-1,3,2,-3,1,3,-1,2,2,-1,9:ENT -1,1,-1,7:z1=0
+860 ENV 2,5,3,1,1,0,25,12,-1,8:SPEED KEY 100,100:z2=0
+870 LOCATE#2,4,6:PRINT#2,"0   x   0"
+880 '
+890 '-----   Spielanfang   -----
+900 '
+910 CLS:s=0:m=0:ok=-1:kul(0)=0:kul(7)=0:RANDOMIZE TIME
+920 PRINT "Mit wieviel Kugeln?  (3-6) >";:n$=""
+930 WHILE n$<"3" OR n$>"6":n$=INKEY$:WEND:nk=VAL(n$):PRINT nk
+940 FOR i=1 TO 6:kul(i)=nk:kul(i+7)=nk:NEXT
+950 FOR i=0 TO 13:LOCATE#1,p(0,i),p(1,i)
+960     PRINT#1,USING "##";kul(i);:NEXT
+970 PRINT "Wollen Sie anfangen? (j/n) > ";:GOSUB 2630
+980 nk=nk*6:spf=(n$="J"):EVERY 50 GOSUB 2310
+990 IF spf THEN az=az+1:IF az>2 THEN PRINT"Ich moechte auch mal anfangen!":az=0
+1000 WHILE ok
+1010    IF spf THEN GOSUB 1440 ELSE GOSUB 1540
+1020 IF j=0 THEN 1050
+1030    GOSUB 1170:spf=NOT spf
+1040 WEND
+1050 p=0:FOR i=0 TO 6:p=p+kul(i):NEXT
+1060 IF p=nk THEN 1090
+1070 IF p>nk THEN 2360 ELSE 2530
+1080 '----- Unentschieden -----
+1090 FOR i=0 TO 4:SOUND 3,50+RND*30,20,5:NEXT
+1100 CLS:PRINT"Sehr gut!":PRINT"Aber gewonnen haben Sie noch nicht."
+1110 PRINT:PRINT "Noch ein Spiel? (j/n) > ";:GOSUB 2630
+1120 i=REMAIN(0):IF n$="J" THEN 910
+1130 CALL &BB00:CALL &BBFF:PEN 1:END
+1140 '
+1150 '-----   Verteilen   -----
+1160 '
+1170 i=kul(z):kul(z)=0:LOCATE#1,p(0,z),p(1,z)
+1180 PRINT#1,USING"##";0:GOSUB 2620
+1190 WHILE i>0
+1200    z=z-1:IF z=vbk THEN z=z-1
+1210    IF z=-1 THEN z=13
+1220    i=i-1:kul(z)=kul(z)+1
+1230    LOCATE#1,p(0,z),p(1,z)
+1240    SOUND 7,400-(z=7-vbk)*20,0,15,1,1
+1250    PRINT#1,USING "##";kul(z)
+1260    GOSUB 2620
+1270 WEND
+1280 IF 7-vbk=z THEN spf=NOT spf:GOTO 1390
+1290 IF kul(z)>1 THEN 1390
+1300 IF z<7 XOR spf THEN 1390
+1310 i=7-vbk:j=kul(i):kul(i)=kul(14-z)+1+kul(i)
+1320 kul(14-z)=0:kul(z)=0
+1330 LOCATE#1,p(0,z),p(1,z):PRINT#1,USING"##";0
+1340 LOCATE#1,p(0,14-z),p(1,14-z):PRINT#1,USING"##";0
+1350 FOR j=j+1 TO kul(i)
+1360    LOCATE#1,p(0,i),p(1,i):PRINT#1,USING"##";j
+1370    SOUND 17,420,0,15,1,1:SOUND 10,208,0,15,1,1
+1380    FOR k=0 TO 800:NEXT k,j
+1390 ok=kul(0)<=nk AND kul(7)<=nk
+1400 RETURN
+1410 '
+1420 '-----   Zug des Spielers   -----
+1430 '
+1440 j=0:FOR i=1 TO 6:j=j+kul(i):NEXT:IF j=0 THEN RETURN
+1450 SOUND 7,45,0,12,1,1:PRINT TAB(1)"Ihr Zug? >";
+1460 n$="":WHILE (n$<"1" OR n$>"6") AND n$<>"S"
+1470 n$=UPPER$(INKEY$):WEND:PRINT n$;
+1480 IF n$="S" THEN 1110 ELSE z=VAL(n$)
+1490 IF kul(z)=0 THEN PRINT "Keine Kugeln!":GOTO 1440
+1500 vbk=7:RETURN
+1510 '
+1520 '-----   Zug des Computers   -----
+1530 '
+1540 j=0:FOR i=8 TO 13:j=j+kul(i):NEXT:IF j=0 THEN RETURN
+1550 i=RND*5+8:WHILE kul(i)=0:i=RND*5+8:WEND:zug(0)=i
+1560 '
+1570 '--- Nochmal ---
+1580 p=0
+1590 FOR j=13 TO 8 STEP -1
+1600    IF kul(j) MOD 13=j-7 THEN p=p+20:zug(1)=j
+1610 NEXT:gew(1)=p
+1620 '
+1630 '--- Leere Kule ---
+1640 GOSUB 2650
+1650 FOR j=8 TO 13:i=kul(j)
+1660    IF i>13 OR i=0 THEN 1710
+1670    IF i=13 THEN pv(j-8)=3*kul(14-j)+14:GOTO 1710
+1680    z=j-i:IF z<1 THEN z=z+13
+1690    IF z<8 THEN 1710
+1700    IF kul(z)=0 THEN pv(j-8)=2*kul(14-z)
+1710 NEXT:p=0
+1720 FOR j=0 TO 5
+1730    IF pv(j)>p THEN p=pv(j):i=j+8
+1740 NEXT:zug(2)=i:gew(2)=p
+1750 '
+1760 '--- Gegner bedroht ---
+1770 GOSUB 2650
+1780 FOR j=1 TO 6:i=kul(j)
+1790    IF i>13 OR i=0 THEN 1840
+1800    IF i=13 AND kul(14-j) THEN pv(j-1)=3*kul(14-j)+2:GOTO 1840
+1810    z=j-i:IF z<1 THEN z=z+13
+1820    IF z>6 THEN 1840
+1830    IF kul(z)=0 AND kul(14-z) THEN pv(z-1)=3*kul(14-z)+1
+1840 NEXT:p=0
+1850 FOR j=0 TO 5
+1860    IF pv(j)>p THEN p=pv(j):i=13-j
+1870 NEXT:zug(3)=i:gew(3)=p
+1880 '
+1890 '--- Leere schaffen ---
+1900 GOSUB 2650
+1910 FOR j=9 TO 13
+1920    z=j-kul(j):IF z<0 THEN z=z+13
+1930    IF z<8 OR z=j OR kul(z)=0 OR kul(z)>z-7 THEN 1960
+1940    IF z>j AND kul(z)>=z-j THEN 1960
+1950    pv(z-8)=2*kul(14-z)-kul(z)+2
+1960 NEXT:p=0
+1970 FOR j=0 TO 5
+1980    IF pv(j)>p THEN p=pv(j):i=j+8
+1990 NEXT:zug(4)=i:gew(4)=p
+2000 '
+2010 '--- Gegner nochmal ---
+2020 GOSUB 2650
+2030 FOR j=1 TO 5
+2040    IF kul(j)<>j THEN 2110
+2050    FOR i=1 TO j
+2060       IF kul(i)=12 AND kul(14-i) THEN pv(i-1)=3*kul(14-i)+2
+2070    NEXT
+2080    FOR i=j+1 TO 6
+2090       IF kul(i)=i-j AND kul(14-i) THEN pv(j-1)=3*kul(14-j)+2
+2100    NEXT
+2110 NEXT:p=0
+2120 FOR j=0 TO 5
+2130    IF pv(j)>p THEN p=pv(j):i=13-j
+2140 NEXT:zug(5)=i:gew(5)=p
+2150 '
+2160 '--- Ergiebt ---
+2170 p=0:i=0
+2180 FOR j=0 TO 5
+2190    IF gew(j)>p THEN p=gew(j):i=j
+2200 NEXT:IF gew(1) AND(zug(1)<zug(i)) THEN i=1
+2210 IF i<>0 OR kul(7)+kul(0)<nk THEN 2250 ELSE p=36
+2220 FOR j=8 TO 13
+2230    IF kul(j)<p AND kul(j) THEN p=kul(j):zug(i)=j
+2240 NEXT
+2250 z=zug(i):PRINT TAB(19)"Mein Zug =";z-7
+2260 SOUND 3,40,0,12,1,1:GOSUB 2620
+2270 vbk=0:RETURN
+2280 '
+2290 '-----   Uhr   -----
+2300 '
+2310 IF s=60 THEN s=0:m=m+1 ELSE s=s+1
+2320 IF m=60 THEN m=0
+2330 LOCATE#2,27,4:b1$=STR$(m*100+s):b1$=RIGHT$(b1$,LEN(b1$)-1)
+2340 PRINT#2,STRING$(4-LEN(b1$),"0")+b1$
+2350 RETURN
+2360 '
+2370 '-----   Siegerehrung   -----
+2380 '
+2390 CLS:PRINT "Herzlichen Glueckwunsch!"
+2400 IF p>nk*1.3 THEN PRINT"Das ist ja eine Spitzenleistung!"
+2410 PRINT "Sie haben gewonnen.":PRINT
+2420 RESTORE 2450
+2430 FOR i=0 TO 18:READ j,k:SOUND 10,j,k,0,2
+2440    READ j,k:SOUND 17,j,k,0,2:NEXT
+2450 DATA 379,20,379,20,379,10,379,10,379,10,379,10,379,60,379,60
+2460 DATA 379,10,379,10,379,10,379,10,379,10,379,10,451,10,451,10
+2470 DATA 379,20,379,20,338,20,338,20,338,10,338,10,338,10,338,10
+2480 DATA 338,60,426,60,338,10,338,10,338,10,426,10,338,11,426,11
+2490 DATA 426,13,506,13,338,22,426,22,379,0,284,0
+2500 FOR i=0 TO 870:NEXT:SOUND 4,451,0,0,2
+2510 z2=z2+1:LOCATE#2,11,6:PRINT#2,z2
+2520 GOTO 1110
+2530 '
+2540 '-----   Trauer   -----
+2550 '
+2560 CLS:IF p<nk/1.4 THEN PRINT"Das war aber Schwach!"
+2570 PRINT "Tut mir leid. Vieleicht klappt es"
+2580 PRINT "das naechste mal besser.":PRINT
+2590 FOR i=160 TO 340 STEP 40:SOUND 3,i,30,4,1,1:NEXT
+2600 z1=z1+1:LOCATE#2,3,6:PRINT#2,z1;
+2610 GOTO 1110
+2620 FOR j=0 TO 1400:NEXT:RETURN
+2630 n$="":WHILE n$<>"N" AND n$<>"J"
+2640 n$=UPPER$(INKEY$):WEND:PRINT n$:RETURN
+2650 FOR j=0 TO 5:pv(j)=0:NEXT:RETURN
+*/ });

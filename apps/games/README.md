@@ -15,6 +15,16 @@ Links:
 [![3D-Four In A Row](./img/3dfour.png)](../../dist/index.html?database=apps&example=games/3dfour)
 [![3D-Four In A Row](./img/3dfour2.png)](../../dist/index.html?database=apps&example=games/3dfour) (c) Dudley Brooke, 1987
 
+### 3heaps - 3 Heaps (3 Haufen)
+
+[![3 Heaps](./img/3heaps.png)](../../dist/index.html?database=apps&example=games/3heaps)
+[![3 Heaps](./img/3heaps2.png)](../../dist/index.html?database=apps&example=games/3heaps) (c) Jens Uwe Timm, 1985
+
+### 3times1 - 3 Times 1 (3 mal 1)
+
+[![3 Times 1](./img/3times1.png)](../../dist/index.html?database=apps&example=games/3times1)
+[![3 Times 1](./img/3times1_2.png)](../../dist/index.html?database=apps&example=games/3times1) (c) Jens Uwe Timm, 1985
+
 ### artwar - Art War
 
 [![Art War](./img/artwar.png)](../../dist/index.html?database=apps&example=games/artwar)
@@ -70,13 +80,18 @@ Unfinished BASIC game 2.
 
 ### cardrive - Car Drive (Autofahren)
 
-[![Car Drive (Autofahren)](./img/cardrive.png)](../../dist/index.html?database=apps&example=games/cardrive) (c)
+[![Car Drive](./img/cardrive.png)](../../dist/index.html?database=apps&example=games/cardrive) (c)
 
 ### cards - Card Games
 
 [![Cards](./img/cards.png)](../../dist/index.html?database=apps&example=games/cards) (c)
 
 Some card games: Blackjack ("17 und 4") and Memory.
+
+### castle - Castle Crystal
+
+[![Castle Crystal](./img/castle.png)](../../dist/index.html?database=apps&example=games/castle)
+[![Castle Crystal](./img/castle2.png)](../../dist/index.html?database=apps&example=games/castle) (c) Frak Eilts
 
 ### catch - Catch
 
@@ -158,14 +173,14 @@ To select an action during the game, use joystick or numpad numbers.
 
 ### goldrush - Goldrush (Goldrausch)
 
-[![Goldrush (Goldrausch)](./img/goldrush.png)](../../dist/index.html?database=apps&example=games/goldrush)
-[![Goldrush (Goldrausch)](./img/goldrush2.png)](../../dist/index.html?database=apps&example=games/goldrush&input=%0d%0do%0dunte%20felsbrocken%0do%0dunters%20kiste%0d) (c) Jörg Walkowiak, 1984
+[![Goldrush](./img/goldrush.png)](../../dist/index.html?database=apps&example=games/goldrush)
+[![Goldrush](./img/goldrush2.png)](../../dist/index.html?database=apps&example=games/goldrush&input=%0d%0do%0dunte%20felsbrocken%0do%0dunters%20kiste%0d) (c) Jörg Walkowiak, 1984
 
 ### hopper - Hopper (Hüpfer)
 
-[![Hopper (Hüpfer)](./img/hopper.png)](../../dist/index.html?database=apps&example=games/hopper) (c) Marco Vieth, 1986
+[![Hopper](./img/hopper.png)](../../dist/index.html?database=apps&example=games/hopper) (c) Marco Vieth, 1986
 
-[![Hopper (Hüpfer) Main Part](./img/hopper2.png)](../../dist/index.html?database=apps&example=games/hopper2) (c) Marco Vieth, 1986
+[![Hopper Main Part](./img/hopper2.png)](../../dist/index.html?database=apps&example=games/hopper2) (c) Marco Vieth, 1986
 
 ### inka - Inka Sogra
 
@@ -178,8 +193,13 @@ To select an action during the game, use joystick or numpad numbers.
 
 ### joker - Black Joker (Der Schwarze Joker)
 
-[![Black Joker (Der Schwarze Joker)](./img/joker.png)](../../dist/index.html?database=apps&example=games/joker)
-[![Black Joker (Der Schwarze Joker)](./img/joker2.png)](../../dist/index.html?database=apps&example=games/joker&input=%0DN%0D2Tim%0DMary%0D&sound=false) (c) Marco Vieth
+[![Black Joker](./img/joker.png)](../../dist/index.html?database=apps&example=games/joker)
+[![Black Joker](./img/joker2.png)](../../dist/index.html?database=apps&example=games/joker&input=%0DN%0D2Tim%0DMary%0D&sound=false) (c) Marco Vieth
+
+### kalaha - Kalaha
+
+[![Kalaha](./img/kalaha.png)](../../dist/index.html?database=apps&example=games/kalaha)
+[![Kalaha](./img/kalaha2.png)](../../dist/index.html?database=apps&example=games/kalaha) (c) Eugen Schuelter
 
 ### klondike - Klondike
 
@@ -216,6 +236,10 @@ German Documentation can be found at [Software Experiment 6](http://cpctech.cpc-
 
 [![Patience](./img/patience.png)](../../dist/index.html?database=apps&example=games/patience)
 [![Patience](./img/patience2.png)](../../dist/index.html?database=apps&example=games/patience) (c) Clive Blackmore
+
+### points - Points
+
+[![Points](./img/points.png)](../../dist/index.html?database=apps&example=games/points) (c)
 
 ### preside - President (Praesident)
 
@@ -350,4 +374,4 @@ This version is based on Yahtzee 1 and uses MODE 1 and BASIC 1.1
 
 --
 
-### **mv, 11/2020**
+### **mv, 01/2024**

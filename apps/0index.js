@@ -6,152 +6,156 @@
 cpcBasic.addIndex("apps", function () { /*
 [
 	{
-    	"key": "apps/advedit",
+		"key": "apps/advedit",
 		"title": "Adventure Editor"
 	},
 	{
-    	"key": "apps/advint",
+		"key": "apps/advint",
 		"title": "Aventure Interpreter"
 	},
 	{
-    	"key": "apps/ad_home.adv",
+		"key": "apps/ad_home.adv",
 		"title": "Our Home Adventure",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/ad_goldr.adv",
+		"key": "apps/ad_goldr.adv",
 		"title": "Goldrush Adventure",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/ad_adit.adv",
+		"key": "apps/ad_adit.adv",
 		"title": "Forest Adit/Tunnel Adventure",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/amsynthe",
+		"key": "apps/amsynthe",
 		"title": "Amsynthe"
 	},
 	{
-    	"key": "apps/amsynthp",
+		"key": "apps/amsynthp",
 		"title": "Amsynthe Program"
 	},
 	{
-    	"key": "apps/anibas",
+		"key": "apps/anibas",
 		"title": "animator BASIC Viewer"
 	},
 	{
-    	"key": "apps/animator",
+		"key": "apps/animator",
 		"title": "Animator for 3D Models (TODO)"
 	},
 	{
-    	"key": "apps/an_bipla.anc",
+		"key": "apps/an_bipla.anc",
 		"title": "Biplane Model",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/an_bipla.and",
+		"key": "apps/an_bipla.and",
 		"title": "Biplane Animation",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/an_blimp.anc",
+		"key": "apps/an_blimp.anc",
 		"title": "Blimp Model",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/an_blimp.and",
+		"key": "apps/an_blimp.and",
 		"title": "Blimp Animation",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/an_box3d.anc",
+		"key": "apps/an_box3d.anc",
 		"title": "Box 3D Model",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/an_box3d.and",
+		"key": "apps/an_box3d.and",
 		"title": "Box 3D Animation",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/an_copym.anc",
+		"key": "apps/an_copym.anc",
 		"title": "Copymate Model",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/an_copym.and",
+		"key": "apps/an_copym.and",
 		"title": "Copymate Animation",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/an_me109.anc",
+		"key": "apps/an_me109.anc",
 		"title": "ME-109 Model",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/an_me109.and",
+		"key": "apps/an_me109.and",
 		"title": "ME-109 Animation",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/an_rg1.anc",
+		"key": "apps/an_rg1.anc",
 		"title": "RG-1 Model",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/an_rg1.and",
+		"key": "apps/an_rg1.and",
 		"title": "RG-1 Animation",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/an_ufo.anc",
+		"key": "apps/an_ufo.anc",
 		"title": "UFO Model",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/an_ufo.and",
+		"key": "apps/an_ufo.and",
 		"title": "UFO Animation",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/archidr",
+		"key": "apps/archidr",
 		"title": "Little Architect Draw (BASIC)"
 	},
 	{
-    	"key": "apps/archi1.bil",
+		"key": "apps/archi1.bil",
 		"title": "Little Architect Drawing Set 1",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/archi2.bil",
+		"key": "apps/archi2.bil",
 		"title": "Little Architect Drawing Set 2",
 		"meta": "D"
 	},
 	{
+		"key": "apps/behavior",
+		"title": "Behavior Profiles (Verhaltensprofile)"
+	},
+	{
 		"key": "apps/blkedit",
 		"title": "Block Editor"
-    },
+	},
 	{
 		"key": "apps/datafine",
 		"title": "Datafine Database"
-    },
+	},
 	{
-    	"key": "apps/doodle",
+		"key": "apps/doodle",
 		"title": "CPC Doodle"
 	},
 	{
-    	"key": "apps/do_2cv.drw",
+		"key": "apps/do_2cv.drw",
 		"title": "2CV Doodle Drawing",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/do_malle.drw",
+		"key": "apps/do_malle.drw",
 		"title": "Mallet Doodle Drawing",
 		"meta": "D"
 	},
 	{
-    	"key": "apps/doodle.drw",
+		"key": "apps/doodle.drw",
 		"title": "Doodle Title Drawing",
 		"meta": "D"
 	},
@@ -184,7 +188,7 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Hyphenation (Silbentrennung)"
 	},
 	{
-    	"key": "apps/lifespan",
+		"key": "apps/lifespan",
 		"title": "Lifespan (Lebenserwartung)"
 	},
 	{
@@ -192,31 +196,31 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Morse Code (Morsen)"
 	},
 	{
-    	"key": "apps/mtext",
+		"key": "apps/mtext",
 		"title": "Multitext CPC"
 	},
 	{
-    	"key": "apps/question",
+		"key": "apps/question",
 		"title": "Question and answer"
 	},
 	{
-    	"key": "apps/retrols",
+		"key": "apps/retrols",
 		"title": "Retro-Loadsheet"
 	},
 	{
-    	"key": "apps/sayit",
+		"key": "apps/sayit",
 		"title": "Sayit (Sags)"
 	},
 	{
-    	"key": "apps/sygen",
+		"key": "apps/sygen",
 		"title": "Symbol Generator 2x2"
 	},
 	{
-    	"key": "apps/symbol",
+		"key": "apps/symbol",
 		"title": "Define Symbol"
 	},
 	{
-    	"key": "apps/tester",
+		"key": "apps/tester",
 		"title": "Tester"
 	},
 	{
@@ -225,7 +229,7 @@ cpcBasic.addIndex("apps", function () { /*
 		"meta": "D"
 	},
 	{
-    	"key": "apps/timetest",
+		"key": "apps/timetest",
 		"title": "Time Tester"
 	},
 	{
@@ -247,167 +251,167 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Vocabulary Test (Vokabeltest)"
 	},
 	{
-    	"key": "basicode/basicode",
+		"key": "basicode/basicode",
 		"title": "BasiCode Library"
 	},
 	{
-    	"key": "basicode/bchelp",
+		"key": "basicode/bchelp",
 		"title": "BC Help (BC Hilfe)"
 	},
 	{
-    	"key": "basicode/countries",
+		"key": "basicode/countries",
 		"title": "Countries and Cities (Landen)"
 	},
 	{
-    	"key": "basicode/doctor",
+		"key": "basicode/doctor",
 		"title": "Doctor"
 	},
 	{
-    	"key": "basicode/ellipses",
+		"key": "basicode/ellipses",
 		"title": "Ellipses (Ellipsen)"
 	},
 	{
-    	"key": "basicode/figures",
+		"key": "basicode/figures",
 		"title": "Figures (Figuren)"
 	},
 	{
-    	"key": "basicode/friendsh",
+		"key": "basicode/friendsh",
 		"title": "Friendship"
 	},
 	{
-    	"key": "basicode/funcplot",
+		"key": "basicode/funcplot",
 		"title": "Function Plotting (Funktionen)"
 	},
 	{
-    	"key": "basicode/imposfig",
+		"key": "basicode/imposfig",
 		"title": "Impossible Figures (Figuren)"
 	},
 	{
-    	"key": "basicode/nonius",
+		"key": "basicode/nonius",
 		"title": "Nonius (Vernier Scale)"
 	},
 	{
-    	"key": "basicode/reaction",
+		"key": "basicode/reaction",
 		"title": "Reaction"
 	},
 	{
-    	"key": "basicode/rotation",
+		"key": "basicode/rotation",
 		"title": "Rotation"
 	},
 	{
-    	"key": "basicode/rsa1",
+		"key": "basicode/rsa1",
 		"title": "RSA 1 (Intro, Key)"
 	},
 	{
-    	"key": "basicode/rsa2",
+		"key": "basicode/rsa2",
 		"title": "RSA 2 (Encode)"
 	},
 	{
-    	"key": "basicode/rsa3",
+		"key": "basicode/rsa3",
 		"title": "RSA 3 (Decode)"
 	},
 		{
-    	"key": "basicode/tennis",
+		"key": "basicode/tennis",
 		"title": "Tennis"
 	},
 	{
-    	"key": "basicode/typen",
+		"key": "basicode/typen",
 		"title": "Typen"
 	},
 	{
-    	"key": "demo/10print",
+		"key": "demo/10print",
 		"title": "10 PRINT"
 	},
 	{
-    	"key": "demo/100demo",
+		"key": "demo/100demo",
 		"title": "100% BASIC Demo"
 	},
 	{
-    	"key": "demo/acpc6128",
+		"key": "demo/acpc6128",
 		"title": "Amstrad CPC 6128 Demo"
 	},
 	{
-    	"key": "demo/art",
+		"key": "demo/art",
 		"title": "Art: Screens Unlimited"
 	},
 	{
-    	"key": "demo/asciiart",
+		"key": "demo/asciiart",
 		"title": "ASCII Art"
 	},
 	{
-    	"key": "demo/basworld",
+		"key": "demo/basworld",
 		"title": "BASIC World Demo"
 	},
 		{
-    	"key": "demo/blitter",
+		"key": "demo/blitter",
 		"title": "Blitter"
 	},
 	{
-    	"key": "demo/boogle",
+		"key": "demo/boogle",
 		"title": "Boogle"
 	},
 	{
-    	"key": "demo/btilesim",
+		"key": "demo/btilesim",
 		"title": "British Council Tile Sim"
 	},
 	{
-    	"key": "demo/circlewr",
+		"key": "demo/circlewr",
 		"title": "Circle Writer"
 	},
 	{
-    	"key": "demo/flags",
+		"key": "demo/flags",
 		"title": "Flags of the World"
 	},
 	{
-    	"key": "demo/frames",
+		"key": "demo/frames",
 		"title": "Frames Screen Saver"
 	},
 	{
-    	"key": "demo/frames",
+		"key": "demo/frames",
 		"title": "Frames"
 	},
 	{
-    	"key": "demo/gdemo",
+		"key": "demo/gdemo",
 		"title": "Graphics Demo 1"
 	},
 	{
-    	"key": "demo/gdemo2",
+		"key": "demo/gdemo2",
 		"title": "Graphics Demo 2"
 	},
 	{
-    	"key": "demo/grafix",
+		"key": "demo/grafix",
 		"title": "Grafix Demo"
 	},
 	{
-    	"key": "demo/hello1",
+		"key": "demo/hello1",
 		"title": "Hello World"
 	},
 	{
-    	"key": "demo/house",
+		"key": "demo/house",
 		"title": "House for Sale"
 	},
 	{
-    	"key": "demo/isgdemo",
+		"key": "demo/isgdemo",
 		"title": "Interrupt/Sound/Graphics Demo"
 	},
 	{
-    	"key": "demo/lifegame",
+		"key": "demo/lifegame",
 		"title": "Game of Life"
 	},
 	{
-    	"key": "demo/mondrian",
+		"key": "demo/mondrian",
 		"title": "Mondrian"
 	},
 	{
-    	"key": "demo/nicholas",
+		"key": "demo/nicholas",
 		"title": "House of St Nicholas"
 	},
 	{
-    	"key": "demo/nosmoke",
+		"key": "demo/nosmoke",
 		"title": "No Smoking (Screen)"
 	},
 	{
-    	"key": "demo/popsi",
+		"key": "demo/popsi",
 		"title": "Popsi (Screen)"
 	},
 	{
@@ -423,33 +427,41 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "The Scannerisator Data",
 		"meta": "D"
 	},
-    {
-    	"key": "demo/scpc6128",
+	{
+		"key": "demo/scpc6128",
 		"title": "Schneider CPC 6128 Demo"
 	},
 	{
-    	"key": "demo/scpc6128.dat",
+		"key": "demo/scpc6128.dat",
 		"title": "Data for logo in demo scpc6128 (schlogo)",
 		"meta": "D"
 	},
 	{
-    	"key": "demo/serpent",
+		"key": "demo/serpent",
 		"title": "Serpent"
 	},
 	{
-    	"key": "demo/sultan",
+		"key": "demo/sultan",
 		"title": "Sultan's Maze Demo Screen"
 	},
 	{
-    	"key": "games/3dfour",
+		"key": "games/3dfour",
 		"title": "3D-Four In A Row"
 	},
 	{
-    	"key": "games/artwar",
+		"key": "games/3heaps",
+		"title": "3 Heaps (3 Haufen)"
+	},
+	{
+		"key": "games/3times1",
+		"title": "3 Times 1 (3 mal 1)"
+	},
+	{
+		"key": "games/artwar",
 		"title": "Art War (Loader)"
 	},
 	{
-    	"key": "games/artwar2",
+		"key": "games/artwar2",
 		"title": "Art War (Program)"
 	},
 	{
@@ -458,50 +470,50 @@ cpcBasic.addIndex("apps", function () { /*
 		"meta": "D"
 	},
 	{
-    	"key": "games/assess",
+		"key": "games/assess",
 		"title": "Assessment"
 	},
 	{
-    	"key": "games/atombu",
+		"key": "games/atombu",
 		"title": "Atombunker"
 	},
 	{
-    	"key": "games/atombu0.dat",
+		"key": "games/atombu0.dat",
 		"title": "Atombu data 0",
 		"meta": "D"
 	},
 	{
-    	"key": "games/atombu1.dat",
+		"key": "games/atombu1.dat",
 		"title": "Atombu data 1",
 		"meta": "D"
 	},
 	{
-    	"key": "games/atombu2.dat",
+		"key": "games/atombu2.dat",
 		"title": "Atombu data 2",
 		"meta": "D"
 	},
 	{
-    	"key": "games/atomed",
+		"key": "games/atomed",
 		"title": "Atombunker Editor"
 	},
 	{
-    	"key": "games/ballcra",
+		"key": "games/ballcra",
 		"title": "Ball Cracker"
 	},
 	{
-    	"key": "games/balloon",
+		"key": "games/balloon",
 		"title": "Balloon"
 	},
 	{
-    	"key": "games/basgame2",
+		"key": "games/basgame2",
 		"title": "BASIC Game 2"
 	},
 	{
-    	"key": "games/bigprice",
+		"key": "games/bigprice",
 		"title": "Big Price (Der Grosse Preis)"
 	},
 	{
-    	"key": "games/budrumi",
+		"key": "games/budrumi",
 		"title": "Budrumi"
 	},
 	{
@@ -524,6 +536,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "games/cards",
 		"title": "Card Games: Blackjack, Memory"
+	},
+	{
+		"key": "games/castle",
+		"title": "Castle Crystal"
 	},
 	{
 		"key": "games/catch",
@@ -614,6 +630,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Black Joker (Der Schwarze Joker)"
 	},
 	{
+		"key": "games/kalaha",
+		"title": "Kalaha"
+	},
+	{
 		"key": "games/klondike",
 		"title": "Klondike"
 	},
@@ -622,11 +642,11 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Lander"
 	},
 	{
-    	"key": "games/lenin",
+		"key": "games/lenin",
 		"title": "Leningrad (Loader)"
 	},
 	{
-    	"key": "games/lenin2",
+		"key": "games/lenin2",
 		"title": "Leningrad (Program)"
 	},
 	{
@@ -662,6 +682,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "games/patience",
 		"title": "Patience: The Card Game"
+	},
+	{
+		"key": "games/points",
+		"title": "Points"
 	},
 	{
 		"key": "games/preside",
@@ -717,35 +741,35 @@ cpcBasic.addIndex("apps", function () { /*
 		"meta": "D"
 	},
 	{
-    	"key": "games/sultan",
+		"key": "games/sultan",
 		"title": "Sultan's Maze: Amsoft Logo"
 	},
 	{
-    	"key": "games/sultan2",
+		"key": "games/sultan2",
 		"title": "Sultan's Maze: Game"
 	},
 	{
-    	"key": "games/sunburst",
+		"key": "games/sunburst",
 		"title": "Sunburst Contamination"
 	},
 	{
-    	"key": "games/swamp",
+		"key": "games/swamp",
 		"title": "Swamp"
 	},
 	{
-    	"key": "games/tanks",
+		"key": "games/tanks",
 		"title": "Tanks Alot!"
 	},
 	{
-    	"key": "games/tarot",
+		"key": "games/tarot",
 		"title": "Tarot Reader"
 	},
 	{
-    	"key": "games/titan",
+		"key": "games/titan",
 		"title": "Titan"
 	},
 	{
-    	"key": "games/tower",
+		"key": "games/tower",
 		"title": "Tower"
 	},
 	{
@@ -757,71 +781,71 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Yahtzee 2 (Kniffel)"
 	},
 	{
-    	"key": "math/anageo",
+		"key": "math/anageo",
 		"title": "Analytical Geometry"
 	},
 	{
-    	"key": "math/complex",
+		"key": "math/complex",
 		"title": "Complex numbers (Komplexe Zahlen)"
 	},
 	{
-    	"key": "math/derivat",
+		"key": "math/derivat",
 		"title": "Derivatives of Polynomials (Ableitung)"
 	},
 	{
-    	"key": "math/division",
+		"key": "math/division",
 		"title": "Division of long numbers (Division)"
 	},
 	{
-    	"key": "math/euler",
+		"key": "math/euler",
 		"title": "Compute e with 1000 digits"
 	},
 	{
-    	"key": "math/factorials",
+		"key": "math/factorials",
 		"title": "Big Factorials (Fakultaeten)"
-    },
+	},
 	{
 		"key": "math/fractals",
 		"title": "Fractals"
 	},
 	{
-    	"key": "math/fractions",
+		"key": "math/fractions",
 		"title": "Fractions (Bruchrechnen)"
 	},
 	{
-    	"key": "math/funcarea",
+		"key": "math/funcarea",
 		"title": "Functional Area"
 	},
 	{
-    	"key": "math/funcspec",
+		"key": "math/funcspec",
 		"title": "Functional Spectrum"
 	},
 	{
-    	"key": "math/graph6",
+		"key": "math/graph6",
 		"title": "3D Hidden Line Removel Graph"
 	},
 		{
-    	"key": "math/logicals",
+		"key": "math/logicals",
 		"title": "Logicals"
 	},
 	{
-    	"key": "math/ninedig2",
+		"key": "math/ninedig2",
 		"title": "Nine Digits 2 (tokenized)"
 	},
 	{
-    	"key": "math/quadfunc",
+		"key": "math/quadfunc",
 		"title": "Quadratic Function"
 	},
 	{
-    	"key": "math/raytrace",
+		"key": "math/raytrace",
 		"title": "Raytracing"
 	},
 	{
-    	"key": "math/regress",
+		"key": "math/regress",
 		"title": "Regression (Ausgleich)"
 	},
 	{
-    	"key": "math/striart",
+		"key": "math/striart",
 		"title": "String Art"
 	},
 	{
@@ -885,7 +909,7 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "First Test Program (empty)"
 	},
 	{
-    	"key": "test/art",
+		"key": "test/art",
 		"title": "Computer Art"
 	},
 	{
@@ -893,7 +917,7 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Basic Bank Manager"
 	},
 	{
-    	"key": "test/blocky",
+		"key": "test/blocky",
 		"title": "Blocky CPC Demo"
 	},
 	{
@@ -905,39 +929,39 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "BM Benchmark 8"
 	},
 	{
-    	"key": "test/broken",
+		"key": "test/broken",
 		"title": "Broken Keyboard (Kaputt)"
 	},
 	{
-    	"key": "test/charset",
+		"key": "test/charset",
 		"title": "Character set"
 	},
 	{
-    	"key": "test/circles",
+		"key": "test/circles",
 		"title": "Drawing circles"
-    },
+	},
 	{
 		"key": "test/circlewr",
 		"title": "Circle Writer"
-    },
+	},
 	{
-    	"key": "test/colors",
+		"key": "test/colors",
 		"title": "Colors CPC Demo"
 	},
 	{
-    	"key": "test/cpc464ch",
+		"key": "test/cpc464ch",
 		"title": "CPC 464 Character Art"
 	},
 	{
-    	"key": "test/cpcbasic",
+		"key": "test/cpcbasic",
 		"title": "CPC Basic"
 	},
 	{
-    	"key": "test/cpclib",
+		"key": "test/cpclib",
 		"title": "CPC Lib"
 	},
 	{
-    	"key": "test/cpcmhz",
+		"key": "test/cpcmhz",
 		"title": "CPC Mhz"
 	},
 	{
@@ -969,15 +993,15 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Expansion RAM Test"
 	},
 	{
-    	"key": "test/fancy",
+		"key": "test/fancy",
 		"title": "Test copychr$"
 	},
 	{
-    	"key": "test/fill",
+		"key": "test/fill",
 		"title": "Test Fill"
 	},
 	{
-    	"key": "test/graphics",
+		"key": "test/graphics",
 		"title": "Graphics CPC Demo"
 	},
 	{
@@ -1029,7 +1053,7 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "RAM Test"
 	},
 	{
-    	"key": "test/rasterci",
+		"key": "test/rasterci",
 		"title": "Raster Circle"
 	},
 	{

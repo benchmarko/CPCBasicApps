@@ -22,7 +22,7 @@ cpcBasic.addItem("", function () { /*
 510 IF ti<=0 THEN a=REMAIN(0)
 520 RETURN
 700 while time<t!:call &bd19:wend:j=JOY(0):IF ti=0 THEN GOSUB 980:RETURN
-701 IF j=0 THEN 700
+701 IF j=0 THEN 750: '700
 702 ' while INKEY$<>"":wend: 'FOR i=1 TO 50:t$=INKEY$:NEXT
 705 IF j AND 16 THEN gosub 760
 710 IF j AND 4 THEN GOSUB 980:x=x-1
