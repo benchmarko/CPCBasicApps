@@ -704,6 +704,15 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Shot Game (Textual)"
 	},
 	{
+		"key": "games/smaze",
+		"title": "Super Maze"
+	},
+	{
+		"key": "games/smaze.dat",
+		"title": "Super Maze Data",
+		"meta": "D"
+	},
+	{
 		"key": "games/smily",
 		"title": "Smily"
 	},
@@ -779,6 +788,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "games/yahtzee2",
 		"title": "Yahtzee 2 (Kniffel)"
+	},
+	{
+		"key": "math/abelian",
+		"title": "Abelian sandpile model"
 	},
 	{
 		"key": "math/anageo",
@@ -903,6 +916,182 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "music/touch",
 		"title": "U Can't Touch This (MC Hammer)"
+	},
+	{
+		"key": "rosetta/24game",
+		"title": "The 24 Game"
+	},
+	{
+		"key": "rosetta/abelian",
+		"title": "Abelian sandpile model"
+	},
+	{
+		"key": "rosetta/animate",
+		"title": "Animate a pendulum"
+	},
+	{
+		"key": "rosetta/archimed",
+		"title": "Archimedean spiral"
+	},
+	{
+		"key": "rosetta/audiofre",
+		"title": "Audio frequency generator"
+	},
+	{
+		"key": "rosetta/barnsley",
+		"title": "Barnsley fern"
+	},
+	{
+		"key": "rosetta/binary",
+		"title": "Binary digits"
+	},
+	{
+		"key": "rosetta/biorhyth",
+		"title": "Biorhythms"
+	},
+	{
+		"key": "rosetta/brownian",
+		"title": "Brownian tree"
+	},
+	{
+		"key": "rosetta/callfor",
+		"title": "Call a foreign-language function"
+	},
+	{
+		"key": "rosetta/chaos",
+		"title": "Chaos game"
+	},
+	{
+		"key": "rosetta/colorscr",
+		"title": "Color of a screen pixel"
+	},
+	{
+		"key": "rosetta/colorbar",
+		"title": "Colour bars/Display"
+	},
+	{
+		"key": "rosetta/constrpo",
+		"title": "Constrained random points on a circle"
+	},
+	{
+		"key": "rosetta/deletefi",
+		"title": "Delete a file"
+	},
+	{
+		"key": "rosetta/detectdi",
+		"title": "Detect division by zero"
+	},
+	{
+		"key": "rosetta/drawclk",
+		"title": "Draw a clock"
+	},
+	{
+		"key": "rosetta/drawcub",
+		"title": "Draw a cuboid"
+	},
+	{
+		"key": "rosetta/drawsp",
+		"title": "Draw a sphere (ASCII)"
+	},
+	{
+		"key": "rosetta/drawsp2",
+		"title": "Draw a sphere"
+	},
+	{
+		"key": "rosetta/ethiopia",
+		"title": "Ethiopian multiplication"
+	},
+	{
+		"key": "rosetta/execute",
+		"title": "Execute a system command"
+	},
+	{
+		"key": "rosetta/forest",
+		"title": "Forest fire"
+	},
+	{
+		"key": "rosetta/function",
+		"title": "Function definition"
+	},
+	{
+		"key": "rosetta/gofish",
+		"title": "Go Fish"
+	},
+	{
+		"key": "rosetta/guessnum",
+		"title": "Guess the number"
+	},
+	{
+		"key": "rosetta/guessnfb",
+		"title": "Guess the number with feedback"
+	},
+	{
+		"key": "rosetta/happynum",
+		"title": "Happy numbers"
+	},
+	{
+		"key": "rosetta/hellolp",
+		"title": "Hello world (Line printer)"
+	},
+	{
+		"key": "rosetta/hellonb",
+		"title": "Hello world (Newbie)"
+	},
+	{
+		"key": "rosetta/introspe",
+		"title": "Introspection"
+	},
+	{
+		"key": "rosetta/joystick",
+		"title": "Joystick position"
+	},
+	{
+		"key": "rosetta/juliaset",
+		"title": "Julia set"
+	},
+	{
+		"key": "rosetta/keybofl",
+		"title": "Keyboard input: Flush the keyboard buffer"
+	},
+	{
+		"key": "rosetta/keyboyn",
+		"title": "Keyboard input: Obtain a Y or N response"
+	},
+	{
+		"key": "rosetta/knights",
+		"title": "Knight's tour"
+	},
+	{
+		"key": "rosetta/langtons",
+		"title": "Langton's ant"
+	},
+	{
+		"key": "rosetta/magic8",
+		"title": "Magic 8-ball"
+	},
+	{
+		"key": "rosetta/makeback",
+		"title": "Make a backup file"
+	},
+	{
+		"key": "rosetta/mandelbr",
+		"title": "Mandelbrot set"
+	},
+	{
+		"key": "rosetta/matrixra",
+		"title": "Matrix digital rain"
+	},
+	{
+		"key": "rosetta/mcnugget",
+		"title": "McNuggets problem"
+	},
+	{
+		"key": "rosetta/metronom",
+		"title": "Metronome"
+	},
+	{
+		"key": "rosetta/mineswee",
+		"title": "Minesweeper game"
 	},
 	{
 		"key": "test/1st",
@@ -1035,6 +1224,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "test/movepack",
 		"title": "Move Pack"
+	},
+	{
+		"key": "test/movingsh",
+		"title": "Attack of the Moving Shapes #2"
 	},
 	{
 		"key": "test/piechart",

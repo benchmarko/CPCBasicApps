@@ -20,7 +20,7 @@ cpcBasic.addItem("", function () { /*
 300 MODE m
 303 xd=2^(2-min(m,2)):yd=((m=3)+2)
 305 cols=80/xd:rows=50/yd
-306 window 12/80*cols,cols-12/80*cols+1,rows/4,rows-rows/4
+306 window (9-(m=0))/80*cols,cols-8/80*cols,rows/5.4,rows-rows/6
 308 pens=4^(2-m mod 3)+abs(m=2)
 310 print"Mode: ";m
 312 print"Cols:";cols

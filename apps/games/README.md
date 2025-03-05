@@ -261,6 +261,11 @@ From the [BASIC 10-Liner Contest 2019](https://gkanold.wixsite.com/homeputerium/
 
 [![Shot Game (Textual)](./img/shot.png)](../../dist/index.html?database=apps&example=games/shot)
 
+### smaze - Super Maze
+
+[![Super Maze](./img/smaze.png)](../../dist/index.html?database=apps&example=games/smaze)
+[![Super Maze](./img/smaze2.png)](../../dist/index.html?database=apps&example=games/smaze) (c) Computrex Software Ltd., 1989
+
 ### smily - Smily
 
 [![Smily](./img/smily.png)](../../dist/index.html?database=apps&example=games/smily)

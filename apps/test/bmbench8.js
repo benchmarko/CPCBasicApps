@@ -109,14 +109,8 @@ cpcBasic.addItem("", function () { /*
 2065 m = 3
 2066 x = 1
 2067 WHILE m * m <= n
-2068 IF sieve1(i) = 1 THEN 2070
-2069 x = x + 1
-2070 j = INT((m * m - 3) / 2)
-2071 WHILE j < nHalf
-2072 sieve1(j) = 1
-2073 j = j + m
-2074 WEND
-2100   i = i + 1
+2068 IF sieve1(i) = 0 THEN x = x + 1: j = INT((m * m - 3) / 2): WHILE j < nHalf: sieve1(j) = 1: j = j + m: WEND
+2100 i = i + 1
 2101 m = m + 2
 2102 WEND
 2103 REM count remaining primes
