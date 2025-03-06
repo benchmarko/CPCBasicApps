@@ -5,7 +5,8 @@
 cpcBasic.addItem("", function () { /*
 1 REM introspe - Introspection
 5 REM https://rosettacode.org/wiki/Introspection#Locomotive_Basic
-6 REM not with CPCBasic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
+7 REM not with CPCBasic
 10 s=&4000:SYMBOL AFTER 256:MEMORY s-1
 20 FOR i=0 to 34:READ a:POKE s+i,a:NEXT
 30 DATA &c5,&d5,&e5,&f5,&01,&00,&df,&ed,&49,&01,&86,&7f,&ed,&49

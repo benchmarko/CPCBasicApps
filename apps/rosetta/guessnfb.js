@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 REM guessnfb - Guess the number with feedback
 5 REM https://rosettacode.org/wiki/Guess_the_number/With_feedback#Locomotive_Basic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 CLS:RANDOMIZE TIME
 20 PRINT "Please specify lower and upper limits":guess=0
 30 INPUT "  (must be positive integers) :", first, last

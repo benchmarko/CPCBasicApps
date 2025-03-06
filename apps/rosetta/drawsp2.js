@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 REM drawsp2 - Draw a sphere
 5 REM https://rosettacode.org/wiki/Draw_a_sphere#Locomotive_Basic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 MODE 2:ORIGIN 320,200:INK 0,0:INK 1,26
 20 DIM v(2),vec(2)
 30 v(0)=30:v(1)=30:v(2)=-50

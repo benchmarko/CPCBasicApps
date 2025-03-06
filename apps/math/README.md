@@ -1,6 +1,6 @@
 # CPCBasic Apps Collection (Math)
 
-CPCBasicApps is a collection of CPC BASIC apps.
+[CPCBasicApps](https://benchmarko.github.io/CPCBasicApps/) is a collection of CPC BASIC apps.
 They can be run on a Amstrad CPC 464/664/6128, in an emulator or with
 [CPCBasic](https://benchmarko.github.io/CPCBasic/) or [CPCBasicTS](https://benchmarko.github.io/CPCBasicTS/).
 
@@ -8,15 +8,13 @@ Links:
 [Source code](https://github.com/benchmarko/CPCBasicApps/),
 [HTML Readme](https://github.com/benchmarko/CPCBasicApps/#readme),
 
-## Some Math Highlights
-
 ## Some Math Highlights {#math-highlights}
 
 ### abelian - Abelian sandpile model {#abelian}
 
 [![Abelian sandpile model](./img/abelian.png)](../../dist/index.html?database=apps&example=math/abelian)
 
-Original version: [Rosetta Code Collection](../rosetta/#abelian)
+Original version: [Abelian sandpile model](../rosetta/#abelian) in the Rosetta Code collection.
 
 ### anageo - Analytical Geometry {#anageo}
 
@@ -74,7 +72,7 @@ Original version: [Rosetta Code Collection](../rosetta/#abelian)
 
 [![Nine Digits 2](./img/ninedig2.png)](../../dist/index.html?database=apps&example=math/ninedig2)
 
-### Quadratic Function {#quadfunc}
+### quadfunc - Quadratic Function {#quadfunc}
 
 [![Quadratic Function](./img/quadfunc.png)](../../dist/index.html?database=apps&example=math/quadfunc)
 [![Quadratic Function](./img/quadfunc2.png)](../../dist/index.html?database=apps&example=math/quadfunc&input=6)

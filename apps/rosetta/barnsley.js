@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 REM barnsley - Barnsley fern
 5 REM https://rosettacode.org/wiki/Barnsley_fern#Locomotive_Basic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 mode 2:ink 0,0:ink 1,18:randomize time
 20 scale=38
 30 maxpoints=20000: x=0: y=0

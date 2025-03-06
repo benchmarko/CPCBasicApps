@@ -5,7 +5,8 @@
 cpcBasic.addItem("", function () { /*
 1 REM metronom - Metronome
 5 REM https://rosettacode.org/wiki/Metronome#Locomotive_Basic
-6 REM modifications: inserted FRAME
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
+7 REM modifications: inserted FRAME in 50
 10 bpm=120:bpb=4
 20 sleep=50*60/bpm
 30 counter=0

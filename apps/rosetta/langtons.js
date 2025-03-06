@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 REM langtons - Langton's ant
 5 REM https://rosettacode.org/wiki/Langton%27s_ant#Locomotive_Basic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 mode 1:defint a-z:deg
 20 ink 1,0:ink 0,26
 30 x=50:y=50:ang=270

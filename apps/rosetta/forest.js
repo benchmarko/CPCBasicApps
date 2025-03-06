@@ -5,7 +5,8 @@
 cpcBasic.addItem("", function () { /*
 1 REM forest - Forest fire
 5 REM https://rosettacode.org/wiki/Forest_fire#Locomotive_Basic
-6 REM modifications: delay loop in line 1035
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
+7 REM modifications: delay loop in line 1035
 10 randomize time:mode 1:ink 0,0:ink 1,9:ink 2,15:defint a-o,r-z
 20 pfire=0.00002:ptree=0.002
 30 dimx=90:dimy=90

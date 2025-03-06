@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 REM mcnugget - McNuggets problem
 5 REM https://rosettacode.org/wiki/McNuggets_problem#Locomotive_Basic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 100 CLEAR
 110 DIM a(100)
 120 FOR a=0 TO 100/6

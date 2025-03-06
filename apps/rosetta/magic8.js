@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 REM magic8 - Magic 8-ball
 5 REM https://rosettacode.org/wiki/Magic_8-ball#Locomotive_Basic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 mode 2:defint a-z:randomize time
 20 input "Your question (hit Return to quit)";i$
 30 if i$="" then print "Goodbye!":end

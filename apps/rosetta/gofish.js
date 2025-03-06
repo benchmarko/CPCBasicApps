@@ -5,7 +5,8 @@
 cpcBasic.addItem("", function () { /*
 1 REM gofish - Go Fish
 5 REM https://rosettacode.org/wiki/Go_Fish/Locomotive_Basic
-6 REM https://en.wikipedia.org/wiki/Go_Fish
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
+7 REM https://en.wikipedia.org/wiki/Go_Fish
 10 cls:randomize time:defint a-z
 20 dim play(13),compu(13),deck(13),guess(13),poss(13),asked(13)
 30 card$="A234567890JQK"

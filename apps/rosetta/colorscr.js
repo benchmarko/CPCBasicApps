@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 REM colorscr - Color of a screen pixel
 5 REM https://rosettacode.org/wiki/Color_of_a_screen_pixel#Locomotive_Basic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 x=320:y=200
 15 mode 1:plot x,y,3
 20 color=TEST(x,y)

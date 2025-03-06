@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 REM animate - Animate a pendulum
 5 REM https://rosettacode.org/wiki/Animate_a_pendulum#Locomotive_Basic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 mode 1
 20 theta=pi/2
 30 g=9.81

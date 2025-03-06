@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 REM audiofre - Audio frequency generator
 5 REM https://rosettacode.org/wiki/Audio_frequency_generator#Locomotive_Basic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 mode 1:input "Enter initial frequency in Hz";f:cls
 20 if sq(2)<128 then sound 2,62500/f,100
 30 a$=inkey$

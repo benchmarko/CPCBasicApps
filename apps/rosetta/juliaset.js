@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 REM juliaset - Julia set
 5 REM https://rosettacode.org/wiki/Julia_set#Locomotive_Basic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 MODE 3    ' Note the CPCBasic-only screen mode!
 20 FOR xp = 0 TO 639
 30 FOR yp = 0 TO 399

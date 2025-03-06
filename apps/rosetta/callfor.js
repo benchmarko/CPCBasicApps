@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 REM callfor - Call a foreign-language function
 5 REM https://rosettacode.org/wiki/Call_a_foreign-language_function#Locomotive_Basic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 'org &1000
 20 'ld a,'A'
 30 'call &bb5a

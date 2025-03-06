@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 REM abelian - Abelian sandpile model
 5 REM https://rosettacode.org/wiki/Abelian_sandpile_model#Locomotive_Basic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 mode 1:defint a-z
 20 height=15000:size=100
 30 ink 0,0:ink 1,18:ink 2,8:ink 3,24

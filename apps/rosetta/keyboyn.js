@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 REM keyboyn - Keyboard input: Obtain a Y or N response
 5 REM https://rosettacode.org/wiki/Keyboard_input/Obtain_a_Y_or_N_response#Locomotive_Basic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 CLEAR INPUT
 20 PRINT "Press Y or N to continue"
 30 a$=LOWER$(INKEY$)

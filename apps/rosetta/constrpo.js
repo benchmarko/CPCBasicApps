@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 REM constrpo - Constrained random points on a circle
 5 REM https://rosettacode.org/wiki/Constrained_random_points_on_a_circle#Locomotive_Basic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 MODE 1:RANDOMIZE TIME
 20 FOR J=1 TO 100
 30 X=INT(RND*30-15)

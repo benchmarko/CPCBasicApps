@@ -5,7 +5,8 @@
 cpcBasic.addItem("", function () { /*
 1 REM drawclk - Draw a clock
 5 REM https://rosettacode.org/wiki/Draw_a_clock#Locomotive_Basic
-6 REM (inserted FRAME in line 200)
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
+7 REM modifications: inserted FRAME in line 200
 10 mode 1:defint a-y:deg
 20 input "Current time (HH:MM)";t$
 30 h=val(mid$(t$,1,2))

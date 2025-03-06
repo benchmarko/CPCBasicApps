@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 REM knights - Knight's tour
 5 REM https://rosettacode.org/wiki/Knight%27s_tour#Locomotive_Basic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 mode 1:defint a-z
 20 input "Board size: ",size
 30 input "Start position: ",a$

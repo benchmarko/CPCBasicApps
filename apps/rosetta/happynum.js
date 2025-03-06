@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 REM happynum - Happy numbers
 5 REM https://rosettacode.org/wiki/Happy_numbers#Locomotive_Basic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 mode 1:defint a-z
 20 for i=1 to 100
 30 i2=i

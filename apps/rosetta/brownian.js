@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 REM brownian - Brownian tree
 5 REM https://rosettacode.org/wiki/Brownian_tree#Locomotive_Basic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 MODE 1:DEFINT a-z:RANDOMIZE TIME:np=10000
 20 INK 0,0:INK 1,26:BORDER 0
 30 PLOT 320,200

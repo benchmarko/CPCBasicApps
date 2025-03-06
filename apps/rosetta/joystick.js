@@ -5,7 +5,8 @@
 cpcBasic.addItem("", function () { /*
 1 REM joystick - Joystick position
 5 REM https://rosettacode.org/wiki/Joystick_position#Locomotive_Basic
-6 REM modifications: inserted FRAME in line 125
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
+7 REM modifications: inserted FRAME in line 125
 10 MODE 1:BORDER 14:x=320:y=200:d=1
 20 a=JOY(0)  ' read state of first joystick
 30 IF d THEN q$="*" ELSE q$=" "

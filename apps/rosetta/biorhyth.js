@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 REM biorhyth - Biorhythms
 5 REM https://rosettacode.org/wiki/Biorhythms#Locomotive_Basic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 input "Birthday (y,m,d) ",y,m,d:gosub 3000
 20 gosub 1000
 30 bday = day

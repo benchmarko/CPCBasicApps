@@ -5,6 +5,7 @@
 cpcBasic.addItem("", function () { /*
 1 REM ethiopia - Ethiopian multiplication
 5 REM https://rosettacode.org/wiki/Ethiopian_multiplication#Locomotive_Basic
+6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 DEF FNiseven(a)=(a+1) MOD 2
 20 DEF FNhalf(a)=INT(a/2)
 30 DEF FNdouble(a)=2*a

@@ -1,6 +1,6 @@
 # CPCBasic Apps Collection (Music)
 
-CPCBasicApps is a collection of CPC BASIC apps.
+[CPCBasicApps](https://benchmarko.github.io/CPCBasicApps/) is a collection of CPC BASIC apps.
 They can be run on a Amstrad CPC 464/664/6128, in an emulator or with
 [CPCBasic](https://benchmarko.github.io/CPCBasic/) or [CPCBasicTS](https://benchmarko.github.io/CPCBasicTS/).
 
@@ -10,19 +10,19 @@ Links:
 
 ## Some Music Highlights
 
-### asbtune - A small BASIC tune
+### asbtune - A small BASIC tune {#asbtune}
 
 [![A small BASIC tune](./img/asbtune.png)](../../dist/index.html?database=apps&example=music/asbtune) (c) Roald (Mr.Lou) Strauss, 2018
 
 A fantastic tune! One of my favorites.
 
-### axelf - Axel F
+### axelf - Axel F {#axelf}
 
 [![Axel F](./img/axelf.png)](../../dist/index.html?database=apps&example=music/axelf) by Harold Faltermeyer
 
 - [Axel F - Harold Faltermeyer (Original Version)](https://youtu.be/dASqLXiuomY)
 
-### bach - Bach
+### bach - Bach {#bach}
 
 [![Bach](./img/bach.png)](../../dist/index.html?database=apps&example=music/bach) (c) Wolfgang Volz
 
@@ -30,7 +30,7 @@ Johann Sebastian Bach: "Wohl mir,dass ich Jesum habe"
 
 - [VOCES8: Jesus bleibet meine Freude - JS Bach](https://youtu.be/T5Df7f_BLU8)
 
-### cancan - Cancan
+### cancan - Cancan {#cancan}
 
 [![Cancan](./img/cancan.png)](../../dist/index.html?database=apps&example=music/cancan)
 
@@ -41,7 +41,7 @@ The Schneider CPC 6128 Demo Music.
 - [Offenbach - Infernal Galop](https://youtu.be/okQRnHvw3is?t=61)
 - [Line Rider - Can Can (Galop Infernal - Offenbach](https://youtu.be/oiFHt_ITVaM)
 
-### clarinet - Clarinet
+### clarinet - Clarinet {#clarinet}
 
 [![Clarinet](./img/clarinet.png)](../../dist/index.html?database=apps&example=music/clarinet) (c) Juergen Werner
 
@@ -50,18 +50,18 @@ Clarinet (Klarinettenmuck'l, Jaroslav Skabrada)
 - [Klarinetten Muckl -Klarinettenmuckl](https://youtu.be/2ho-nZ5x_mo)
 - [Klarinettenmuckl, Clarinet and Piano](https://youtu.be/aQfh9IBRSnQ?t=24)
 
-### cpcorgan - CPC Organ
+### cpcorgan - CPC Organ {#cpcorgan}
 
 [![CPC Organ](./img/cpcorgan.png)](../../dist/index.html?database=apps&example=music/cpcorgan)
 [![CPC Organ](./img/cpcorgan2.png)](../../dist/index.html?database=apps&example=music/cpcorgan) (c) Oliver Heggelbacher
 
 CPC Organ (CPC-Orgel) (an app)
 
-### dthymne - Deutschland Hymne
+### dthymne - Deutschland Hymne {#dthymne}
 
 [![Deutschland Hymne](./img/dthymne.png)](../../dist/index.html?database=apps&example=music/dthymne) (c) Andreas Meyer, 1987
 
-### elise -Elise
+### elise - Elise {#elise}
 
 [![Fuer Elise](./img/elise.png)](../../dist/index.html?database=apps&example=music/elise) (c) Jujstronic Software, 1985
 
@@ -69,33 +69,33 @@ CPC Organ (CPC-Orgel) (an app)
 
 - [Line Rider - Für Elise - Ludwig Beethoven](https://youtu.be/qotloiNF-M4)
 
-### menuett - Menuett
+### menuett - Menuett {#menuett}
 
 [![Menuett](./img/menuett.png)](../../dist/index.html?database=apps&example=music/menuett) (c) mIC-Software
 
 Menuett (Minuet) by James Hook
 
-### mexicana - Mexicana
+### mexicana - Mexicana {#mexicana}
 
 [![Mexicana](./img/mexicana.png)](../../dist/index.html?database=apps&example=music/mexicana) (c) Juergen Werner
 
 Dance Mexicana (Jarabe Tapatio, Mexican Hat Dance)
 
-### rocking - Rocking CPC
+### rocking - Rocking CPC {#rocking}
 
 [![Rocking CPC](./img/rocking.png)](../../dist/index.html?database=apps&example=music/rocking) (c) Manfred Lipowski, 1987
 
-### roxette - Roxette
+### roxette - Roxette {#roxette}
 
 [![Roxette](./img/roxette.png)](../../dist/index.html?database=apps&example=music/roxette) (c) Roald (Mr.Lou) Strauss
 
 Roxette: Listen To Your Heart
 
-### ticotico - Tico Tico
+### ticotico - Tico Tico {#ticotico}
 
 [![Tico Tico](./img/ticotico.png)](../../dist/index.html?database=apps&example=music/ticotico)
 
-### touch - Touch
+### touch - Touch {#touch}
 
 [![Touch](./img/touch.png)](../../dist/index.html?database=apps&example=music/touch) (c) Roald (Mr.Lou) Strauss
 
