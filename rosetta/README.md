@@ -38,7 +38,7 @@ Taken from [Rosetta Code: Animate a pendulum](https://rosettacode.org/wiki/Anima
 
 [![Archimedean spiral](./img/archimed.png)](../../dist/index.html?database=apps&example=rosetta/archimed)
 
-Taken from [Rosetta Code: ](https://rosettacode.org/wiki/#Locomotive_Basic).
+Taken from [Rosetta Code: Archimedean spiral](https://rosettacode.org/wiki/Archimedean_spiral#Locomotive_Basic).
 
 ### audiofre - Audio frequency generator {#audiofre}
 

@@ -5,50 +5,34 @@ They can be run on a Amstrad CPC 464/664/6128, in an emulator or with
 [CPCBasic](https://benchmarko.github.io/CPCBasic/) or
 [CPCBasicTS](https://benchmarko.github.io/CPCBasicTS/).
 
-If you start the programs from this collection, a compiled [CPCBasicTS](https://benchmarko.github.io/CPCBasicApps/dist/index.html) is used. (Local link: [CPCBasicTS](./dist/index.html))
+When you start programs from this collection, a compiled version of [CPCBasicTS](https://benchmarko.github.io/CPCBasicApps/dist/index.html) is used.
+(Local link: [CPCBasicTS](./dist/index.html))
 
 Links:
 [Source code](https://github.com/benchmarko/CPCBasicApps/),
 [HTML Readme](https://github.com/benchmarko/CPCBasicApps/#readme),
 
 The initial upload for a app should be in its "original" state.
-After that it can be adapted to run with CPCBasic, CPCBasicTS or other fast emulators.
+Afterward, it may be adapted to run with CPCBasic, CPCBasicTS, or other fast emulators.
 
-## Some Apps Highlights
+## Apps
 
-[Apps collection](./apps/apps/README.md)
+- **Apps**: [Apps Collection](./apps/apps/README.md)
+- **BasiCode**: [BasiCode Collection](./apps/basicode/README.md)
+- **Demos**: [Demo Collection](./apps/demo/README.md)
+- **Math**: [Math Collection](./apps/math/README.md)
+- **Games**: [Games Collection](./apps/games/README.md)
+- **Music**: [Music Collection](./apps/music/README.md)
+- **Test**: [Test Collection](./apps/test/README.md)
 
-## Some BasiCode programs
+## Rosetta
 
-[BasiCode collection](./apps/basicode/README.md)
-
-## Some Demo Highlights
-
-[Demo collection](./apps/demo/README.md)
-
-## Some Math Highlights
-
-[Math collection](./apps/math/README.md)
-
-## Some Games Highlights
-
-[Games collection](./apps/games/README.md)
-
-## Some Music Highlights
-
-[Music collection](./apps/music/README.md)
-
-## Some Rosetta Code Highlights
-
-[Rosetta Code collection](./apps/rosetta/README.md)
-
-## Some Test Highlights
-
-[Test collection](./apps/test/README.md)
+- [Rosetta Code collection](./rosetta/README.md)
 
 ## Misc
 
-If you improve some of the programs, please send me an update. Or upload them to GitHub. Also, if you want to include some new programs...
+If you improve any of the programs, feel free to send an update or upload them to GitHub.  
+Additionally, if you want to include new programs, contributions are welcome!
 
 ## Links
 
