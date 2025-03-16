@@ -12,7 +12,7 @@ It contains a compiled version of [CPCBasicTS](https://github.com/benchmarko/CPC
 
 - index.html
   - This file was modified to use a local path:  
-  `var cpcConfig = { databaseDirs: "../apps,storage" };`
+  `var cpcConfig = { databaseDirs: "../apps,../rosetta,storage" };`
 
 - README.md
 

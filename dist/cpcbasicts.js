@@ -1,4 +1,24 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 // Polyfills.ts - Some Polyfills for old browsers, e.g. IE8, and nodeJS
 //
 /* globals globalThis */
@@ -78,6 +98,18 @@ if (!Polyfills.console.debug) { // IE8 has no console.debug
 if ((typeof globalThis !== "undefined") && !globalThis.window) { // nodeJS
     Polyfills.log("window");
     globalThis.window = globalThis;
+}
+if (!Array.prototype.copyWithin) {
+    Polyfills.log("Array.prototype.copyWithin"); // a simple polyfill where the parts must not overlap and "end" is defined!
+    // a more complex solution would be: https://github.com/gearcase/array-copyWithin/blob/master/index.js
+    // or: https://github.com/zloirock/core-js/blob/master/packages/core-js/internals/array-copy-within.js
+    Array.prototype.copyWithin = function (target, start, end) {
+        for (var i = start; i <= end; i += 1) {
+            this[target] = this[i];
+            target += 1;
+        }
+        return this;
+    };
 }
 if (!Array.prototype.indexOf) { // IE8
     Polyfills.log("Array.prototype.indexOf");
@@ -607,7 +639,8 @@ if (!window.requestAnimationFrame) { // IE9, SliTaz tazweb browser
             var lastTime = 0;
             Polyfills.log("window.requestAnimationFrame, cancelAnimationFrame");
             window.requestAnimationFrame = function (callback /* , element */) {
-                var currTime = new Date().getTime(), timeToCall = Math.max(0, 16 - (currTime - lastTime)), id = window.setTimeout(function () { callback(currTime + timeToCall); }, timeToCall);
+                var currTime = Date.now(), frameDuration = 1000 / 60, // e.g. 60 Hz
+                timeToCall = Math.max(0, frameDuration - (currTime - lastTime)), id = window.setTimeout(function () { callback(currTime + timeToCall); }, timeToCall);
                 lastTime = currTime + timeToCall;
                 return id;
             };
@@ -627,6 +660,10 @@ if (!window.Uint8Array) { // IE9
     };
     window.Uint8Array.BYTES_PER_ELEMENT = 1;
     // A more complex solution would be: https://github.com/inexorabletash/polyfill/blob/master/typedarray.js
+}
+if (!window.Uint8Array.prototype.copyWithin) {
+    Polyfills.log("Uint8Array.prototype.copyWithin");
+    window.Uint8Array.prototype.copyWithin = Array.prototype.copyWithin;
 }
 (Polyfills.console || window.console).debug("Polyfills: (" + Polyfills.getList().length + ") " + Polyfills.getList().join("; "));
 window.Polyfills = Polyfills; // for nodeJs
@@ -719,6 +756,170 @@ if (Polyfills.isNodeAvailable) {
 else {
     amd4browser();
 }
+// Constants.ts - Constants Module
+// (c) Marco Vieth, 2023
+// https://benchmarko.github.io/CPCBasicTS/
+//
+define("Constants", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.ViewID = exports.ModelPropID = void 0;
+    var ModelPropID;
+    (function (ModelPropID) {
+        ModelPropID["arrayBounds"] = "arrayBounds";
+        ModelPropID["autorun"] = "autorun";
+        ModelPropID["basicVersion"] = "basicVersion";
+        ModelPropID["bench"] = "bench";
+        ModelPropID["canvasType"] = "canvasType";
+        ModelPropID["databaseDirs"] = "databaseDirs";
+        ModelPropID["database"] = "database";
+        ModelPropID["debug"] = "debug";
+        ModelPropID["example"] = "example";
+        ModelPropID["exampleIndex"] = "exampleIndex";
+        ModelPropID["implicitLines"] = "implicitLines";
+        ModelPropID["input"] = "input";
+        ModelPropID["integerOverflow"] = "integerOverflow";
+        ModelPropID["kbdLayout"] = "kbdLayout";
+        ModelPropID["linesOnLoad"] = "linesOnLoad";
+        ModelPropID["dragElements"] = "dragElements";
+        ModelPropID["palette"] = "palette";
+        ModelPropID["prettyBrackets"] = "prettyBrackets";
+        ModelPropID["prettyColons"] = "prettyColons";
+        ModelPropID["prettyLowercaseVars"] = "prettyLowercaseVars";
+        ModelPropID["prettySpace"] = "prettySpace";
+        ModelPropID["processFileImports"] = "processFileImports";
+        ModelPropID["selectDataFiles"] = "selectDataFiles";
+        ModelPropID["showConsoleLog"] = "showConsoleLog";
+        ModelPropID["showConvert"] = "showConvert";
+        ModelPropID["showCpc"] = "showCpc";
+        ModelPropID["showDisass"] = "showDisass";
+        ModelPropID["showExport"] = "showExport";
+        ModelPropID["showGallery"] = "showGallery";
+        ModelPropID["showInput"] = "showInput";
+        ModelPropID["showInp2"] = "showInp2";
+        ModelPropID["showKbd"] = "showKbd";
+        ModelPropID["showKbdSettings"] = "showKbdSettings";
+        ModelPropID["showMore"] = "showMore";
+        ModelPropID["showOutput"] = "showOutput";
+        ModelPropID["showResult"] = "showResult";
+        ModelPropID["showSettings"] = "showSettings";
+        ModelPropID["showVariable"] = "showVariable";
+        ModelPropID["showView"] = "showView";
+        ModelPropID["sound"] = "sound";
+        ModelPropID["speed"] = "speed";
+        ModelPropID["trace"] = "trace";
+    })(ModelPropID = exports.ModelPropID || (exports.ModelPropID = {}));
+    var ViewID;
+    (function (ViewID) {
+        ViewID["arrayBoundsInput"] = "arrayBoundsInput";
+        ViewID["autorunInput"] = "autorunInput";
+        ViewID["basicVersionSelect"] = "basicVersionSelect";
+        ViewID["canvasTypeSelect"] = "canvasTypeSelect";
+        ViewID["clearInputButton"] = "clearInputButton";
+        ViewID["consoleLogArea"] = "consoleLogArea";
+        ViewID["consoleLogText"] = "consoleLogText";
+        ViewID["continueButton"] = "continueButton";
+        ViewID["convertArea"] = "convertArea";
+        ViewID["convertButton"] = "convertButton";
+        ViewID["copyTextButton"] = "copyTextButton";
+        ViewID["cpcArea"] = "cpcArea";
+        ViewID["cpcCanvas"] = "cpcCanvas";
+        ViewID["databaseSelect"] = "databaseSelect";
+        ViewID["debugInput"] = "debugInput";
+        ViewID["directorySelect"] = "directorySelect";
+        ViewID["disassArea"] = "disassArea";
+        ViewID["disassInput"] = "disassInput";
+        ViewID["disassText"] = "disassText";
+        ViewID["downloadButton"] = "downloadButton";
+        ViewID["dropZone"] = "dropZone";
+        ViewID["enterButton"] = "enterButton";
+        ViewID["exampleSelect"] = "exampleSelect";
+        ViewID["exportArea"] = "exportArea";
+        ViewID["exportButton"] = "exportButton";
+        ViewID["exportBase64Input"] = "exportBase64Input";
+        ViewID["exportDSKInput"] = "exportDSKInput";
+        ViewID["exportDSKFormatSelect"] = "exportDSKFormatSelect";
+        ViewID["exportDSKStripEmptyInput"] = "exportDSKStripEmptyInput";
+        ViewID["exportFileSelect"] = "exportFileSelect";
+        ViewID["exportTokenizedInput"] = "exportTokenizedInput";
+        ViewID["fileInput"] = "fileInput";
+        ViewID["fullscreenButton"] = "fullscreenButton";
+        ViewID["galleryArea"] = "galleryArea";
+        ViewID["galleryAreaItems"] = "galleryAreaItems";
+        ViewID["galleryButton"] = "galleryButton";
+        ViewID["galleryItem"] = "galleryItem";
+        ViewID["helpButton"] = "helpButton";
+        ViewID["implicitLinesInput"] = "implicitLinesInput";
+        ViewID["inp2Area"] = "inp2Area";
+        ViewID["inp2Text"] = "inp2Text";
+        ViewID["inputArea"] = "inputArea";
+        ViewID["inputText"] = "inputText";
+        ViewID["integerOverflowInput"] = "integerOverflowInput";
+        ViewID["kbdAlpha"] = "kbdAlpha";
+        ViewID["kbdArea"] = "kbdArea";
+        ViewID["kbdAreaInner"] = "kbdAreaInner";
+        ViewID["kbdLayoutSelect"] = "kbdLayoutSelect";
+        ViewID["kbdNum"] = "kbdNum";
+        ViewID["lineNumberAddButton"] = "lineNumberAddButton";
+        ViewID["lineNumberRemoveButton"] = "lineNumberRemoveButton";
+        ViewID["linesOnLoadInput"] = "linesOnLoadInput";
+        ViewID["mainArea"] = "mainArea";
+        ViewID["moreArea"] = "moreArea";
+        ViewID["moreButton"] = "moreButton";
+        ViewID["dragElementsInput"] = "dragElementsInput";
+        ViewID["noCanvas"] = "noCanvas";
+        ViewID["outputArea"] = "outputArea";
+        ViewID["outputText"] = "outputText";
+        ViewID["pageBody"] = "pageBody";
+        ViewID["paletteSelect"] = "paletteSelect";
+        ViewID["parseButton"] = "parseButton";
+        ViewID["parseRunButton"] = "parseRunButton";
+        ViewID["prettyBracketsInput"] = "prettyBracketsInput";
+        ViewID["prettyButton"] = "prettyButton";
+        ViewID["prettyColonsInput"] = "prettyColonsInput";
+        ViewID["prettyLowercaseVarsInput"] = "prettyLowercaseVarsInput";
+        ViewID["prettySpaceInput"] = "prettySpaceInput";
+        ViewID["redoButton"] = "redoButton";
+        ViewID["reloadButton"] = "reloadButton";
+        ViewID["reload2Button"] = "reload2Button";
+        ViewID["renumButton"] = "renumButton";
+        ViewID["renumKeepInput"] = "renumKeepInput";
+        ViewID["renumNewInput"] = "renumNewInput";
+        ViewID["renumStartInput"] = "renumStartInput";
+        ViewID["renumStepInput"] = "renumStepInput";
+        ViewID["resetButton"] = "resetButton";
+        ViewID["resultArea"] = "resultArea";
+        ViewID["resultText"] = "resultText";
+        ViewID["runButton"] = "runButton";
+        ViewID["screenshotButton"] = "screenshotButton";
+        ViewID["screenshotLink"] = "screenshotLink";
+        ViewID["selectDataFilesInput"] = "selectDataFilesInput";
+        ViewID["settingsArea"] = "settingsArea";
+        ViewID["settingsButton"] = "settingsButton";
+        ViewID["showConsoleLogInput"] = "showConsoleLogInput";
+        ViewID["showCpcInput"] = "showCpcInput";
+        ViewID["showDisassInput"] = "showDisassInput";
+        ViewID["showInp2Input"] = "showInp2Input";
+        ViewID["showInputInput"] = "showInputInput";
+        ViewID["showKbdInput"] = "showKbdInput";
+        ViewID["showOutputInput"] = "showOutputInput";
+        ViewID["showResultInput"] = "showResultInput";
+        ViewID["showVariableInput"] = "showVariableInput";
+        ViewID["soundInput"] = "soundInput";
+        ViewID["speedInput"] = "speedInput";
+        ViewID["stopButton"] = "stopButton";
+        ViewID["traceInput"] = "traceInput";
+        ViewID["textCanvasDiv"] = "textCanvasDiv";
+        ViewID["textText"] = "textText";
+        ViewID["undoButton"] = "undoButton";
+        ViewID["variableArea"] = "variableArea";
+        ViewID["varSelect"] = "varSelect";
+        ViewID["varText"] = "varText";
+        ViewID["viewArea"] = "viewArea";
+        ViewID["viewButton"] = "viewButton";
+        ViewID["window"] = "window"; // for window.document
+    })(ViewID = exports.ViewID || (exports.ViewID = {}));
+});
 // Utils.ts - Utililities for CPCBasic
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
@@ -802,11 +1003,13 @@ define("Utils", ["require", "exports"], function (require, exports) {
                 return "\\x" + ("00" + char.charCodeAt(0).toString(16)).slice(-2);
             });
         };
-        Utils.hexUnescape = function (str) {
+        /*
+        static hexUnescape(str: string): string {
             return str.replace(/\\x([0-9A-Fa-f]{2})/g, function () {
                 return String.fromCharCode(parseInt(arguments[1], 16));
             });
-        };
+        }
+        */
         Utils.dateFormat = function (d) {
             return d.getFullYear() + "/" + ("0" + (d.getMonth() + 1)).slice(-2) + "/" + ("0" + d.getDate()).slice(-2) + " "
                 + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2) + ":" + ("0" + d.getSeconds()).slice(-2) + "." + ("0" + d.getMilliseconds()).slice(-3);
@@ -860,6 +1063,17 @@ define("Utils", ["require", "exports"], function (require, exports) {
             }
             return view;
         };
+        Utils.uint8Array2string = function (data) {
+            var callSize = 25000; // use call window to avoid "maximum call stack error" for e.g. size 336461
+            var len = data.length, offset = 0, out = "";
+            while (len) {
+                var chunkLen = Math.min(len, callSize), chunk = data.slice ? data.slice(offset, offset + chunkLen) : data.subarray(offset, offset + chunkLen); // array.slice on Uint8Array not for IE11
+                out += String.fromCharCode.apply(null, chunk); // on Chrome this is faster than single character processing
+                offset += chunkLen;
+                len -= chunkLen;
+            }
+            return out;
+        };
         Utils.composeError = function (name, errorObject, message, value, pos, len, line, hidden) {
             var customError = errorObject;
             customError.name = name;
@@ -871,7 +1085,8 @@ define("Utils", ["require", "exports"], function (require, exports) {
             if (len !== undefined) {
                 customError.len = len;
             }
-            if (line !== undefined) {
+            // Safari: Some additional properties are already defined: line, column. Shall we use "cause" property now?
+            if (line !== customError.line) {
                 customError.line = line;
             }
             if (hidden !== undefined) {
@@ -1233,19 +1448,19 @@ define("Model", ["require", "exports", "Utils"], function (require, exports, Uti
             return this.databases;
         };
         Model.prototype.getDatabase = function () {
-            var database = this.getProperty("database");
+            var database = this.getProperty("database" /* ModelPropID.database */);
             return this.databases[database];
         };
         Model.prototype.getAllExamples = function () {
-            var database = this.getProperty("database");
+            var database = this.getProperty("database" /* ModelPropID.database */);
             return this.examples[database];
         };
         Model.prototype.getExample = function (key) {
-            var database = this.getProperty("database");
+            var database = this.getProperty("database" /* ModelPropID.database */);
             return this.examples[database][key];
         };
         Model.prototype.setExample = function (example) {
-            var database = this.getProperty("database"), key = example.key;
+            var database = this.getProperty("database" /* ModelPropID.database */), key = example.key;
             if (!this.examples[database][key]) {
                 if (Utils_1.Utils.debug > 1) {
                     Utils_1.Utils.console.debug("setExample: creating new example:", key);
@@ -1254,7 +1469,7 @@ define("Model", ["require", "exports", "Utils"], function (require, exports, Uti
             this.examples[database][key] = example;
         };
         Model.prototype.removeExample = function (key) {
-            var database = this.getProperty("database");
+            var database = this.getProperty("database" /* ModelPropID.database */);
             if (!this.examples[database][key]) {
                 Utils_1.Utils.console.warn("removeExample: example does not exist: " + key);
             }
@@ -1283,19 +1498,16 @@ define("BasicLexer", ["require", "exports", "Utils"], function (require, exports
             this.tokens = [];
             this.whiteSpace = ""; // collected whitespace
             this.options = {
-                keywords: options.keywords,
                 keepWhiteSpace: false,
                 quiet: false
             };
             this.setOptions(options);
         }
-        BasicLexer.prototype.setOptions = function (options) {
-            if (options.keepWhiteSpace !== undefined) {
-                this.options.keepWhiteSpace = options.keepWhiteSpace;
-            }
-        };
         BasicLexer.prototype.getOptions = function () {
             return this.options;
+        };
+        BasicLexer.prototype.setOptions = function (options) {
+            Object.assign(this.options, options);
         };
         BasicLexer.prototype.composeError = function (error, message, value, pos, len) {
             return Utils_2.Utils.composeError("BasicLexer", error, message, value, pos, len, this.label || undefined);
@@ -1449,9 +1661,17 @@ define("BasicLexer", ["require", "exports", "Utils"], function (require, exports
         };
         BasicLexer.prototype.fnParseCompleteLineForRemOrApostrophe = function (char, startPos) {
             if (BasicLexer.isNotNewLine(char)) {
-                var token = this.advanceWhile(char, BasicLexer.isNotNewLine);
+                var token = this.advanceWhile(char, BasicLexer.isNotNewLine), whiteSpace = "";
                 char = this.getChar();
+                if (token.endsWith("\r")) {
+                    token = token.substring(0, token.length - 1);
+                    whiteSpace = "\r";
+                    // now token can be empty?
+                }
                 this.addToken("unquoted", token, startPos);
+                if (whiteSpace && this.options.keepWhiteSpace) {
+                    this.whiteSpace = whiteSpace;
+                }
             }
             return char;
         };
@@ -1583,7 +1803,7 @@ define("BasicLexer", ["require", "exports", "Utils"], function (require, exports
             return out;
         };
         BasicLexer.prototype.fnParseString = function (startPos) {
-            var char = "", token = this.advanceWhile(char, BasicLexer.isNotQuotes), type = "string";
+            var char = "", token = this.advanceWhile(char, BasicLexer.isNotQuotes), type = "string", whiteSpace = "";
             char = this.getChar();
             if (char !== '"') {
                 var contString = this.fnTryContinueString(char); // heuristic to detect an LF in the string
@@ -1603,8 +1823,16 @@ define("BasicLexer", ["require", "exports", "Utils"], function (require, exports
                     Utils_2.Utils.console.debug(this.composeError({}, "Unterminated string", token, startPos + 1).message);
                 }
                 type = "ustring"; // unterminated string
+                if (token.endsWith("\r")) {
+                    token = token.substring(0, token.length - 1);
+                    whiteSpace = "\r";
+                    // now token can be empty?
+                }
             }
             this.addToken(type, token, startPos + 1);
+            if (whiteSpace && this.options.keepWhiteSpace) {
+                this.whiteSpace = whiteSpace;
+            }
         };
         BasicLexer.prototype.fnParseRsx = function (char, startPos) {
             var token = char;
@@ -1690,6 +1918,7 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
     exports.BasicParser = void 0;
     var BasicParser = /** @class */ (function () {
         function BasicParser(options) {
+            this.keywords = BasicParser.keywordsBasic11;
             this.label = "0"; // for error messages
             this.symbols = {};
             // set also during parse
@@ -1728,38 +1957,62 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
                 write: this.write
             };
             this.options = {
+                basicVersion: "1.1",
                 quiet: false,
                 keepBrackets: false,
                 keepColons: false,
                 keepDataComma: false,
                 keepTokens: false
             };
-            if (options) {
-                this.setOptions(options);
-            }
-            this.fnGenerateSymbols();
+            this.setOptions(options, true);
             this.previousToken = {}; // to avoid warnings
             this.token = this.previousToken;
         }
-        BasicParser.prototype.setOptions = function (options) {
-            if (options.keepBrackets !== undefined) {
-                this.options.keepBrackets = options.keepBrackets;
-            }
-            if (options.keepColons !== undefined) {
-                this.options.keepColons = options.keepColons;
-            }
-            if (options.keepDataComma !== undefined) {
-                this.options.keepDataComma = options.keepDataComma;
-            }
-            if (options.keepTokens !== undefined) {
-                this.options.keepTokens = options.keepTokens;
-            }
-            if (options.quiet !== undefined) {
-                this.options.quiet = options.quiet;
-            }
-        };
         BasicParser.prototype.getOptions = function () {
             return this.options;
+        };
+        BasicParser.prototype.setOptions = function (options, force) {
+            var currentBasicVersion = this.options.basicVersion;
+            Object.assign(this.options, options);
+            if (force || (this.options.basicVersion !== currentBasicVersion)) { // changed?
+                this.applyBasicVersion();
+            }
+        };
+        BasicParser.prototype.getKeywords = function () {
+            return this.keywords;
+        };
+        BasicParser.prototype.applyBasicVersion = function () {
+            var basicVersion = this.options.basicVersion;
+            this.keywords = basicVersion === "1.0" ? this.getKeywords10() : BasicParser.keywordsBasic11;
+            // if basicVersion changes, we need to recreate the symbols
+            this.fnClearSymbols();
+            this.fnGenerateSymbols();
+        };
+        BasicParser.fnIsInString = function (string, find) {
+            return find && string.indexOf(find) >= 0;
+        };
+        BasicParser.prototype.getKeywords10 = function () {
+            if (this.keywordsBasic10) {
+                return this.keywordsBasic10;
+            }
+            var keywords10 = __assign({}, BasicParser.keywordsBasic11); // clone
+            for (var key in keywords10) {
+                if (keywords10.hasOwnProperty(key)) {
+                    var keyWithSpaces = " " + key + " ";
+                    // what about DEC$ ?
+                    if (BasicParser.fnIsInString(" clearInput copychr$ cursor derr fill frame graphics graphicsPaper graphicsPen mask onBreakCont ", keyWithSpaces)) {
+                        delete keywords10[key]; // remove keywords which do not exist in BASIC 1.0
+                    }
+                    else if (BasicParser.fnIsInString(" draw drawr move mover pen plot plotr ", keyWithSpaces)) {
+                        keywords10[key] = keywords10[key].substring(0, keywords10[key].lastIndexOf(" ")); // remove the last parameter <ink mode>; or <background mode> for pen
+                        if (BasicParser.fnIsInString(" move mover ", keyWithSpaces)) {
+                            keywords10[key] = keywords10[key].substring(0, keywords10[key].lastIndexOf(" ")); // also remove parameter <ink>
+                        }
+                    }
+                }
+            }
+            this.keywordsBasic10 = keywords10;
+            return keywords10;
         };
         BasicParser.prototype.composeError = function (error, message, value, pos, len) {
             len = value === "(end)" ? 0 : len;
@@ -1799,7 +2052,7 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             this.previousToken = this.token;
             if (id && id !== token.type) {
                 if (!this.fnLastStatementIsOnErrorGotoX()) {
-                    throw this.composeError(Error(), "Expected " + id, token.value === "" ? token.type : token.value, token.pos); //TTT we cannot mask this error because advance is very generic
+                    throw this.composeError(Error(), "Expected " + id, token.value === "" ? token.type : token.value, token.pos); // we cannot mask this error because advance is very generic
                 }
                 else if (!this.options.quiet) {
                     Utils_3.Utils.console.warn(this.composeError({}, "Expected " + id, token.value === "" ? token.type : token.value, token.pos).message);
@@ -2027,13 +2280,13 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             }
         };
         BasicParser.prototype.fnCheckStaticTypeNotNumber = function (expression, typeFirstChar) {
-            var type = expression.type, isStringFunction = (BasicParser.keywords[type] || "").startsWith("f") && type.endsWith("$"), isStringIdentifier = type === "identifier" && expression.value.endsWith("$");
+            var type = expression.type, isStringFunction = (this.keywords[type] || "").startsWith("f") && type.endsWith("$"), isStringIdentifier = type === "identifier" && expression.value.endsWith("$");
             if (type === "string" || type === "ustring" || type === "#" || isStringFunction || isStringIdentifier) { // got a string or a stream? (statical check)
                 this.fnMaskedError(expression, "Expected " + BasicParser.parameterTypes[typeFirstChar]);
             }
         };
         BasicParser.prototype.fnCheckStaticTypeNotString = function (expression, typeFirstChar) {
-            var type = expression.type, isNumericFunction = (BasicParser.keywords[type] || "").startsWith("f") && !type.endsWith("$"), isNumericIdentifier = type === "identifier" && (expression.value.endsWith("%") || expression.value.endsWith("!")), isComparison = type === "=" || type.startsWith("<") || type.startsWith(">"); // =, <, >, <=, >=
+            var type = expression.type, isNumericFunction = (this.keywords[type] || "").startsWith("f") && !type.endsWith("$"), isNumericIdentifier = type === "identifier" && (expression.value.endsWith("%") || expression.value.endsWith("!")), isComparison = type === "=" || type.startsWith("<") || type.startsWith(">"); // =, <, >, <=, >=
             if (type === "number" || type === "binnumber" || type === "hexnumber" || type === "expnumber" || type === "#" || isNumericFunction || isNumericIdentifier || isComparison) { // got e.g. number or a stream? (statical check)
                 this.fnMaskedError(expression, "Expected " + BasicParser.parameterTypes[typeFirstChar]);
             }
@@ -2119,7 +2372,7 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             return type;
         };
         BasicParser.prototype.fnGetArgs = function (args, keyword) {
-            var keyOpts = BasicParser.keywords[keyword], types = keyOpts.split(" "), closeTokens = BasicParser.closeTokensForArgs;
+            var keyOpts = this.keywords[keyword], types = keyOpts.split(" "), closeTokens = BasicParser.closeTokensForArgs;
             var type = "xxx"; // initial needMore
             types.shift(); // remove keyword type
             while (type && !closeTokens[this.token.type]) {
@@ -2198,19 +2451,14 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
         BasicParser.prototype.fnCreateFuncCall = function (node) {
             node.args = [];
             if (this.token.type === "(") { // args in parenthesis?
-                this.advance("(");
-                if (this.options.keepTokens) {
-                    node.args.push(this.previousToken);
+                if (node.type === "dec$" && this.options.basicVersion === "1.0") {
+                    this.advance("("); // BASIC 1.0: simulate DEC$(( bug with 2 open brackets
                 }
-                this.fnGetArgs(node.args, node.type);
-                this.advance(")");
-                if (this.options.keepTokens) {
-                    node.args.push(this.previousToken);
-                }
+                this.fnGetArgsInParenthesis(node.args, node.type);
             }
             else { // no parenthesis?
                 // if we have a check, make sure there are no non-optional parameters left
-                var keyOpts = BasicParser.keywords[node.type];
+                var keyOpts = this.keywords[node.type];
                 if (keyOpts) {
                     var types = keyOpts.split(" ");
                     types.shift(); // remove key
@@ -2266,6 +2514,11 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
                 type = "_rsx1"; // dummy token: expect at least 1 argument
             }
             this.fnGetArgs(node.args, type); // get arguments
+            if (this.options.basicVersion === "1.0") { // BASIC 1.0: make sure there are no string parameters
+                for (var i = 0; i < node.args.length; i += 1) {
+                    this.fnCheckStaticTypeNotNumber(node.args[i], "n");
+                }
+            }
             return node;
         };
         BasicParser.prototype.afterEveryGosub = function (node) {
@@ -2323,7 +2576,7 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
         };
         BasicParser.prototype.clear = function (node) {
             var tokenType = this.token.type;
-            return tokenType === "input" ? this.fnCombineTwoTokens(node, tokenType) : this.fnCreateCmdCall(node); // "clear input" or "clear"
+            return tokenType === "input" && this.keywords.clearInput ? this.fnCombineTwoTokens(node, tokenType) : this.fnCreateCmdCall(node); // "clear input" (BASIC 1.1) or "clear"
         };
         BasicParser.prototype.data = function (node) {
             var parameterFound = false;
@@ -2553,7 +2806,7 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
         };
         BasicParser.prototype.line = function (node) {
             node.type = this.fnCombineTwoTokensNoArgs(node, "input"); // combine "line" => "lineInput"
-            return this.input(node); // continue with input //TTT
+            return this.input(node); // continue with input
         };
         BasicParser.prototype.mid$Assign = function (node) {
             node.type = "mid$Assign"; // change type mid$ => mid$Assign
@@ -2584,11 +2837,12 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
                 case "break":
                     node.type = this.fnCombineTwoTokensNoArgs(node, "break"); // onBreak
                     tokenType = this.token.type;
-                    if (tokenType === "gosub" || tokenType === "cont" || tokenType === "stop") {
+                    if ((tokenType === "cont" && this.keywords.onBreakCont) || tokenType === "gosub" || tokenType === "stop") {
                         this.fnCombineTwoTokens(node, this.token.type); // onBreakGosub, onBreakCont, onBreakStop
                     }
                     else {
-                        throw this.composeError(Error(), "Expected GOSUB, CONT or STOP", this.token.type, this.token.pos);
+                        var msgContPart = this.keywords.onBreakCont ? "CONT, " : "";
+                        throw this.composeError(Error(), "Expected " + msgContPart + "GOSUB or STOP", this.token.type, this.token.pos);
                     }
                     break;
                 case "error": // on error goto
@@ -2718,6 +2972,9 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             return node;
         };
         // ---
+        BasicParser.prototype.fnClearSymbols = function () {
+            this.symbols = {};
+        };
         BasicParser.fnNode = function (node) {
             return node;
         };
@@ -2767,9 +3024,9 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
         };
         BasicParser.prototype.fnGenerateKeywordSymbols = function () {
             var _this = this;
-            for (var key in BasicParser.keywords) {
-                if (BasicParser.keywords.hasOwnProperty(key)) {
-                    var keywordType = BasicParser.keywords[key].charAt(0);
+            for (var key in this.keywords) {
+                if (this.keywords.hasOwnProperty(key)) {
+                    var keywordType = this.keywords[key].charAt(0);
                     if (keywordType === "f") {
                         this.createNudSymbol(key, function () { return _this.fnCreateFuncCall(_this.previousToken); });
                     }
@@ -2853,6 +3110,7 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             }
             return parseTree;
         };
+        // for basicKeywords:
         BasicParser.parameterTypes = {
             c: "command",
             f: "function",
@@ -2867,9 +3125,10 @@ define("BasicParser", ["require", "exports", "Utils"], function (require, export
             "n0?": "optional parameter with default null",
             "#": "stream"
         };
+        // keyword list for BASIC 1.1
         // first letter: c=command, f=function, p=part of command, o=operator, x=misc
         // following are arguments: n=number, s=string, l=line number (checked), v=variable (checked), q=line number range, r=letter or range, a=any, n0?=optional parameter with default null, #=stream, #0?=optional stream with default 0; suffix ?=optional (optionals must be last); last *=any number of arguments may follow
-        BasicParser.keywords = {
+        BasicParser.keywordsBasic11 = {
             abs: "f n",
             after: "c",
             afterGosub: "c n n?",
@@ -3100,19 +3359,15 @@ define("BasicFormatter", ["require", "exports", "Utils"], function (require, exp
         function BasicFormatter(options) {
             this.label = ""; // current label (line) for error messages
             this.options = {
-                lexer: options.lexer,
-                parser: options.parser,
                 implicitLines: false
             };
             this.setOptions(options);
         }
-        BasicFormatter.prototype.setOptions = function (options) {
-            if (options.implicitLines !== undefined) {
-                this.options.implicitLines = options.implicitLines;
-            }
-        };
         BasicFormatter.prototype.getOptions = function () {
             return this.options;
+        };
+        BasicFormatter.prototype.setOptions = function (options) {
+            Object.assign(this.options, options);
         };
         BasicFormatter.prototype.composeError = function (error, message, value, pos, len) {
             return Utils_4.Utils.composeError("BasicFormatter", error, message, value, pos, len, this.label);
@@ -3375,7 +3630,7 @@ define("BasicTokenizer", ["require", "exports", "Utils"], function (require, exp
                 0x1a: this.fnNum16DecAsStr,
                 0x1b: this.fnNum16Bin,
                 0x1c: this.fnNum16Hex,
-                0x1d: this.fnNum16DecAsStr,
+                0x1d: this.fnNum16LineAddrAsStr,
                 0x1e: this.fnNum16DecAsStr,
                 0x1f: this.fnNumFp,
                 // 0x20-0x21 ASCII printable symbols
@@ -3590,6 +3845,14 @@ define("BasicTokenizer", ["require", "exports", "Utils"], function (require, exp
         BasicTokenizer.prototype.fnNum16DecAsStr = function () {
             return String(this.fnNum16Dec());
         };
+        // line number pointer (can occur when loading snapshots)
+        BasicTokenizer.prototype.fnNum16LineAddrAsStr = function () {
+            var prgStart = 0x170, // assuming this as program start
+            lineAddr = this.fnNum16Dec() - prgStart, // address of (byte 0 before line)
+            addr = lineAddr + 3, // address of line number
+            line = this.input.charCodeAt(addr) + this.input.charCodeAt(addr + 1) * 256;
+            return String(line);
+        };
         BasicTokenizer.prototype.fnNum16Bin = function () {
             return "&X" + this.fnNum16Dec().toString(2);
         };
@@ -3777,6 +4040,10 @@ define("BasicTokenizer", ["require", "exports", "Utils"], function (require, exp
             }
             this.line = this.fnNum16Dec();
             this.lineEnd = this.pos - 4 + lineLength;
+            if (this.lineEnd > this.input.length) {
+                this.lineEnd = this.input.length;
+                Utils_5.Utils.console.warn("fnParseNextLine: pos=" + this.pos + ": EOF met!");
+            }
             return this.line + " " + this.fnParseLineFragment();
         };
         BasicTokenizer.prototype.fnParseProgram = function () {
@@ -3817,7 +4084,7 @@ define("BasicTokenizer", ["require", "exports", "Utils"], function (require, exp
 // https://benchmarko.github.io/CPCBasicTS/
 //
 //
-define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], function (require, exports, Utils_6, BasicParser_1) {
+define("CodeGeneratorBasic", ["require", "exports", "Utils"], function (require, exports, Utils_6) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CodeGeneratorBasic = void 0;
@@ -3865,19 +4132,16 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
                 write: this.write
             };
             this.options = {
-                lexer: options.lexer,
-                parser: options.parser,
                 quiet: false
             };
             this.setOptions(options);
+            this.keywords = options.parser.getKeywords();
         }
-        CodeGeneratorBasic.prototype.setOptions = function (options) {
-            if (options.quiet !== undefined) {
-                this.options.quiet = options.quiet;
-            }
-        };
         CodeGeneratorBasic.prototype.getOptions = function () {
             return this.options;
+        };
+        CodeGeneratorBasic.prototype.setOptions = function (options) {
+            Object.assign(this.options, options);
         };
         CodeGeneratorBasic.prototype.composeError = function (error, message, value, pos) {
             return Utils_6.Utils.composeError("CodeGeneratorBasic", error, message, value, pos, undefined, this.line);
@@ -4091,7 +4355,7 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
                 value += this.parseNode(node.left);
             }
             value += CodeGeneratorBasic.fnWs(node);
-            var keyType = BasicParser_1.BasicParser.keywords[type];
+            var keyType = this.keywords[type];
             if (keyType) {
                 value += CodeGeneratorBasic.getUcKeyword(node);
             }
@@ -4101,7 +4365,7 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
             var right = "";
             if (node.right) {
                 right = this.parseNode(node.right);
-                var needSpace1 = BasicParser_1.BasicParser.keywords[right.toLowerCase()] || keyType;
+                var needSpace1 = this.keywords[right.toLowerCase()] || keyType;
                 value += needSpace1 ? CodeGeneratorBasic.fnSpace1(right) : right;
             }
             if (node.args) {
@@ -4188,6 +4452,9 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
                 value = this.parseFunctions[type].call(this, node);
             }
             else { // for other functions, generate code directly
+                if ((type === "identifier" || type === "letter") && this.options.lowercaseVars) {
+                    node.value = node.value.toLowerCase();
+                }
                 value = this.fnParseOther(node);
             }
             return value;
@@ -4221,6 +4488,7 @@ define("CodeGeneratorBasic", ["require", "exports", "Utils", "BasicParser"], fun
             };
             this.hasColons = Boolean(this.options.parser.getOptions().keepColons);
             this.keepWhiteSpace = Boolean(this.options.lexer.getOptions().keepWhiteSpace);
+            this.keywords = this.options.parser.getKeywords();
             this.line = 0;
             try {
                 var tokens = this.options.lexer.lex(input), parseTree = this.options.parser.parse(tokens), output = this.evaluate(parseTree);
@@ -4343,17 +4611,18 @@ define("Variables", ["require", "exports", "Utils"], function (require, exports,
     }());
     var Variables = /** @class */ (function () {
         function Variables(options) {
-            this.arrayBounds = false;
-            if (options) {
-                this.setOptions(options);
-            }
+            this.options = {
+                arrayBounds: false
+            };
+            this.setOptions(options);
             this.variables = {};
             this.varTypes = {}; // default variable types for variables starting with letters a-z
         }
+        Variables.prototype.getOptions = function () {
+            return this.options;
+        };
         Variables.prototype.setOptions = function (options) {
-            if (options.arrayBounds !== undefined) {
-                this.arrayBounds = options.arrayBounds;
-            }
+            Object.assign(this.options, options);
         };
         Variables.prototype.removeAllVariables = function () {
             var variables = this.variables;
@@ -4369,7 +4638,7 @@ define("Variables", ["require", "exports", "Utils"], function (require, exports,
         };
         Variables.prototype.createNDimArray = function (dims, initVal) {
             var that = this, fnCreateRec = function (index) {
-                var len = dims[index], arr = that.arrayBounds ? new ArrayProxy(len) : new Array(len);
+                var len = dims[index], arr = that.options.arrayBounds ? new ArrayProxy(len) : new Array(len);
                 index += 1;
                 if (index < dims.length) { // more dimensions?
                     for (var i = 0; i < len; i += 1) {
@@ -4512,7 +4781,7 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                 and: this.and,
                 or: this.or,
                 xor: this.xor,
-                not: CodeGeneratorJs.not,
+                not: this.not,
                 mod: this.mod,
                 ">": this.greater,
                 "<": this.less,
@@ -4526,7 +4795,7 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             this.unaryOperators = {
                 "+": this.plus,
                 "-": this.minus,
-                not: CodeGeneratorJs.not,
+                not: this.not,
                 "@": this.addressOf,
                 "#": CodeGeneratorJs.stream
             };
@@ -4615,30 +4884,16 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                 write: this.usingOrWrite
             };
             this.options = {
-                lexer: options.lexer,
-                parser: options.parser,
-                rsx: options.rsx,
                 quiet: false
             };
             this.setOptions(options); // optional options
             this.reJsKeywords = CodeGeneratorJs.createJsKeywordRegex();
         }
-        CodeGeneratorJs.prototype.setOptions = function (options) {
-            if (options.implicitLines !== undefined) {
-                this.options.implicitLines = options.implicitLines;
-            }
-            if (options.noCodeFrame !== undefined) {
-                this.options.noCodeFrame = options.noCodeFrame;
-            }
-            if (options.quiet !== undefined) {
-                this.options.quiet = options.quiet;
-            }
-            if (options.trace !== undefined) {
-                this.options.trace = options.trace;
-            }
-        };
         CodeGeneratorJs.prototype.getOptions = function () {
             return this.options;
+        };
+        CodeGeneratorJs.prototype.setOptions = function (options) {
+            Object.assign(this.options, options);
         };
         CodeGeneratorJs.prototype.reset = function () {
             var stack = this.stack;
@@ -4789,11 +5044,11 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             var reIntConst = /^[+-]?(\d+|0x[0-9a-f]+|0b[0-1]+)$/; // regex for integer, hex, binary constant
             return reIntConst.test(a);
         };
-        CodeGeneratorJs.fnGetRoundString = function (node) {
+        CodeGeneratorJs.prototype.fnGetRoundString = function (node, err) {
             if (node.pt !== "I") { // no rounding needed for integer, hex, binary constants, integer variables, functions returning integer (optimization)
                 node.pv = "o.vmRound(" + node.pv + ")";
             }
-            return node.pv;
+            return this.options.integerOverflow ? "o.vmInRange16(" + node.pv + ', "' + err + '")' : node.pv;
         };
         CodeGeneratorJs.fnIsInString = function (string, find) {
             return find && string.indexOf(find) >= 0;
@@ -4865,7 +5120,7 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             node.pt = "R"; // event II can get a fraction
         };
         CodeGeneratorJs.prototype.intDiv = function (node, left, right) {
-            node.pv = "(" + left.pv + " / " + right.pv + ") | 0"; // integer division
+            node.pv = "(" + this.fnGetRoundString(left, "IDIV") + " / " + this.fnGetRoundString(right, "IDIV") + ") | 0"; // integer division
             this.fnPropagateStaticTypes(node, left, right, "II RR IR RI");
             node.pt = "I";
         };
@@ -4874,26 +5129,26 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             this.fnPropagateStaticTypes(node, left, right, "II RR IR RI");
         };
         CodeGeneratorJs.prototype.and = function (node, left, right) {
-            node.pv = CodeGeneratorJs.fnGetRoundString(left) + " & " + CodeGeneratorJs.fnGetRoundString(right);
+            node.pv = this.fnGetRoundString(left, "AND") + " & " + this.fnGetRoundString(right, "AND");
             this.fnPropagateStaticTypes(node, left, right, "II RR IR RI");
             node.pt = "I";
         };
         CodeGeneratorJs.prototype.or = function (node, left, right) {
-            node.pv = CodeGeneratorJs.fnGetRoundString(left) + " | " + CodeGeneratorJs.fnGetRoundString(right);
+            node.pv = this.fnGetRoundString(left, "OR") + " | " + this.fnGetRoundString(right, "OR");
             this.fnPropagateStaticTypes(node, left, right, "II RR IR RI");
             node.pt = "I";
         };
         CodeGeneratorJs.prototype.xor = function (node, left, right) {
-            node.pv = CodeGeneratorJs.fnGetRoundString(left) + " ^ " + CodeGeneratorJs.fnGetRoundString(right);
+            node.pv = this.fnGetRoundString(left, "XOR") + " ^ " + this.fnGetRoundString(right, "XOR");
             this.fnPropagateStaticTypes(node, left, right, "II RR IR RI");
             node.pt = "I";
         };
-        CodeGeneratorJs.not = function (node, _oLeft, right) {
-            node.pv = "~(" + CodeGeneratorJs.fnGetRoundString(right) + ")"; // a can be an expression
+        CodeGeneratorJs.prototype.not = function (node, _oLeft, right) {
+            node.pv = "~(" + this.fnGetRoundString(right, "NOT") + ")"; // a can be an expression
             node.pt = "I";
         };
         CodeGeneratorJs.prototype.mod = function (node, left, right) {
-            node.pv = CodeGeneratorJs.fnGetRoundString(left) + " % " + CodeGeneratorJs.fnGetRoundString(right);
+            node.pv = this.fnGetRoundString(left, "MOD") + " % " + this.fnGetRoundString(right, "MOD");
             this.fnPropagateStaticTypes(node, left, right, "II RR IR RI");
             node.pt = "I";
         };
@@ -4998,17 +5253,9 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             node.pv = node.type;
         };
         CodeGeneratorJs.prototype.vertical = function (node) {
-            var rsxName = node.value.substring(1).toLowerCase().replace(/\./g, "_");
-            var rsxAvailable = this.options.rsx && this.options.rsx.rsxIsAvailable(rsxName), nodeArgs = this.fnParseArgs(node.args), label = this.fnGetStopLabel();
-            if (!rsxAvailable) { // if RSX not available, we delay the error until it is executed (or catched by on error goto)
-                if (!this.options.quiet) {
-                    var error = this.composeError(Error(), "Unknown RSX command", node.value, node.pos);
-                    Utils_8.Utils.console.warn(error);
-                }
-                nodeArgs.unshift('"' + rsxName + '"'); // put as first arg
-                rsxName = "rsxExec"; // and call special handler which triggers error if not available
-            }
-            node.pv = "o.rsx." + rsxName + "(" + nodeArgs.join(", ") + "); o.vmGoto(\"" + label + "\"); break;\ncase \"" + label + "\":"; // most RSX commands need goto (era, ren,...)
+            var rsxName = node.value.substring(1).toLowerCase(), nodeArgs = this.fnParseArgs(node.args), label = this.fnGetStopLabel();
+            nodeArgs.unshift('"' + rsxName + '"'); // put as first arg
+            node.pv = "o.callRsx(" + nodeArgs.join(", ") + "); o.vmGoto(\"" + label + "\"); break;\ncase \"" + label + "\":"; // most RSX commands need goto (era, ren,...)
         };
         CodeGeneratorJs.number = function (node) {
             node.pt = (/^\d+$/).test(node.value) ? "I" : "R";
@@ -5322,6 +5569,11 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             }
             node.pv = name + "(" + nodeArgs.join(", ") + ")";
         };
+        CodeGeneratorJs.parseIntNumber = function (numString) {
+            // Number() cannot parse negative bin or hex numbers so detect a sign first
+            var hasSign = numString[0] === "-", value = hasSign ? -Number(numString.substring(1)) : Number(numString);
+            return value;
+        };
         // eslint-disable-next-line complexity
         CodeGeneratorJs.prototype.fnFor = function (node) {
             var nodeArgs = this.fnParseArgs(node.args), varName = nodeArgs[0], label = this.fnGetForLabel();
@@ -5380,10 +5632,11 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
             value += "\ncase \"" + label + "b\": ";
             var endNameOrValue = endIsIntConst ? endValue : endName;
             if (stepIsIntConst) {
-                if (Number(stepValue) > 0) {
+                var stepValueAsNum = CodeGeneratorJs.parseIntNumber(stepValue); // can also be a negative binary or hexadecimal string
+                if (stepValueAsNum > 0) {
                     value += "if (" + varName + " > " + endNameOrValue + ") { o.vmGoto(\"" + label + "e\"); break; }";
                 }
-                else if (Number(stepValue) < 0) {
+                else if (stepValueAsNum < 0) {
                     value += "if (" + varName + " < " + endNameOrValue + ") { o.vmGoto(\"" + label + "e\"); break; }";
                 }
                 else { // stepValue === 0 => endless loop, if starting with variable !== end
@@ -5826,7 +6079,7 @@ define("CodeGeneratorJs", ["require", "exports", "Utils"], function (require, ex
                     if (arg.type === "letter") {
                         this.defintDefstrTypes[arg.value.toLowerCase()] = type;
                     }
-                    else { // assuming range
+                    else if (arg.type === "range") {
                         if (!arg.left || !arg.right) {
                             throw this.composeError(Error(), "Programming error: Undefined left or right", node.type, node.pos); // should not occur
                         }
@@ -6055,23 +6308,16 @@ define("CodeGeneratorToken", ["require", "exports", "Utils"], function (require,
                 "'": this.fnElseOrApostrophe
             };
             this.options = {
-                lexer: options.lexer,
-                parser: options.parser,
                 implicitLines: false,
                 quiet: false
             };
             this.setOptions(options);
         }
-        CodeGeneratorToken.prototype.setOptions = function (options) {
-            if (options.implicitLines !== undefined) {
-                this.options.implicitLines = options.implicitLines;
-            }
-            if (options.quiet !== undefined) {
-                this.options.quiet = options.quiet;
-            }
-        };
         CodeGeneratorToken.prototype.getOptions = function () {
             return this.options;
+        };
+        CodeGeneratorToken.prototype.setOptions = function (options) {
+            Object.assign(this.options, options);
         };
         CodeGeneratorToken.prototype.composeError = function (error, message, value, pos) {
             return Utils_9.Utils.composeError("CodeGeneratorToken", error, message, value, pos, undefined, this.label);
@@ -6918,47 +7164,54 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
     exports.DiskImage = void 0;
     var DiskImage = /** @class */ (function () {
         function DiskImage(options) {
+            this.diskInfo = DiskImage.getInitialDiskInfo();
             this.options = {
-                diskName: options.diskName,
-                data: options.data,
+                data: "",
                 quiet: false
             };
             this.setOptions(options);
-            // reset
-            this.diskInfo = DiskImage.getInitialDiskInfo();
-            this.format = DiskImage.getInitialFormat();
         }
+        DiskImage.prototype.getOptions = function () {
+            return this.options;
+        };
         DiskImage.prototype.setOptions = function (options) {
-            if (options.quiet !== undefined) {
-                this.options.quiet = options.quiet;
+            var currentData = this.options.data;
+            Object.assign(this.options, options);
+            if (this.options.data !== currentData) { // changed?
+                this.diskInfo.ident = ""; // invalidate diskinfo
+                this.diskInfo.trackInfo.ident = ""; // invalidate trackinfo
             }
         };
         DiskImage.getInitialDiskInfo = function () {
-            return {
+            var diskInfo = {
+                ident: "",
+                creator: "",
+                tracks: 0,
+                heads: 0,
+                trackSize: 0,
                 trackInfo: {
-                    sectorInfo: []
-                }
+                    ident: "",
+                    sectorInfoList: []
+                },
+                trackSizes: [],
+                trackInfoPosList: [],
+                extended: false
             };
+            return diskInfo;
         };
-        DiskImage.getInitialFormat = function () {
-            return {};
-        };
-        DiskImage.prototype.reset = function () {
-            this.diskInfo = DiskImage.getInitialDiskInfo();
-            this.format = DiskImage.getInitialFormat();
+        DiskImage.prototype.getFormatDescriptor = function () {
+            var formatDescriptor = this.formatDescriptor;
+            if (!formatDescriptor) {
+                throw this.composeError(Error(), "getFormatDescriptor: formatDescriptor:", String(formatDescriptor));
+            }
+            return formatDescriptor;
         };
         DiskImage.prototype.composeError = function (error, message, value, pos) {
             var len = 0;
             return Utils_11.Utils.composeError("DiskImage", error, this.options.diskName + ": " + message, value, pos || 0, len);
         };
         DiskImage.testDiskIdent = function (ident) {
-            var diskType = 0;
-            if (ident === "MV - CPC") {
-                diskType = 1;
-            }
-            else if (ident === "EXTENDED") {
-                diskType = 2;
-            }
+            var diskType = DiskImage.diskInfoIdentMap[ident] || 0;
             return diskType;
         };
         DiskImage.prototype.readUtf = function (pos, len) {
@@ -6978,8 +7231,17 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
         DiskImage.prototype.readUInt16 = function (pos) {
             return this.readUInt8(pos) + this.readUInt8(pos + 1) * 256;
         };
-        DiskImage.prototype.readDiskInfo = function (pos) {
-            var diskInfoSize = 0x100, diskInfo = this.diskInfo, ident = this.readUtf(pos, 8), // check first 8 characters as characteristic
+        DiskImage.uInt8ToString = function (value) {
+            return String.fromCharCode(value);
+        };
+        DiskImage.uInt16ToString = function (value) {
+            return DiskImage.uInt8ToString(value & 0xff) + DiskImage.uInt8ToString((value >> 8) & 0xff); // eslint-disable-line no-bitwise
+        };
+        DiskImage.uInt24ToString = function (value) {
+            return DiskImage.uInt16ToString(value & 0xffff) + DiskImage.uInt8ToString(value >> 16); // eslint-disable-line no-bitwise
+        };
+        DiskImage.prototype.readDiskInfo = function (diskInfo, pos) {
+            var ident = this.readUtf(pos, 8), // check first 8 characters as characteristic
             diskType = DiskImage.testDiskIdent(ident);
             if (!diskType) {
                 throw this.composeError(Error(), "Ident not found", ident, pos);
@@ -6996,21 +7258,34 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             diskInfo.tracks = this.readUInt8(pos + 48);
             diskInfo.heads = this.readUInt8(pos + 49);
             diskInfo.trackSize = this.readUInt16(pos + 50);
-            var trackSizes = [], trackPosList = [], trackSizeCount = diskInfo.tracks * diskInfo.heads; // number of track sizes
-            var trackPos = diskInfoSize;
+            var trackSizes = [], trackInfoPosList = [], trackSizeCount = diskInfo.tracks * diskInfo.heads; // number of track sizes
+            var trackInfoPos = DiskImage.diskInfoSize;
             pos += 52; // track sizes high bytes start at offset 52 (0x35)
             for (var i = 0; i < trackSizeCount; i += 1) {
-                trackPosList.push(trackPos);
+                trackInfoPosList.push(trackInfoPos);
                 var trackSize = diskInfo.trackSize || (this.readUInt8(pos + i) * 256); // take common track size or read individual track size (extended)
                 trackSizes.push(trackSize);
-                trackPos += trackSize;
+                trackInfoPos += trackSize;
             }
             diskInfo.trackSizes = trackSizes;
-            diskInfo.trackPos = trackPosList;
+            diskInfo.trackInfoPosList = trackInfoPosList;
+            diskInfo.trackInfo.ident = ""; // make sure it is invalid
+            if (Utils_11.Utils.debug > 1) {
+                Utils_11.Utils.console.debug("readDiskInfo: extended=" + diskInfo.extended + ", tracks=" + diskInfo.tracks + ", heads=" + diskInfo.heads + ", trackSize=" + diskInfo.trackSize);
+            }
         };
-        DiskImage.prototype.readTrackInfo = function (pos) {
-            var trackInfoSize = 0x100, trackInfo = this.diskInfo.trackInfo, sectorInfoList = trackInfo.sectorInfo;
-            trackInfo.dataPos = pos + trackInfoSize;
+        DiskImage.createDiskInfoAsString = function (diskInfo) {
+            // only standard format
+            var diskInfoString = diskInfo.ident // 34
+                + diskInfo.creator // 14
+                + DiskImage.uInt8ToString(diskInfo.tracks)
+                + DiskImage.uInt8ToString(diskInfo.heads)
+                + DiskImage.uInt16ToString(diskInfo.trackSize)
+                + DiskImage.uInt8ToString(0).repeat(204); // unused
+            return diskInfoString;
+        };
+        DiskImage.prototype.readTrackInfo = function (trackInfo, pos) {
+            var trackInfoSize = DiskImage.trackInfoSize, sectorInfoList = trackInfo.sectorInfoList, trackDataPos = pos + trackInfoSize;
             trackInfo.ident = this.readUtf(pos, 12);
             if (trackInfo.ident.substring(0, 10) !== "Track-Info") { // some tools use "Track-Info  " instead of "Track-Info\r\n", so compare without "\r\n"
                 // "Track-Info" string is optional
@@ -7031,9 +7306,9 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             var sectorNum2Index = {};
             trackInfo.sectorNum2Index = sectorNum2Index;
             pos += 24; // start sector info
-            var sectorPos = trackInfo.dataPos;
+            var sectorPos = trackDataPos;
             for (var i = 0; i < trackInfo.spt; i += 1) {
-                var sectorInfo = sectorInfoList[i] || {}; // resue SectorInfo object if possible
+                var sectorInfo = sectorInfoList[i] || {}; // reuse SectorInfo object if possible
                 sectorInfoList[i] = sectorInfo;
                 sectorInfo.dataPos = sectorPos;
                 sectorInfo.track = this.readUInt8(pos);
@@ -7049,59 +7324,94 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
                 pos += 8;
             }
         };
-        DiskImage.prototype.seekTrack = function (track, head) {
-            var diskInfo = this.diskInfo, trackInfo = diskInfo.trackInfo;
-            if (trackInfo.track === track && trackInfo.head === head) { // already positionend?
+        DiskImage.createTrackInfoAsString = function (trackInfo) {
+            var sectorInfoList = trackInfo.sectorInfoList;
+            var trackInfoString = trackInfo.ident // 12
+                + DiskImage.uInt8ToString(0).repeat(4) // 4 unused
+                + DiskImage.uInt8ToString(trackInfo.track)
+                + DiskImage.uInt8ToString(trackInfo.head)
+                + DiskImage.uInt8ToString(trackInfo.dataRate)
+                + DiskImage.uInt8ToString(trackInfo.recMode)
+                + DiskImage.uInt8ToString(trackInfo.bps)
+                + DiskImage.uInt8ToString(trackInfo.spt)
+                + DiskImage.uInt8ToString(trackInfo.gap3)
+                + DiskImage.uInt8ToString(trackInfo.fill);
+            for (var i = 0; i < trackInfo.spt; i += 1) {
+                var sectorInfo = sectorInfoList[i], sectorinfoString = DiskImage.uInt8ToString(sectorInfo.track)
+                    + DiskImage.uInt8ToString(sectorInfo.head)
+                    + DiskImage.uInt8ToString(sectorInfo.sector)
+                    + DiskImage.uInt8ToString(sectorInfo.bps)
+                    + DiskImage.uInt8ToString(sectorInfo.state1)
+                    + DiskImage.uInt8ToString(sectorInfo.state2)
+                    + DiskImage.uInt16ToString(0); // We use 0 (sectorInfo.sectorSize only needed for extended format)
+                trackInfoString += sectorinfoString;
+            }
+            // fill up
+            trackInfoString += DiskImage.uInt8ToString(0).repeat(DiskImage.trackInfoSize - trackInfoString.length);
+            return trackInfoString;
+        };
+        DiskImage.prototype.seekTrack = function (diskInfo, track, head) {
+            if (!diskInfo.ident) {
+                this.readDiskInfo(diskInfo, 0);
+            }
+            var trackInfo = diskInfo.trackInfo;
+            if (trackInfo.ident && trackInfo.track === track && trackInfo.head === head) { // already positionend?
                 return;
             }
-            if (!diskInfo.ident) {
-                this.readDiskInfo(0);
-            }
-            var trackInfoPos = diskInfo.trackPos[track * diskInfo.heads + head];
+            var trackInfoPos = diskInfo.trackInfoPosList[track * diskInfo.heads + head];
             if (trackInfoPos === undefined) {
                 throw this.composeError(new Error(), "Track not found", String(track));
             }
-            this.readTrackInfo(trackInfoPos);
+            this.readTrackInfo(trackInfo, trackInfoPos);
         };
-        DiskImage.prototype.sectorNum2Index = function (sector) {
-            var trackInfo = this.diskInfo.trackInfo, sectorIndex = trackInfo.sectorNum2Index[sector];
+        DiskImage.sectorNum2Index = function (trackInfo, sector) {
+            var sectorIndex = trackInfo.sectorNum2Index[sector];
             return sectorIndex;
         };
-        DiskImage.prototype.seekSector = function (sectorIndex) {
-            var sectorInfoList = this.diskInfo.trackInfo.sectorInfo, sectorInfo = sectorInfoList[sectorIndex];
-            return sectorInfo;
+        DiskImage.seekSector = function (sectorInfoList, sectorIndex) {
+            return sectorInfoList[sectorIndex];
         };
-        DiskImage.prototype.readSector = function (sector) {
-            var trackInfo = this.diskInfo.trackInfo, sectorIndex = this.sectorNum2Index(sector);
+        DiskImage.prototype.readSector = function (trackInfo, sector) {
+            var sectorIndex = DiskImage.sectorNum2Index(trackInfo, sector);
             if (sectorIndex === undefined) {
                 throw this.composeError(Error(), "Track " + trackInfo.track + ": Sector not found", String(sector), 0);
             }
-            var sectorInfo = this.seekSector(sectorIndex), out = this.readUtf(sectorInfo.dataPos, sectorInfo.sectorSize);
+            var sectorInfo = DiskImage.seekSector(trackInfo.sectorInfoList, sectorIndex), out = this.readUtf(sectorInfo.dataPos, sectorInfo.sectorSize);
             return out;
         };
+        DiskImage.prototype.writeSector = function (trackInfo, sector, sectorData) {
+            var sectorIndex = DiskImage.sectorNum2Index(trackInfo, sector);
+            if (sectorIndex === undefined) {
+                throw this.composeError(Error(), "Track " + trackInfo.track + ": Sector not found", String(sector), 0);
+            }
+            var sectorInfo = DiskImage.seekSector(trackInfo.sectorInfoList, sectorIndex), data = this.options.data;
+            if (sectorData.length !== sectorInfo.sectorSize) {
+                Utils_11.Utils.console.error(this.composeError({}, "sectordata.length " + sectorData.length + " <> sectorSize " + sectorInfo.sectorSize, String(0)));
+            }
+            this.options.data = data.substring(0, sectorInfo.dataPos) + sectorData + data.substring(sectorInfo.dataPos + sectorInfo.sectorSize);
+        };
         // ...
-        DiskImage.prototype.getFormatDescriptor = function (format) {
-            var derivedFormat = DiskImage.formatDescriptors[format];
-            if (!derivedFormat) {
+        DiskImage.prototype.composeFormatDescriptor = function (format) {
+            var derivedFormatDescriptor = DiskImage.formatDescriptors[format];
+            if (!derivedFormatDescriptor) {
                 throw this.composeError(Error(), "Unknown format", format);
             }
             var formatDescriptor;
-            if (derivedFormat.parentRef) {
-                var parentFormat = this.getFormatDescriptor(derivedFormat.parentRef); // recursive
-                formatDescriptor = Object.assign({}, parentFormat, derivedFormat);
+            if (derivedFormatDescriptor.parentRef) {
+                var parentFormatDescriptor = this.composeFormatDescriptor(derivedFormatDescriptor.parentRef); // recursive
+                formatDescriptor = Object.assign({}, parentFormatDescriptor, derivedFormatDescriptor);
             }
             else {
-                formatDescriptor = Object.assign({}, derivedFormat); // get a copy
+                formatDescriptor = Object.assign({}, derivedFormatDescriptor); // get a copy
             }
             return formatDescriptor;
         };
-        DiskImage.prototype.determineFormat = function () {
-            var diskInfo = this.diskInfo, track = 0, head = 0;
-            this.seekTrack(track, head);
-            var trackInfo = diskInfo.trackInfo;
+        DiskImage.prototype.determineFormat = function (diskInfo) {
+            var trackInfo = diskInfo.trackInfo, track = 0, head = 0;
+            this.seekTrack(diskInfo, track, head);
             var firstSector = 0xff;
             for (var i = 0; i < trackInfo.spt; i += 1) {
-                var sector = trackInfo.sectorInfo[i].sector;
+                var sector = trackInfo.sectorInfoList[i].sector;
                 if (sector < firstSector) {
                     firstSector = sector;
                 }
@@ -7122,10 +7432,83 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             else {
                 throw this.composeError(Error(), "Unknown format with sector", String(firstSector));
             }
-            if (diskInfo.heads > 1) { // maybe 2
-                format += String(diskInfo.heads); // e.g. "data": "data2"
+            if (diskInfo.heads > 1) { // maybe 2 heads
+                format += DiskImage.twoHeads; // e.g. "data": "data2h"
             }
-            return this.getFormatDescriptor(format);
+            if (Utils_11.Utils.debug > 1) {
+                Utils_11.Utils.console.debug("determineFormat: format=", format);
+            }
+            return format;
+        };
+        DiskImage.prototype.createImage = function (format) {
+            var formatDescriptor = this.composeFormatDescriptor(format), sectorInfoList = [], sectorSize = (0x80 << formatDescriptor.bps), // eslint-disable-line no-bitwise
+            sectorInfo = {
+                track: 0,
+                head: 0,
+                sector: 0,
+                bps: formatDescriptor.bps,
+                state1: 0,
+                state2: 0,
+                sectorSize: sectorSize,
+                dataPos: 0
+            }, trackInfo = {
+                ident: "Track-Info\r\n",
+                track: 0,
+                head: 0,
+                dataRate: 0,
+                recMode: 0,
+                bps: formatDescriptor.bps,
+                spt: formatDescriptor.spt,
+                gap3: formatDescriptor.gap3,
+                fill: formatDescriptor.fill,
+                sectorInfoList: sectorInfoList,
+                sectorNum2Index: {}
+            }, diskInfo = {
+                ident: "MV - CPCEMU Disk-File\r\nDisk-Info\r\n",
+                creator: (this.options.creator || "CpcBasicTS").padEnd(14, " "),
+                tracks: formatDescriptor.tracks,
+                heads: formatDescriptor.heads,
+                trackSize: DiskImage.trackInfoSize + formatDescriptor.spt * sectorSize,
+                trackInfo: trackInfo,
+                trackSizes: [],
+                trackInfoPosList: [],
+                extended: false
+            }, emptySectorData = DiskImage.uInt8ToString(formatDescriptor.fill).repeat(sectorSize);
+            for (var i = 0; i < trackInfo.spt; i += 1) {
+                var sectorInfoClone = __assign({}, sectorInfo);
+                sectorInfoClone.sector = formatDescriptor.firstSector + i;
+                trackInfo.sectorNum2Index[sectorInfoClone.sector] = i;
+                sectorInfoList.push(sectorInfoClone);
+            }
+            var image = DiskImage.createDiskInfoAsString(diskInfo), trackInfoPos = DiskImage.diskInfoSize;
+            for (var track = 0; track < formatDescriptor.tracks; track += 1) {
+                for (var head = 0; head < formatDescriptor.heads; head += 1) {
+                    trackInfo.track = track;
+                    trackInfo.head = head;
+                    diskInfo.trackInfoPosList.push(trackInfoPos);
+                    for (var sector = 0; sector < trackInfo.spt; sector += 1) {
+                        var sectorInfo2 = sectorInfoList[sector];
+                        sectorInfo2.track = track;
+                        sectorInfo2.head = head;
+                        // in case we want to use the formatted image...
+                        sectorInfo2.dataPos = trackInfoPos + DiskImage.trackInfoSize + sector * sectorInfo2.sectorSize;
+                    }
+                    var trackAsString = DiskImage.createTrackInfoAsString(trackInfo);
+                    image += trackAsString;
+                    for (var sector = 0; sector < formatDescriptor.spt; sector += 1) {
+                        image += emptySectorData;
+                    }
+                    trackInfoPos += diskInfo.trackSize;
+                }
+            }
+            this.diskInfo = diskInfo;
+            this.formatDescriptor = formatDescriptor;
+            return image;
+        };
+        DiskImage.prototype.formatImage = function (format) {
+            var image = this.createImage(format);
+            this.options.data = image;
+            return image;
         };
         DiskImage.fnRemoveHighBit7 = function (str) {
             var out = "";
@@ -7137,35 +7520,47 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
         };
         DiskImage.prototype.readDirectoryExtents = function (extents, pos, endPos) {
             while (pos < endPos) {
-                var extWithFlags = this.readUtf(pos + 9, 3), // extension with high bits set for special flags
-                extent = {
+                var extent = {
                     user: this.readUInt8(pos),
-                    name: DiskImage.fnRemoveHighBit7(this.readUtf(pos + 1, 8)),
-                    ext: DiskImage.fnRemoveHighBit7(extWithFlags),
+                    name: this.readUtf(pos + 1, 8),
+                    ext: this.readUtf(pos + 9, 3),
                     extent: this.readUInt8(pos + 12),
                     lastRecBytes: this.readUInt8(pos + 13),
                     extentHi: this.readUInt8(pos + 14),
                     records: this.readUInt8(pos + 15),
-                    blocks: [],
-                    readOnly: Boolean(extWithFlags.charCodeAt(0) & 0x80),
-                    system: Boolean(extWithFlags.charCodeAt(1) & 0x80),
-                    backup: Boolean(extWithFlags.charCodeAt(2) & 0x80) /* eslint-disable-line no-bitwise */
+                    blocks: []
                 };
                 pos += 16;
                 var blocks = extent.blocks;
                 for (var i = 0; i < 16; i += 1) {
                     var block = this.readUInt8(pos + i);
-                    if (block) {
-                        blocks.push(block);
-                    }
-                    else { // last block
-                        break;
-                    }
+                    blocks.push(block);
                 }
                 pos += 16;
                 extents.push(extent);
             }
             return extents;
+        };
+        DiskImage.createDirectoryExtentAsString = function (extent) {
+            var extentString = DiskImage.uInt8ToString(extent.user)
+                + extent.name
+                + extent.ext
+                + DiskImage.uInt8ToString(extent.extent)
+                + DiskImage.uInt8ToString(extent.lastRecBytes)
+                + DiskImage.uInt8ToString(extent.extentHi)
+                + DiskImage.uInt8ToString(extent.records), blockString = "";
+            for (var i = 0; i < extent.blocks.length; i += 1) {
+                blockString += DiskImage.uInt8ToString(extent.blocks[i]);
+            }
+            extentString += blockString;
+            return extentString;
+        };
+        DiskImage.createSeveralDirectoryExtentsAsString = function (extents, first, last) {
+            var extentString = "";
+            for (var i = first; i < last; i += 1) {
+                extentString += DiskImage.createDirectoryExtentAsString(extents[i]);
+            }
+            return extentString;
         };
         DiskImage.fnSortByExtentNumber = function (a, b) {
             return a.extent - b.extent;
@@ -7184,7 +7579,7 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             for (var i = 0; i < extents.length; i += 1) {
                 var extent = extents[i];
                 if (fill === null || extent.user !== fill) {
-                    var name_9 = extent.name + "." + extent.ext; // and extent.user?
+                    var name_9 = DiskImage.fnRemoveHighBit7(extent.name) + "." + DiskImage.fnRemoveHighBit7(extent.ext); // and extent.user?
                     // (do not convert filename here (to display messages in filenames))
                     if (!reFilePattern || reFilePattern.test(name_9)) {
                         if (!(name_9 in dir)) {
@@ -7197,42 +7592,54 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             DiskImage.sortFileExtents(dir);
             return dir;
         };
-        DiskImage.prototype.convertBlock2Sector = function (block) {
-            var format = this.format, spt = format.spt, blockSectors = format.bls / 512, // usually 2
+        DiskImage.convertBlock2Sector = function (formatDescriptor, block) {
+            var spt = formatDescriptor.spt, blockSectors = formatDescriptor.bls / 512, // usually 2
             logSec = block * blockSectors, // directory is in block 0-1
             pos = {
-                track: Math.floor(logSec / spt) + format.off,
+                track: Math.floor(logSec / spt) + formatDescriptor.off,
                 head: 0,
-                sector: (logSec % spt) + format.firstSector
+                sector: (logSec % spt) + formatDescriptor.firstSector
             };
             return pos;
         };
-        DiskImage.prototype.readDirectory = function () {
+        DiskImage.prototype.readAllDirectoryExtents = function (diskInfo, formatDescriptor, extents) {
             var directorySectors = 4, // could be determined from al0,al1
-            extents = [], format = this.determineFormat(), off = format.off, firstSector = format.firstSector;
-            this.format = format;
-            this.seekTrack(off, 0);
+            off = formatDescriptor.off, firstSector = formatDescriptor.firstSector, trackInfo = diskInfo.trackInfo, sectorInfoList = trackInfo.sectorInfoList;
+            this.seekTrack(diskInfo, off, 0);
             for (var i = 0; i < directorySectors; i += 1) {
-                var sectorIndex = this.sectorNum2Index(firstSector + i);
+                var sectorIndex = DiskImage.sectorNum2Index(trackInfo, firstSector + i);
                 if (sectorIndex === undefined) {
                     throw this.composeError(Error(), "Cannot read directory at track " + off + " sector", String(firstSector));
                 }
-                var sectorInfo = this.seekSector(sectorIndex);
+                var sectorInfo = DiskImage.seekSector(sectorInfoList, sectorIndex);
                 this.readDirectoryExtents(extents, sectorInfo.dataPos, sectorInfo.dataPos + sectorInfo.sectorSize);
             }
-            return DiskImage.prepareDirectoryList(extents, format.fill);
+            return extents;
         };
-        DiskImage.prototype.nextSector = function (pos) {
-            var format = this.format;
-            pos.sector += 1;
-            if (pos.sector >= format.firstSector + format.spt) {
-                pos.track += 1;
-                pos.sector = format.firstSector;
+        DiskImage.prototype.writeAllDirectoryExtents = function (diskInfo, formatDescriptor, extents) {
+            var directoryBlocks = 2, // could be determined from al0,al1
+            extentsPerBlock = extents.length / directoryBlocks;
+            for (var i = 0; i < directoryBlocks; i += 1) {
+                var blockData = DiskImage.createSeveralDirectoryExtentsAsString(extents, i * extentsPerBlock, (i + 1) * extentsPerBlock);
+                this.writeBlock(diskInfo, formatDescriptor, i, blockData);
             }
         };
-        DiskImage.prototype.readBlock = function (block) {
-            var diskInfo = this.diskInfo, blockSectors = this.format.bls / 512, // usually 2
-            pos = this.convertBlock2Sector(block);
+        DiskImage.prototype.readDirectory = function () {
+            var diskInfo = this.diskInfo, format = this.determineFormat(diskInfo), formatDescriptor = this.composeFormatDescriptor(format), extents = [];
+            this.formatDescriptor = formatDescriptor;
+            this.readAllDirectoryExtents(diskInfo, formatDescriptor, extents);
+            return DiskImage.prepareDirectoryList(extents, this.formatDescriptor.fill);
+        };
+        DiskImage.nextSector = function (formatDescriptor, pos) {
+            pos.sector += 1;
+            if (pos.sector >= formatDescriptor.firstSector + formatDescriptor.spt) {
+                pos.track += 1;
+                pos.sector = formatDescriptor.firstSector;
+            }
+        };
+        DiskImage.prototype.readBlock = function (diskInfo, formatDescriptor, block) {
+            var blockSectors = formatDescriptor.bls / 512, // usually 2
+            pos = DiskImage.convertBlock2Sector(formatDescriptor, block);
             var out = "";
             if (pos.track >= diskInfo.tracks) {
                 Utils_11.Utils.console.error(this.composeError({}, "Block " + block + ": Track out of range", String(pos.track)));
@@ -7241,14 +7648,34 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
                 Utils_11.Utils.console.error(this.composeError({}, "Block " + block + ": Head out of range", String(pos.track)));
             }
             for (var i = 0; i < blockSectors; i += 1) {
-                this.seekTrack(pos.track, pos.head);
-                out += this.readSector(pos.sector);
-                this.nextSector(pos);
+                this.seekTrack(diskInfo, pos.track, pos.head);
+                out += this.readSector(diskInfo.trackInfo, pos.sector);
+                DiskImage.nextSector(formatDescriptor, pos);
             }
             return out;
         };
-        DiskImage.prototype.readExtents = function (fileExtents) {
-            var recPerBlock = this.format.bls / 128; // usually 8
+        DiskImage.prototype.writeBlock = function (diskInfo, formatDescriptor, block, blockData) {
+            var blockSectors = formatDescriptor.bls / 512, // usually 2
+            sectorSize = (0x80 << formatDescriptor.bps), // eslint-disable-line no-bitwise
+            pos = DiskImage.convertBlock2Sector(formatDescriptor, block);
+            if (pos.track >= diskInfo.tracks) {
+                Utils_11.Utils.console.error(this.composeError({}, "Block " + block + ": Track out of range", String(pos.track)));
+            }
+            if (pos.head >= diskInfo.heads) {
+                Utils_11.Utils.console.error(this.composeError({}, "Block " + block + ": Head out of range", String(pos.track)));
+            }
+            if (blockData.length !== (blockSectors * sectorSize)) {
+                Utils_11.Utils.console.error(this.composeError({}, "blockData.length " + blockData.length + " <> blockSize " + (blockSectors * sectorSize), String(0)));
+            }
+            for (var i = 0; i < blockSectors; i += 1) {
+                this.seekTrack(diskInfo, pos.track, pos.head);
+                var sectorData = blockData.substring(i * sectorSize, (i + 1) * sectorSize);
+                this.writeSector(diskInfo.trackInfo, pos.sector, sectorData);
+                DiskImage.nextSector(formatDescriptor, pos);
+            }
+        };
+        DiskImage.prototype.readExtents = function (diskInfo, formatDescriptor, fileExtents) {
+            var recPerBlock = formatDescriptor.bls / 128; // usually 8
             var out = "";
             for (var i = 0; i < fileExtents.length; i += 1) {
                 var extent = fileExtents[i], blocks = extent.blocks;
@@ -7259,7 +7686,7 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
                     }
                 }
                 for (var blockIndex = 0; blockIndex < blocks.length; blockIndex += 1) {
-                    var block = this.readBlock(blocks[blockIndex]);
+                    var block = this.readBlock(diskInfo, formatDescriptor, blocks[blockIndex]);
                     if (records < recPerBlock) { // block with some remaining data
                         block = block.substring(0, 0x80 * records);
                     }
@@ -7273,7 +7700,8 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             return out;
         };
         DiskImage.prototype.readFile = function (fileExtents) {
-            var out = this.readExtents(fileExtents);
+            var diskInfo = this.diskInfo, formatDescriptor = this.getFormatDescriptor();
+            var out = this.readExtents(diskInfo, formatDescriptor, fileExtents);
             var header = DiskImage.parseAmsdosHeader(out);
             var realLen;
             if (header) {
@@ -7294,6 +7722,171 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             }
             return out;
         };
+        DiskImage.getFreeExtents = function (extents, fill) {
+            var freeExtents = [];
+            for (var i = 0; i < extents.length; i += 1) {
+                if (extents[i].user === fill) {
+                    freeExtents.push(i);
+                }
+            }
+            return freeExtents;
+        };
+        DiskImage.getBlockMask = function (extents, fill, dsm, al0, al1) {
+            var blockMask = [];
+            for (var i = 0; i < dsm - 1; i += 1) {
+                blockMask[i] = false;
+            }
+            // mark reserved blocks
+            var mask = 0x80;
+            for (var i = 0; i < 8; i += 1) {
+                if (al0 & mask) { // eslint-disable-line no-bitwise
+                    blockMask[i] = true; // mark reserved block
+                }
+                mask >>= 1; // eslint-disable-line no-bitwise
+            }
+            mask = 0x80;
+            for (var i = 8; i < 16; i += 1) {
+                if (al1 & mask) { // eslint-disable-line no-bitwise
+                    blockMask[i] = true; // mark reserved block
+                }
+                mask >>= 1; // eslint-disable-line no-bitwise
+            }
+            for (var i = 0; i < extents.length; i += 1) {
+                var extent = extents[i], blockList = extent.blocks;
+                if (extent.user !== fill) {
+                    for (var blockindex = 0; blockindex < blockList.length; blockindex += 1) {
+                        var block = blockList[blockindex];
+                        if (block) {
+                            if (blockMask[block]) { // eslint-disable-line max-depth
+                                Utils_11.Utils.console.warn("getBlockMask: Block number already in use: ", block);
+                            }
+                            blockMask[block] = true;
+                        }
+                        else {
+                            break; // block=0 -> no more for this extent
+                        }
+                    }
+                }
+            }
+            return blockMask;
+        };
+        DiskImage.getFreeBlocks = function (blockMask, dsm) {
+            var freeBlocks = [];
+            for (var i = 0; i < dsm; i += 1) {
+                if (!blockMask[i]) {
+                    freeBlocks.push(i);
+                }
+            }
+            return freeBlocks;
+        };
+        DiskImage.getFilenameAndExtension = function (filename) {
+            var _a = filename.split("."), name1 = _a[0], ext1 = _a[1]; // eslint-disable-line array-element-newline
+            name1 = name1.substring(0, 8).toUpperCase().padEnd(8, " ");
+            ext1 = ext1.substring(0, 3).toUpperCase().padEnd(3, " ");
+            return [name1, ext1]; // eslint-disable-line array-element-newline
+        };
+        DiskImage.prototype.writeFile = function (filename, data) {
+            var diskInfo = this.diskInfo, formatDescriptor = this.getFormatDescriptor(), extents = [];
+            this.readAllDirectoryExtents(diskInfo, formatDescriptor, extents);
+            var fill = formatDescriptor.fill, freeExtents = DiskImage.getFreeExtents(extents, formatDescriptor.fill), sectors = (formatDescriptor.tracks - formatDescriptor.off) * formatDescriptor.spt, ssize = 0x80 << formatDescriptor.bps, // eslint-disable-line no-bitwise
+            dsm = ((sectors * ssize) / formatDescriptor.bls) | 0, // eslint-disable-line no-bitwise
+            // DSM: total size of disc in blocks excluding any reserved tracks
+            al0 = formatDescriptor.al0, al1 = formatDescriptor.al1, blockMask = DiskImage.getBlockMask(extents, fill, dsm, al0, al1), freeBlocks = DiskImage.getFreeBlocks(blockMask, dsm);
+            if (Utils_11.Utils.debug > 0) {
+                Utils_11.Utils.console.debug("writeFile: freeExtents=", freeExtents.length, ", freeBlocks=", freeBlocks);
+            }
+            if (!freeBlocks.length) {
+                Utils_11.Utils.console.warn("writeFile: " + filename + ": No space left!");
+                return false;
+            }
+            if (!freeExtents.length) {
+                Utils_11.Utils.console.warn("writeFile: " + filename + ": Directory full!");
+                return false;
+            }
+            var _a = DiskImage.getFilenameAndExtension(filename), name1 = _a[0], ext1 = _a[1], // eslint-disable-line array-element-newline
+            fileSize = data.length, bls = formatDescriptor.bls, requiredBlocks = ((fileSize + bls - 1) / bls) | 0; // eslint-disable-line no-bitwise
+            if (requiredBlocks > freeBlocks.length) {
+                var requiredKB = ((requiredBlocks * bls) / 1024) | 0, // eslint-disable-line no-bitwise
+                freeKB = ((freeBlocks.length * bls) / 1024) | 0; // eslint-disable-line no-bitwise
+                Utils_11.Utils.console.warn("writeFile: " + filename + ": Not enough space left (" + requiredKB + "K > " + freeKB + "K). Ignoring.");
+                return false;
+            }
+            var blocksPerExtent = 16, requiredExtents = ((requiredBlocks + blocksPerExtent - 1) / blocksPerExtent) | 0; // eslint-disable-line no-bitwise
+            if (requiredExtents > freeExtents.length) {
+                Utils_11.Utils.console.warn("writeFile: " + filename + ": Directory full!");
+                return false;
+            }
+            var size = fileSize, extent, extentCnt = 0, blockCnt = 0;
+            while (size > 0) {
+                if (!extent || (blockCnt >= 16)) {
+                    var records = ((size + 0x80 - 1) / 0x80) | 0; // eslint-disable-line no-bitwise
+                    extent = extents[freeExtents[extentCnt]];
+                    extent.user = 0;
+                    extent.name = name1;
+                    extent.ext = ext1;
+                    extent.extent = extentCnt;
+                    extent.lastRecBytes = 0; // ($size >= 0x80) ? 0 : $size;
+                    extent.extentHi = 0;
+                    extent.records = (records > 0x80) ? 0x80 : records;
+                    extent.blocks.length = 0;
+                    for (var i = 0; i < 16; i += 1) {
+                        extent.blocks[i] = 0;
+                    }
+                    extentCnt += 1;
+                    blockCnt = 0;
+                }
+                var thisSize = (size > bls) ? bls : size;
+                var dataChunk = data.substring(fileSize - size, fileSize - size + thisSize);
+                if (thisSize < bls) {
+                    dataChunk += DiskImage.uInt8ToString(0x1a); // add EOF (0x1a)
+                    var remain = bls - thisSize - 1;
+                    dataChunk += DiskImage.uInt8ToString(formatDescriptor.fill).repeat(remain); // fill up last block with fill byte
+                }
+                var block = freeBlocks[(extentCnt - 1) * 16 + blockCnt];
+                this.writeBlock(diskInfo, formatDescriptor, block, dataChunk);
+                extent.blocks[blockCnt] = block;
+                blockCnt += 1;
+                size -= thisSize;
+            }
+            this.writeAllDirectoryExtents(diskInfo, formatDescriptor, extents);
+            return true;
+        };
+        DiskImage.isSectorEmpty = function (data, index, size, fill) {
+            var endIndex = (index + size) <= data.length ? index + size : data.length - index;
+            var isEmpty = true;
+            for (var i = index; i < endIndex; i += 1) {
+                if (data.charCodeAt(i) !== fill) {
+                    isEmpty = false;
+                    break;
+                }
+            }
+            return isEmpty;
+        };
+        DiskImage.prototype.stripEmptyTracks = function () {
+            var diskInfo = this.diskInfo, format = this.determineFormat(diskInfo), formatDescriptor = this.composeFormatDescriptor(format), tracks = diskInfo.tracks, firstDataTrack = formatDescriptor.off, head = 0;
+            var data = this.options.data;
+            this.formatDescriptor = formatDescriptor;
+            for (var track = firstDataTrack; track < tracks; track += 1) {
+                this.seekTrack(diskInfo, track, head);
+                var trackInfo = diskInfo.trackInfo, fill = diskInfo.trackInfo.fill, sectorInfoList = trackInfo.sectorInfoList;
+                var isEmpty = true;
+                for (var i = 0; i < trackInfo.spt; i += 1) {
+                    var sectorInfo = sectorInfoList[i];
+                    if (!DiskImage.isSectorEmpty(data, sectorInfo.dataPos, sectorInfo.sectorSize, fill)) {
+                        isEmpty = false;
+                        break;
+                    }
+                }
+                if (isEmpty) {
+                    diskInfo.tracks = track; // set new number of tracks
+                    var trackDataPos = sectorInfoList[0].dataPos;
+                    data = DiskImage.createDiskInfoAsString(diskInfo) + data.substring(DiskImage.diskInfoSize, trackDataPos - DiskImage.trackInfoSize); // set new track count and remove empty track and rest
+                    this.options.data = data;
+                    break;
+                }
+            }
+            return data;
+        };
         /* eslint-enable array-element-newline */
         DiskImage.unOrProtectData = function (data) {
             var table1 = DiskImage.protectTable[0], table2 = DiskImage.protectTable[1];
@@ -7313,6 +7906,14 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             }
             return sum;
         };
+        DiskImage.hasAmsdosHeader = function (data) {
+            var hasHeader = false;
+            if (data.length >= 0x80) {
+                var computed = DiskImage.computeChecksum(data.substring(0, 66)), sum = data.charCodeAt(67) + data.charCodeAt(68) * 256;
+                hasHeader = computed === sum;
+            }
+            return hasHeader;
+        };
         DiskImage.parseAmsdosHeader = function (data) {
             var typeMap = {
                 0: "T",
@@ -7324,33 +7925,22 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
             var header;
             // http://www.benchmarko.de/cpcemu/cpcdoc/chapter/cpcdoc7_e.html#I_AMSDOS_HD
             // http://www.cpcwiki.eu/index.php/AMSDOS_Header
-            if (data.length >= 0x80) {
-                var computed = DiskImage.computeChecksum(data.substring(0, 66)), sum = data.charCodeAt(67) + data.charCodeAt(68) * 256;
-                if (computed === sum) {
-                    header = {
-                        user: data.charCodeAt(0),
-                        name: data.substring(1, 1 + 8),
-                        ext: data.substring(9, 9 + 3),
-                        typeNumber: data.charCodeAt(18),
-                        start: data.charCodeAt(21) + data.charCodeAt(22) * 256,
-                        pseudoLen: data.charCodeAt(24) + data.charCodeAt(25) * 256,
-                        entry: data.charCodeAt(26) + data.charCodeAt(27) * 256,
-                        length: data.charCodeAt(64) + data.charCodeAt(65) * 256 + data.charCodeAt(66) * 65536,
-                        typeString: ""
-                    };
-                    header.typeString = typeMap[header.typeNumber] || typeMap[16]; // default: ASCII
-                }
+            // https://www.cpcwiki.eu/imgs/b/bc/S968se09.pdf (Firmware Guide Section 9)
+            if (DiskImage.hasAmsdosHeader(data)) {
+                header = {
+                    user: data.charCodeAt(0),
+                    name: data.substring(1, 1 + 8),
+                    ext: data.substring(9, 9 + 3),
+                    typeNumber: data.charCodeAt(18),
+                    start: data.charCodeAt(21) + data.charCodeAt(22) * 256,
+                    pseudoLen: data.charCodeAt(24) + data.charCodeAt(25) * 256,
+                    entry: data.charCodeAt(26) + data.charCodeAt(27) * 256,
+                    length: data.charCodeAt(64) + data.charCodeAt(65) * 256 + data.charCodeAt(66) * 65536,
+                    typeString: ""
+                };
+                header.typeString = typeMap[header.typeNumber] || typeMap[16]; // default: ASCII
             }
             return header;
-        };
-        DiskImage.uInt8ToString = function (value) {
-            return String.fromCharCode(value);
-        };
-        DiskImage.uInt16ToString = function (value) {
-            return DiskImage.uInt8ToString(value & 0xff) + DiskImage.uInt8ToString((value >> 8) & 0xff); // eslint-disable-line no-bitwise
-        };
-        DiskImage.uInt24ToString = function (value) {
-            return DiskImage.uInt16ToString(value & 0xffff) + DiskImage.uInt8ToString(value >> 16); // eslint-disable-line no-bitwise
         };
         DiskImage.combineAmsdosHeader = function (header) {
             var typeMap = {
@@ -7367,6 +7957,10 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
                     type = typeMap.A;
                 }
             }
+            var length = header.pseudoLen || header.length; // logical length;
+            if (length > 0xffff) { // 16 bit
+                length = 0xffff;
+            }
             var data1 = DiskImage.uInt8ToString(header.user || 0)
                 + (header.name || "").padEnd(8, " ")
                 + (header.ext || "").padEnd(3, " ")
@@ -7377,15 +7971,20 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
                 + DiskImage.uInt8ToString(type)
                 + DiskImage.uInt16ToString(0) // data location (unused)
                 + DiskImage.uInt16ToString(header.start || 0)
-                + DiskImage.uInt8ToString(0xff) // first block (unused, always 0xff)
-                + DiskImage.uInt16ToString(header.pseudoLen || header.length) // logical length
+                + DiskImage.uInt8ToString(0x00) // first block (unused; always 0x00 or 0xff?)
+                + DiskImage.uInt16ToString(length) // logical length
                 + DiskImage.uInt16ToString(header.entry || 0)
-                + " ".repeat(36)
+                + "\x00".repeat(36)
                 + DiskImage.uInt24ToString(header.length), checksum = DiskImage.computeChecksum(data1), data = data1
                 + DiskImage.uInt16ToString(checksum)
                 + "\x00".repeat(59);
             return data;
         };
+        DiskImage.createAmsdosHeader = function (parameter) {
+            var header = __assign({ user: 0, name: "", ext: "", typeNumber: 0, start: 0, pseudoLen: 0, entry: 0, length: 0, typeString: "" }, parameter);
+            return header;
+        };
+        DiskImage.twoHeads = "2h";
         DiskImage.formatDescriptors = {
             data: {
                 tracks: 40,
@@ -7403,8 +8002,12 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
                 al1: 0x00,
                 off: 0 // number of reserved tracks (also the track where the directory starts)
             },
+            data42t: {
+                parentRef: "data",
+                tracks: 42
+            },
             // double sided data
-            data2: {
+            data2h: {
                 parentRef: "data",
                 heads: 2
             },
@@ -7414,7 +8017,7 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
                 off: 2
             },
             // double sided system
-            system2: {
+            system2h: {
                 parentRef: "system",
                 heads: 2
             },
@@ -7442,11 +8045,17 @@ define("DiskImage", ["require", "exports", "Utils"], function (require, exports,
                 off: 1,
                 firstSector: 0x01
             },
-            big780k2: {
+            big780k2h: {
                 parentRef: "big780k",
                 heads: 2
             }
         };
+        DiskImage.diskInfoIdentMap = {
+            "MV - CPC": 1,
+            EXTENDED: 2
+        };
+        DiskImage.diskInfoSize = 0x100;
+        DiskImage.trackInfoSize = 0x100;
         // ...
         // see AMSDOS ROM, &D252
         /* eslint-disable array-element-newline */
@@ -7593,19 +8202,6 @@ define("View", ["require", "exports", "Utils"], function (require, exports, Util
             element.checked = checked;
             return this;
         };
-        /*
-        getInputDisabled(id: string): boolean { // eslint-disable-line class-methods-use-this
-            const element = View.getElementByIdAs<HTMLInputElement>(id);
-    
-            return element.disabled;
-        }
-        setInputDisabled(id: string, disabled: boolean): this {
-            const element = View.getElementByIdAs<HTMLInputElement>(id);
-    
-            element.disabled = disabled;
-            return this;
-        }
-        */
         View.prototype.setAreaInputList = function (id, inputs) {
             var element = View.getElementByIdAs(id), childNodes = element.childNodes;
             while (childNodes.length && childNodes[0].nodeType !== Node.ELEMENT_NODE) { // remove all non-element nodes
@@ -7651,20 +8247,22 @@ define("View", ["require", "exports", "Utils"], function (require, exports, Util
             return this;
         };
         View.prototype.setSelectOptions = function (id, options) {
-            var element = View.getElementByIdAs(id);
+            var element = View.getElementByIdAs(id), optionList = [], existingElements = element.length;
+            // pre-create additional options
+            for (var i = existingElements; i < options.length; i += 1) {
+                var item = options[i], option = window.document.createElement("option");
+                option.value = item.value;
+                option.text = item.text;
+                option.title = item.title;
+                option.selected = item.selected; // multi-select
+                optionList.push(option);
+            }
             for (var i = 0; i < options.length; i += 1) {
-                var item = options[i];
-                var option = void 0;
-                if (i >= element.length) {
-                    option = window.document.createElement("option");
-                    option.value = item.value;
-                    option.text = item.text;
-                    option.title = item.title;
-                    option.selected = item.selected; // multi-select
-                    element.add(option, null); // null needed for old FF 3.x
+                if (i >= existingElements) {
+                    element.add(optionList[i - existingElements], null); // null needed for old FF 3.x
                 }
                 else {
-                    option = element.options[i];
+                    var item = options[i], option = element.options[i];
                     if (option.value !== item.value) {
                         option.value = item.value;
                     }
@@ -7755,12 +8353,84 @@ define("View", ["require", "exports", "Utils"], function (require, exports, Util
             }
             return this;
         };
-        View.prototype.attachEventHandler = function (type, eventHandler) {
-            if (Utils_12.Utils.debug) {
-                Utils_12.Utils.console.debug("attachEventHandler: type=" + type + ", eventHandler=" + ((eventHandler !== undefined) ? "[?]" : null));
+        View.prototype.addEventListener = function (type, eventListener, element) {
+            if (element) {
+                element.addEventListener(type, eventListener, false);
             }
-            window.document.addEventListener(type, eventHandler, false);
+            else {
+                window.document.addEventListener(type, eventListener, false);
+            }
             return this;
+        };
+        View.prototype.addEventListenerById = function (type, eventListener, id) {
+            if (Utils_12.Utils.debug) {
+                Utils_12.Utils.console.debug("addEventListenerById: type=" + type + ", id=" + id);
+            }
+            var element = id === "window" /* ViewID.window */ ? undefined : View.getElementById1(id);
+            this.addEventListener(type, eventListener, element);
+            return this;
+        };
+        View.prototype.removeEventListener = function (type, eventListener, element) {
+            if (element) {
+                element.removeEventListener(type, eventListener, false);
+            }
+            else {
+                window.document.removeEventListener(type, eventListener, false);
+            }
+            return this;
+        };
+        View.prototype.removeEventListenerById = function (type, eventListener, id) {
+            if (Utils_12.Utils.debug) {
+                Utils_12.Utils.console.debug("removeEventListener: type=" + type + ", id=" + id);
+            }
+            var element = id === "window" /* ViewID.window */ ? undefined : View.getElementById1(id);
+            this.removeEventListener(type, eventListener, element);
+            return this;
+        };
+        View.getPointerEventNames = function () {
+            var eventNames;
+            if (window.PointerEvent) {
+                eventNames = View.pointerEventNames;
+            }
+            else if ("ontouchstart" in window || navigator.maxTouchPoints) {
+                eventNames = View.touchEventNames;
+            }
+            else {
+                eventNames = View.mouseEventNames;
+            }
+            return eventNames;
+        };
+        View.prototype.fnAttachPointerEvents = function (id, fnDown, fnMove, fnUp) {
+            var element = id === "window" /* ViewID.window */ ? undefined : View.getElementById1(id), eventNames = View.getPointerEventNames();
+            if (fnDown) {
+                this.addEventListener(eventNames.down, fnDown, element);
+            }
+            if (fnMove) {
+                this.addEventListener(eventNames.move, fnMove, element);
+            }
+            if (fnUp) {
+                this.addEventListener(eventNames.up, fnUp, element);
+                if (eventNames.cancel) {
+                    this.addEventListener(eventNames.cancel, fnUp, element); // also fnUp handler
+                }
+            }
+            return eventNames;
+        };
+        View.prototype.fnDetachPointerEvents = function (id, fnDown, fnMove, fnUp) {
+            var element = id === "window" /* ViewID.window */ ? undefined : View.getElementById1(id), eventNames = View.getPointerEventNames();
+            if (fnDown) {
+                this.removeEventListener(eventNames.down, fnDown, element);
+            }
+            if (fnMove) {
+                this.removeEventListener(eventNames.move, fnMove, element);
+            }
+            if (fnUp) {
+                this.removeEventListener(eventNames.up, fnUp, element);
+                if (eventNames.cancel) {
+                    this.removeEventListener(eventNames.cancel, fnUp, element); // also fnUp handler
+                }
+            }
+            return eventNames;
         };
         View.getEventTarget = function (event) {
             var target = event.target || event.srcElement; // target, not currentTarget; srcElement for IE8
@@ -7769,11 +8439,38 @@ define("View", ["require", "exports", "Utils"], function (require, exports, Util
             }
             return target;
         };
-        View.requestFullscreenForId = function (id) {
-            var element = View.getElementById1(id), anyEl = element, requestMethod = element.requestFullscreen || anyEl.webkitRequestFullscreen || anyEl.mozRequestFullscreen || anyEl.msRequestFullscreen;
-            //parameter = anyEl.webkitRequestFullscreen ? (Element as any).ALLOW_KEYBOARD_INPUT : undefined; // does this work?
+        View.prototype.requestFullscreenForId = function (id) {
+            var element = View.getElementById1(id), anyEl = element, that = this, requestMethod = element.requestFullscreen || anyEl.webkitRequestFullscreen || anyEl.mozRequestFullscreen || anyEl.msRequestFullscreen, fullscreenchangedHandler = function (event) {
+                var target = View.getEventTarget(event);
+                if (document.fullscreenElement) {
+                    if (Utils_12.Utils.debug > 0) {
+                        Utils_12.Utils.console.debug("Entered fullscreen mode: " + document.fullscreenElement.id);
+                    }
+                }
+                else {
+                    if (Utils_12.Utils.debug > 0) {
+                        Utils_12.Utils.console.debug("Leaving fullscreen mode.");
+                    }
+                    that.removeEventListener("fullscreenchange", fullscreenchangedHandler, target);
+                    // for Safari we need to do some change to make sure the window size is set (can we do better?)
+                    that.setHidden(id, true);
+                    window.setTimeout(function () {
+                        that.setHidden(id, false);
+                    }, 0);
+                }
+            };
             if (requestMethod) {
-                requestMethod.call(element); // can we ALLOW_KEYBOARD_INPUT?
+                var promise = requestMethod.call(element); // can we ALLOW_KEYBOARD_INPUT?
+                if (promise) {
+                    promise.then(function () {
+                        if (Utils_12.Utils.debug > 0) {
+                            Utils_12.Utils.console.debug("requestFullscreenForId: " + id + ": success");
+                        }
+                        that.addEventListenerById("fullscreenchange", fullscreenchangedHandler, id);
+                    }).catch(function (err) {
+                        Utils_12.Utils.console.error("requestFullscreenForId: " + id + ": Error attempting to enable fullscreen mode: ", err);
+                    });
+                }
             }
             else if (typeof window.ActiveXObject !== "undefined") { // older IE
                 var wscript = new window.ActiveXObject("WScript.Shell");
@@ -7786,15 +8483,155 @@ define("View", ["require", "exports", "Utils"], function (require, exports, Util
             }
             return true;
         };
+        // https://blog.logrocket.com/programmatic-file-downloads-in-the-browser-9a5186298d5c/
+        View.prototype.fnDownloadBlob = function (data, filename) {
+            if (typeof Blob === "undefined") {
+                Utils_12.Utils.console.warn("fnDownloadBlob: Blob undefined");
+                return;
+            }
+            var data8 = Utils_12.Utils.string2Uint8Array(data), type = "octet/stream", blob = new Blob([data8.buffer], {
+                type: type
+            });
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) { // IE11 support
+                window.navigator.msSaveOrOpenBlob(blob, filename);
+                return;
+            }
+            var url = URL.createObjectURL(blob), a = document.createElement("a"), clickHandler = function () {
+                setTimeout(function () {
+                    URL.revokeObjectURL(url);
+                    a.removeEventListener("click", clickHandler);
+                }, 150);
+            };
+            a.href = url;
+            a.download = filename || "download";
+            this.addEventListener("click", clickHandler, a);
+            a.click();
+        };
+        View.pointerEventNames = {
+            down: "pointerdown",
+            move: "pointermove",
+            up: "pointerup",
+            cancel: "pointercancel",
+            out: "pointerout",
+            type: "pointer"
+        };
+        View.touchEventNames = {
+            down: "touchstart",
+            move: "touchmove",
+            up: "touchend",
+            cancel: "touchcancel",
+            out: "",
+            type: "touch"
+        };
+        View.mouseEventNames = {
+            down: "mousedown",
+            move: "mousemove",
+            up: "mouseup",
+            cancel: "",
+            out: "mouseout",
+            type: "mouse"
+        };
         return View;
     }());
     exports.View = View;
+});
+// DragElement.ts - DragElement
+// (c) Marco Vieth, 2023
+// https://benchmarko.github.io/CPCBasicTS/
+//
+define("DragElement", ["require", "exports", "Utils", "View"], function (require, exports, Utils_13, View_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.DragElement = void 0;
+    var DragElement = /** @class */ (function () {
+        function DragElement(options) {
+            this.containerId = "window" /* ViewID.window */;
+            this.initialX = 0;
+            this.initialY = 0;
+            this.currentX = 0;
+            this.currentY = 0;
+            this.fnDragStartHandler = this.dragStart.bind(this);
+            this.fnDragMoveHandler = this.dragMove.bind(this);
+            this.fnDragEndHandler = this.dragEnd.bind(this);
+            this.options = {};
+            this.setOptions(options);
+        }
+        DragElement.prototype.getOptions = function () {
+            return this.options;
+        };
+        DragElement.prototype.setOptions = function (options) {
+            Object.assign(this.options, options);
+            var entries = this.options.entries;
+            for (var key in entries) {
+                if (entries.hasOwnProperty(key)) {
+                    var item = entries[key];
+                    if (item.enabled) {
+                        this.options.view.fnAttachPointerEvents(item.itemId, this.fnDragStartHandler);
+                    }
+                    else {
+                        this.options.view.fnDetachPointerEvents(item.itemId, this.fnDragStartHandler);
+                    }
+                }
+            }
+        };
+        DragElement.prototype.dragStart = function (event) {
+            var node = View_1.View.getEventTarget(event), entries = this.options.entries;
+            var entry = entries[node.id];
+            if (!entry) {
+                var parentElement = node.parentElement;
+                if (parentElement && entries[parentElement.id]) {
+                    entry = entries[parentElement.id];
+                    this.dragItem = parentElement;
+                }
+                else {
+                    return;
+                }
+            }
+            else {
+                this.dragItem = node;
+            }
+            this.dragInfo = entry;
+            var dragInfo = this.dragInfo, clientObject = (event.type === "touchstart") ? event.touches[0] : event; // special handling for TouchEvent (otherwise MouseEvent or similar PointerEvent)
+            this.initialX = clientObject.clientX - dragInfo.xOffset;
+            this.initialY = clientObject.clientY - dragInfo.yOffset;
+            this.options.view.fnAttachPointerEvents(this.containerId, undefined, this.fnDragMoveHandler, this.fnDragEndHandler);
+            if (Utils_13.Utils.debug > 0) {
+                Utils_13.Utils.console.debug("dragStart: " + dragInfo.itemId + ": x=" + this.initialX + ", y=" + this.initialY);
+            }
+        };
+        DragElement.setDragTranslate = function (xPos, yPos, el) {
+            el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+        };
+        DragElement.prototype.dragMove = function (event) {
+            var dragInfo = this.dragInfo;
+            if (dragInfo) {
+                event.preventDefault();
+                var clientObject = (event.type === "touchstart") ? event.touches[0] : event;
+                this.currentX = clientObject.clientX - this.initialX;
+                this.currentY = clientObject.clientY - this.initialY;
+                dragInfo.xOffset = this.currentX;
+                dragInfo.yOffset = this.currentY;
+                DragElement.setDragTranslate(this.currentX, this.currentY, this.dragItem);
+            }
+        };
+        DragElement.prototype.dragEnd = function (_event) {
+            var dragInfo = this.dragInfo;
+            if (dragInfo) {
+                this.options.view.fnDetachPointerEvents(this.containerId, undefined, this.fnDragMoveHandler, this.fnDragEndHandler);
+                if (Utils_13.Utils.debug > 0) {
+                    Utils_13.Utils.console.debug("dragEnd: " + dragInfo.itemId + ": x=" + this.currentX + ", y=" + this.currentY);
+                }
+            }
+        };
+        return DragElement;
+    }());
+    exports.DragElement = DragElement;
 });
 // Keyboard.ts - Keyboard handling
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("Keyboard", ["require", "exports", "Utils", "View"], function (require, exports, Utils_13, View_1) {
+define("Keyboard", ["require", "exports", "Utils"], function (require, exports, Utils_14) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Keyboard = void 0;
@@ -7805,10 +8642,8 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
             this.active = false; // flag if keyboard is active/focused, set from outside
             this.codeStringsRemoved = false;
             this.pressedKeys = {}; // currently pressed browser keys
-            this.options = {
-                fnOnEscapeHandler: undefined,
-                fnOnKeyDown: undefined
-            };
+            this.fnKeydownOrKeyupHandler = this.onKeydownOrKeyup.bind(this);
+            this.options = {};
             this.setOptions(options);
             this.key2CpcKey = Keyboard.key2CpcKey;
             this.cpcKeyExpansions = {
@@ -7817,25 +8652,15 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
                 ctrl: {},
                 repeat: {}
             }; // cpc keys to expansion tokens for normal, shift, ctrl; also repeat
-            //TTT
-            var name = "cpcCanvas", //"cpcCanvasDiv", //"cpcArea"
-            cpcArea = View_1.View.getElementById1(name);
-            cpcArea.addEventListener("keydown", this.onCpcAreaKeydown.bind(this), false);
-            cpcArea.addEventListener("keyup", this.oncpcAreaKeyup.bind(this), false);
-            var textArea = View_1.View.getElementById1("textArea");
-            textArea.addEventListener("keydown", this.onCpcAreaKeydown.bind(this), false);
-            textArea.addEventListener("keyup", this.oncpcAreaKeyup.bind(this), false);
+            var view = this.options.view;
+            view.addEventListenerById("keydown", this.fnKeydownOrKeyupHandler, "cpcArea" /* ViewID.cpcArea */);
+            view.addEventListenerById("keyup", this.fnKeydownOrKeyupHandler, "cpcArea" /* ViewID.cpcArea */);
         }
-        Keyboard.prototype.setOptions = function (options) {
-            if (options.fnOnEscapeHandler !== undefined) {
-                this.options.fnOnEscapeHandler = options.fnOnEscapeHandler;
-            }
-            if (options.fnOnKeyDown !== undefined) {
-                this.options.fnOnKeyDown = options.fnOnKeyDown;
-            }
-        };
         Keyboard.prototype.getOptions = function () {
             return this.options;
+        };
+        Keyboard.prototype.setOptions = function (options) {
+            Object.assign(this.options, options);
         };
         /* eslint-enable array-element-newline */
         Keyboard.prototype.reset = function () {
@@ -7882,20 +8707,13 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
             };
             cpcKeyExpansions.repeat = {};
         };
-        //TODO: remove getKeyDownHandler, setKeyDownHandler?
-        Keyboard.prototype.getKeyDownHandler = function () {
-            return this.options.fnOnKeyDown;
-        };
-        Keyboard.prototype.setKeyDownHandler = function (fnOnKeyDown) {
-            this.options.fnOnKeyDown = fnOnKeyDown;
-        };
         Keyboard.prototype.setActive = function (active) {
             this.active = active;
         };
         Keyboard.prototype.removeCodeStringsFromKeymap = function () {
             var key2CpcKey = this.key2CpcKey, newMap = {};
-            if (Utils_13.Utils.debug > 1) {
-                Utils_13.Utils.console.log("removeCodeStringsFromKeymap: Unfortunately not all keys can be used.");
+            if (Utils_14.Utils.debug > 1) {
+                Utils_14.Utils.console.log("removeCodeStringsFromKeymap: Unfortunately not all keys can be used.");
             }
             for (var key in key2CpcKey) {
                 if (key2CpcKey.hasOwnProperty(key)) {
@@ -7905,8 +8723,8 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
             }
             this.key2CpcKey = newMap;
         };
-        Keyboard.prototype.fnPressCpcKey = function (cpcKeyCode, pressedKey, key, shiftKey, ctrlKey) {
-            var pressedKeys = this.pressedKeys, cpcKeyExpansions = this.cpcKeyExpansions, specialKeys = Keyboard.specialKeys, cpcKey = String(cpcKeyCode);
+        Keyboard.prototype.fnPressCpcKey = function (event, cpcKeyCode, pressedKey, key) {
+            var shiftKey = event.shiftKey, ctrlKey = event.ctrlKey, pressedKeys = this.pressedKeys, cpcKeyExpansions = this.cpcKeyExpansions, specialKeys = Keyboard.specialKeys, cpcKey = String(cpcKeyCode);
             var cpcKeyEntry = pressedKeys[cpcKey];
             if (!cpcKeyEntry) {
                 pressedKeys[cpcKey] = {
@@ -7920,8 +8738,8 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
             cpcKeyEntry.keys[pressedKey] = true;
             cpcKeyEntry.shift = shiftKey;
             cpcKeyEntry.ctrl = ctrlKey;
-            if (Utils_13.Utils.debug > 1) {
-                Utils_13.Utils.console.log("fnPressCpcKey: pressedKey=" + pressedKey + ", key=" + key + ", affected cpc key=" + cpcKey);
+            if (Utils_14.Utils.debug > 1) {
+                Utils_14.Utils.console.log("fnPressCpcKey: pressedKey=" + pressedKey + ", key=" + key + ", affected cpc key=" + cpcKey);
             }
             var repeat = cpcKeyExpansions.repeat;
             if (keyAlreadyPressed && ((cpcKey in repeat) && !repeat[cpcKey])) {
@@ -7975,13 +8793,13 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
                 this.options.fnOnKeyDown();
             }
         };
-        Keyboard.prototype.fnReleaseCpcKey = function (cpcKeyCode, pressedKey, key, shiftKey, ctrlKey) {
-            var pressedKeys = this.pressedKeys, cpcKey = pressedKeys[cpcKeyCode];
-            if (Utils_13.Utils.debug > 1) {
-                Utils_13.Utils.console.log("fnReleaseCpcKey: pressedKey=" + pressedKey + ", key=" + key + ", affected cpc key=" + cpcKeyCode + ", keys:", (cpcKey ? cpcKey.keys : "undef."));
+        Keyboard.prototype.fnReleaseCpcKey = function (event, cpcKeyCode, pressedKey, key) {
+            var shiftKey = event.shiftKey, ctrlKey = event.ctrlKey, pressedKeys = this.pressedKeys, cpcKey = pressedKeys[cpcKeyCode];
+            if (Utils_14.Utils.debug > 1) {
+                Utils_14.Utils.console.log("fnReleaseCpcKey: pressedKey=" + pressedKey + ", key=" + key + ", affected cpc key=" + cpcKeyCode + ", keys:", (cpcKey ? cpcKey.keys : "undef."));
             }
             if (!cpcKey) {
-                Utils_13.Utils.console.warn("fnReleaseCpcKey: cpcKey was not pressed:", cpcKeyCode);
+                Utils_14.Utils.console.warn("fnReleaseCpcKey: cpcKey was not pressed:", cpcKeyCode);
             }
             else {
                 delete cpcKey.keys[pressedKey];
@@ -8012,16 +8830,21 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
             return char;
         };
         Keyboard.prototype.fnKeyboardKeydown = function (event) {
-            var keyCode = event.which || event.keyCode, pressedKey = String(keyCode) + (event.code ? event.code : ""); // event.code available for e.g. Chrome, Firefox
-            var key = event.key || Keyboard.keyIdentifier2Char(event) || ""; // SliTaz web browser has not key but keyIdentifier
+            var keyCode = event.which || event.keyCode;
+            var pressedKey = String(keyCode) + (event.code ? event.code : ""), // event.code available for e.g. Chrome, Firefox
+            key = event.key || Keyboard.keyIdentifier2Char(event) || ""; // SliTaz web browser has not key but keyIdentifier
             if (!event.code && !this.codeStringsRemoved) { // event.code not available on e.g. IE, Edge
                 this.removeCodeStringsFromKeymap(); // remove code information from the mapping. Not all keys can be detected any more
                 this.codeStringsRemoved = true;
             }
-            if (Utils_13.Utils.debug > 1) {
-                Utils_13.Utils.console.log("fnKeyboardKeydown: keyCode=" + keyCode + " pressedKey=" + pressedKey + " key='" + key + "' " + key.charCodeAt(0) + " loc=" + event.location + " ", event);
+            if (Utils_14.Utils.debug > 1) {
+                Utils_14.Utils.console.log("fnKeyboardKeydown: keyCode=" + keyCode + " pressedKey=" + pressedKey + " key='" + key + "' " + key.charCodeAt(0) + " loc=" + event.location + " ", event);
             }
             if (pressedKey in this.key2CpcKey) {
+                var numTabOffKey = this.simulatedNumLock === false ? Keyboard.numPadOffKeyMap[pressedKey] : undefined;
+                if (numTabOffKey) {
+                    pressedKey = numTabOffKey;
+                }
                 var cpcKey = this.key2CpcKey[pressedKey];
                 if (cpcKey === 85) { // map virtual cpc key 85 to 22 (english keyboard)
                     cpcKey = 22;
@@ -8058,39 +8881,60 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
                         key = key.substring(1); // remove prefix
                     }
                 }
-                this.fnPressCpcKey(cpcKey, pressedKey, key, event.shiftKey, event.ctrlKey);
+                this.fnPressCpcKey(event, cpcKey, pressedKey, key);
             }
             else if (key.length === 1) { // put normal keys in buffer, ignore special keys with more than 1 character
                 this.putKeyInBuffer(key);
-                Utils_13.Utils.console.log("fnKeyboardKeydown: Partly unhandled key", pressedKey + ":", key);
+                Utils_14.Utils.console.log("fnKeyboardKeydown: Partly unhandled key", pressedKey + ":", key);
+            }
+            else if (pressedKey === "12NumLock") { // key = "Clear"; MacOS
+                this.simulatedNumLock = this.simulatedNumLock !== undefined ? !this.simulatedNumLock : false;
+                if (Utils_14.Utils.debug > 1) {
+                    Utils_14.Utils.console.log("fnKeyboardKeydown: simulatedNumLock=" + this.simulatedNumLock);
+                }
             }
             else {
-                Utils_13.Utils.console.log("fnKeyboardKeydown: Unhandled key", pressedKey + ":", key);
+                Utils_14.Utils.console.log("fnKeyboardKeydown: Unhandled key", pressedKey + ":", key);
             }
         };
         Keyboard.prototype.fnKeyboardKeyup = function (event) {
-            var keyCode = event.which || event.keyCode, pressedKey = String(keyCode) + (event.code ? event.code : ""), // event.code available for e.g. Chrome, Firefox
-            key = event.key || Keyboard.keyIdentifier2Char(event) || ""; // SliTaz web browser has not key but keyIdentifier
-            if (Utils_13.Utils.debug > 1) {
-                Utils_13.Utils.console.log("fnKeyboardKeyup: keyCode=" + keyCode + " pressedKey=" + pressedKey + " key='" + key + "' " + key.charCodeAt(0) + " loc=" + event.location + " ", event);
+            var keyCode = event.which || event.keyCode, key = event.key || Keyboard.keyIdentifier2Char(event) || ""; // SliTaz web browser has not key but keyIdentifier
+            var pressedKey = String(keyCode) + (event.code ? event.code : ""); // event.code available for e.g. Chrome, Firefox
+            if (Utils_14.Utils.debug > 1) {
+                Utils_14.Utils.console.log("fnKeyboardKeyup: keyCode=" + keyCode + " pressedKey=" + pressedKey + " key='" + key + "' " + key.charCodeAt(0) + " loc=" + event.location + " ", event);
             }
             if (pressedKey in this.key2CpcKey) {
+                var numTabOffKey = this.simulatedNumLock === false ? Keyboard.numPadOffKeyMap[pressedKey] : undefined;
+                if (numTabOffKey) {
+                    pressedKey = numTabOffKey;
+                }
                 var cpcKey = this.key2CpcKey[pressedKey];
                 if (cpcKey === 85) { // map virtual cpc key 85 to 22 (english keyboard)
                     cpcKey = 22;
                 }
-                this.fnReleaseCpcKey(cpcKey, pressedKey, key, event.shiftKey, event.ctrlKey);
+                this.fnReleaseCpcKey(event, cpcKey, pressedKey, key);
+            }
+            else if (pressedKey === "12NumLock") { // key = "Clear"; MacOS
+                if (Utils_14.Utils.debug > 1) {
+                    Utils_14.Utils.console.log("fnKeyboardKeyup: simulatedNumLock=" + this.simulatedNumLock);
+                }
             }
             else {
-                Utils_13.Utils.console.log("fnKeyboardKeyup: Unhandled key", pressedKey + ":", key);
+                Utils_14.Utils.console.log("fnKeyboardKeyup: Unhandled key", pressedKey + ":", key);
             }
         };
         Keyboard.prototype.getKeyFromBuffer = function () {
             var keyBuffer = this.keyBuffer, key = keyBuffer.length ? keyBuffer.shift() : "";
             return key;
         };
-        Keyboard.prototype.putKeyInBuffer = function (key) {
+        Keyboard.prototype.putKeyInBuffer = function (key, triggerOnkeydown) {
             this.keyBuffer.push(key);
+            if (triggerOnkeydown) {
+                var keyDownHandler = this.options.fnOnKeyDown;
+                if (keyDownHandler) {
+                    keyDownHandler();
+                }
+            }
         };
         Keyboard.prototype.putKeysInBuffer = function (input) {
             for (var i = 0; i < input.length; i += 1) {
@@ -8150,17 +8994,17 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
                 cpcKeyExpansions.ctrl[cpcKey] = options.ctrl;
             }
         };
-        Keyboard.prototype.onCpcAreaKeydown = function (event) {
+        Keyboard.prototype.onKeydownOrKeyup = function (event) {
             if (this.active) {
-                this.fnKeyboardKeydown(event);
-                event.preventDefault();
-                return false;
-            }
-            return undefined;
-        };
-        Keyboard.prototype.oncpcAreaKeyup = function (event) {
-            if (this.active) {
-                this.fnKeyboardKeyup(event);
+                if (event.type === "keydown") {
+                    this.fnKeyboardKeydown(event);
+                }
+                else if (event.type === "keyup") {
+                    this.fnKeyboardKeyup(event);
+                }
+                else {
+                    Utils_14.Utils.console.error("onKeydownOrKeyup: Unknown type:", event.type);
+                }
                 event.preventDefault();
                 return false;
             }
@@ -8332,6 +9176,19 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
             [72, 73, 74, 75, 76, 77],
             [48, 49, 50, 51, 52, 53]
         ];
+        Keyboard.numPadOffKeyMap = {
+            "96Numpad0": "45Numpad0",
+            "97Numpad1": "35Numpad1",
+            "98Numpad2": "40Numpad2",
+            "99Numpad3": "34Numpad3",
+            "100Numpad4": "37Numpad4",
+            "101Numpad5": "12Numpad5",
+            "102Numpad6": "39Numpad6",
+            "103Numpad7": "36Numpad7",
+            "104Numpad8": "38Numpad8",
+            "105Numpad9": "33Numpad9",
+            "110NumpadDecimal": "46NumpadDecimal"
+        };
         return Keyboard;
     }());
     exports.Keyboard = Keyboard;
@@ -8340,7 +9197,7 @@ define("Keyboard", ["require", "exports", "Utils", "View"], function (require, e
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (require, exports, Utils_14, View_2) {
+define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (require, exports, Utils_15, View_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.VirtualKeyboard = void 0;
@@ -8348,58 +9205,24 @@ define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (req
         function VirtualKeyboard(options) {
             this.shiftLock = false;
             this.numLock = false;
-            /* eslint-enable array-element-newline */
-            this.dragInfo = {
-                dragItem: undefined,
-                active: false,
-                xOffset: 0,
-                yOffset: 0,
-                initialX: 0,
-                initialY: 0,
-                currentX: 0,
-                currentY: 0
-            };
-            this.options = {
-                fnPressCpcKey: options.fnPressCpcKey,
-                fnReleaseCpcKey: options.fnReleaseCpcKey
-            };
-            var eventNames = this.fnAttachPointerEvents("kbdArea", this.onVirtualVirtualKeyboardKeydown.bind(this), undefined, this.onVirtualVirtualKeyboardKeyup.bind(this));
-            if (eventNames.out) {
-                this.pointerOutEvent = eventNames.out;
-                this.fnVirtualKeyout = this.onVirtualVirtualKeyboardKeyout.bind(this);
-            }
-            this.dragInit("pageBody", "kbdAreaBox");
+            this.fnVirtualKeyboardKeydownHandler = this.onVirtualKeyboardKeydown.bind(this);
+            this.fnVirtualKeyboardKeyupOrKeyoutHandler = this.onVirtualKeyboardKeyupOrKeyout.bind(this);
+            this.fnKeydownOrKeyupHandler = this.onKeydownOrKeyup.bind(this); // for real Enter and Space
+            this.options = {};
+            this.setOptions(options);
+            var view = this.options.view;
+            this.eventNames = this.options.view.fnAttachPointerEvents("kbdAreaInner" /* ViewID.kbdAreaInner */, this.fnVirtualKeyboardKeydownHandler, undefined, this.fnVirtualKeyboardKeyupOrKeyoutHandler);
+            view.addEventListenerById("keydown", this.fnKeydownOrKeyupHandler, "kbdAreaInner" /* ViewID.kbdAreaInner */);
+            view.addEventListenerById("keyup", this.fnKeydownOrKeyupHandler, "kbdAreaInner" /* ViewID.kbdAreaInner */);
             this.virtualKeyboardCreate();
         }
-        VirtualKeyboard.prototype.fnAttachPointerEvents = function (id, fnDown, fnMove, fnUp) {
-            var area = View_2.View.getElementById1(id);
-            var eventNames;
-            if (window.PointerEvent) {
-                eventNames = VirtualKeyboard.pointerEventNames;
-            }
-            else if ("ontouchstart" in window || navigator.maxTouchPoints) {
-                eventNames = VirtualKeyboard.touchEventNames;
-            }
-            else {
-                eventNames = VirtualKeyboard.mouseEventNames;
-            }
-            if (Utils_14.Utils.debug > 0) {
-                Utils_14.Utils.console.log("fnAttachPointerEvents: Using", eventNames.type, "events");
-            }
-            if (fnDown) {
-                area.addEventListener(eventNames.down, fnDown, false); // +clicked for pointer, touch?
-            }
-            if (fnMove) {
-                area.addEventListener(eventNames.move, fnMove, false);
-            }
-            if (fnUp) {
-                area.addEventListener(eventNames.up, fnUp, false);
-                if (eventNames.cancel) {
-                    area.addEventListener(eventNames.cancel, fnUp, false);
-                }
-            }
-            return eventNames;
+        VirtualKeyboard.prototype.getOptions = function () {
+            return this.options;
         };
+        VirtualKeyboard.prototype.setOptions = function (options) {
+            Object.assign(this.options, options);
+        };
+        /* eslint-enable array-element-newline */
         VirtualKeyboard.prototype.reset = function () {
             this.virtualKeyboardAdaptKeys(false, false);
         };
@@ -8460,11 +9283,11 @@ define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (req
             }
             return this;
         };
-        VirtualKeyboard.prototype.virtualKeyboardCreatePart = function (id, virtualVirtualKeyboard) {
+        VirtualKeyboard.prototype.virtualKeyboardCreatePart = function (id, virtualKeyboard) {
             var keyArea = View_2.View.getElementById1(id), shiftLock = this.shiftLock, numLock = this.numLock, cpcKey2Key = VirtualKeyboard.cpcKey2Key, buttons = keyArea.getElementsByTagName("button");
             if (!buttons.length) { // not yet created?
-                for (var row = 0; row < virtualVirtualKeyboard.length; row += 1) {
-                    var rowList = virtualVirtualKeyboard[row], optionsList = [];
+                for (var row = 0; row < virtualKeyboard.length; row += 1) {
+                    var rowList = virtualKeyboard[row], optionsList = [];
                     for (var col = 0; col < rowList.length; col += 1) {
                         var cpcKeyEntry = void 0;
                         if (typeof rowList[col] === "number") {
@@ -8488,11 +9311,11 @@ define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (req
             }
         };
         VirtualKeyboard.prototype.virtualKeyboardCreate = function () {
-            this.virtualKeyboardCreatePart("kbdAlpha", VirtualKeyboard.virtualVirtualKeyboardAlpha);
-            this.virtualKeyboardCreatePart("kbdNum", VirtualKeyboard.virtualVirtualKeyboardNum);
+            this.virtualKeyboardCreatePart("kbdAlpha" /* ViewID.kbdAlpha */, VirtualKeyboard.virtualKeyboardAlpha);
+            this.virtualKeyboardCreatePart("kbdNum" /* ViewID.kbdNum */, VirtualKeyboard.virtualKeyboardNum);
         };
         VirtualKeyboard.prototype.virtualKeyboardAdaptKeys = function (shiftLock, numLock) {
-            var keyArea = View_2.View.getElementById1("kbdArea"), buttons = keyArea.getElementsByTagName("button"); // or: keyArea.childNodes and filter
+            var keyArea = View_2.View.getElementById1("kbdAreaInner" /* ViewID.kbdAreaInner */), buttons = keyArea.getElementsByTagName("button"); // or: keyArea.childNodes and filter
             for (var i = 0; i < buttons.length; i += 1) {
                 var button = buttons[i];
                 var cpcKey = Number(button.getAttribute("data-key"));
@@ -8517,34 +9340,35 @@ define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (req
             }
             return pressedKey;
         };
-        VirtualKeyboard.prototype.onVirtualVirtualKeyboardKeydown = function (event) {
+        VirtualKeyboard.prototype.onVirtualKeyboardKeydown = function (event) {
             var node = View_2.View.getEventTarget(event), cpcKey = node.getAttribute("data-key");
-            if (Utils_14.Utils.debug > 1) {
-                Utils_14.Utils.console.debug("onVirtualVirtualKeyboardKeydown: event", String(event), "type:", event.type, "title:", node.title, "cpcKey:", cpcKey);
+            if (Utils_15.Utils.debug > 1) {
+                Utils_15.Utils.console.debug("onVirtualKeyboardKeydown: event", String(event), "type:", event.type, "title:", node.title, "cpcKey:", cpcKey);
             }
             if (cpcKey !== null) {
                 var cpcKeyCode = Number(cpcKey);
                 if (this.numLock) {
                     cpcKeyCode = this.mapNumLockCpcKey(cpcKeyCode);
                 }
-                var pressedKey = this.fnVirtualGetPressedKey(cpcKeyCode), pointerEvent = event, ascii = this.fnVirtualGetAscii(cpcKeyCode, this.shiftLock || pointerEvent.shiftKey, this.numLock);
-                this.options.fnPressCpcKey(cpcKeyCode, pressedKey, ascii.key, pointerEvent.shiftKey, pointerEvent.ctrlKey);
+                var pressedKey = this.fnVirtualGetPressedKey(cpcKeyCode), ascii = this.fnVirtualGetAscii(cpcKeyCode, this.shiftLock || event.shiftKey, this.numLock);
+                this.options.fnPressCpcKey(event, cpcKeyCode, pressedKey, ascii.key);
             }
-            if (this.pointerOutEvent && this.fnVirtualKeyout) {
-                node.addEventListener(this.pointerOutEvent, this.fnVirtualKeyout, false);
+            // A pointerdown event can also ended by pointerout when leaving the area
+            if (this.eventNames.out) {
+                this.options.view.addEventListener(this.eventNames.out, this.fnVirtualKeyboardKeyupOrKeyoutHandler, node);
             }
             event.preventDefault();
             return false;
         };
-        VirtualKeyboard.prototype.fnVirtualVirtualKeyboardKeyupOrKeyout = function (event) {
+        VirtualKeyboard.prototype.fnVirtualKeyboardKeyupOrKeyout = function (event) {
             var node = View_2.View.getEventTarget(event), cpcKey = node.getAttribute("data-key");
             if (cpcKey !== null) {
                 var cpcKeyCode = Number(cpcKey);
                 if (this.numLock) {
                     cpcKeyCode = this.mapNumLockCpcKey(cpcKeyCode);
                 }
-                var pressedKey = this.fnVirtualGetPressedKey(cpcKeyCode), pointerEvent = event, ascii = this.fnVirtualGetAscii(cpcKeyCode, this.shiftLock || pointerEvent.shiftKey, this.numLock);
-                this.options.fnReleaseCpcKey(cpcKeyCode, pressedKey, ascii.key, pointerEvent.shiftKey, pointerEvent.ctrlKey);
+                var pressedKey = this.fnVirtualGetPressedKey(cpcKeyCode), ascii = this.fnVirtualGetAscii(cpcKeyCode, this.shiftLock || event.shiftKey, this.numLock);
+                this.options.fnReleaseCpcKey(event, cpcKeyCode, pressedKey, ascii.key);
                 if (cpcKeyCode === 70) { // Caps Lock?
                     this.shiftLock = !this.shiftLock;
                     this.virtualKeyboardAdaptKeys(this.shiftLock, this.numLock);
@@ -8555,84 +9379,59 @@ define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (req
                 }
             }
         };
-        VirtualKeyboard.prototype.onVirtualVirtualKeyboardKeyup = function (event) {
+        VirtualKeyboard.prototype.onVirtualKeyboardKeyupOrKeyout = function (event) {
             var node = View_2.View.getEventTarget(event);
-            if (Utils_14.Utils.debug > 1) {
-                Utils_14.Utils.console.debug("onVirtualVirtualKeyboardKeyup: event", String(event), "type:", event.type, "title:", node.title, "cpcKey:", node.getAttribute("data-key"));
+            if (Utils_15.Utils.debug > 1) {
+                Utils_15.Utils.console.debug("onVirtualKeyboardKeyupOrKeyout: event", String(event), "type:", event.type, "title:", node.title, "cpcKey:", node.getAttribute("data-key"));
             }
-            this.fnVirtualVirtualKeyboardKeyupOrKeyout(event);
-            if (this.pointerOutEvent && this.fnVirtualKeyout) {
-                node.removeEventListener(this.pointerOutEvent, this.fnVirtualKeyout); // do not need out event any more
+            this.fnVirtualKeyboardKeyupOrKeyout(event);
+            if (this.eventNames.out) {
+                this.options.view.removeEventListener(this.eventNames.out, this.fnVirtualKeyboardKeyupOrKeyoutHandler, node); // do not need out event any more for this key
             }
             event.preventDefault();
             return false;
         };
-        VirtualKeyboard.prototype.onVirtualVirtualKeyboardKeyout = function (event) {
-            var node = View_2.View.getEventTarget(event);
-            if (Utils_14.Utils.debug > 1) {
-                Utils_14.Utils.console.debug("onVirtualVirtualKeyboardKeyout: event=", event);
+        VirtualKeyboard.keyIdentifier2Char = function (event) {
+            // SliTaz web browser has not key but keyIdentifier
+            var identifier = event.keyIdentifier, // eslint-disable-line @typescript-eslint/no-explicit-any
+            shiftKey = event.shiftKey;
+            var char = "";
+            if ((/^U\+/i).test(identifier || "")) { // unicode string?
+                char = String.fromCharCode(parseInt(identifier.substr(2), 16));
+                if (char === "\0") { // ignore
+                    char = "";
+                }
+                char = shiftKey ? char.toUpperCase() : char.toLowerCase(); // do we get keys in unicode always in uppercase?
             }
-            this.fnVirtualVirtualKeyboardKeyupOrKeyout(event);
-            if (this.pointerOutEvent && this.fnVirtualKeyout) {
-                node.removeEventListener(this.pointerOutEvent, this.fnVirtualKeyout);
+            else {
+                char = identifier; // take it, could be "Enter"
             }
-            event.preventDefault();
-            return false;
+            return char;
         };
-        // based on https://www.kirupa.com/html5/drag.htm
-        VirtualKeyboard.prototype.dragInit = function (containerId, itemId) {
-            var drag = this.dragInfo;
-            drag.dragItem = View_2.View.getElementById1(itemId);
-            drag.active = false;
-            drag.xOffset = 0;
-            drag.yOffset = 0;
-            this.fnAttachPointerEvents(containerId, this.dragStart.bind(this), this.drag.bind(this), this.dragEnd.bind(this));
-        };
-        VirtualKeyboard.prototype.dragStart = function (event) {
-            var node = View_2.View.getEventTarget(event), parent = node.parentElement ? node.parentElement.parentElement : null, drag = this.dragInfo;
-            if (node === drag.dragItem || parent === drag.dragItem) {
-                if (event.type === "touchstart") {
-                    var touchEvent = event;
-                    drag.initialX = touchEvent.touches[0].clientX - drag.xOffset;
-                    drag.initialY = touchEvent.touches[0].clientY - drag.yOffset;
+        VirtualKeyboard.prototype.onKeydownOrKeyup = function (event) {
+            var key = event.key || VirtualKeyboard.keyIdentifier2Char(event) || "", // SliTaz web browser has not key but keyIdentifier (also in Keyboard)
+            activeElement = window.document.activeElement;
+            if (key === "Enter" || key === " ") { // enter or space
+                var simPointerEvent = {
+                    type: event.type,
+                    target: activeElement,
+                    preventDefault: function () {
+                        // empty
+                    }
+                };
+                if (event.type === "keydown") {
+                    this.onVirtualKeyboardKeydown(simPointerEvent);
+                }
+                else if (event.type === "keyup") {
+                    this.onVirtualKeyboardKeyupOrKeyout(simPointerEvent);
                 }
                 else {
-                    var dragEvent = event;
-                    drag.initialX = dragEvent.clientX - drag.xOffset;
-                    drag.initialY = dragEvent.clientY - drag.yOffset;
+                    Utils_15.Utils.console.error("onKeydownOrKeyup: Unknown type:", event.type);
                 }
-                drag.active = true;
-            }
-        };
-        VirtualKeyboard.prototype.dragEnd = function ( /* event */) {
-            var drag = this.dragInfo;
-            drag.initialX = drag.currentX;
-            drag.initialY = drag.currentY;
-            drag.active = false;
-        };
-        VirtualKeyboard.prototype.setTranslate = function (xPos, yPos, el) {
-            el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
-        };
-        VirtualKeyboard.prototype.drag = function (event) {
-            var drag = this.dragInfo;
-            if (drag.active) {
                 event.preventDefault();
-                if (event.type === "touchmove") {
-                    var touchEvent = event;
-                    drag.currentX = touchEvent.touches[0].clientX - drag.initialX;
-                    drag.currentY = touchEvent.touches[0].clientY - drag.initialY;
-                }
-                else {
-                    var dragEvent = event;
-                    drag.currentX = dragEvent.clientX - drag.initialX;
-                    drag.currentY = dragEvent.clientY - drag.initialY;
-                }
-                drag.xOffset = drag.currentX;
-                drag.yOffset = drag.currentY;
-                if (drag.dragItem) {
-                    this.setTranslate(drag.currentX, drag.currentY, drag.dragItem);
-                }
+                return false;
             }
+            return undefined;
         };
         VirtualKeyboard.cpcKey2Key = [
             {
@@ -9142,7 +9941,7 @@ define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (req
             // "226IntlBackslash", "122F11", "123F12", "44PrintScreen", "145ScrollLock", "19Pause", "45Insert", "36Home", "33PageUp", "35End", "34PageDown", "111NumpadDivide", "106NumpadMultiply", "109NumpadSubtract", "107NumpadAdd"
         ];
         /* eslint-disable array-element-newline */
-        VirtualKeyboard.virtualVirtualKeyboardAlpha = [
+        VirtualKeyboard.virtualKeyboardAlpha = [
             [66, 64, 65, 57, 56, 49, 48, 41, 40, 33, 32, 25, 24, 16, 79],
             [68, 67, 59, 58, 50, 51, 43, 42, 35, 34, 27, 26, 17, 18],
             [70, 69, 60, 61, 53, 52, 44, 45, 37, 36, 29, 28, 19, 90],
@@ -9155,37 +9954,13 @@ define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (req
             ],
             [23, 9, 47, 6]
         ];
-        VirtualKeyboard.virtualVirtualKeyboardNum = [
+        VirtualKeyboard.virtualKeyboardNum = [
             [10, 11, 3],
             [20, 12, 4],
             [13, 14, 5],
             [15, 0, 7],
             [8, 2, 1]
         ];
-        VirtualKeyboard.pointerEventNames = {
-            down: "pointerdown",
-            move: "pointermove",
-            up: "pointerup",
-            cancel: "pointercancel",
-            out: "pointerout",
-            type: "pointer"
-        };
-        VirtualKeyboard.touchEventNames = {
-            down: "touchstart",
-            move: "touchmove",
-            up: "touchend",
-            cancel: "touchcancel",
-            out: "",
-            type: "touch"
-        };
-        VirtualKeyboard.mouseEventNames = {
-            down: "mousedown",
-            move: "mousemove",
-            up: "mouseup",
-            cancel: "",
-            out: "mouseout",
-            type: "mouse"
-        };
         return VirtualKeyboard;
     }());
     exports.VirtualKeyboard = VirtualKeyboard;
@@ -9195,13 +9970,14 @@ define("VirtualKeyboard", ["require", "exports", "Utils", "View"], function (req
 // https://benchmarko.github.io/CPCBasicTS/
 //
 /* globals ArrayBuffer, Uint8Array, Uint32Array */
-define("Canvas", ["require", "exports", "Utils", "View"], function (require, exports, Utils_15, View_3) {
+define("Canvas", ["require", "exports", "Utils", "View"], function (require, exports, Utils_16, View_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Canvas = void 0;
     var Canvas = /** @class */ (function () {
         function Canvas(options) {
             this.fps = 15; // FPS for canvas update
+            this.isRunning = false;
             this.customCharset = {};
             this.gColMode = 0; // 0=normal, 1=xor, 2=and, 3=or
             this.mask = 255;
@@ -9232,28 +10008,21 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             this.yTop = 399;
             this.yBottom = 0;
             this.gTransparent = false;
-            this.options = {
-                charset: options.charset,
-                palette: options.palette,
-                onCanvasClick: options.onCanvasClick
-            };
             this.fnUpdateCanvasHandler = this.updateCanvas.bind(this);
             this.fnUpdateCanvas2Handler = this.updateCanvas2.bind(this);
-            this.cpcAreaBox = View_3.View.getElementById1("cpcAreaBox");
-            var canvas = View_3.View.getElementById1("cpcCanvas");
+            this.options = {};
+            this.setOptions(options, true);
+            var canvas = View_3.View.getElementByIdAs(this.options.canvasID);
             this.canvas = canvas;
+            this.cpcAreaBox = View_3.View.getElementById1("cpcArea" /* ViewID.cpcArea */);
             // make sure canvas is not hidden (allows to get width, height, set style)
             if (canvas.offsetParent === null) {
-                Utils_15.Utils.console.error("Error: canvas is not visible!");
+                Utils_16.Utils.console.error("Error: canvas is not visible!");
             }
             var width = canvas.width, height = canvas.height;
             this.width = width;
             this.height = height;
             this.dataset8 = new Uint8Array(new ArrayBuffer(width * height)); // array with pen values
-            if (!Canvas.palettes[this.options.palette]) {
-                Canvas.computePalette(this.options.palette);
-            }
-            this.setColorValues(Canvas.palettes[this.options.palette]);
             this.animationTimeoutId = undefined;
             this.animationFrame = undefined;
             if (this.canvas.getContext) { // not available on e.g. IE8
@@ -9264,27 +10033,38 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
                     this.pen2Color32 = new Uint32Array(new ArrayBuffer(Canvas.modeData[3].pens * 4));
                     this.data32 = new Uint32Array(this.imageData.data.buffer);
                     this.use32BitCopy = true;
-                    Utils_15.Utils.console.log("Canvas: using optimized copy2Canvas32bit, littleEndian:", this.littleEndian);
+                    Utils_16.Utils.console.log("Canvas: using optimized copy2Canvas32bit, littleEndian:", this.littleEndian);
                 }
                 else {
                     this.setAlpha(255);
                     this.use32BitCopy = false;
-                    Utils_15.Utils.console.log("Canvas: using copy2Canvas8bit");
+                    Utils_16.Utils.console.log("Canvas: using copy2Canvas8bit");
                 }
-                this.applyCopy2CanvasFunction(this.offset);
+                this.fnCopy2Canvas = this.getCopy2CanvasFunction(this.offset);
             }
             else {
-                Utils_15.Utils.console.warn("Error: canvas.getContext is not supported.");
+                Utils_16.Utils.console.warn("Error: canvas.getContext is not supported.");
+                // not available on e.g. IE8, nodeJS
+                this.fnCopy2Canvas = function () {
+                    // nothing
+                };
                 this.ctx = {}; // not available
                 this.imageData = {}; // not available
             }
             this.reset();
         }
+        Canvas.prototype.getOptions = function () {
+            return this.options;
+        };
+        Canvas.prototype.setOptions = function (options, force) {
+            var currentPalette = this.options.palette;
+            Object.assign(this.options, options);
+            if (force || (this.options.palette !== currentPalette)) { // changed?
+                this.applyPalette();
+            }
+        };
         Canvas.prototype.applyBorderColor = function () {
             this.canvas.style.borderColor = Canvas.palettes[this.options.palette][this.currentInks[this.inkSet][16]];
-        };
-        Canvas.prototype.setOnCanvasClick = function (onCanvasClickHandler) {
-            this.options.onCanvasClick = onCanvasClickHandler;
         };
         Canvas.prototype.reset = function () {
             this.changeMode(1);
@@ -9317,13 +10097,13 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
                 Canvas.palettes[palette] = monoPalette;
             }
         };
-        Canvas.prototype.setPalette = function (palette) {
-            if (palette !== this.options.palette) {
-                this.options.palette = palette;
-                if (!Canvas.palettes[this.options.palette]) {
-                    Canvas.computePalette(this.options.palette);
-                }
-                this.setColorValues(Canvas.palettes[this.options.palette]);
+        Canvas.prototype.applyPalette = function () {
+            var palette = this.options.palette;
+            if (!Canvas.palettes[palette]) {
+                Canvas.computePalette(palette);
+            }
+            this.setColorValues(Canvas.palettes[palette]);
+            if (this.currentInks.length) { // only if initialized (not if called from constructor)
                 this.updateColorMap();
                 this.setNeedUpdate();
                 this.applyBorderColor();
@@ -9360,13 +10140,14 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             this.needUpdate = true;
         };
         Canvas.prototype.updateCanvas2 = function () {
+            if (!this.isRunning) {
+                return; // ignore remaining timeouts, if stopped
+            }
             this.animationFrame = requestAnimationFrame(this.fnUpdateCanvasHandler);
             if (this.needUpdate) { // could be improved: update only updateRect
                 this.needUpdate = false;
                 // we always do a full updateCanvas...
-                if (this.fnCopy2Canvas) { // not available on e.g. IE8
-                    this.fnCopy2Canvas();
-                }
+                this.fnCopy2Canvas();
             }
         };
         // http://creativejs.com/resources/requestanimationframe/ (set frame rate)
@@ -9375,15 +10156,19 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             this.animationTimeoutId = window.setTimeout(this.fnUpdateCanvas2Handler, 1000 / this.fps); // ts (node)
         };
         Canvas.prototype.startUpdateCanvas = function () {
-            if (this.animationFrame === undefined && this.canvas.offsetParent !== null) { // animation off and canvas visible in DOM?
+            if (!this.isRunning && this.canvas.offsetParent !== null) { // animation off and canvas visible in DOM?
+                this.isRunning = true;
                 this.updateCanvas();
             }
         };
         Canvas.prototype.stopUpdateCanvas = function () {
-            if (this.animationFrame !== undefined) {
-                cancelAnimationFrame(this.animationFrame);
+            if (this.isRunning) {
+                this.isRunning = false;
+                if (this.animationFrame) {
+                    cancelAnimationFrame(this.animationFrame);
+                    this.animationFrame = undefined;
+                }
                 clearTimeout(this.animationTimeoutId);
-                this.animationFrame = undefined;
                 this.animationTimeoutId = undefined;
             }
         };
@@ -9417,13 +10202,11 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             }
             this.ctx.putImageData(this.imageData, 0, 0);
         };
-        Canvas.prototype.applyCopy2CanvasFunction = function (offset) {
+        Canvas.prototype.getCopy2CanvasFunction = function (offset) {
             if (this.use32BitCopy) {
-                this.fnCopy2Canvas = offset ? this.copy2Canvas32bitWithOffset : this.copy2Canvas32bit;
+                return offset ? this.copy2Canvas32bitWithOffset : this.copy2Canvas32bit;
             }
-            else {
-                this.fnCopy2Canvas = offset ? this.copy2Canvas8bit : this.copy2Canvas8bit; // TODO: for older browsers
-            }
+            return offset ? this.copy2Canvas8bit : this.copy2Canvas8bit; // TODO: for older browsers
         };
         Canvas.prototype.setScreenOffset = function (offset) {
             if (offset) {
@@ -9433,37 +10216,35 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             }
             if (offset !== this.offset) {
                 this.offset = offset;
-                this.applyCopy2CanvasFunction(offset);
+                this.fnCopy2Canvas = this.getCopy2CanvasFunction(offset);
                 this.setNeedUpdate();
             }
         };
         Canvas.prototype.updateColorMap = function () {
-            var colorValues = this.colorValues, currentInksInSet = this.currentInks[this.inkSet], pen2ColorMap = this.pen2ColorMap, pen2Color32 = this.pen2Color32;
-            for (var i = 0; i < 16; i += 1) {
+            var colorValues = this.colorValues, currentInksInSet = this.currentInks[this.inkSet], pen2ColorMap = this.pen2ColorMap, pen2Color32 = this.pen2Color32, maxPens = 16, alpha = 255;
+            for (var i = 0; i < maxPens; i += 1) {
                 pen2ColorMap[i] = colorValues[currentInksInSet[i]];
             }
             if (pen2Color32) {
-                for (var i = 0; i < 16; i += 1) {
+                for (var i = 0; i < maxPens; i += 1) {
                     var color = pen2ColorMap[i];
                     if (this.littleEndian) {
-                        pen2Color32[i] = color[0] + color[1] * 256 + color[2] * 65536 + 255 * 65536 * 256;
+                        pen2Color32[i] = color[0] + color[1] * 256 + color[2] * 65536 + alpha * 65536 * 256;
                     }
                     else {
-                        pen2Color32[i] = color[2] + color[1] * 256 + color[0] * 65536 + 255 * 65536 * 256; // for big endian (untested)
+                        pen2Color32[i] = color[2] + color[1] * 256 + color[0] * 65536 + alpha * 65536 * 256; // for big endian (untested)
                     }
                 }
             }
         };
         Canvas.prototype.updateColorsAndCanvasImmediately = function (inkList) {
-            if (this.fnCopy2Canvas) { // not available on e.g. IE8
-                var currentInksInSet = this.currentInks[this.inkSet], memorizedInks = currentInksInSet.slice();
-                this.currentInks[this.inkSet] = inkList; // temporary inks
-                this.updateColorMap();
-                this.fnCopy2Canvas(); // do it immediately
-                this.currentInks[this.inkSet] = memorizedInks.slice();
-                this.updateColorMap();
-                this.needUpdate = true; // we want to restore it with the next update...
-            }
+            var currentInksInSet = this.currentInks[this.inkSet], memorizedInks = currentInksInSet.slice();
+            this.currentInks[this.inkSet] = inkList; // temporary inks
+            this.updateColorMap();
+            this.fnCopy2Canvas(); // do it immediately
+            this.currentInks[this.inkSet] = memorizedInks.slice();
+            this.updateColorMap();
+            this.needUpdate = true; // we want to restore it with the next update...
         };
         Canvas.prototype.updateSpeedInk = function () {
             var pens = this.modeData.pens;
@@ -9508,34 +10289,12 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
         Canvas.prototype.getMousePos = function (event) {
             var anyDoc = document, isFullScreen = Boolean(document.fullscreenElement || anyDoc.mozFullScreenElement || anyDoc.webkitFullscreenElement || anyDoc.msFullscreenElement), rect = this.canvas.getBoundingClientRect();
             if (isFullScreen) {
-                var areaX = 0, //TTT
-                areaY = 0, rectwidth = rect.right - rect.left - (this.borderWidth + areaX) * 2, rectHeight = rect.bottom - rect.top - (this.borderWidth + areaY) * 2, ratioX = rectwidth / this.canvas.width, ratioY = rectHeight / this.canvas.height, minRatio = ratioX <= ratioY ? ratioX : ratioY, diffX = rectwidth - (this.canvas.width * minRatio), diffY = rectHeight - (this.canvas.height * minRatio);
+                var areaX = 0, areaY = 0, rectwidth = rect.right - rect.left - (this.borderWidth + areaX) * 2, rectHeight = rect.bottom - rect.top - (this.borderWidth + areaY) * 2, ratioX = rectwidth / this.canvas.width, ratioY = rectHeight / this.canvas.height, minRatio = ratioX <= ratioY ? ratioX : ratioY, diffX = rectwidth - (this.canvas.width * minRatio), diffY = rectHeight - (this.canvas.height * minRatio);
                 return {
                     x: (event.clientX - this.borderWidth - rect.left - diffX / 2) / ratioX * ratioX / minRatio,
                     y: (event.clientY - this.borderWidth - rect.top - diffY / 2) / ratioY * ratioY / minRatio
                 };
             }
-            /*
-            // alternative, when using scaling, maybe with other aspect ratio
-            if (isFullScreen) {
-                const areaX = 0, //TTT
-                    areaY = 0,
-                    rectwidth = rect.right - rect.left - (this.borderWidth + areaX) * 2,
-                    rectHeight = rect.bottom - rect.top - (this.borderWidth + areaY) * 2,
-                    ratioX = rectwidth / this.canvas.width,
-                    ratioY = rectHeight / this.canvas.height,
-                    //minRatio = ratioX <= ratioY ? ratioX : ratioY,
-                    diffX = rectwidth - (this.canvas.width * ratioX), //rectwidth - (this.canvas.width * minRatio),
-                    diffY = rectHeight - (this.canvas.height * ratioY); //rectHeight - (this.canvas.height * minRatio);
-    
-                return {
-                    //x: (event.clientX - this.borderWidth - rect.left - diffX / 2) / ratioX * ratioX / minRatio,
-                    //y: (event.clientY - this.borderWidth - rect.top - diffY / 2) / ratioY * ratioY / minRatio
-                    x: (event.clientX - this.borderWidth - rect.left - diffX / 2) / ratioX * ratioX / ratioX,
-                    y: (event.clientY - this.borderWidth - rect.top - diffY / 2) / ratioY * ratioY / ratioY
-                };
-            }
-            */
             return {
                 x: (event.clientX - this.borderWidth - rect.left) / (rect.right - rect.left - this.borderWidth * 2) * this.canvas.width,
                 y: (event.clientY - this.borderWidth - rect.top) / (rect.bottom - rect.top - this.borderWidth * 2) * this.canvas.height
@@ -9556,20 +10315,8 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
                     this.options.onCanvasClick(event, x, y, xTxt, yTxt);
                 }
             }
-            /*
-            // for graphics coordinates, adapt origin
-            x -= this.xOrig;
-            y = this.height - 1 - (y + this.yOrig);
-    
-            if (this.xPos === 1000 && this.yPos === 1000) { // only activate move if pos is 1000, 1000
-                this.move(x, y);
-            }
-            if (Utils.debug > 0) {
-                Utils.console.debug("canvasClickAction: x", pos.x, "y", pos.y, "x - xOrig", x, "y - yOrig", y, "detail", event.detail);
-            }
-            */
         };
-        Canvas.prototype.onCpcCanvasClick = function (event) {
+        Canvas.prototype.onCanvasClick = function (event) {
             if (!this.hasFocus) {
                 this.setFocusOnCanvas();
             }
@@ -9593,10 +10340,8 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
         Canvas.prototype.fillMyRect = function (x, y, width, height, paper) {
             var canvasWidth = this.width, dataset8 = this.dataset8;
             for (var row = 0; row < height; row += 1) {
-                for (var col = 0; col < width; col += 1) {
-                    var idx = (x + col) + (y + row) * canvasWidth;
-                    dataset8[idx] = paper;
-                }
+                var idx = x + (y + row) * canvasWidth;
+                dataset8.fill(paper, idx, idx + width);
             }
         };
         Canvas.prototype.fillTextBox = function (left, top, width, height, paper) {
@@ -9609,28 +10354,23 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             var canvasWidth = this.width, dataset8 = this.dataset8;
             for (var row = 0; row < height; row += 1) {
                 var idx1 = x + (y + row) * canvasWidth, idx2 = x2 + (y2 + row) * canvasWidth;
-                for (var col = 0; col < width; col += 1) {
-                    dataset8[idx2 + col] = dataset8[idx1 + col];
-                }
+                dataset8.copyWithin(idx2, idx1, idx1 + width);
             }
         };
         Canvas.prototype.moveMyRectDown = function (x, y, width, height, x2, y2) {
             var canvasWidth = this.width, dataset8 = this.dataset8;
             for (var row = height - 1; row >= 0; row -= 1) {
                 var idx1 = x + (y + row) * canvasWidth, idx2 = x2 + (y2 + row) * canvasWidth;
-                for (var col = 0; col < width; col += 1) {
-                    dataset8[idx2 + col] = dataset8[idx1 + col];
-                }
+                dataset8.copyWithin(idx2, idx1, idx1 + width);
             }
         };
         Canvas.prototype.invertChar = function (x, y, pen, paper) {
-            var pixelWidth = this.modeData.pixelWidth, pixelHeight = this.modeData.pixelHeight, penXorPaper = pen ^ paper, // eslint-disable-line no-bitwise
-            gColMode = 0;
+            var pixelWidth = this.modeData.pixelWidth, pixelHeight = this.modeData.pixelHeight, penXorPaper = pen ^ paper; // eslint-disable-line no-bitwise
             for (var row = 0; row < 8; row += 1) {
                 for (var col = 0; col < 8; col += 1) {
                     var testPen = this.testSubPixel(x + col * pixelWidth, y + row * pixelHeight);
                     testPen ^= penXorPaper; // eslint-disable-line no-bitwise
-                    this.setSubPixels(x + col * pixelWidth, y + row * pixelHeight, testPen, gColMode);
+                    this.setSubPixelsNormal(x + col * pixelWidth, y + row * pixelHeight, testPen);
                 }
             }
         };
@@ -9665,6 +10405,20 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             }
             return charData;
         };
+        // set subpixels with normal mode (gColmode=0)
+        Canvas.prototype.setSubPixelsNormal = function (x, y, gPen) {
+            var pixelWidth = this.modeData.pixelWidth, pixelHeight = this.modeData.pixelHeight, width = this.width;
+            /* eslint-disable no-bitwise */
+            x &= ~(pixelWidth - 1); // match CPC pixel
+            y &= ~(pixelHeight - 1);
+            for (var row = 0; row < pixelHeight; row += 1) {
+                var i = x + width * (y + row);
+                for (var col = 0; col < pixelWidth; col += 1) {
+                    this.dataset8[i + col] = gPen;
+                }
+            }
+            /* eslint-enable no-bitwise */
+        };
         Canvas.prototype.setSubPixels = function (x, y, gPen, gColMode) {
             var pixelWidth = this.modeData.pixelWidth, pixelHeight = this.modeData.pixelHeight, width = this.width;
             /* eslint-disable no-bitwise */
@@ -9687,7 +10441,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
                             this.dataset8[i] |= gPen;
                             break;
                         default:
-                            Utils_15.Utils.console.warn("setSubPixels: Unknown colMode:", gColMode);
+                            Utils_16.Utils.console.warn("setSubPixels: Unknown colMode:", gColMode);
                             break;
                     }
                     i += 1;
@@ -9695,12 +10449,16 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             }
             /* eslint-enable no-bitwise */
         };
+        // some rounding needed before applying origin:
+        Canvas.roundCoordinate = function (cor, widthOrHeight) {
+            /* eslint-disable no-bitwise */
+            return cor >= 0 ? cor & ~(widthOrHeight - 1) : -(-cor & ~(widthOrHeight - 1));
+            /* eslint-enable no-bitwise */
+        };
         Canvas.prototype.setPixel = function (x, y, gPen, gColMode) {
             // some rounding needed before applying origin:
-            /* eslint-disable no-bitwise */
-            x = x >= 0 ? x & ~(this.modeData.pixelWidth - 1) : -(-x & ~(this.modeData.pixelWidth - 1));
-            y = y >= 0 ? y & ~(this.modeData.pixelHeight - 1) : -(-y & ~(this.modeData.pixelHeight - 1));
-            /* eslint-enable no-bitwise */
+            x = Canvas.roundCoordinate(x, this.modeData.pixelWidth);
+            y = Canvas.roundCoordinate(y, this.modeData.pixelHeight);
             x += this.xOrig;
             y = this.height - 1 - (y + this.yOrig);
             if (x < this.xLeft || x > this.xRight || y < (this.height - 1 - this.yTop) || y > (this.height - 1 - this.yBottom)) {
@@ -9720,10 +10478,8 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
         };
         Canvas.prototype.testPixel = function (x, y) {
             // some rounding needed before applying origin:
-            /* eslint-disable no-bitwise */
-            x = x >= 0 ? x & ~(this.modeData.pixelWidth - 1) : -(-x & ~(this.modeData.pixelWidth - 1));
-            y = y >= 0 ? y & ~(this.modeData.pixelHeight - 1) : -(-y & ~(this.modeData.pixelHeight - 1));
-            /* eslint-enable no-bitwise */
+            x = Canvas.roundCoordinate(x, this.modeData.pixelWidth);
+            y = Canvas.roundCoordinate(y, this.modeData.pixelHeight);
             x += this.xOrig;
             y = this.height - 1 - (y + this.yOrig);
             if (x < this.xLeft || x > this.xRight || y < (this.height - 1 - this.yTop) || y > (this.height - 1 - this.yBottom)) {
@@ -9770,31 +10526,31 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
         };
         Canvas.prototype.setByte = function (addr, byte) {
             /* eslint-disable no-bitwise */
-            var mode = this.mode, pixelWidth = this.modeData.pixelWidth, pixelHeight = this.modeData.pixelHeight, x = ((addr & 0x7ff) % 80) * 8, y = (((addr & 0x3800) / 0x800) + (((addr & 0x7ff) / 80) | 0) * 8) * pixelHeight, gColMode = 0; // always 0
+            var mode = this.mode, pixelWidth = this.modeData.pixelWidth, pixelHeight = this.modeData.pixelHeight, x = ((addr & 0x7ff) % 80) * 8, y = (((addr & 0x3800) / 0x800) + (((addr & 0x7ff) / 80) | 0) * 8) * pixelHeight;
             var gPen;
             if (y < this.height) { // only if in visible range
                 if (mode === 0) {
                     gPen = ((byte << 2) & 0x08) | ((byte >> 3) & 0x04) | ((byte >> 2) & 0x02) | ((byte >> 7) & 0x01); // b1,b5,b3,b7 (left pixel)
-                    this.setSubPixels(x, y, gPen, gColMode);
+                    this.setSubPixelsNormal(x, y, gPen);
                     gPen = ((byte << 3) & 0x08) | ((byte >> 2) & 0x04) | ((byte >> 1) & 0x02) | ((byte >> 6) & 0x01); // b0,b4,b2,b6 (right pixel)
-                    this.setSubPixels(x + pixelWidth, y, gPen, gColMode);
+                    this.setSubPixelsNormal(x + pixelWidth, y, gPen);
                     this.setNeedUpdate();
                 }
                 else if (mode === 1) {
                     gPen = ((byte >> 2) & 0x02) | ((byte >> 7) & 0x01); // b3,b7 (left pixel 1)
-                    this.setSubPixels(x, y, gPen, gColMode);
+                    this.setSubPixelsNormal(x, y, gPen);
                     gPen = ((byte >> 1) & 0x02) | ((byte >> 6) & 0x01); // b2,b6 (pixel 2)
-                    this.setSubPixels(x + pixelWidth, y, gPen, gColMode);
+                    this.setSubPixelsNormal(x + pixelWidth, y, gPen);
                     gPen = ((byte >> 0) & 0x02) | ((byte >> 5) & 0x01); // b1,b5 (pixel 3)
-                    this.setSubPixels(x + pixelWidth * 2, y, gPen, gColMode);
+                    this.setSubPixelsNormal(x + pixelWidth * 2, y, gPen);
                     gPen = ((byte << 1) & 0x02) | ((byte >> 4) & 0x01); // b0,b4 (right pixel 4)
-                    this.setSubPixels(x + pixelWidth * 3, y, gPen, gColMode);
+                    this.setSubPixelsNormal(x + pixelWidth * 3, y, gPen);
                     this.setNeedUpdate();
                 }
                 else if (mode === 2) {
                     for (var i = 0; i <= 7; i += 1) {
                         gPen = (byte >> (7 - i)) & 0x01;
-                        this.setSubPixels(x + i * pixelWidth, y, gPen, gColMode);
+                        this.setSubPixelsNormal(x + i * pixelWidth, y, gPen);
                     }
                     this.setNeedUpdate();
                 }
@@ -9807,24 +10563,16 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
         Canvas.prototype.drawBresenhamLine = function (xstart, ystart, xend, yend) {
             var pixelWidth = this.modeData.pixelWidth, pixelHeight = this.modeData.pixelHeight, gPen = this.gPen, gPaper = this.gPaper, mask = this.mask, maskFirst = this.maskFirst, gColMode = this.gColMode, transparent = this.gTransparent;
             var maskBit = this.maskBit;
+            xstart = Canvas.roundCoordinate(xstart, pixelWidth);
+            ystart = Canvas.roundCoordinate(ystart, pixelHeight);
+            xend = Canvas.roundCoordinate(xend, pixelWidth);
+            yend = Canvas.roundCoordinate(yend, pixelHeight);
             // we have to add origin before modifying coordinates to match CPC pixel
             xstart += this.xOrig;
             ystart = this.height - 1 - (ystart + this.yOrig);
             xend += this.xOrig;
             yend = this.height - 1 - (yend + this.yOrig);
             /* eslint-disable no-bitwise */
-            if (xend >= xstart) { // line from left to right
-                xend |= (pixelWidth - 1); // match CPC pixel
-            }
-            else { // line from right to left
-                xstart |= (pixelWidth - 1);
-            }
-            if (yend >= ystart) { // line from bottom to top
-                yend |= (pixelHeight - 1);
-            }
-            else { // line from top to bottom
-                ystart |= (pixelHeight - 1);
-            }
             var dx = ((xend - xstart) / pixelWidth) | 0, dy = ((yend - ystart) / pixelHeight) | 0;
             /* eslint-enable no-bitwise */
             var incx = Math.sign(dx) * pixelWidth, incy = Math.sign(dy) * pixelHeight;
@@ -9922,12 +10670,10 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             }
         };
         Canvas.prototype.setGPen = function (gPen) {
-            gPen %= this.modeData.pens; // limit pens
-            this.gPen = gPen;
+            this.gPen = gPen % this.modeData.pens; // limit pens
         };
         Canvas.prototype.setGPaper = function (gPaper) {
-            gPaper %= this.modeData.pens; // limit pens
-            this.gPaper = gPaper;
+            this.gPaper = gPaper % this.modeData.pens; // limit to pens
         };
         Canvas.prototype.setGTransparentMode = function (transparent) {
             this.gTransparent = transparent;
@@ -9935,7 +10681,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
         Canvas.prototype.printGChar = function (char) {
             var charWidth = this.modeData.pixelWidth * 8;
             if (char >= this.options.charset.length) {
-                Utils_15.Utils.console.warn("printGChar: Ignoring char with code", char);
+                Utils_16.Utils.console.warn("printGChar: Ignoring char with code", char);
                 return;
             }
             this.setChar(char, this.xPos, this.yPos, this.gPen, this.gPaper, this.gTransparent, this.gColMode, true);
@@ -9945,7 +10691,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
         Canvas.prototype.printChar = function (char, x, y, pen, paper, transparent) {
             var charWidth = this.modeData.pixelWidth * 8, charHeight = this.modeData.pixelHeight * 8, pens = this.modeData.pens;
             if (char >= this.options.charset.length) {
-                Utils_15.Utils.console.warn("printChar: Ignoring char with code", char);
+                Utils_16.Utils.console.warn("printChar: Ignoring char with code", char);
                 return;
             }
             pen %= pens;
@@ -10032,7 +10778,7 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
                 var spanLeft = false, spanRight = false;
                 p1 = this.testSubPixel(pixel.x, y1);
                 while (y1 <= (this.height - 1 - this.yBottom) && !fnIsStopPen(p1)) {
-                    this.setSubPixels(pixel.x, y1, fillPen, 0);
+                    this.setSubPixelsNormal(pixel.x, y1, fillPen);
                     var x1 = pixel.x - pixelWidth;
                     var p2 = this.testSubPixel(x1, y1);
                     if (!spanLeft && x1 >= this.xLeft && !fnIsStopPen(p2)) {
@@ -10182,8 +10928,12 @@ define("Canvas", ["require", "exports", "Utils", "View"], function (require, exp
             this.setGPaper(this.gPaper); // keep, maybe different for other mode
             this.setGTransparentMode(false);
         };
-        Canvas.prototype.getCanvasElement = function () {
-            return this.canvas;
+        Canvas.prototype.takeScreenShot = function () {
+            if (this.canvas.toDataURL) {
+                return this.canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // here is the most important part because if you do not replace you will get a DOM 18 exception.
+            }
+            Utils_16.Utils.console.warn("Screenshot not available");
+            return "";
         };
         // http://www.cpcwiki.eu/index.php/CPC_Palette
         // (green and gray palette will be computed if needed)
@@ -10265,94 +11015,153 @@ define("TextCanvas", ["require", "exports", "View"], function (require, exports,
     var TextCanvas = /** @class */ (function () {
         function TextCanvas(options) {
             this.fps = 15; // FPS for canvas update
+            this.isRunning = false;
             this.borderWidth = 1;
-            this.needTextUpdate = false;
+            this.needUpdate = false;
             this.textBuffer = []; // textbuffer characters at row,column
             this.hasFocus = false; // canvas has focus
-            this.options = {
-                onCanvasClick: options.onCanvasClick
-            };
-            this.fnUpdateTextCanvasHandler = this.updateTextCanvas.bind(this);
-            this.fnUpdateTextCanvas2Handler = this.updateTextCanvas2.bind(this);
-            this.textText = View_4.View.getElementById1("textText"); // View.setAreaValue()
+            this.customCharset = {};
+            this.options = {};
+            this.setOptions(options);
+            this.textText = View_4.View.getElementByIdAs(this.options.canvasID);
+            this.cpcAreaBox = View_4.View.getElementById1("cpcArea" /* ViewID.cpcArea */);
+            this.fnUpdateCanvasHandler = this.updateCanvas.bind(this);
+            this.fnUpdateCanvas2Handler = this.updateCanvas2.bind(this);
             this.cols = parseFloat(this.textText.getAttribute("cols") || "0");
             this.rows = parseFloat(this.textText.getAttribute("rows") || "0");
             this.animationTimeoutId = undefined;
             this.animationFrame = undefined;
             this.reset();
         }
-        /*
-        private static readonly cpc2Unicode =
-        "................................ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]\u2195_`abcdefghijklmnopqrstuvwxyz{|}~\u2591"
-        + "\u00A0\u2598\u259D\u2580\u2596\u258C\u259E\u259B\u2597\u259A\u2590\u259C\u2584\u2599\u259F\u2588\u00B7\u2575\u2576\u2514\u2577\u2502\u250C"
-        + "\u251C\u2574\u2518\u2500\u2534\u2510\u2524\u252C\u253C\u005E\u00B4\u00A8\u00A3\u00A9\u00B6\u00A7\u2018\u00BC\u00BD\u00BE\u00B1\u00F7\u00AC"
-        + "\u00BF\u00A1\u03B1\u03B2\u03B3\u03B4\u03B5\u03B8\u03BB\u03BC\u03C0\u03C3\u03C6\u03C8\u03C7\u03C9\u03A3\u03A9\u1FBA0\u1FBA1\u1FBA3\u1FBA2\u1FBA7"
-        + "\u1FBA5\u1FBA6\u1FBA4\u1FBA8\u1FBA9\u1FBAE\u2573\u2571\u2572\u1FB95\u2592\u23BA\u23B9\u23BD\u23B8\u25E4\u25E5\u25E2\u25E3\u1FB8E\u1FB8D\u1FB8F"
-        + "\u1FB8C\u1FB9C\u1FB9D\u1FB9E\u1FB9F\u263A\u2639\u2663\u2666\u2665\u2660\u25CB\u25CF\u25A1\u25A0\u2642\u2640\u2669\u266A\u263C\uFFBDB\u2B61\u2B63"
-        + "\u2B60\u2B62\u25B2\u25BC\u25B6\u25C0\u1FBC6\u1FBC5\u1FBC7\u1FBC8\uFFBDC\uFFBDD\u2B65\u2B64";
-        */
-        TextCanvas.prototype.setOnCanvasClick = function (onCanvasClickHandler) {
-            this.options.onCanvasClick = onCanvasClickHandler;
+        TextCanvas.prototype.getOptions = function () {
+            return this.options;
+        };
+        TextCanvas.prototype.setOptions = function (options) {
+            Object.assign(this.options, options);
         };
         TextCanvas.prototype.reset = function () {
             this.resetTextBuffer();
-            this.setNeedTextUpdate();
+            this.setNeedUpdate();
+        };
+        TextCanvas.prototype.resetCustomChars = function () {
+        };
+        TextCanvas.prototype.setScreenOffset = function (_offset) {
+        };
+        TextCanvas.prototype.updateColorsAndCanvasImmediately = function (_inkList) {
+        };
+        TextCanvas.prototype.updateSpeedInk = function () {
+        };
+        TextCanvas.prototype.setCustomChar = function (char, charData) {
+            this.customCharset[char] = charData;
+        };
+        TextCanvas.prototype.getCharData = function (char) {
+            return this.customCharset[char] || this.options.charset[char];
+        };
+        TextCanvas.prototype.setDefaultInks = function () {
+        };
+        TextCanvas.prototype.getXpos = function () {
+            return 0;
+        };
+        TextCanvas.prototype.getYpos = function () {
+            return 0;
+        };
+        TextCanvas.prototype.getByte = function (_addr) {
+            return 0;
+        };
+        TextCanvas.prototype.setByte = function (_addr, _byte) {
+        };
+        TextCanvas.prototype.draw = function (_x, _y) {
+        };
+        TextCanvas.prototype.move = function (_x, _y) {
+        };
+        TextCanvas.prototype.plot = function (_x, _y) {
+        };
+        TextCanvas.prototype.test = function (_x, _y) {
+            return 0;
+        };
+        TextCanvas.prototype.setInk = function (_pen, _ink1, _ink2) {
+            return false;
+        };
+        TextCanvas.prototype.setBorder = function (_ink1, _ink2) {
+        };
+        TextCanvas.prototype.setGPen = function (_gPen) {
+        };
+        TextCanvas.prototype.setGPaper = function (_gPaper) {
+        };
+        TextCanvas.prototype.setGTransparentMode = function (_transparent) {
+        };
+        TextCanvas.prototype.printGChar = function (_char) {
+        };
+        TextCanvas.prototype.drawCursor = function (_x, _y, _pen, _paper) {
+        };
+        TextCanvas.prototype.fill = function (_fillPen) {
+        };
+        TextCanvas.prototype.setOrigin = function (_xOrig, _yOrig) {
+        };
+        TextCanvas.prototype.getXOrigin = function () {
+            return 0;
+        };
+        TextCanvas.prototype.getYOrigin = function () {
+            return 0;
+        };
+        TextCanvas.prototype.setGWindow = function (_xLeft, _xRight, _yTop, _yBottom) {
+        };
+        TextCanvas.prototype.setGColMode = function (_gColMode) {
+        };
+        TextCanvas.prototype.clearGraphicsWindow = function () {
+        };
+        TextCanvas.prototype.setSpeedInk = function (_time1, _time2) {
+        };
+        TextCanvas.prototype.setMask = function (_mask) {
+        };
+        TextCanvas.prototype.setMaskFirst = function (_maskFirst) {
+        };
+        TextCanvas.prototype.getMode = function () {
+            return 0;
+        };
+        TextCanvas.prototype.changeMode = function (_mode) {
+        };
+        TextCanvas.prototype.takeScreenShot = function () {
+            return "";
         };
         TextCanvas.prototype.resetTextBuffer = function () {
             this.textBuffer.length = 0;
         };
-        TextCanvas.prototype.setNeedTextUpdate = function () {
-            this.needTextUpdate = true;
+        TextCanvas.prototype.setNeedUpdate = function () {
+            this.needUpdate = true;
         };
-        TextCanvas.prototype.updateTextCanvas2 = function () {
-            this.animationFrame = requestAnimationFrame(this.fnUpdateTextCanvasHandler);
+        TextCanvas.prototype.updateCanvas2 = function () {
+            if (!this.isRunning) {
+                return; // ignore remaining timeouts, if stopped
+            }
+            this.animationFrame = requestAnimationFrame(this.fnUpdateCanvasHandler);
             if (this.textText.offsetParent) { // text area visible?
-                if (this.needTextUpdate) {
-                    this.needTextUpdate = false;
+                if (this.needUpdate) {
+                    this.needUpdate = false;
                     this.updateTextWindow();
                 }
             }
         };
-        TextCanvas.prototype.updateTextCanvas = function () {
-            this.animationTimeoutId = window.setTimeout(this.fnUpdateTextCanvas2Handler, 1000 / this.fps); // ts (node)
+        TextCanvas.prototype.updateCanvas = function () {
+            this.animationTimeoutId = window.setTimeout(this.fnUpdateCanvas2Handler, 1000 / this.fps); // ts (node)
         };
         TextCanvas.prototype.startUpdateCanvas = function () {
-            if (this.animationFrame === undefined && this.textText.offsetParent !== null) { // animation off and canvas visible in DOM?
-                this.updateTextCanvas();
+            if (!this.isRunning && this.textText.offsetParent !== null) { // animation off and canvas visible in DOM? (with noteJS it is currently undefined)
+                this.isRunning = true;
+                this.updateCanvas();
             }
         };
         TextCanvas.prototype.stopUpdateCanvas = function () {
-            if (this.animationFrame !== undefined) {
-                cancelAnimationFrame(this.animationFrame);
+            if (this.isRunning) {
+                this.isRunning = false;
+                if (this.animationFrame) {
+                    cancelAnimationFrame(this.animationFrame);
+                    this.animationFrame = undefined;
+                }
                 clearTimeout(this.animationTimeoutId);
-                this.animationFrame = undefined;
                 this.animationTimeoutId = undefined;
             }
         };
-        /*
-        // eslint-disable-next-line class-methods-use-this
-        private test1(tooWide: number[]) {
-            const tooWide = [132,134,135,136,137,139,141,142,224,225,226,227,245],
-                cpc2Unicode = TextCanvas.cpc2Unicode;
-            let out = "";
-    
-            for (let i = 0; i <= 255; i += 1) {
-                if (tooWide.indexOf(i) >= 0) {
-                    out += ".";
-                } else {
-                    const ch1 = cpc2Unicode[i],
-                        code1 = cpc2Unicode.charCodeAt(i);
-    
-                    if (code1 > 127) {
-                        out += "\\u" + code1.toString(16).toUpperCase().padStart(4, "0");
-                    } else {
-                        out += ch1;
-                    }
-                }
-            }
-            console.log(out); //TTT
-        }
-        */
         TextCanvas.prototype.updateTextWindow = function () {
             var textBuffer = this.textBuffer, cpc2Unicode = TextCanvas.cpc2Unicode;
             var out = "";
@@ -10368,19 +11177,14 @@ define("TextCanvas", ["require", "exports", "View"], function (require, exports,
             this.textText.value = out;
         };
         TextCanvas.prototype.setFocusOnCanvas = function () {
-            var parentNode = this.textText.parentNode;
-            if (parentNode) {
-                parentNode.style.background = "#463c3c";
-            }
+            this.cpcAreaBox.style.background = "#463c3c";
             if (this.textText) {
                 this.textText.focus();
             }
             this.hasFocus = true;
         };
-        // eslint-disable-next-line class-methods-use-this
         TextCanvas.prototype.getMousePos = function (event, canvasWidth, canvasHeight) {
-            var //padding = 0, //2, // TODO
-            rect = this.textText.getBoundingClientRect(), pos = {
+            var rect = this.textText.getBoundingClientRect(), pos = {
                 x: (event.clientX - this.borderWidth - rect.left) / (rect.right - rect.left - this.borderWidth * 2) * canvasWidth,
                 y: (event.clientY - this.borderWidth - rect.top) / (rect.bottom - rect.top - this.borderWidth * 2) * canvasHeight
             };
@@ -10393,13 +11197,6 @@ define("TextCanvas", ["require", "exports", "View"], function (require, exports,
             y = pos.y | 0;
             /* eslint-enable no-bitwise */
             if (this.options.onCanvasClick) {
-                /*
-                const target = View.getEventTarget<HTMLElement>(event),
-                    style = window.getComputedStyle(target, null).getPropertyValue("font-size"),
-                    fontSize = parseFloat(style),
-                    charWidth = (fontSize * 1.1075) / 2, //(fontSize + 1.4) / 2,
-                    charHeight = fontSize * 1.125, //+ 2.25, // TODO
-                */
                 var charWidth = canvasWidth / this.cols, charHeight = canvasHeight / this.rows, 
                 /* eslint-disable no-bitwise */
                 xTxt = (x / charWidth) | 0, yTxt = (y / charHeight) | 0;
@@ -10407,64 +11204,7 @@ define("TextCanvas", ["require", "exports", "View"], function (require, exports,
                 this.options.onCanvasClick(event, x, y, xTxt, yTxt);
             }
         };
-        /*
-        private getMousePos_old1(event: MouseEvent) {
-            const padding = 0, //2, // TODO
-                rect = this.textText.getBoundingClientRect(),
-                pos = {
-                    x: event.clientX - this.borderWidth - padding - rect.left,
-                    y: event.clientY - this.borderWidth - padding - rect.top
-                };
-    
-            return pos;
-        }
-    
-        private canvasClickAction_old1(event: MouseEvent) {
-            const pos = this.getMousePos(event),
-                canvasWidth = 640,
-                canvasHeight = 400,
-                x = pos.x,
-                y = pos.y;
-    
-            if (this.options.onCanvasClick) {
-                const target = View.getEventTarget<HTMLElement>(event),
-                    style = window.getComputedStyle(target, null).getPropertyValue("font-size"),
-                    fontSize = parseFloat(style),
-                    charWidth = (fontSize * 1.1075) / 2, //(fontSize + 1.4) / 2,
-                    charHeight = fontSize * 1.125, //+ 2.25, // TODO
-                    / * eslint-disable no-bitwise * /
-                    xTxt = (x / charWidth) | 0,
-                    yTxt = (y / charHeight) | 0,
-                    //TODO
-                    rect = this.textText.getBoundingClientRect(),
-                    x2 = ((event.clientX - this.borderWidth - rect.left) / (rect.right - rect.left - this.borderWidth * 2) * canvasWidth) | 0,
-                    y2 = ((event.clientY - this.borderWidth - rect.top) / (rect.bottom - rect.top - this.borderWidth * 2) * canvasHeight) | 0;
-                    / * eslint-enable no-bitwise * /
-                    / *
-                    scaleX = canvasWidth / rect.width,
-                    scaleY = canvasHeight / rect.height,
-                    x2 = (x * scaleX) | 0, // force integer
-                    y2 = (y * scaleY) | 0;
-                    * /
-    
-                this.options.onCanvasClick(event, x2, y2, xTxt, yTxt);
-            }
-    
-            / *
-            // for graphics coordinates, adapt origin
-            x -= this.xOrig;
-            y = this.height - 1 - (y + this.yOrig);
-    
-            if (this.xPos === 1000 && this.yPos === 1000) { // only activate move if pos is 1000, 1000
-                this.move(x, y);
-            }
-            if (Utils.debug > 0) {
-                Utils.console.debug("canvasClickAction: x", pos.x, "y", pos.y, "x - xOrig", x, "y - yOrig", y, "detail", event.detail);
-            }
-            * /
-        }
-        */
-        TextCanvas.prototype.onTextCanvasClick = function (event) {
+        TextCanvas.prototype.onCanvasClick = function (event) {
             if (!this.hasFocus) {
                 this.setFocusOnCanvas();
             }
@@ -10476,13 +11216,10 @@ define("TextCanvas", ["require", "exports", "View"], function (require, exports,
         TextCanvas.prototype.onWindowClick = function (_event) {
             if (this.hasFocus) {
                 this.hasFocus = false;
-                var parentNode = this.textText.parentNode;
-                if (parentNode) {
-                    parentNode.style.background = "";
-                }
+                this.cpcAreaBox.style.background = "";
             }
         };
-        TextCanvas.prototype.fillTextBox = function (left, top, width, height, _pen) {
+        TextCanvas.prototype.fillTextBox = function (left, top, width, height, _paper) {
             this.clearTextBufferBox(left, top, width, height);
         };
         TextCanvas.prototype.clearTextBufferBox = function (left, top, width, height) {
@@ -10495,7 +11232,7 @@ define("TextCanvas", ["require", "exports", "View"], function (require, exports,
                     }
                 }
             }
-            this.setNeedTextUpdate();
+            this.setNeedUpdate();
         };
         TextCanvas.prototype.copyTextBufferBoxUp = function (left, top, width, height, left2, top2) {
             var textBuffer = this.textBuffer;
@@ -10516,7 +11253,7 @@ define("TextCanvas", ["require", "exports", "View"], function (require, exports,
                     delete textBuffer[top2 + y]; // no sourceRow => clear destinationRow
                 }
             }
-            this.setNeedTextUpdate();
+            this.setNeedUpdate();
         };
         TextCanvas.prototype.copyTextBufferBoxDown = function (left, top, width, height, left2, top2) {
             var textBuffer = this.textBuffer;
@@ -10536,7 +11273,7 @@ define("TextCanvas", ["require", "exports", "View"], function (require, exports,
                     delete textBuffer[top2 + y]; // no sourceRow => clear destinationRow
                 }
             }
-            this.setNeedTextUpdate();
+            this.setNeedUpdate();
         };
         TextCanvas.prototype.putCharInTextBuffer = function (char, x, y) {
             var textBuffer = this.textBuffer;
@@ -10544,7 +11281,7 @@ define("TextCanvas", ["require", "exports", "View"], function (require, exports,
                 textBuffer[y] = [];
             }
             this.textBuffer[y][x] = char;
-            this.setNeedTextUpdate();
+            this.setNeedUpdate();
         };
         TextCanvas.prototype.getCharFromTextBuffer = function (x, y) {
             var textBuffer = this.textBuffer;
@@ -10558,7 +11295,7 @@ define("TextCanvas", ["require", "exports", "View"], function (require, exports,
             this.putCharInTextBuffer(char, x, y);
         };
         TextCanvas.prototype.readChar = function (x, y, _pen, _paper) {
-            var char = this.getCharFromTextBuffer(x, y); // TODO
+            var char = this.getCharFromTextBuffer(x, y);
             if (char === undefined) {
                 char = -1; // not detected
             }
@@ -10568,8 +11305,8 @@ define("TextCanvas", ["require", "exports", "View"], function (require, exports,
             var width = right + 1 - left, height = bottom + 1 - top;
             this.fillTextBox(left, top, width, height);
         };
-        TextCanvas.prototype.setMode = function (_mode, right, bottom) {
-            var cols = right + 1, rows = bottom + 1;
+        TextCanvas.prototype.setMode = function (mode) {
+            var winData = TextCanvas.winData[mode], cols = winData.right + 1, rows = winData.bottom + 1;
             if (this.cols !== cols) {
                 this.cols = cols;
                 this.textText.setAttribute("cols", String(cols));
@@ -10581,9 +11318,9 @@ define("TextCanvas", ["require", "exports", "View"], function (require, exports,
         };
         TextCanvas.prototype.clearFullWindow = function () {
             this.resetTextBuffer();
-            this.setNeedTextUpdate();
+            this.setNeedUpdate();
         };
-        TextCanvas.prototype.windowScrollUp = function (left, right, top, bottom, _pen) {
+        TextCanvas.prototype.windowScrollUp = function (left, right, top, bottom, _paper) {
             var width = right + 1 - left, height = bottom + 1 - top;
             if (height > 1) { // scroll part
                 // adapt also text buffer
@@ -10591,7 +11328,7 @@ define("TextCanvas", ["require", "exports", "View"], function (require, exports,
             }
             this.fillTextBox(left, bottom, width, 1);
         };
-        TextCanvas.prototype.windowScrollDown = function (left, right, top, bottom, _pen) {
+        TextCanvas.prototype.windowScrollDown = function (left, right, top, bottom, _paper) {
             var width = right + 1 - left, height = bottom + 1 - top;
             if (height > 1) { // scroll part
                 // adapt also text buffer
@@ -10603,13 +11340,40 @@ define("TextCanvas", ["require", "exports", "View"], function (require, exports,
         // tooWide = [132,134,135,136,137,139,141,142,224,225,226,227,245];
         // For equal height we set line-height: 15px;
         TextCanvas.cpc2Unicode = "................................ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]\u2195_`abcdefghijklmnopqrstuvwxyz{|}~\u2591\u00A0\u2598\u259D\u2580.\u258C....\u2590.\u2584..\u2588\u00B7\u2575\u2576\u2514\u2577\u2502\u250C\u251C\u2574\u2518\u2500\u2534\u2510\u2524\u252C\u253C^\u00B4\u00A8\u00A3\u00A9\u00B6\u00A7\u2018\u00BC\u00BD\u00BE\u00B1\u00F7\u00AC\u00BF\u00A1\u03B1\u03B2\u03B3\u03B4\u03B5\u03B8\u03BB\u03BC\u03C0\u03C3\u03C6\u03C8\u03C7\u03C9\u03A3\u03A9\u1FBA0\u1FBA1\u1FBA3\u1FBA2\u1FBA7\u1FBA5\u1FBA6\u1FBA4\u1FBA8\u1FBA9\u1FBAE\u2573\u2571\u2572\u1FB95\u2592\u23BA\u23B9\u23BD\u23B8....\u1FB8E\u1FB8D\u1FB8F\u1FB8C\u1FB9C\u1FB9D\u1FB9E\u1FB9F\u263A.\u2663\u2666\u2665\u2660\u25CB\u25CF\u25A1\u25A0\u2642\u2640";
+        // same as in CpcVm
+        TextCanvas.winData = [
+            {
+                left: 0,
+                right: 19,
+                top: 0,
+                bottom: 24
+            },
+            {
+                left: 0,
+                right: 39,
+                top: 0,
+                bottom: 24
+            },
+            {
+                left: 0,
+                right: 79,
+                top: 0,
+                bottom: 24
+            },
+            {
+                left: 0,
+                right: 79,
+                top: 0,
+                bottom: 49
+            }
+        ];
         return TextCanvas;
     }());
     exports.TextCanvas = TextCanvas;
 });
 // NodeAdapt.ts - Adaptations for nodeJS
 //
-define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports, Utils_16) {
+define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports, Utils_17) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.NodeAdapt = void 0;
@@ -10626,8 +11390,16 @@ define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports,
                         borderwidth: "",
                         borderStyle: ""
                     },
-                    addEventListener: function () { },
-                    options: []
+                    addEventListener: function () {
+                        // nothing
+                    },
+                    options: [],
+                    getAttribute: function () {
+                        // nothing
+                    },
+                    setAttribute: function () {
+                        // nothing
+                    }
                 };
                 // old syntax for getter with "get length() { ... }"
                 Object.defineProperty(domElements[id], "length", {
@@ -10656,13 +11428,15 @@ define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports,
             Object.assign(window, {
                 console: console,
                 document: {
-                    addEventListener: function () { },
+                    addEventListener: function () {
+                        // nothing
+                    },
                     getElementById: function (id) { return domElements[id] || myCreateElement(id); },
                     createElement: function (type) {
                         if (type === "option") {
                             return {};
                         }
-                        Utils_16.Utils.console.error("createElement: unknown type", type);
+                        Utils_17.Utils.console.error("createElement: unknown type", type);
                         return {};
                     }
                 },
@@ -10670,6 +11444,7 @@ define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports,
             });
             // eslint-disable-next-line no-eval
             var nodeExports = eval("exports"), view = nodeExports.View, setSelectOptionsOrig = view.prototype.setSelectOptions;
+            // fast hacks...
             view.prototype.setSelectOptions = function (id, options) {
                 var element = domElements[id] || myCreateElement(id);
                 if (!element.options.add) {
@@ -10685,9 +11460,9 @@ define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports,
             };
             var setAreaValueOrig = view.prototype.setAreaValue;
             view.prototype.setAreaValue = function (id, value) {
-                if (id === "resultText") {
+                if (id === "resultText" /* ViewID.resultText */) {
                     if (value) {
-                        Utils_16.Utils.console.log(value);
+                        Utils_17.Utils.console.log(value);
                     }
                 }
                 return setAreaValueOrig(id, value);
@@ -10696,9 +11471,9 @@ define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports,
             // readline?
             var controller = nodeExports.Controller;
             controller.prototype.startWithDirectInput = function () {
-                Utils_16.Utils.console.log("We are ready.");
+                this.stopUpdateCanvas();
+                Utils_17.Utils.console.log("We are ready.");
             };
-            //
             function isUrl(s) {
                 return s.startsWith("http"); // http or https
             }
@@ -10717,7 +11492,7 @@ define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports,
                         fnDataLoaded(undefined, data);
                     });
                 }).on("error", function (err) {
-                    Utils_16.Utils.console.log("Error: " + err.message);
+                    Utils_17.Utils.console.log("Error: " + err.message);
                     fnDataLoaded(err);
                 });
             }
@@ -10730,7 +11505,7 @@ define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports,
                     fnEval('module = require("module");'); // to trick TypeScript
                     modulePath = module.path || "";
                     if (!modulePath) {
-                        Utils_16.Utils.console.warn("nodeReadFile: Cannot determine module path");
+                        Utils_17.Utils.console.warn("nodeReadFile: Cannot determine module path");
                     }
                 }
                 var name2 = modulePath ? modulePath + "/" + name : name;
@@ -10740,7 +11515,7 @@ define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports,
             utils.loadScript = function (fileOrUrl, fnSuccess, _fnError, key) {
                 var fnLoaded = function (error, data) {
                     if (error) {
-                        Utils_16.Utils.console.error("file error: ", error);
+                        Utils_17.Utils.console.error("file error: ", error);
                     }
                     if (data) {
                         fnEval(data); // load js (for nodeJs)
@@ -10763,154 +11538,161 @@ define("NodeAdapt", ["require", "exports", "Utils"], function (require, exports,
 // CommonEventHandler.ts - Common event handler for browser events
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
-define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (require, exports, Utils_17, View_5) {
+define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (require, exports, Utils_18, View_5) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CommonEventHandler = void 0;
     var CommonEventHandler = /** @class */ (function () {
-        function CommonEventHandler(model, view, controller) {
+        function CommonEventHandler(options) {
+            this.eventDefInternalMap = {};
             this.fnUserAction = undefined;
-            /* eslint-disable no-invalid-this */
-            this.handlers = {
-                onInputButtonClick: this.onInputButtonClick,
-                onInp2ButtonClick: this.onInp2ButtonClick,
-                onOutputButtonClick: this.onOutputButtonClick,
-                onResultButtonClick: this.onResultButtonClick,
-                onTextButtonClick: this.onTextButtonClick,
-                onVariableButtonClick: this.onVariableButtonClick,
-                onCpcButtonClick: this.onCpcButtonClick,
-                onConvertButtonClick: this.onConvertButtonClick,
-                onSettingsButtonClick: this.onSettingsButtonClick,
-                onGalleryButtonClick: this.onGalleryButtonClick,
-                onMoreButtonClick: this.onMoreButtonClick,
-                onKbdButtonClick: this.onKbdButtonClick,
-                onConsoleButtonClick: this.onConsoleButtonClick,
-                onParseButtonClick: this.onParseButtonClick,
-                onRenumButtonClick: this.onRenumButtonClick,
-                onPrettyButtonClick: this.onPrettyButtonClick,
-                onLineNumberAddButtonClick: this.onLineNumberAddButtonClick,
-                onLineNumberRemoveButtonClick: this.onLineNumberRemoveButtonClick,
-                onUndoButtonClick: this.onUndoButtonClick,
-                onRedoButtonClick: this.onRedoButtonClick,
-                onDownloadButtonClick: this.onDownloadButtonClick,
-                onRunButtonClick: this.onRunButtonClick,
-                onStopButtonClick: this.onStopButtonClick,
-                onContinueButtonClick: this.onContinueButtonClick,
-                onResetButtonClick: this.onResetButtonClick,
-                onParseRunButtonClick: this.onParseRunButtonClick,
-                onHelpButtonClick: CommonEventHandler.onHelpButtonClick,
-                onGalleryItemClick: this.onGalleryItemClick,
-                onInputTextClick: CommonEventHandler.onNothing,
-                onOutputTextClick: CommonEventHandler.onNothing,
-                onResultTextClick: CommonEventHandler.onNothing,
-                onVarTextClick: CommonEventHandler.onNothing,
-                onOutputTextChange: this.onOutputTextChange,
-                onReloadButtonClick: this.onReloadButtonClick,
-                onDatabaseSelectChange: this.onDatabaseSelectChange,
-                onDirectorySelectChange: this.onDirectorySelectChange,
-                onExampleSelectChange: this.onExampleSelectChange,
-                onVarSelectChange: this.onVarSelectChange,
-                onKbdLayoutSelectChange: this.onKbdLayoutSelectChange,
-                onVarTextChange: this.onVarTextChange,
-                onDebugInputChange: this.onDebugInputChange,
-                onImplicitLinesInputChange: this.onImplicitLinesInputChange,
-                onArrayBoundsInputChange: this.onArrayBoundsInputChange,
-                onConsoleLogInputChange: this.onConsoleLogInputChange,
-                onTraceInputChange: this.onTraceInputChange,
-                onAutorunInputChange: this.onAutorunInputChange,
-                onSoundInputChange: this.onSoundInputChange,
-                onSpeedInputChange: this.onSpeedInputChange,
-                onPaletteSelectChange: this.onPaletteSelectChange,
-                onScreenshotButtonClick: this.onScreenshotButtonClick,
-                onEnterButtonClick: this.onEnterButtonClick,
-                onFullscreenButtonClick: CommonEventHandler.onFullscreenButtonClick,
-                onCpcCanvasClick: this.onCpcCanvasClick,
-                onWindowClick: this.onWindowClick,
-                onTextTextClick: this.onTextTextClick,
-                onCopyTextButtonClick: this.onCopyTextButtonClick
-            };
-            this.model = model;
-            this.view = view;
-            this.controller = controller;
+            this.options = {};
+            this.setOptions(options);
+            // copy for easy access:
+            this.model = this.options.model;
+            this.view = this.options.view;
+            this.controller = this.options.controller;
+            this.createEventDefMap();
         }
+        CommonEventHandler.prototype.getOptions = function () {
+            return this.options;
+        };
+        CommonEventHandler.prototype.setOptions = function (options) {
+            Object.assign(this.options, options);
+        };
         CommonEventHandler.prototype.fnSetUserAction = function (fnAction) {
             this.fnUserAction = fnAction;
         };
-        CommonEventHandler.prototype.onInputButtonClick = function () {
-            this.controller.toggleAreaHidden("inputArea");
-        };
-        CommonEventHandler.prototype.onInp2ButtonClick = function () {
-            this.controller.toggleAreaHidden("inp2Area");
-        };
-        CommonEventHandler.prototype.onOutputButtonClick = function () {
-            this.controller.toggleAreaHidden("outputArea");
-        };
-        CommonEventHandler.prototype.onResultButtonClick = function () {
-            this.controller.toggleAreaHidden("resultArea");
-        };
-        CommonEventHandler.prototype.onTextButtonClick = function () {
-            if (this.controller.toggleAreaHidden("textArea")) {
-                this.controller.startUpdateTextCanvas();
+        CommonEventHandler.prototype.initOneToggle = function (_type, id, eventDef) {
+            if (eventDef.property) {
+                if (eventDef.toggleId) {
+                    var isEnabled = this.model.getProperty(eventDef.property);
+                    this.view.setHidden(eventDef.toggleId, !isEnabled, eventDef.display);
+                    if (Utils_18.Utils.debug > 3) {
+                        Utils_18.Utils.console.debug("initToggles: setHidden: togglId:", eventDef.toggleId, ", property:", eventDef.property, ", hidden:", !isEnabled, ", display:", eventDef.display);
+                    }
+                }
+                if (eventDef.viewType === "checked") {
+                    var isEnabled2 = this.model.getProperty(eventDef.property);
+                    this.view.setInputChecked(id, isEnabled2);
+                    if (Utils_18.Utils.debug > 3) {
+                        Utils_18.Utils.console.debug("initToggles: checked: id:", id, ", property:", eventDef.property, ", checked:", isEnabled2);
+                    }
+                }
+                else if (eventDef.viewType === "select") {
+                    var value = this.model.getProperty(eventDef.property);
+                    this.view.setSelectValue(id, value);
+                    if (Utils_18.Utils.debug > 3) {
+                        Utils_18.Utils.console.debug("initToggles: select: id:", id, ", property:", eventDef.property, ", value:", value);
+                    }
+                }
+                else if (eventDef.viewType === "numberInput") {
+                    var value = this.model.getProperty(eventDef.property);
+                    this.view.setInputValue(id, String(value));
+                    if (Utils_18.Utils.debug > 3) {
+                        Utils_18.Utils.console.debug("initToggles: numberInput: id:", id, ", property:", eventDef.property, ", value:", value);
+                    }
+                }
             }
-            else {
-                this.controller.stopUpdateTextCanvas();
+        };
+        CommonEventHandler.prototype.initToggles = function () {
+            var eventDefInternalMap = this.eventDefInternalMap;
+            for (var type in eventDefInternalMap) {
+                if (eventDefInternalMap.hasOwnProperty(type)) {
+                    var eventDefMap4Type = eventDefInternalMap[type];
+                    for (var id in eventDefMap4Type) {
+                        if (eventDefMap4Type.hasOwnProperty(id)) {
+                            var eventDef = eventDefMap4Type[id];
+                            this.initOneToggle(type, id, eventDef);
+                        }
+                    }
+                }
             }
         };
-        CommonEventHandler.prototype.onVariableButtonClick = function () {
-            this.controller.toggleAreaHidden("variableArea");
-        };
-        CommonEventHandler.prototype.onCpcButtonClick = function () {
-            if (this.controller.toggleAreaHidden("cpcArea")) {
-                this.controller.startUpdateCanvas();
+        CommonEventHandler.getToggleId = function (eventDef) {
+            if (!eventDef.toggleId) {
+                Utils_18.Utils.console.error("getToggleId: id=" + eventDef.id + ": toggleId missing!");
+                return ""; //TTT
             }
-            else {
-                this.controller.stopUpdateCanvas();
+            return eventDef.toggleId;
+        };
+        CommonEventHandler.getproperty = function (eventDef) {
+            if (!eventDef.property) {
+                Utils_18.Utils.console.error("setPopoversHiddenExcept: id=" + eventDef.id + ": property missing!");
+                return ""; //TTT
+            }
+            return eventDef.property;
+        };
+        CommonEventHandler.prototype.setPopoversHiddenExcept = function (exceptId) {
+            var eventDefInternalMap = this.eventDefInternalMap, eventDefMapClick = eventDefInternalMap.click;
+            for (var id in eventDefMapClick) {
+                if (eventDefMapClick.hasOwnProperty(id)) {
+                    var eventDef = eventDefMapClick[id];
+                    if (eventDef.isPopover && (eventDef.toggleId !== exceptId)) {
+                        var toggleId = CommonEventHandler.getToggleId(eventDef), property = CommonEventHandler.getproperty(eventDef);
+                        if (!this.view.getHidden(toggleId)) {
+                            // we cannot use toggleAreaHidden because it would be recursive
+                            this.model.setProperty(property, false);
+                            this.view.setHidden(toggleId, true, eventDef.display);
+                        }
+                    }
+                }
             }
         };
-        CommonEventHandler.prototype.onConvertButtonClick = function () {
-            this.controller.toggleAreaHidden("convertArea");
+        CommonEventHandler.prototype.toggleAreaHidden = function (eventDef) {
+            var toggleId = CommonEventHandler.getToggleId(eventDef), property = CommonEventHandler.getproperty(eventDef), visible = !this.model.getProperty(property);
+            this.model.setProperty(property, visible);
+            this.view.setHidden(toggleId, !visible, eventDef.display);
+            // on old browsers display "flex" is not available, so set default "" (="block"), if still hidden
+            if (visible && eventDef.display === "flex" && this.view.getHidden(toggleId)) {
+                this.view.setHidden(toggleId, !visible);
+            }
+            if (visible && eventDef.isPopover) {
+                this.setPopoversHiddenExcept(toggleId);
+            }
+            return visible;
         };
-        CommonEventHandler.prototype.onSettingsButtonClick = function () {
-            this.controller.toggleAreaHidden("settingsArea");
+        // maybe we can avoid this...
+        CommonEventHandler.prototype.getEventDefById = function (type, id) {
+            var eventDefForType = this.eventDefInternalMap[type], eventDef = eventDefForType[id];
+            if (!eventDef) {
+                Utils_18.Utils.console.error("getEventDefById: type=" + type + ", id=" + id + ": No eventDef!");
+            }
+            return eventDef;
         };
-        CommonEventHandler.prototype.onGalleryButtonClick = function () {
-            if (this.controller.toggleAreaHidden("galleryArea")) {
+        CommonEventHandler.prototype.toggleAreaHiddenById = function (type, id) {
+            var eventDef = this.getEventDefById(type, id);
+            return this.toggleAreaHidden(eventDef);
+        };
+        CommonEventHandler.prototype.onCheckedChange = function (eventDef) {
+            var id = eventDef.id, property = CommonEventHandler.getproperty(eventDef), checked = this.view.getInputChecked(id);
+            this.model.setProperty(property, checked);
+            return checked;
+        };
+        CommonEventHandler.prototype.onNumberInputChange = function (eventDef) {
+            var id = eventDef.id, property = CommonEventHandler.getproperty(eventDef), valueAsString = this.view.getInputValue(id), value = Number(valueAsString);
+            this.model.setProperty(property, value);
+            return value;
+        };
+        CommonEventHandler.prototype.onSelectChange = function (eventDef) {
+            var id = eventDef.id, property = CommonEventHandler.getproperty(eventDef), value = this.view.getSelectValue(id);
+            this.model.setProperty(property, value);
+            this.view.setSelectTitleFromSelectedOption(id);
+            return value;
+        };
+        CommonEventHandler.prototype.onExportButtonClick = function (eventDef) {
+            if (this.toggleAreaHidden(eventDef)) {
+                this.controller.setExportSelectOptions("exportFileSelect" /* ViewID.exportFileSelect */);
+            }
+        };
+        CommonEventHandler.prototype.onGalleryButtonClick = function (eventDef) {
+            if (this.toggleAreaHidden(eventDef)) {
                 this.controller.setGalleryAreaInputs();
             }
         };
-        CommonEventHandler.prototype.onMoreButtonClick = function () {
-            this.controller.toggleAreaHidden("moreArea");
-        };
-        CommonEventHandler.prototype.onKbdButtonClick = function () {
-            if (this.controller.toggleAreaHidden("kbdArea")) {
-                this.controller.virtualKeyboardCreate(); // maybe draw it
-                this.view.setHidden("kbdLayoutArea", true, "inherit"); // kbd visible => kbdlayout invisible
-            }
-            else {
-                this.view.setHidden("kbdLayoutArea", false, "inherit");
-            }
-        };
-        CommonEventHandler.prototype.onConsoleButtonClick = function () {
-            this.controller.toggleAreaHidden("consoleArea");
-        };
-        CommonEventHandler.prototype.onParseButtonClick = function () {
-            this.controller.startParse();
-        };
-        CommonEventHandler.prototype.onRenumButtonClick = function () {
-            this.controller.startRenum();
-        };
-        CommonEventHandler.prototype.onPrettyButtonClick = function () {
-            this.controller.fnPretty();
-        };
-        CommonEventHandler.prototype.onLineNumberAddButtonClick = function () {
-            this.controller.fnAddLines();
-        };
-        CommonEventHandler.prototype.onLineNumberRemoveButtonClick = function () {
-            this.controller.fnRemoveLines();
-        };
         CommonEventHandler.prototype.fnUpdateAreaText = function (input) {
             this.controller.setInputText(input, true);
-            this.view.setAreaValue("outputText", "");
+            this.view.setAreaValue("outputText" /* ViewID.outputText */, "");
         };
         CommonEventHandler.prototype.onUndoButtonClick = function () {
             var input = this.controller.undoStackElement();
@@ -10920,52 +11702,34 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
             var input = this.controller.redoStackElement();
             this.fnUpdateAreaText(input);
         };
-        CommonEventHandler.prototype.onDownloadButtonClick = function () {
-            this.controller.fnDownload();
-        };
-        CommonEventHandler.prototype.onRunButtonClick = function () {
-            this.controller.startRun();
-        };
-        CommonEventHandler.prototype.onStopButtonClick = function () {
-            this.controller.startBreak();
-        };
-        CommonEventHandler.prototype.onContinueButtonClick = function (event) {
+        CommonEventHandler.prototype.onContinueButtonClick = function (eventDef, event) {
             this.controller.startContinue();
-            this.onCpcCanvasClick(event);
+            this.onCpcCanvasClick(eventDef, event);
         };
-        CommonEventHandler.prototype.onResetButtonClick = function () {
-            this.controller.startReset();
-        };
-        CommonEventHandler.prototype.onParseRunButtonClick = function (event) {
+        CommonEventHandler.prototype.onParseRunButtonClick = function (eventDef, event) {
             this.controller.startParseRun();
-            this.onCpcCanvasClick(event);
+            this.onCpcCanvasClick(eventDef, event);
         };
         CommonEventHandler.onHelpButtonClick = function () {
             window.open("https://github.com/benchmarko/CPCBasicTS/#readme");
         };
-        CommonEventHandler.prototype.onGalleryItemClick = function (event) {
+        CommonEventHandler.prototype.onGalleryItemClick = function (_eventDef, event) {
             var target = View_5.View.getEventTarget(event), value = target.value;
-            this.view.setSelectValue("exampleSelect", value);
-            this.controller.toggleAreaHidden("galleryArea"); // close
-            this.onExampleSelectChange();
-        };
-        CommonEventHandler.onNothing = function () {
-            // nothing
+            this.view.setSelectValue("exampleSelect" /* ViewID.exampleSelect */, value);
+            this.setPopoversHiddenExcept(); // close
+            this.controller.onExampleSelectChange();
         };
         // eslint-disable-next-line class-methods-use-this
         CommonEventHandler.prototype.onCopyTextButtonClick = function () {
-            var textText = View_5.View.getElementByIdAs("textText");
+            var textText = View_5.View.getElementByIdAs("textText" /* ViewID.textText */);
             textText.select();
-            this.view.setAreaSelection("textText", 0, 99999); // for mobile devices
+            this.view.setAreaSelection("textText" /* ViewID.textText */, 0, 99999); // for mobile devices
             if (window.navigator && window.navigator.clipboard) {
                 window.navigator.clipboard.writeText(textText.value);
             }
             else {
-                Utils_17.Utils.console.warn("Copy to clipboard not available");
+                Utils_18.Utils.console.warn("Copy to clipboard not available");
             }
-        };
-        CommonEventHandler.prototype.onOutputTextChange = function () {
-            this.controller.invalidateScript();
         };
         CommonEventHandler.encodeUriParam = function (params) {
             var parts = [];
@@ -10978,137 +11742,511 @@ define("CommonEventHandler", ["require", "exports", "Utils", "View"], function (
             return parts.join("&");
         };
         CommonEventHandler.prototype.onReloadButtonClick = function () {
+            this.setPopoversHiddenExcept(); // hide all popovers,
             var changed = this.model.getChangedProperties();
             var paras = CommonEventHandler.encodeUriParam(changed);
             paras = paras.replace(/%2[Ff]/g, "/"); // unescape %2F -> /
             window.location.search = "?" + paras;
         };
-        CommonEventHandler.prototype.onDatabaseSelectChange = function () {
-            this.controller.onDatabaseSelectChange();
-        };
-        CommonEventHandler.prototype.onDirectorySelectChange = function () {
-            this.controller.onDirectorySelectChange();
-        };
-        CommonEventHandler.prototype.onExampleSelectChange = function () {
-            this.controller.onExampleSelectChange();
-        };
         CommonEventHandler.prototype.onVarSelectChange = function () {
-            var par = this.view.getSelectValue("varSelect"), value = this.controller.getVariable(par), valueString = (value !== undefined) ? String(value) : "";
-            this.view.setAreaValue("varText", valueString);
+            var par = this.view.getSelectValue("varSelect" /* ViewID.varSelect */), value = this.controller.getVariable(par), valueString = (value !== undefined) ? String(value) : "";
+            this.view.setAreaValue("varText" /* ViewID.varText */, valueString);
         };
-        CommonEventHandler.prototype.onKbdLayoutSelectChange = function () {
-            var value = this.view.getSelectValue("kbdLayoutSelect");
-            this.model.setProperty("kbdLayout", value);
-            this.view.setSelectTitleFromSelectedOption("kbdLayoutSelect");
-            this.view.setHidden("kbdAlpha", value === "num");
-            this.view.setHidden("kbdNum", value === "alpha");
+        CommonEventHandler.prototype.onKbdLayoutSelectChange = function (eventDef) {
+            var value = this.onSelectChange(eventDef);
+            this.view.setHidden("kbdAlpha" /* ViewID.kbdAlpha */, value === "num");
+            this.view.setHidden("kbdNum" /* ViewID.kbdNum */, value === "alpha");
         };
-        CommonEventHandler.prototype.onPaletteSelectChange = function () {
-            var value = this.view.getSelectValue("paletteSelect");
-            this.model.setProperty("palette", value);
-            this.view.setSelectTitleFromSelectedOption("paletteSelect");
+        CommonEventHandler.prototype.onBasicVersionSelectChange = function (eventDef) {
+            var value = this.onSelectChange(eventDef);
+            this.controller.setBasicVersion(value);
+        };
+        CommonEventHandler.prototype.onPaletteSelectChange = function (eventDef) {
+            var value = this.onSelectChange(eventDef);
             this.controller.setPalette(value);
         };
-        CommonEventHandler.prototype.onVarTextChange = function () {
-            this.controller.changeVariable();
+        CommonEventHandler.prototype.onCanvasTypeSelectChange = function (eventDef) {
+            var value = this.onSelectChange(eventDef);
+            this.controller.setCanvasType(value);
         };
-        CommonEventHandler.prototype.onDebugInputChange = function () {
-            var debug = this.view.getInputValue("debugInput");
-            this.model.setProperty("debug", Number(debug));
-            Utils_17.Utils.debug = Number(debug);
+        CommonEventHandler.prototype.onDebugInputChange = function (eventDef) {
+            var value = this.onNumberInputChange(eventDef);
+            Utils_18.Utils.debug = value;
         };
-        CommonEventHandler.prototype.onImplicitLinesInputChange = function () {
-            var checked = this.view.getInputChecked("implicitLinesInput");
-            this.model.setProperty("implicitLines", checked);
-            this.controller.fnImplicitLines();
+        CommonEventHandler.prototype.onDragElementsInputChange = function (eventDef) {
+            var checked = this.onCheckedChange(eventDef);
+            this.controller.fnDragElementsActive(checked);
         };
-        CommonEventHandler.prototype.onArrayBoundsInputChange = function () {
-            var checked = this.view.getInputChecked("arrayBoundsInput");
-            this.model.setProperty("arrayBounds", checked);
-            this.controller.fnArrayBounds();
-        };
-        CommonEventHandler.prototype.onConsoleLogInputChange = function () {
-            var checked = this.view.getInputChecked("consoleLogInput");
-            this.model.setProperty("showConsole", checked);
-            if (checked && this.view.getHidden("consoleBox")) {
-                this.view.setHidden("consoleBox", !checked); // make sure the box around is visible
+        CommonEventHandler.prototype.onShowCpcInputChange = function (eventDef) {
+            if (this.toggleAreaHidden(eventDef)) {
+                this.controller.startUpdateCanvas();
+            }
+            else {
+                this.controller.stopUpdateCanvas();
             }
         };
-        CommonEventHandler.prototype.onTraceInputChange = function () {
-            var checked = this.view.getInputChecked("traceInput");
-            this.model.setProperty("trace", checked);
-            this.controller.fnTrace();
+        CommonEventHandler.prototype.onShowKbdInputChange = function (eventDef) {
+            if (this.toggleAreaHidden(eventDef)) {
+                this.controller.getVirtualKeyboard(); // maybe draw it
+            }
         };
-        CommonEventHandler.prototype.onAutorunInputChange = function () {
-            var checked = this.view.getInputChecked("autorunInput");
-            this.model.setProperty("autorun", checked);
+        CommonEventHandler.prototype.onDisassInputChange = function () {
+            var addressStr = this.view.getInputValue("disassInput" /* ViewID.disassInput */), addrList = addressStr.split("-"), // maybe range
+            addr = parseInt(addrList[0], 16), // parse as hex
+            endAddr = addrList[1] ? parseInt(addrList[1], 16) : undefined; // parse as hex
+            this.controller.setDisassAddr(addr, endAddr);
         };
-        CommonEventHandler.prototype.onSoundInputChange = function () {
-            var checked = this.view.getInputChecked("soundInput");
-            this.model.setProperty("sound", checked);
+        CommonEventHandler.prototype.onSoundInputChange = function (eventDef) {
+            this.onCheckedChange(eventDef);
             this.controller.setSoundActive();
         };
-        CommonEventHandler.prototype.onSpeedInputChange = function () {
-            var speed = this.view.getInputValue("speedInput");
-            this.model.setProperty("speed", Number(speed));
-            this.controller.fnSpeed();
-        };
         CommonEventHandler.prototype.onScreenshotButtonClick = function () {
-            var example = this.view.getSelectValue("exampleSelect"), image = this.controller.startScreenshot(), link = View_5.View.getElementById1("screenshotLink"), name = example + ".png";
+            var example = this.view.getSelectValue("exampleSelect" /* ViewID.exampleSelect */), image = this.controller.startScreenshot(), link = View_5.View.getElementById1("screenshotLink" /* ViewID.screenshotLink */), name = example + ".png";
             if (image) {
                 link.setAttribute("download", name);
                 link.setAttribute("href", image);
                 link.click();
             }
         };
-        CommonEventHandler.prototype.onEnterButtonClick = function () {
-            this.controller.startEnter();
+        CommonEventHandler.prototype.onClearInputButtonClick = function () {
+            this.view.setAreaValue("inp2Text" /* ViewID.inp2Text */, ""); // delete input
         };
-        CommonEventHandler.onFullscreenButtonClick = function () {
-            var switched = View_5.View.requestFullscreenForId("cpcCanvas"); // make sure to use an element with tabindex set to get keyboard events
-            //const switched = View.requestFullscreenForId("cpcCanvasDiv");
+        CommonEventHandler.prototype.onFullscreenButtonClick = function () {
+            var id;
+            if (!this.view.getHidden("cpcCanvas" /* ViewID.cpcCanvas */)) {
+                id = "cpcCanvas" /* ViewID.cpcCanvas */;
+            }
+            else if (!this.view.getHidden("textText" /* ViewID.textText */)) {
+                // for ViewID.textText (textArea), we use the surrounding div...
+                id = "textCanvasDiv" /* ViewID.textCanvasDiv */;
+            }
+            else {
+                Utils_18.Utils.console.warn("Fullscreen only possible for graphics or text canvas");
+                return;
+            }
+            var switched = this.view.requestFullscreenForId(id); // make sure to use an element with tabindex set to get keyboard events
             if (!switched) {
-                Utils_17.Utils.console.warn("Switch to fullscreen not available");
+                Utils_18.Utils.console.warn("Switch to fullscreen not available");
             }
         };
-        CommonEventHandler.prototype.onCpcCanvasClick = function (event) {
+        CommonEventHandler.prototype.onCpcCanvasClick = function (_eventDef, event) {
+            this.setPopoversHiddenExcept(); // hide all popovers
             this.controller.onCpcCanvasClick(event);
         };
-        CommonEventHandler.prototype.onWindowClick = function (event) {
-            this.controller.onWindowClick(event);
+        CommonEventHandler.prototype.createEventDefMap = function () {
+            var eventDefInternalMap = this.eventDefInternalMap, eventDefs = {
+                click: [
+                    {
+                        id: "clearInputButton" /* ViewID.clearInputButton */,
+                        func: this.onClearInputButtonClick
+                    },
+                    {
+                        id: "continueButton" /* ViewID.continueButton */,
+                        func: this.onContinueButtonClick
+                    },
+                    {
+                        id: "convertButton" /* ViewID.convertButton */,
+                        toggleId: "convertArea" /* ViewID.convertArea */,
+                        property: "showConvert" /* ModelPropID.showConvert */,
+                        display: "flex",
+                        isPopover: true,
+                        func: this.toggleAreaHidden
+                    },
+                    {
+                        id: "cpcCanvas" /* ViewID.cpcCanvas */,
+                        func: this.onCpcCanvasClick
+                    },
+                    {
+                        id: "copyTextButton" /* ViewID.copyTextButton */,
+                        func: this.onCopyTextButtonClick
+                    },
+                    {
+                        id: "downloadButton" /* ViewID.downloadButton */,
+                        controllerFunc: this.controller.fnDownload
+                    },
+                    {
+                        id: "enterButton" /* ViewID.enterButton */,
+                        controllerFunc: this.controller.startEnter
+                    },
+                    {
+                        id: "exportButton" /* ViewID.exportButton */,
+                        toggleId: "exportArea" /* ViewID.exportArea */,
+                        property: "showExport" /* ModelPropID.showExport */,
+                        display: "flex",
+                        isPopover: true,
+                        func: this.onExportButtonClick
+                    },
+                    {
+                        id: "fullscreenButton" /* ViewID.fullscreenButton */,
+                        func: this.onFullscreenButtonClick
+                    },
+                    {
+                        id: "galleryButton" /* ViewID.galleryButton */,
+                        toggleId: "galleryArea" /* ViewID.galleryArea */,
+                        property: "showGallery" /* ModelPropID.showGallery */,
+                        display: "flex",
+                        isPopover: true,
+                        func: this.onGalleryButtonClick
+                    },
+                    {
+                        id: "galleryItem" /* ViewID.galleryItem */,
+                        func: this.onGalleryItemClick
+                    },
+                    {
+                        id: "helpButton" /* ViewID.helpButton */,
+                        func: CommonEventHandler.onHelpButtonClick
+                    },
+                    {
+                        id: "lineNumberAddButton" /* ViewID.lineNumberAddButton */,
+                        controllerFunc: this.controller.fnAddLines
+                    },
+                    {
+                        id: "lineNumberRemoveButton" /* ViewID.lineNumberRemoveButton */,
+                        controllerFunc: this.controller.fnRemoveLines
+                    },
+                    {
+                        id: "moreButton" /* ViewID.moreButton */,
+                        toggleId: "moreArea" /* ViewID.moreArea */,
+                        property: "showMore" /* ModelPropID.showMore */,
+                        display: "flex",
+                        isPopover: true,
+                        func: this.toggleAreaHidden
+                    },
+                    {
+                        id: "parseButton" /* ViewID.parseButton */,
+                        controllerFunc: this.controller.startParse
+                    },
+                    {
+                        id: "parseRunButton" /* ViewID.parseRunButton */,
+                        func: this.onParseRunButtonClick
+                    },
+                    {
+                        id: "prettyButton" /* ViewID.prettyButton */,
+                        controllerFunc: this.controller.fnPretty
+                    },
+                    {
+                        id: "redoButton" /* ViewID.redoButton */,
+                        func: this.onRedoButtonClick
+                    },
+                    {
+                        id: "reloadButton" /* ViewID.reloadButton */,
+                        func: this.onReloadButtonClick
+                    },
+                    {
+                        id: "reload2Button" /* ViewID.reload2Button */,
+                        func: this.onReloadButtonClick // same as relaodButton
+                    },
+                    {
+                        id: "renumButton" /* ViewID.renumButton */,
+                        controllerFunc: this.controller.startRenum
+                    },
+                    {
+                        id: "resetButton" /* ViewID.resetButton */,
+                        controllerFunc: this.controller.startReset
+                    },
+                    {
+                        id: "runButton" /* ViewID.runButton */,
+                        controllerFunc: this.controller.startRun
+                    },
+                    {
+                        id: "screenshotButton" /* ViewID.screenshotButton */,
+                        func: this.onScreenshotButtonClick
+                    },
+                    {
+                        id: "screenshotLink" /* ViewID.screenshotLink */ // nothing
+                    },
+                    {
+                        id: "settingsButton" /* ViewID.settingsButton */,
+                        toggleId: "settingsArea" /* ViewID.settingsArea */,
+                        property: "showSettings" /* ModelPropID.showSettings */,
+                        display: "flex",
+                        isPopover: true,
+                        func: this.toggleAreaHidden
+                    },
+                    {
+                        id: "stopButton" /* ViewID.stopButton */,
+                        controllerFunc: this.controller.startBreak
+                    },
+                    {
+                        id: "textText" /* ViewID.textText */,
+                        func: this.onCpcCanvasClick // same as for cpcCanvas
+                    },
+                    {
+                        id: "undoButton" /* ViewID.undoButton */,
+                        func: this.onUndoButtonClick
+                    },
+                    {
+                        id: "viewButton" /* ViewID.viewButton */,
+                        toggleId: "viewArea" /* ViewID.viewArea */,
+                        property: "showView" /* ModelPropID.showView */,
+                        display: "flex",
+                        isPopover: true,
+                        func: this.toggleAreaHidden
+                    },
+                    {
+                        id: "window" /* ViewID.window */,
+                        controllerFunc: this.controller.onWindowClick
+                    }
+                ],
+                change: [
+                    {
+                        id: "arrayBoundsInput" /* ViewID.arrayBoundsInput */,
+                        viewType: "checked",
+                        property: "arrayBounds" /* ModelPropID.arrayBounds */,
+                        func: this.onCheckedChange,
+                        controllerFunc: this.controller.fnArrayBounds
+                    },
+                    {
+                        id: "autorunInput" /* ViewID.autorunInput */,
+                        viewType: "checked",
+                        property: "autorun" /* ModelPropID.autorun */,
+                        func: this.onCheckedChange
+                    },
+                    {
+                        id: "basicVersionSelect" /* ViewID.basicVersionSelect */,
+                        viewType: "select",
+                        property: "basicVersion" /* ModelPropID.basicVersion */,
+                        func: this.onBasicVersionSelectChange
+                    },
+                    {
+                        id: "canvasTypeSelect" /* ViewID.canvasTypeSelect */,
+                        viewType: "select",
+                        property: "canvasType" /* ModelPropID.canvasType */,
+                        func: this.onCanvasTypeSelectChange
+                    },
+                    {
+                        id: "databaseSelect" /* ViewID.databaseSelect */,
+                        controllerFunc: this.controller.onDatabaseSelectChange
+                    },
+                    {
+                        id: "debugInput" /* ViewID.debugInput */,
+                        viewType: "numberInput",
+                        property: "debug" /* ModelPropID.debug */,
+                        func: this.onDebugInputChange
+                    },
+                    {
+                        id: "directorySelect" /* ViewID.directorySelect */,
+                        controllerFunc: this.controller.onDirectorySelectChange
+                    },
+                    {
+                        id: "disassInput" /* ViewID.disassInput */,
+                        func: this.onDisassInputChange
+                    },
+                    {
+                        id: "exampleSelect" /* ViewID.exampleSelect */,
+                        controllerFunc: this.controller.onExampleSelectChange
+                    },
+                    {
+                        id: "implicitLinesInput" /* ViewID.implicitLinesInput */,
+                        viewType: "checked",
+                        property: "implicitLines" /* ModelPropID.implicitLines */,
+                        func: this.onCheckedChange,
+                        controllerFunc: this.controller.fnImplicitLines
+                    },
+                    {
+                        id: "integerOverflowInput" /* ViewID.integerOverflowInput */,
+                        viewType: "checked",
+                        property: "integerOverflow" /* ModelPropID.integerOverflow */,
+                        func: this.onCheckedChange,
+                        controllerFunc: this.controller.fnIntegerOverflow
+                    },
+                    {
+                        id: "kbdLayoutSelect" /* ViewID.kbdLayoutSelect */,
+                        viewType: "select",
+                        property: "kbdLayout" /* ModelPropID.kbdLayout */,
+                        func: this.onKbdLayoutSelectChange
+                    },
+                    {
+                        id: "linesOnLoadInput" /* ViewID.linesOnLoadInput */,
+                        viewType: "checked",
+                        property: "linesOnLoad" /* ModelPropID.linesOnLoad */,
+                        func: this.onCheckedChange
+                    },
+                    {
+                        id: "dragElementsInput" /* ViewID.dragElementsInput */,
+                        viewType: "checked",
+                        property: "dragElements" /* ModelPropID.dragElements */,
+                        func: this.onDragElementsInputChange
+                    },
+                    {
+                        id: "outputText" /* ViewID.outputText */,
+                        controllerFunc: this.controller.invalidateScript
+                    },
+                    {
+                        id: "paletteSelect" /* ViewID.paletteSelect */,
+                        viewType: "select",
+                        property: "palette" /* ModelPropID.palette */,
+                        func: this.onPaletteSelectChange
+                    },
+                    {
+                        id: "prettyBracketsInput" /* ViewID.prettyBracketsInput */,
+                        viewType: "checked",
+                        property: "prettyBrackets" /* ModelPropID.prettyBrackets */,
+                        func: this.onCheckedChange
+                    },
+                    {
+                        id: "prettyColonsInput" /* ViewID.prettyColonsInput */,
+                        viewType: "checked",
+                        property: "prettyColons" /* ModelPropID.prettyColons */,
+                        func: this.onCheckedChange
+                    },
+                    {
+                        id: "prettyLowercaseVarsInput" /* ViewID.prettyLowercaseVarsInput */,
+                        viewType: "checked",
+                        property: "prettyLowercaseVars" /* ModelPropID.prettyLowercaseVars */,
+                        func: this.onCheckedChange,
+                        controllerFunc: this.controller.fnPrettyLowercaseVars
+                    },
+                    {
+                        id: "prettySpaceInput" /* ViewID.prettySpaceInput */,
+                        viewType: "checked",
+                        property: "prettySpace" /* ModelPropID.prettySpace */,
+                        func: this.onCheckedChange
+                    },
+                    {
+                        id: "selectDataFilesInput" /* ViewID.selectDataFilesInput */,
+                        viewType: "checked",
+                        property: "selectDataFiles" /* ModelPropID.selectDataFiles */,
+                        func: this.onCheckedChange
+                    },
+                    {
+                        id: "showConsoleLogInput" /* ViewID.showConsoleLogInput */,
+                        viewType: "checked",
+                        toggleId: "consoleLogArea" /* ViewID.consoleLogArea */,
+                        property: "showConsoleLog" /* ModelPropID.showConsoleLog */,
+                        func: this.toggleAreaHidden
+                    },
+                    {
+                        id: "showCpcInput" /* ViewID.showCpcInput */,
+                        viewType: "checked",
+                        toggleId: "cpcArea" /* ViewID.cpcArea */,
+                        property: "showCpc" /* ModelPropID.showCpc */,
+                        func: this.onShowCpcInputChange
+                    },
+                    {
+                        id: "showDisassInput" /* ViewID.showDisassInput */,
+                        viewType: "checked",
+                        toggleId: "disassArea" /* ViewID.disassArea */,
+                        property: "showDisass" /* ModelPropID.showDisass */,
+                        func: this.toggleAreaHidden
+                    },
+                    {
+                        id: "showInp2Input" /* ViewID.showInp2Input */,
+                        viewType: "checked",
+                        toggleId: "inp2Area" /* ViewID.inp2Area */,
+                        property: "showInp2" /* ModelPropID.showInp2 */,
+                        func: this.toggleAreaHidden
+                    },
+                    {
+                        id: "showInputInput" /* ViewID.showInputInput */,
+                        viewType: "checked",
+                        toggleId: "inputArea" /* ViewID.inputArea */,
+                        property: "showInput" /* ModelPropID.showInput */,
+                        func: this.toggleAreaHidden
+                    },
+                    {
+                        id: "showKbdInput" /* ViewID.showKbdInput */,
+                        viewType: "checked",
+                        toggleId: "kbdArea" /* ViewID.kbdArea */,
+                        property: "showKbd" /* ModelPropID.showKbd */,
+                        func: this.onShowKbdInputChange
+                    },
+                    {
+                        id: "showOutputInput" /* ViewID.showOutputInput */,
+                        viewType: "checked",
+                        toggleId: "outputArea" /* ViewID.outputArea */,
+                        property: "showOutput" /* ModelPropID.showOutput */,
+                        func: this.toggleAreaHidden
+                    },
+                    {
+                        id: "showResultInput" /* ViewID.showResultInput */,
+                        viewType: "checked",
+                        toggleId: "resultArea" /* ViewID.resultArea */,
+                        property: "showResult" /* ModelPropID.showResult */,
+                        func: this.toggleAreaHidden
+                    },
+                    {
+                        id: "showVariableInput" /* ViewID.showVariableInput */,
+                        viewType: "checked",
+                        toggleId: "variableArea" /* ViewID.variableArea */,
+                        property: "showVariable" /* ModelPropID.showVariable */,
+                        func: this.toggleAreaHidden
+                    },
+                    {
+                        id: "soundInput" /* ViewID.soundInput */,
+                        viewType: "checked",
+                        property: "sound" /* ModelPropID.sound */,
+                        func: this.onSoundInputChange
+                    },
+                    {
+                        id: "speedInput" /* ViewID.speedInput */,
+                        viewType: "numberInput",
+                        property: "speed" /* ModelPropID.speed */,
+                        func: this.onNumberInputChange,
+                        controllerFunc: this.controller.fnSpeed
+                    },
+                    {
+                        id: "traceInput" /* ViewID.traceInput */,
+                        viewType: "checked",
+                        property: "trace" /* ModelPropID.trace */,
+                        func: this.onCheckedChange,
+                        controllerFunc: this.controller.fnTrace
+                    },
+                    {
+                        id: "varSelect" /* ViewID.varSelect */,
+                        func: this.onVarSelectChange
+                    },
+                    {
+                        id: "varText" /* ViewID.varText */,
+                        controllerFunc: this.controller.changeVariable
+                    }
+                ]
+            };
+            for (var type in eventDefs) {
+                if (eventDefs.hasOwnProperty(type)) {
+                    eventDefInternalMap[type] = {};
+                    var eventDefList = eventDefs[type], itemForType = eventDefInternalMap[type];
+                    for (var i = 0; i < eventDefList.length; i += 1) {
+                        itemForType[eventDefList[i].id] = eventDefList[i];
+                    }
+                }
+            }
         };
-        CommonEventHandler.prototype.onTextTextClick = function (event) {
-            this.controller.onTextTextClick(event);
-        };
-        /* eslint-enable no-invalid-this */
         CommonEventHandler.prototype.handleEvent = function (event) {
-            var target = View_5.View.getEventTarget(event), id = (target) ? target.getAttribute("id") : String(target), type = event.type; // click or change
+            var target = View_5.View.getEventTarget(event), type = event.type; // click or change
+            var id = (target) ? target.getAttribute("id") : String(target);
             if (this.fnUserAction) {
                 this.fnUserAction(event, id);
             }
             if (id) {
-                if (!target.disabled) { // check needed for IE which also fires for disabled buttons
-                    var idNoNum = id.replace(/\d+$/, ""), // remove a trailing number
-                    handler = "on" + Utils_17.Utils.stringCapitalize(idNoNum) + Utils_17.Utils.stringCapitalize(type);
-                    if (Utils_17.Utils.debug) {
-                        Utils_17.Utils.console.debug("fnCommonEventHandler: handler=" + handler);
+                if (target.disabled) { // check needed for IE which also fires for disabled buttons
+                    return; // ignore
+                }
+                if (id.startsWith("galleryItem")) {
+                    id = "galleryItem"; // replace galleryitem<num> by galleryitem
+                }
+                if (this.eventDefInternalMap[type] && this.eventDefInternalMap[type][id]) {
+                    var eventDef = this.eventDefInternalMap[type][id];
+                    if (Utils_18.Utils.debug) {
+                        Utils_18.Utils.console.debug("handleEvent: " + type + ", " + id + ":", eventDef);
                     }
-                    if (handler in this.handlers) {
-                        this.handlers[handler].call(this, event);
+                    if (eventDef.func) {
+                        eventDef.func.call(this, eventDef, event);
                     }
-                    else if (!handler.endsWith("SelectClick") && !handler.endsWith("InputClick")) { // do not print all messages
-                        Utils_17.Utils.console.log("Event handler not found:", handler);
+                    if (eventDef.controllerFunc) {
+                        eventDef.controllerFunc.call(this.controller, eventDef, event);
                     }
+                }
+                else if (!id.endsWith("Select") && !id.endsWith("Input")) { // do not print all messages; these are usually handled by change
+                    Utils_18.Utils.console.log("handleEvent: " + type + ", " + id + ": No handler");
                 }
             }
-            else if (target.getAttribute("data-key") === null) { // not for keyboard buttons
-                if (Utils_17.Utils.debug) {
-                    Utils_17.Utils.console.debug("Event handler for", type, "unknown target:", target.tagName, target.id);
-                }
+            else if (Utils_18.Utils.debug) {
+                Utils_18.Utils.console.log("handleEvent: " + type + ": unknown target:", target.tagName, target.id);
             }
             if (type === "click") { // special
-                if (id !== "cpcCanvas" && id !== "textText") {
-                    this.onWindowClick(event);
+                if (id !== "cpcCanvas" /* ViewID.cpcCanvas */ && id !== "textText" /* ViewID.textText */) {
+                    this.controller.onWindowClick(event);
                 }
             }
         };
@@ -11156,7 +12294,7 @@ define("Random", ["require", "exports"], function (require, exports) {
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("Sound", ["require", "exports", "Utils"], function (require, exports, Utils_18) {
+define("Sound", ["require", "exports", "Utils"], function (require, exports, Utils_19) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Sound = void 0;
@@ -11164,15 +12302,16 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
         function Sound(options) {
             this.isSoundOn = false;
             this.isActivatedByUserFlag = false;
+            this.contextNotAvailable = false;
+            this.contextStartTime = 0;
             this.gainNodes = [];
             this.oscillators = []; // 3 oscillators left, middle, right
             this.queues = []; // node queues and info for the three channels
             this.fScheduleAheadTime = 0.1; // 100 ms
             this.volEnv = [];
             this.toneEnv = [];
-            this.options = {
-                AudioContextConstructor: options.AudioContextConstructor
-            };
+            this.options = {};
+            this.setOptions(options);
             for (var i = 0; i < 3; i += 1) {
                 this.queues[i] = {
                     soundData: [],
@@ -11181,10 +12320,16 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
                     rendevousMask: 0
                 };
             }
-            if (Utils_18.Utils.debug > 1) {
+            if (Utils_19.Utils.debug > 1) {
                 this.debugLogList = []; // access: cpcBasic.controller.sound.debugLog
             }
         }
+        Sound.prototype.getOptions = function () {
+            return this.options;
+        };
+        Sound.prototype.setOptions = function (options) {
+            Object.assign(this.options, options);
+        };
         Sound.prototype.reset = function () {
             var oscillators = this.oscillators, volEnvData = {
                 steps: 1,
@@ -11236,28 +12381,46 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
                 0,
                 2,
                 1
-            ], context = new this.options.AudioContextConstructor(), // may produce exception if not available
-            mergerNode = context.createChannelMerger(6); // create mergerNode with 6 inputs; we are using the first 3 for left, right, center
-            this.context = context;
-            this.mergerNode = mergerNode;
-            for (var i = 0; i < 3; i += 1) {
-                var gainNode = context.createGain();
-                gainNode.connect(mergerNode, 0, channelMap2Cpc[i]); // connect output #0 of gainNode i to input #j of the mergerNode
-                this.gainNodes[i] = gainNode;
+            ];
+            var context;
+            try {
+                context = new this.options.AudioContextConstructor(); // may produce exception if not available
+                var mergerNode = context.createChannelMerger(6); // create mergerNode with 6 inputs; we are using the first 3 for left, right, center
+                this.mergerNode = mergerNode; // set as side effect
+                for (var i = 0; i < 3; i += 1) {
+                    var gainNode = context.createGain();
+                    gainNode.connect(mergerNode, 0, channelMap2Cpc[i]); // connect output #0 of gainNode i to input #j of the mergerNode
+                    this.gainNodes[i] = gainNode;
+                }
             }
+            catch (e) {
+                Utils_19.Utils.console.warn("createSoundContext:", e);
+                this.contextNotAvailable = true;
+            }
+            var oldContextStartTime = this.contextStartTime;
+            this.contextStartTime = Date.now() / 1000;
+            if (oldContextStartTime && context) { // was there a start time set before?
+                var correctionTime = context.currentTime + (this.contextStartTime - oldContextStartTime), queues = this.queues;
+                for (var i = 0; i < 3; i += 1) {
+                    if (queues[i].soundData.length) {
+                        queues[i].fNextNoteTime -= correctionTime;
+                    }
+                }
+            }
+            return context;
         };
         Sound.prototype.playNoise = function (oscillator, fTime, fDuration, noise) {
-            var ctx = this.context, bufferSize = ctx.sampleRate * fDuration, // set the time of the note
-            buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate), // create an empty buffer
+            var context = this.context, bufferSize = context.sampleRate * fDuration, // set the time of the note
+            buffer = context.createBuffer(1, bufferSize, context.sampleRate), // create an empty buffer
             data = buffer.getChannelData(0), // get data
-            noiseNode = ctx.createBufferSource(); // create a buffer source for noise data
+            noiseNode = context.createBufferSource(); // create a buffer source for noise data
             // fill the buffer with noise
             for (var i = 0; i < bufferSize; i += 1) {
                 data[i] = Math.random() * 2 - 1; // -1..1
             }
             noiseNode.buffer = buffer;
             if (noise > 1) {
-                var bandHz = 20000 / noise, bandpass = ctx.createBiquadFilter();
+                var bandHz = 20000 / noise, bandpass = context.createBiquadFilter();
                 bandpass.type = "bandpass";
                 bandpass.frequency.value = bandHz;
                 // bandpass.Q.value = q; // ?
@@ -11268,6 +12431,42 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
             }
             noiseNode.start(fTime);
             noiseNode.stop(fTime + fDuration);
+        };
+        Sound.prototype.simulateApplyVolEnv = function (volData, duration, volEnvRepeat) {
+            var time = 0;
+            for (var loop = 0; loop < volEnvRepeat; loop += 1) {
+                for (var part = 0; part < volData.length; part += 1) {
+                    var group = volData[part];
+                    if (group.steps !== undefined) {
+                        var group1 = group, volTime = group1.time;
+                        var volSteps = group1.steps;
+                        if (!volSteps) { // steps=0
+                            volSteps = 1;
+                        }
+                        for (var i = 0; i < volSteps; i += 1) {
+                            time += volTime;
+                            if (duration && time >= duration) { // eslint-disable-line max-depth
+                                loop = volEnvRepeat; // stop early if longer than specified duration
+                                part = volData.length;
+                                break;
+                            }
+                        }
+                    }
+                    else { // register
+                        var group2 = group, register = group2.register, period = group2.period, volTime = period;
+                        if (register === 0) {
+                            time += volTime;
+                        }
+                        else {
+                            // TODO: other registers
+                        }
+                    }
+                }
+            }
+            if (duration === 0) {
+                duration = time;
+            }
+            return duration;
         };
         Sound.prototype.applyVolEnv = function (volData, gain, fTime, volume, duration, volEnvRepeat) {
             var maxVolume = 15, i100ms2sec = 100; // time duration unit: 1/100 sec=10 ms, convert to sec
@@ -11349,25 +12548,42 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
                 }
             }
         };
+        // simulate schedule note when sound is off
+        Sound.prototype.simulateScheduleNote = function (soundData) {
+            var duration = soundData.duration, volEnv = soundData.volEnv, volEnvRepeat = 1;
+            if (duration < 0) { // <0: repeat volume envelope?
+                volEnvRepeat = Math.min(5, -duration); // we limit repeat to 5 times sice we precompute duration
+                duration = 0;
+            }
+            if (volEnv || !duration) { // some volume envelope or duration 0?
+                if (!this.volEnv[volEnv]) {
+                    volEnv = 0; // envelope not defined => use default envelope 0
+                }
+                duration = this.simulateApplyVolEnv(this.volEnv[volEnv], duration, volEnvRepeat);
+            }
+            var i100ms2sec = 100, // time duration unit: 1/100 sec=10 ms, convert to sec
+            fDuration = duration / i100ms2sec;
+            return fDuration;
+        };
         Sound.prototype.scheduleNote = function (oscillator, fTime, soundData) {
-            var maxVolume = 15, i100ms2sec = 100, // time duration unit: 1/100 sec=10 ms, convert to sec
-            ctx = this.context, toneEnv = soundData.toneEnv;
-            var volEnv = soundData.volEnv, volEnvRepeat = 1;
-            if (Utils_18.Utils.debug > 1) {
+            if (Utils_19.Utils.debug > 1) {
                 this.debugLog("scheduleNote: " + oscillator + " " + fTime);
             }
-            var oscillatorNode = ctx.createOscillator();
+            if (!this.isSoundOn) {
+                return this.simulateScheduleNote(soundData);
+            }
+            var context = this.context, oscillatorNode = context.createOscillator();
             oscillatorNode.type = "square";
             oscillatorNode.frequency.value = (soundData.period >= 3) ? 62500 / soundData.period : 0;
             oscillatorNode.connect(this.gainNodes[oscillator]);
-            if (fTime < ctx.currentTime) {
-                if (Utils_18.Utils.debug) {
-                    Utils_18.Utils.console.debug("Test: sound: scheduleNote:", fTime, "<", ctx.currentTime);
+            if (fTime < context.currentTime) {
+                if (Utils_19.Utils.debug) {
+                    Utils_19.Utils.console.debug("Test: sound: scheduleNote:", fTime, "<", context.currentTime);
                 }
             }
-            var volume = soundData.volume, gain = this.gainNodes[oscillator].gain, fVolume = volume / maxVolume;
+            var volume = soundData.volume, gain = this.gainNodes[oscillator].gain, maxVolume = 15, fVolume = volume / maxVolume;
             gain.setValueAtTime(fVolume * fVolume, fTime); // start volume
-            var duration = soundData.duration;
+            var duration = soundData.duration, volEnv = soundData.volEnv, volEnvRepeat = 1;
             if (duration < 0) { // <0: repeat volume envelope?
                 volEnvRepeat = Math.min(5, -duration); // we limit repeat to 5 times sice we precompute duration
                 duration = 0;
@@ -11378,10 +12594,12 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
                 }
                 duration = this.applyVolEnv(this.volEnv[volEnv], gain, fTime, volume, duration, volEnvRepeat);
             }
+            var toneEnv = soundData.toneEnv;
             if (toneEnv && this.toneEnv[toneEnv]) { // some tone envelope?
                 this.applyToneEnv(this.toneEnv[toneEnv], oscillatorNode.frequency, fTime, soundData.period, duration);
             }
-            var fDuration = duration / i100ms2sec;
+            var i100ms2sec = 100, // time duration unit: 1/100 sec=10 ms, convert to sec
+            fDuration = duration / i100ms2sec;
             oscillatorNode.start(fTime);
             oscillatorNode.stop(fTime + fDuration);
             this.oscillators[oscillator] = oscillatorNode;
@@ -11408,9 +12626,6 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
             return canQueue;
         };
         Sound.prototype.sound = function (soundData) {
-            if (!this.isSoundOn) {
-                return;
-            }
             var queues = this.queues, state = soundData.state;
             for (var i = 0; i < 3; i += 1) {
                 if ((state >> i) & 0x01) { // eslint-disable-line no-bitwise
@@ -11421,7 +12636,7 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
                         this.stopOscillator(i);
                     }
                     queue.soundData.push(soundData); // just a reference
-                    if (Utils_18.Utils.debug > 1) {
+                    if (Utils_19.Utils.debug > 1) {
                         this.debugLog("sound: " + i + " " + state + ":" + queue.soundData.length);
                     }
                     this.updateQueueStatus(i, queue);
@@ -11452,10 +12667,11 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
         };
         // idea from: https://www.html5rocks.com/en/tutorials/audio/scheduling/
         Sound.prototype.scheduler = function () {
-            if (!this.isSoundOn) {
+            if (!this.isActivatedByUserFlag) {
                 return;
             }
-            var context = this.context, fCurrentTime = context.currentTime, queues = this.queues;
+            var context = this.context, fCurrentTime = context ? context.currentTime : Date.now() / 1000 - this.contextStartTime, // use Date.now() when sound is off
+            queues = this.queues;
             var canPlayMask = 0;
             for (var i = 0; i < 3; i += 1) {
                 var queue = queues[i];
@@ -11495,7 +12711,7 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
             if (!queues.length) {
                 return;
             }
-            if (Utils_18.Utils.debug > 1) {
+            if (Utils_19.Utils.debug > 1) {
                 this.debugLog("release: " + releaseMask);
             }
             for (var i = 0; i < 3; i += 1) {
@@ -11525,30 +12741,36 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
         };
         Sound.prototype.setActivatedByUser = function () {
             this.isActivatedByUserFlag = true;
+            if (!this.contextStartTime) { // not yet started?
+                this.contextStartTime = Date.now() / 1000; // set it
+            }
         };
         Sound.prototype.isActivatedByUser = function () {
             return this.isActivatedByUserFlag;
         };
         Sound.prototype.soundOn = function () {
             if (!this.isSoundOn) {
-                if (!this.context) {
-                    this.createSoundContext();
+                if (!this.context && !this.contextNotAvailable) { // try to create context
+                    this.context = this.createSoundContext(); // still undefined in case of exception
                 }
-                var mergerNode = this.mergerNode, context = this.context;
-                mergerNode.connect(context.destination);
+                if (this.context) { // maybe not available
+                    this.mergerNode.connect(this.context.destination);
+                }
                 this.isSoundOn = true;
-                if (Utils_18.Utils.debug) {
-                    Utils_18.Utils.console.debug("soundOn: Sound switched on");
+                if (Utils_19.Utils.debug) {
+                    Utils_19.Utils.console.debug("soundOn: Sound switched on");
                 }
             }
+            return Boolean(this.context); // true if sound is available
         };
         Sound.prototype.soundOff = function () {
             if (this.isSoundOn) {
-                var mergerNode = this.mergerNode, context = this.context;
-                mergerNode.disconnect(context.destination);
+                if (this.context) {
+                    this.mergerNode.disconnect(this.context.destination);
+                }
                 this.isSoundOn = false;
-                if (Utils_18.Utils.debug) {
-                    Utils_18.Utils.console.debug("soundOff: Sound switched off");
+                if (Utils_19.Utils.debug) {
+                    Utils_19.Utils.console.debug("soundOff: Sound switched off");
                 }
             }
         };
@@ -11560,22 +12782,33 @@ define("Sound", ["require", "exports", "Utils"], function (require, exports, Uti
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("ZipFile", ["require", "exports", "Utils"], function (require, exports, Utils_19) {
+define("ZipFile", ["require", "exports", "Utils"], function (require, exports, Utils_20) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ZipFile = void 0;
     var ZipFile = /** @class */ (function () {
-        function ZipFile(data, zipName) {
-            this.data = data;
-            this.zipName = zipName; // for error messages
-            this.entryTable = this.readZipDirectory();
+        function ZipFile(options) {
+            this.entryTable = {};
+            this.options = {};
+            this.setOptions(options, true);
         }
+        ZipFile.prototype.getOptions = function () {
+            return this.options;
+        };
+        ZipFile.prototype.setOptions = function (options, force) {
+            var currentData = this.options.data;
+            Object.assign(this.options, options);
+            if (force || (this.options.data !== currentData)) {
+                this.data = this.options.data;
+                this.entryTable = this.readZipDirectory();
+            }
+        };
         ZipFile.prototype.getZipDirectory = function () {
             return this.entryTable;
         };
         ZipFile.prototype.composeError = function (error, message, value, pos) {
-            message = this.zipName + ": " + message; // put zipname in message
-            return Utils_19.Utils.composeError("ZipFile", error, message, value, pos);
+            message = this.options.zipName + ": " + message; // put zipname in message
+            return Utils_20.Utils.composeError("ZipFile", error, message, value, pos);
         };
         ZipFile.prototype.subArr = function (begin, length) {
             var data = this.data, end = begin + length;
@@ -11683,7 +12916,7 @@ define("ZipFile", ["require", "exports", "Utils"], function (require, exports, U
                 cdfh.timestamp = new Date(((dostime >> 25) & 0x7F) + 1980, ((dostime >> 21) & 0x0F) - 1, (dostime >> 16) & 0x1F, (dostime >> 11) & 0x1F, (dostime >> 5) & 0x3F, (dostime & 0x1F) << 1).getTime(); // eslint-disable-line no-bitwise
                 // local file header... much more info
                 if (this.readUInt(cdfh.localOffset) !== lfhSignature) {
-                    Utils_19.Utils.console.error("Zip: readZipDirectory: LFH signature not found at offset", cdfh.localOffset);
+                    Utils_20.Utils.console.error("Zip: readZipDirectory: LFH signature not found at offset", cdfh.localOffset);
                 }
                 var lfhExtrafieldLength = this.readUShort(cdfh.localOffset + 28); // extra field length
                 cdfh.dataStart = cdfh.localOffset + lfhLen + cdfh.name.length + lfhExtrafieldLength;
@@ -11757,7 +12990,7 @@ define("ZipFile", ["require", "exports", "Utils"], function (require, exports, U
                 var out = bitBuf;
                 while (bitCnt < need) {
                     if (inCnt === bufEnd) {
-                        throw that.composeError(Error(), "Zip: inflate: Data overflow", that.zipName, -1);
+                        throw that.composeError(Error(), "Zip: inflate: Data overflow", that.options.zipName, -1);
                     }
                     out |= data[inCnt] << bitCnt; // eslint-disable-line no-bitwise
                     inCnt += 1;
@@ -11935,7 +13168,7 @@ define("ZipFile", ["require", "exports", "Utils"], function (require, exports, U
                 throw this.composeError(Error(), "Zip: readData: compression method not supported:" + cdfh.compressionMethod, "", 0);
             }
             if (dataUTF8.length !== cdfh.size) { // assert
-                Utils_19.Utils.console.error("Zip: readData: different length 2!");
+                Utils_20.Utils.console.error("Zip: readData: different length 2!");
             }
             return dataUTF8;
         };
@@ -11943,11 +13176,50 @@ define("ZipFile", ["require", "exports", "Utils"], function (require, exports, U
     }());
     exports.ZipFile = ZipFile;
 });
+// CpcVmRsx.ts - CPC Virtual Machine: RSX (Resident System Extension)
+// (c) Marco Vieth, 2020
+// https://benchmarko.github.io/CPCBasicTS/
+//
+define("CpcVmRsx", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.CpcVmRsx = void 0;
+    var CpcVmRsx = /** @class */ (function () {
+        function CpcVmRsx() {
+            this.rsxPermanent = {};
+            this.rsxTemporary = {};
+        }
+        CpcVmRsx.prototype.callRsx = function (vm, name) {
+            var args = [];
+            for (var _i = 2; _i < arguments.length; _i++) {
+                args[_i - 2] = arguments[_i];
+            }
+            var fn = this.rsxTemporary[name] || this.rsxPermanent[name];
+            if (fn) {
+                fn.apply(vm, args);
+            }
+            return Boolean(fn);
+        };
+        CpcVmRsx.prototype.registerRsx = function (rsxModule, permanent) {
+            var rsxRegister = permanent ? this.rsxPermanent : this.rsxTemporary, rsxCommands = rsxModule.getRsxCommands();
+            for (var command in rsxCommands) {
+                if (rsxCommands.hasOwnProperty(command)) {
+                    rsxRegister[command] = rsxCommands[command];
+                }
+            }
+        };
+        CpcVmRsx.prototype.resetRsx = function () {
+            this.rsxTemporary = {};
+        };
+        return CpcVmRsx;
+    }());
+    exports.CpcVmRsx = CpcVmRsx;
+});
 // CpcVm.ts - CPC Virtual Machine
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, exports, Utils_20, Random_1) {
+define("CpcVm", ["require", "exports", "Utils", "Random", "CpcVmRsx"], function (require, exports, Utils_21, Random_1, CpcVmRsx_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CpcVm = void 0;
@@ -11989,6 +13261,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.timerPriority = -1; // priority of running task: -1=low (min priority to start new timers)
             this.zoneValue = 13; // print tab zone value
             this.modeValue = -1;
+            this.rsx = new CpcVmRsx_1.CpcVmRsx();
             /* eslint-disable no-invalid-this */
             this.vmInternal = {
                 getTimerList: this.vmTestGetTimerList,
@@ -12002,20 +13275,19 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.fnCloseoutHandler = this.vmCloseoutCallback.bind(this);
             this.fnLoadHandler = this.vmLoadCallback.bind(this);
             this.fnRunHandler = this.vmRunCallback.bind(this);
-            this.canvas = options.canvas;
-            this.textCanvas = options.textCanvas;
+            this.fnOnCanvasClickHandler = this.onCanvasClickCallback.bind(this);
+            this.fnInputCallbackHandler = this.vmInputCallback.bind(this);
+            this.fnLineInputCallbackHandler = this.vmLineInputCallback.bind(this);
+            this.fnRandomizeCallbackHandler = this.vmRandomizeCallback.bind(this);
+            this.options = {};
+            this.setOptions(options);
+            this.canvas = this.setCanvas(options.canvas);
             this.keyboard = options.keyboard;
             this.soundClass = options.sound;
             this.variables = options.variables;
             this.quiet = Boolean(options.quiet);
             this.onClickKey = options.onClickKey;
             this.random = new Random_1.Random();
-            if (this.canvas) {
-                this.canvas.setOnCanvasClick(this.onCanvasClickCallback.bind(this));
-            }
-            if (this.textCanvas) {
-                this.textCanvas.setOnCanvasClick(this.onCanvasClickCallback.bind(this));
-            }
             this.stopCount = this.initialStop;
             this.stopEntry = {
                 reason: "",
@@ -12081,17 +13353,10 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.crtcData = [];
         }
         CpcVm.prototype.getOptions = function () {
-            return {
-                canvas: this.canvas,
-                textCanvas: this.textCanvas,
-                keyboard: this.keyboard,
-                sound: this.soundClass,
-                variables: this.variables,
-                quiet: this.quiet
-            };
+            return this.options;
         };
-        CpcVm.prototype.vmSetRsxClass = function (rsx) {
-            this.rsx = rsx; // this.rsx just used in the script
+        CpcVm.prototype.setOptions = function (options) {
+            Object.assign(this.options, options);
         };
         CpcVm.prototype.vmReset = function () {
             this.startTime = Date.now();
@@ -12124,16 +13389,14 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.timerPriority = -1; // priority of running task: -1=low (min priority to start new timers)
             this.zoneValue = 13; // print tab zone value
             this.defreal("a", "z"); // init vartypes
-            this.modeValue = -1;
-            this.vmResetWindowData(true); // reset all, including pen and paper
-            this.width(132); // set default printer width
+            this.vmResetPenPaperWindowData();
             this.mode(1); // including vmResetWindowData() without pen and paper
             this.canvas.reset();
-            this.textCanvas.reset();
             this.keyboard.reset();
             this.soundClass.reset();
             this.soundData.length = 0;
             this.inkeyTimeMs = 0; // if >0, next time when inkey$ can be checked without inserting "waitFrame"
+            this.rsx.resetRsx(); // remove temporary rsx
         };
         CpcVm.prototype.vmResetMemory = function () {
             this.mem.length = 0; // clear memory (for PEEK, POKE)
@@ -12166,8 +13429,20 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 Object.assign(sqTimer[i], data);
             }
         };
+        CpcVm.prototype.vmResetPenPaperWindowData = function () {
+            var penPaperData = {
+                pen: 1,
+                paper: 0
+            }, windowDataList = this.windowDataList;
+            for (var i = 0; i < windowDataList.length - 2; i += 1) { // for window streams
+                Object.assign(windowDataList[i], penPaperData);
+            }
+        };
         CpcVm.prototype.vmResetWindowData = function (resetPenPaper) {
-            var winData = CpcVm.winData[this.modeValue], data = {
+            if (resetPenPaper) {
+                this.vmResetPenPaperWindowData();
+            }
+            var data = {
                 pos: 0,
                 vpos: 0,
                 textEnabled: true,
@@ -12175,9 +13450,6 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 transparent: false,
                 cursorOn: false,
                 cursorEnabled: true // user switch
-            }, penPaperData = {
-                pen: 1,
-                paper: 0
             }, printData = {
                 pos: 0,
                 vpos: 0,
@@ -12186,15 +13458,14 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 pos: 0,
                 vpos: 0,
                 right: 255 // override
-            };
-            if (resetPenPaper) {
-                Object.assign(data, penPaperData);
+            }, winData = CpcVm.winData[this.modeValue], windowDataList = this.windowDataList, modeDataPens = CpcVm.modeData[this.modeValue].pens;
+            for (var i = 0; i < windowDataList.length - 2; i += 1) { // for window streams
+                var modeWinData = Object.assign(windowDataList[i], winData, data);
+                modeWinData.pen %= modeDataPens;
+                modeWinData.paper %= modeDataPens; // limit also paper to number of pens
             }
-            for (var i = 0; i < this.windowDataList.length - 2; i += 1) { // for window streams
-                Object.assign(this.windowDataList[i], winData, data);
-            }
-            Object.assign(this.windowDataList[8], winData, printData); // printer
-            Object.assign(this.windowDataList[9], winData, cassetteData); // cassette
+            Object.assign(windowDataList[8], winData, printData); // printer
+            Object.assign(windowDataList[9], winData, cassetteData); // cassette
         };
         CpcVm.prototype.vmResetControlBuffer = function () {
             this.printControlBuf = ""; // collected control characters for PRINT
@@ -12246,9 +13517,24 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.soundClass.resetQueue();
             this.soundData.length = 0;
         };
+        CpcVm.prototype.setCanvas = function (canvas) {
+            this.canvas = canvas;
+            if (this.canvas) {
+                this.canvas.setOptions({
+                    onCanvasClick: this.fnOnCanvasClickHandler
+                });
+            }
+            return canvas;
+        };
+        CpcVm.prototype.vmGetLoadHandler = function () {
+            return this.fnLoadHandler;
+        };
+        CpcVm.prototype.vmGetMem = function () {
+            return this.mem;
+        };
         CpcVm.prototype.onCanvasClickCallback = function (event, x, y, xTxt, yTxt) {
             // for graphics coordinates, adapt origin
-            var height = 400; //TTT
+            var height = 400;
             var char = -1;
             x -= this.canvas.getXOrigin();
             y = height - 1 - (y + this.canvas.getYOrigin());
@@ -12256,17 +13542,11 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 this.canvas.move(x, y);
             }
             if (this.onClickKey) {
-                var isTextCanvas = event.target && event.target.type === "textarea"; //fast hack; this.textCanvas.textText === event.target
-                if (isTextCanvas) {
-                    char = this.textCanvas.readChar(xTxt, yTxt);
-                }
-                else {
-                    for (var stream = 0; stream < CpcVm.streamCount - 2; stream += 1) { // check all window streams
-                        var win = this.windowDataList[stream];
-                        char = this.canvas.readChar(xTxt, yTxt, win.pen, win.paper);
-                        if (char > 0 && char !== 32) {
-                            break; // found some char
-                        }
+                for (var stream = 0; stream < CpcVm.streamCount - 2; stream += 1) { // check all window streams
+                    var win = this.windowDataList[stream];
+                    char = this.canvas.readChar(xTxt, yTxt, win.pen, win.paper);
+                    if (char > 0 && char !== 32) {
+                        break; // found some char
                     }
                 }
                 if ((char < 0 || char === 32 || char === 143) && event.detail === 2) { // no (useful) char but mouse double click?
@@ -12276,15 +13556,21 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     this.onClickKey(String.fromCharCode(char));
                 }
             }
-            if (Utils_20.Utils.debug > 0) {
-                Utils_20.Utils.console.debug("onCanvasClickCallback: x", x, "y", y, "xTxt", xTxt, "yTxt", yTxt, "char", char);
+            if (Utils_21.Utils.debug > 0) {
+                Utils_21.Utils.console.debug("onCanvasClickCallback: x", x, "y", y, "xTxt", xTxt, "yTxt", yTxt, "char", char);
             }
+        };
+        CpcVm.prototype.vmRegisterRsx = function (rsxModule, permanent) {
+            this.rsx.registerRsx(rsxModule, permanent);
         };
         CpcVm.prototype.vmGetAllVariables = function () {
             return this.variables.getAllVariables();
         };
         CpcVm.prototype.vmGetAllVarTypes = function () {
             return this.variables.getAllVarTypes();
+        };
+        CpcVm.prototype.vmGetVariableByIndex = function (index) {
+            return this.variables.getVariableByIndex(index);
         };
         CpcVm.prototype.vmSetStartLine = function (line) {
             this.startLine = line;
@@ -12327,7 +13613,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.vmAssertNumber(n, err);
             if (n < min || n > max) {
                 if (!this.quiet) {
-                    Utils_20.Utils.console.warn("vmAssertInRange: number not in range:", min + "<=" + n + "<=" + max);
+                    Utils_21.Utils.console.warn("vmAssertInRange: number not in range:", min + "<=" + n + "<=" + max);
                 }
                 throw this.vmComposeError(Error(), 5, err + " " + n); // 5=Improper argument
             }
@@ -12342,9 +13628,19 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             n = this.vmRound(n, err);
             if (n < min || n > max) {
                 if (!this.quiet) {
-                    Utils_20.Utils.console.warn("vmInRangeRound: number not in range:", min + "<=" + n + "<=" + max);
+                    Utils_21.Utils.console.warn("vmInRangeRound: number not in range:", min + "<=" + n + "<=" + max);
                 }
                 throw this.vmComposeError(Error(), n < -32768 || n > 32767 ? 6 : 5, err + " " + n); // 6=Overflow, 5=Improper argument
+            }
+            return n;
+        };
+        CpcVm.prototype.vmInRange16 = function (n, err) {
+            var min = -32768, max = 32767;
+            if (n < min || n > max) {
+                if (!this.quiet) {
+                    Utils_21.Utils.console.warn("vmInRange16: number not in range:", min + "<=" + n + "<=" + max);
+                }
+                throw this.vmComposeError(Error(), n < min || n > max ? 6 : 5, err + " " + n); // 6=Overflow, 5=Improper argument
             }
             return n;
         };
@@ -12355,7 +13651,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             if (n < min || n > max) {
                 if (!this.quiet) {
-                    Utils_20.Utils.console.warn("vmLineInRange: number not in range:", min + "<=" + n + "<=" + max);
+                    Utils_21.Utils.console.warn("vmLineInRange: number not in range:", min + "<=" + n + "<=" + max);
                 }
                 throw this.vmComposeError(Error(), 5, err + " " + n); // 5=Improper argument
             }
@@ -12397,7 +13693,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             else if (type === "$") { // string
                 if (typeof value !== "string") {
                     if (!this.quiet) {
-                        Utils_20.Utils.console.warn("vmAssign: expected string but got:", value);
+                        Utils_21.Utils.console.warn("vmAssign: expected string but got:", value);
                     }
                     throw this.vmComposeError(Error(), 13, "type " + type + "=" + value); // "Type mismatch"
                 }
@@ -12525,7 +13821,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.vmStop = function (reason, priority, force, paras) {
             var defaultPriority = CpcVm.stopPriority[reason];
             if (defaultPriority === undefined) {
-                Utils_20.Utils.console.warn("Programming error: vmStop: Unknown reason:", reason);
+                Utils_21.Utils.console.warn("Programming error: vmStop: Unknown reason:", reason);
             }
             priority = priority || 0;
             if (priority !== 0) {
@@ -12538,8 +13834,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
         };
         CpcVm.prototype.vmNotImplemented = function (name) {
-            if (Utils_20.Utils.debug > 0) {
-                Utils_20.Utils.console.debug("Not implemented:", name);
+            if (Utils_21.Utils.debug > 0) {
+                Utils_21.Utils.console.debug("Not implemented:", name);
             }
         };
         CpcVm.prototype.vmUsingStringFormat = function (format, arg) {
@@ -12577,7 +13873,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 str = arg.toFixed(decimals);
             }
             if (format.indexOf(",") >= 0) { // contains comma => insert thousands separator
-                str = Utils_20.Utils.numberWithCommas(str);
+                str = Utils_21.Utils.numberWithCommas(str);
             }
             var padLen = format.length - str.length, pad = (padLen > 0) ? padChar.repeat(padLen) : "";
             str = pad + str;
@@ -12628,6 +13924,9 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 var stream = 0;
                 this.print(stream, "[" + String(this.line) + "]");
             }
+        };
+        CpcVm.prototype.vmGetOutBuffer = function () {
+            return this.outBuffer;
         };
         CpcVm.prototype.vmDrawMovePlot = function (type, gPen, gColMode) {
             if (gPen !== undefined) {
@@ -12715,6 +14014,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             return code;
         };
+        // and
         CpcVm.prototype.asc = function (s) {
             this.vmAssertString(s, "ASC");
             if (!s.length) {
@@ -12725,7 +14025,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.atn = function (n) {
             this.vmAssertNumber(n, "ATN");
             n = Math.atan(n);
-            return this.degFlag ? Utils_20.Utils.toDegrees(n) : n;
+            return this.degFlag ? Utils_21.Utils.toDegrees(n) : n;
         };
         CpcVm.prototype.auto = function (line, increment) {
             line = line === undefined ? 10 : this.vmLineInRange(line, "AUTO");
@@ -12766,13 +14066,6 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.pen(stream, win.paper);
             this.paper(stream, tmpPen);
         };
-        CpcVm.prototype.vmPutKeyInBuffer = function (key) {
-            this.keyboard.putKeyInBuffer(key);
-            var keyDownHandler = this.keyboard.getKeyDownHandler();
-            if (keyDownHandler) {
-                keyDownHandler();
-            }
-        };
         // special function to set all inks temporarily; experimental and expensive
         CpcVm.prototype.updateColorsImmediately = function (addr) {
             var inkList = [];
@@ -12785,6 +14078,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.canvas.updateColorsAndCanvasImmediately(inkList);
         };
         CpcVm.prototype.call = function (addr) {
+            var _a;
             var args = [];
             for (var _i = 1; _i < arguments.length; _i++) {
                 args[_i - 1] = arguments[_i];
@@ -12810,7 +14104,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     // TODO: reset also speed key
                     break;
                 case 0xbb0c: // KM Char Return (ROM &1A77), depending on number of args
-                    this.vmPutKeyInBuffer(String.fromCharCode(args.length));
+                    this.keyboard.putKeyInBuffer(String.fromCharCode(args.length), true); // with trigger onkeydown
                     break;
                 case 0xbb06: // KM Wait Char (ROM &1A3C); since we do not return a character, we do the same as call &bb18
                 case 0xbb18: // KM Wait Key (ROM &1B56)
@@ -12820,7 +14114,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     break;
                 case 0xbb4e: // TXT Initialize (ROM &1078)
                     this.canvas.resetCustomChars();
-                    this.vmResetWindowData(true); // reset windows, including pen and paper
+                    this.vmResetPenPaperWindowData(); // reset pen and paper
+                    this.vmResetWindowData(); // reset windows
                     // and TXT Reset...
                     this.vmResetControlBuffer();
                     break;
@@ -12884,7 +14179,6 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     this.modeValue = 1;
                     this.canvas.setMode(this.modeValue); // does not clear canvas
                     this.canvas.clearFullWindow(); // (SCR Mode Clear)
-                    this.textCanvas.clearFullWindow();
                     // and SCR Reset:
                     this.vmResetInks();
                     break;
@@ -12918,7 +14212,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 case 0xbd22: // MC Clear Inks (ROM &0786), ink table address in DE (last parameter)
                     break;
                 */
-                case 0xbd25: // MC Set Inks (ROM &0799), ink table address in DE (last parameter) TTT experimantal
+                case 0xbd25: // MC Set Inks (ROM &0799), ink table address in DE (last parameter), experimental
                     this.updateColorsImmediately(args[0]);
                     break;
                 case 0xbd3d: // KM Flush (ROM ?; CPC 664/6128)
@@ -12938,10 +14232,31 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     this.vmSetRamSelect(args.length);
                     break;
                 default:
-                    if (Utils_20.Utils.debug > 0) {
-                        Utils_20.Utils.console.debug("Ignored: CALL", addr, args);
+                    if (!(_a = this.rsx).callRsx.apply(_a, __spreadArray([this, "&" + addr.toString(16).toLowerCase().padStart(4, "0")], args, false))) { // maybe user defined addr
+                        if (Utils_21.Utils.debug > 0) {
+                            Utils_21.Utils.console.debug("Ignored: CALL", addr, args);
+                        }
                     }
                     break;
+            }
+        };
+        CpcVm.prototype.callRsx = function (name) {
+            var _a;
+            var args = [];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                args[_i - 1] = arguments[_i];
+            }
+            // RSX name can contain letters, digits and "." (in basic it is uppercase but here we get lowercase characters)
+            if (args.length > 32) { // more that 32 arguments?
+                throw this.vmComposeError(Error(), 2, "RSX "); // Syntax Error
+            }
+            for (var i = 0; i < args.length; i += 1) {
+                if (typeof args[i] === "number") {
+                    args[i] = this.vmRound2Complement(args[i], "RSX"); // even if the args itself are not used here
+                }
+            }
+            if (!(_a = this.rsx).callRsx.apply(_a, __spreadArray([this, name], args, false))) {
+                throw this.vmComposeError(Error(), 28, "|" + name); // Unknown command
             }
         };
         CpcVm.prototype.cat = function () {
@@ -12990,7 +14305,6 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             this.vmResetTimers();
             this.ei();
             this.vmSetStartLine(0);
-            //this.errorCode = 0;
             this.breakGosubLine = 0;
             this.breakResumeLine = 0;
             this.errorGotoLine = 0;
@@ -13033,7 +14347,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             if (outFile.open) {
                 if (outFile.command !== "openout") {
                     if (!this.quiet) {
-                        Utils_20.Utils.console.warn("closeout: command=", outFile.command); // should not occur
+                        Utils_21.Utils.console.warn("closeout: command=", outFile.command); // should not occur
                     }
                 }
                 if (!outFile.fileData.length) { // openout without data?
@@ -13041,6 +14355,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 }
                 else { // data to save
                     outFile.command = "closeout";
+                    outFile.start = 0;
+                    outFile.length = 0; // will be set during fileSave
                     outFile.fnFileCallback = this.fnCloseoutHandler;
                     this.vmStop("fileSave", 90); // must stop directly after closeout
                 }
@@ -13052,7 +14368,6 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             var win = this.windowDataList[stream];
             this.vmDrawUndrawCursor(stream); // why, if we clear anyway?
             this.canvas.clearTextWindow(win.left, win.right, win.top, win.bottom, win.paper); // cls window
-            this.textCanvas.clearTextWindow(win.left, win.right, win.top, win.bottom, win.paper);
             win.pos = 0;
             win.vpos = 0;
             if (!stream) {
@@ -13084,15 +14399,13 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             stream = this.vmInRangeRound(stream, 0, 7, "COPYCHR$");
             this.vmMoveCursor2AllowedPos(stream);
             this.vmDrawUndrawCursor(stream); // undraw
-            var win = this.windowDataList[stream], charCode = this.canvas.readChar(win.pos + win.left, win.vpos + win.top, win.pen, win.paper), 
-            // TODO charCode2 = this.textCanvas.readChar(win.pos + win.left, win.vpos + win.top, win.pen, win.paper),
-            char = (charCode >= 0) ? String.fromCharCode(charCode) : "";
+            var win = this.windowDataList[stream], charCode = this.canvas.readChar(win.pos + win.left, win.vpos + win.top, win.pen, win.paper), char = (charCode >= 0) ? String.fromCharCode(charCode) : " "; // if not detected (-1), use space
             this.vmDrawUndrawCursor(stream); // draw
             return char;
         };
         CpcVm.prototype.cos = function (n) {
             this.vmAssertNumber(n, "COS");
-            return Math.cos((this.degFlag) ? Utils_20.Utils.toRadians(n) : n);
+            return Math.cos((this.degFlag) ? Utils_21.Utils.toRadians(n) : n);
         };
         CpcVm.prototype.creal = function (n) {
             this.vmAssertNumber(n, "CREAL");
@@ -13140,8 +14453,12 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
         };
         CpcVm.prototype.dec$ = function (n, frmt) {
+            var formatRegExp = /^[+\-$£*#,.^]*$/;
             this.vmAssertNumber(n, "DEC$");
             this.vmAssertString(frmt, "DEC$");
+            if (!formatRegExp.test(frmt)) { // only allowed characters: + - $ £ * # , . ^
+                throw this.vmComposeError(Error(), 5, "DEC$ " + frmt); // Improper argument
+            }
             return this.vmUsingNumberFormat(frmt, n);
         };
         // def fn
@@ -13260,7 +14577,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             else { // 0
                 if (!this.quiet) {
-                    Utils_20.Utils.console.warn("ENT: toneEnv", toneEnv);
+                    Utils_21.Utils.console.warn("ENT: toneEnv", toneEnv);
                 }
                 throw this.vmComposeError(Error(), 5, "ENT " + toneEnv); // Improper argument
             }
@@ -13341,7 +14658,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 }
                 else {
                     if (!this.quiet) {
-                        Utils_20.Utils.console.warn("erase: Array variable not found:", args[i]);
+                        Utils_21.Utils.console.warn("erase: Array variable not found:", args[i]);
                     }
                     throw this.vmComposeError(Error(), 5, "ERASE " + args[i]); // Improper argument
                 }
@@ -13370,10 +14687,10 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 this.vmStop("error", 50);
             }
             if (!this.quiet) {
-                Utils_20.Utils.console.log("BASIC error(" + err + "):", errorWithInfo + (hidden ? " (hidden: " + hidden + ")" : ""));
+                Utils_21.Utils.console.log("BASIC error(" + err + "):", errorWithInfo + (hidden ? " (hidden: " + hidden + ")" : ""));
             }
             var traceLine = this.line, sourceMapEntry = this.sourceMap[traceLine], pos = sourceMapEntry && sourceMapEntry[0], len = sourceMapEntry && sourceMapEntry[1];
-            return Utils_20.Utils.composeError("CpcVm", error, errorString, errInfo, pos, len, this.line, hidden);
+            return Utils_21.Utils.composeError("CpcVm", error, errorString, errInfo, pos, len, this.line, hidden);
         };
         CpcVm.prototype.error = function (err, errInfo) {
             err = this.vmInRangeRound(err, 0, 255, "ERROR"); // could trigger another error
@@ -13491,14 +14808,14 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.vmInputCallback = function () {
             var inputParas = this.vmGetStopObject().paras, stream = inputParas.stream, input = inputParas.input, inputValues = input.split(","), convertedInputValues = [], types = inputParas.types;
             var inputOk = true;
-            if (Utils_20.Utils.debug > 0) {
-                Utils_20.Utils.console.debug("vmInputCallback:", input);
+            if (Utils_21.Utils.debug > 0) {
+                Utils_21.Utils.console.debug("vmInputCallback:", input);
             }
             if (types && (inputValues.length === types.length)) {
                 for (var i = 0; i < types.length; i += 1) {
                     var varType = types[i], type = this.vmDetermineVarType(varType), value = inputValues[i];
                     if (type !== "$") { // not a string?
-                        var valueNumber = CpcVm.vmVal(value); // convert to number (also binary, hex), empty string gets 0
+                        var valueNumber = this.vmVal(value); // convert to number (also binary, hex), empty string gets 0
                         if (isNaN(valueNumber)) {
                             inputOk = false;
                         }
@@ -13576,7 +14893,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     line = "";
                 }
             }
-            var nValue = CpcVm.vmVal(value); // convert to number (also binary, hex)
+            var nValue = this.vmVal(value); // convert to number (also binary, hex)
             if (isNaN(nValue)) { // eslint-disable-line max-depth
                 throw this.vmComposeError(Error(), 13, "INPUT #9 " + nValue + ": " + value); // Type mismatch
             }
@@ -13620,7 +14937,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     stream: stream,
                     message: msg,
                     noCRLF: noCRLF,
-                    fnInputCallback: this.vmInputCallback.bind(this),
+                    fnInputCallback: this.fnInputCallbackHandler,
                     types: args,
                     input: "",
                     line: this.line // to repeat in case of break
@@ -13692,8 +15009,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         // let
         CpcVm.prototype.vmLineInputCallback = function () {
             var inputParas = this.vmGetStopObject().paras, input = inputParas.input;
-            if (Utils_20.Utils.debug > 0) {
-                Utils_20.Utils.console.debug("vmLineInputCallback:", input);
+            if (Utils_21.Utils.debug > 0) {
+                Utils_21.Utils.console.debug("vmLineInputCallback:", input);
             }
             this.vmSetInputValues([input]);
             this.cursor(inputParas.stream, 0);
@@ -13715,7 +15032,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     stream: stream,
                     message: msg,
                     noCRLF: noCRLF,
-                    fnInputCallback: this.vmLineInputCallback.bind(this),
+                    fnInputCallback: this.fnLineInputCallbackHandler,
                     input: "",
                     line: this.line // to repeat in case of break
                 });
@@ -13767,18 +15084,26 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             var inFile = this.inFile;
             var putInMemory = false;
             if (input !== null && meta) {
-                if (meta.typeString === "B" || inFile.start !== undefined) { // only for binary files or when a load address is specified (feature)
+                if (meta.typeString === "B" || meta.typeString === "S" || inFile.start !== undefined) { // only for binary files or when a load address is specified (feature)
                     var start = inFile.start !== undefined ? inFile.start : Number(meta.start);
                     var length_1 = Number(meta.length); // we do not really need the length from metadata
                     if (isNaN(length_1)) {
                         length_1 = input.length; // only valid after atob()
                     }
-                    if (Utils_20.Utils.debug > 1) {
-                        Utils_20.Utils.console.debug("vmLoadCallback:", inFile.name + ": putting data in memory", start, "-", start + length_1);
+                    if (Utils_21.Utils.debug > 1) {
+                        Utils_21.Utils.console.debug("vmLoadCallback:", inFile.name + ": putting data in memory", start, "-", start + length_1);
                     }
-                    for (var i = 0; i < length_1; i += 1) {
-                        var byte = input.charCodeAt(i);
-                        this.poke((start + i) & 0xffff, byte); // eslint-disable-line no-bitwise
+                    if (meta.typeString === "S") {
+                        for (var i = 0; i < length_1; i += 1) {
+                            this.vmSetMem(start + i, input.charCodeAt(i)); // set snapshot data directly without memory mapping
+                        }
+                        var addr = this.screenPage << 14; // eslint-disable-line no-bitwise
+                        this.vmCopyToScreen(addr, addr);
+                    }
+                    else {
+                        for (var i = 0; i < length_1; i += 1) {
+                            this.poke((start + i) & 0xffff, input.charCodeAt(i)); // eslint-disable-line no-bitwise
+                        }
                     }
                     putInMemory = true;
                 }
@@ -13858,7 +15183,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             else if (args.length === 1) { // if just one argument, return it, even if it is a string
                 if (typeof args[0] !== "number" && !this.quiet) {
-                    Utils_20.Utils.console.warn("MAX: Not a number:", args[0]);
+                    Utils_21.Utils.console.warn("MAX: Not a number:", args[0]);
                 }
                 return args[0];
             }
@@ -13916,7 +15241,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             else if (args.length === 1) { // if just one argument, return it, even if it is a string
                 if (typeof args[0] !== "number" && !this.quiet) {
-                    Utils_20.Utils.console.warn("MIN: Not a number:", args[0]);
+                    Utils_21.Utils.console.warn("MIN: Not a number:", args[0]);
                 }
                 return args[0];
             }
@@ -13939,13 +15264,10 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.mode = function (mode) {
             mode = this.vmInRangeRound(mode, 0, 3, "MODE");
             this.modeValue = mode;
-            this.vmResetWindowData(false); // do not reset pen and paper
+            this.vmResetWindowData(); // do not reset pen and paper but limit them to the mode
             this.outBuffer = ""; // clear console
             this.canvas.setMode(mode); // does not clear canvas
             this.canvas.clearFullWindow(); // always with paper 0 (SCR MODE CLEAR)
-            var winData = CpcVm.winData[this.modeValue];
-            this.textCanvas.setMode(mode, winData.right, winData.bottom);
-            this.textCanvas.clearFullWindow();
         };
         CpcVm.prototype.move = function (x, y, gPen, gColMode) {
             x = this.vmInRangeRound(x, -32768, 32767, "MOVE");
@@ -13996,8 +15318,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             n = this.vmInRangeRound(n, 0, 255, "ON GOSUB");
             var line;
             if (!n || n > args.length) { // out of range? => continue with line after onGosub
-                if (Utils_20.Utils.debug > 1) {
-                    Utils_20.Utils.console.debug("onGosub: out of range: n=" + n + " in " + this.line);
+                if (Utils_21.Utils.debug > 1) {
+                    Utils_21.Utils.console.debug("onGosub: out of range: n=" + n + " in " + this.line);
                 }
                 line = retLabel;
             }
@@ -14018,8 +15340,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             n = this.vmInRangeRound(n, 0, 255, "ON GOTO");
             var line;
             if (!n || n > args.length) { // out of range? => continue with line after onGoto
-                if (Utils_20.Utils.debug > 1) {
-                    Utils_20.Utils.console.debug("onGoto: out of range: n=" + n + " in " + this.line);
+                if (Utils_21.Utils.debug > 1) {
+                    Utils_21.Utils.console.debug("onGoto: out of range: n=" + n + " in " + this.line);
                 }
                 line = retLabel;
             }
@@ -14050,12 +15372,11 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         };
         CpcVm.prototype.vmOpeninCallback = function (input) {
             if (input !== null) {
-                input = input.replace(/\r\n/g, "\n"); // remove CR (maybe from ASCII file in "binary" form)
-                if (input.endsWith("\n")) {
-                    input = input.substring(0, input.length - 1); // remove last "\n" (TTT: also for data files?)
+                var inFile = this.inFile, eolStr = input.indexOf("\r\n") > 0 ? "\r\n" : "\n"; // heuristic: if CRLF found, use it as split
+                if (input.endsWith(eolStr)) {
+                    input = input.substring(0, input.length - eolStr.length); // remove last eol marker (also for data files)
                 }
-                var inFile = this.inFile;
-                inFile.fileData = input.split("\n");
+                inFile.fileData = input.split(eolStr);
             }
             else {
                 this.closein();
@@ -14111,12 +15432,17 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 this.ramSelect = bank - 3; // bank 4 gets position 1
             }
         };
-        CpcVm.prototype.vmSetCrtcData = function (byte) {
-            var crtcReg = this.crtcReg, crtcData = this.crtcData;
+        CpcVm.prototype.vmSetCrtcData = function (crtcReg, byte) {
+            var crtcData = this.crtcData;
             crtcData[crtcReg] = byte;
             if (crtcReg === 12 || crtcReg === 13) { // screen offset changed
                 var offset = (((crtcData[12] || 0) & 0x03) << 9) | ((crtcData[13] || 0) << 1); // eslint-disable-line no-bitwise
                 this.vmSetScreenOffset(offset);
+                if (crtcReg === 12) { // scren base?
+                    // do we want to set it here?
+                    // 0x30 => 0xc0
+                    this.vmSetScreenBase((byte << 2) & 0xc0); // eslint-disable-line no-bitwise
+                }
             }
         };
         CpcVm.prototype.out = function (port, byte) {
@@ -14130,18 +15456,17 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 this.crtcReg = byte % 14;
             }
             else if (portHigh === 0xbd) {
-                this.vmSetCrtcData(byte);
-                this.crtcData[this.crtcReg] = byte;
+                this.vmSetCrtcData(this.crtcReg, byte);
             }
-            else if (Utils_20.Utils.debug > 0) {
-                Utils_20.Utils.console.debug("OUT", Number(port).toString(16), byte, ": unknown port");
+            else if (Utils_21.Utils.debug > 0) {
+                Utils_21.Utils.console.debug("OUT", Number(port).toString(16), byte, ": unknown port");
             }
         };
         CpcVm.prototype.paper = function (stream, paper) {
             stream = this.vmInRangeRound(stream, 0, 7, "PAPER");
             paper = this.vmInRangeRound(paper, 0, 15, "PAPER");
-            var win = this.windowDataList[stream];
-            win.paper = paper;
+            var win = this.windowDataList[stream], modeData = CpcVm.modeData[this.modeValue];
+            win.paper = paper % modeData.pens; // limit to available pens
         };
         CpcVm.prototype.vmGetCharDataByte = function (addr) {
             var dataPos = (addr - 1 - this.minCharHimem) % 8, char = this.minCustomChar + (addr - 1 - dataPos - this.minCharHimem) / 8, charData = this.canvas.getCharData(char);
@@ -14178,9 +15503,9 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.pen = function (stream, pen, transparent) {
             stream = this.vmInRangeRound(stream, 0, 7, "PEN");
             if (pen !== undefined) {
-                var win = this.windowDataList[stream];
+                var win = this.windowDataList[stream], modeData = CpcVm.modeData[this.modeValue];
                 pen = this.vmInRangeRound(pen, 0, 15, "PEN");
-                win.pen = pen;
+                win.pen = pen % modeData.pens; // limit to available pens
             }
             if (transparent !== undefined) {
                 transparent = this.vmInRangeRound(transparent, 0, 1, "PEN");
@@ -14201,6 +15526,10 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             y = this.vmInRangeRound(y, -32768, 32767, "PLOTR") + this.canvas.getYpos();
             this.vmDrawMovePlot("PLOTR", gPen, gColMode);
             this.canvas.plot(x, y);
+        };
+        // put directly in memory without memory papping
+        CpcVm.prototype.vmSetMem = function (addr, byte) {
+            this.mem[addr] = byte;
         };
         CpcVm.prototype.poke = function (addr, byte) {
             addr = this.vmRound2Complement(addr, "POKE address");
@@ -14271,14 +15600,12 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 y = 0;
                 if (stream < 8) {
                     this.canvas.windowScrollDown(left, right, top, bottom, win.paper);
-                    this.textCanvas.windowScrollDown(left, right, top, bottom, win.paper);
                 }
             }
             if (y > (bottom - top)) {
                 y = bottom - top;
                 if (stream < 8) {
                     this.canvas.windowScrollUp(left, right, top, bottom, win.paper);
-                    this.textCanvas.windowScrollUp(left, right, top, bottom, win.paper);
                 }
             }
             win.pos = x;
@@ -14287,8 +15614,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.vmPrintChars = function (stream, str) {
             var win = this.windowDataList[stream];
             if (!win.textEnabled) {
-                if (Utils_20.Utils.debug > 0) {
-                    Utils_20.Utils.console.debug("vmPrintChars: text output disabled:", str);
+                if (Utils_21.Utils.debug > 0) {
+                    Utils_21.Utils.console.debug("vmPrintChars: text output disabled:", str);
                 }
                 return;
             }
@@ -14302,7 +15629,6 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 var char = CpcVm.vmGetCpcCharCode(str.charCodeAt(i));
                 this.vmMoveCursor2AllowedPos(stream);
                 this.canvas.printChar(char, win.pos + win.left, win.vpos + win.top, win.pen, win.paper, win.transparent);
-                this.textCanvas.printChar(char, win.pos + win.left, win.vpos + win.top, win.pen, win.paper, win.transparent);
                 win.pos += 1;
             }
         };
@@ -14311,12 +15637,15 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             for (var i = 0; i < para.length; i += 1) {
                 paraList.push(para.charCodeAt(i));
             }
+            while (paraList.length < 9) { // fill up with 0 (1xchar, 8xchardata)
+                paraList.push(0);
+            }
             var char = paraList[0];
             if (char >= this.minCustomChar) {
                 this.symbol.apply(this, paraList);
             }
-            else if (Utils_20.Utils.debug > 0) {
-                Utils_20.Utils.console.debug("vmControlSymbol: define SYMBOL ignored:", char);
+            else if (Utils_21.Utils.debug > 0) {
+                Utils_21.Utils.console.debug("vmControlSymbol: define SYMBOL ignored:", char);
             }
         };
         CpcVm.prototype.vmControlWindow = function (para, stream) {
@@ -14391,31 +15720,24 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 case 0x10: // DLE
                     this.vmMoveCursor2AllowedPos(stream);
                     this.canvas.fillTextBox(win.left + win.pos, win.top + win.vpos, 1, 1, win.paper); // clear character under cursor
-                    this.textCanvas.fillTextBox(win.left + win.pos, win.top + win.vpos, 1, 1); // clear character under cursor
                     break;
                 case 0x11: // DC1
                     this.vmMoveCursor2AllowedPos(stream);
                     this.canvas.fillTextBox(win.left, win.top + win.vpos, win.pos + 1, 1, win.paper); // clear line up to cursor
-                    this.textCanvas.fillTextBox(win.left, win.top + win.vpos, win.pos + 1, 1, win.paper); // clear line up to cursor
                     break;
                 case 0x12: // DC2
                     this.vmMoveCursor2AllowedPos(stream);
                     this.canvas.fillTextBox(win.left + win.pos, win.top + win.vpos, win.right - win.left + 1 - win.pos, 1, win.paper); // clear line from cursor
-                    this.textCanvas.fillTextBox(win.left + win.pos, win.top + win.vpos, win.right - win.left + 1 - win.pos, 1, win.paper); // clear line from cursor
                     break;
                 case 0x13: // DC3
                     this.vmMoveCursor2AllowedPos(stream);
                     this.canvas.fillTextBox(win.left, win.top, win.right - win.left + 1, win.top - win.vpos, win.paper); // clear window up to cursor line -1
                     this.canvas.fillTextBox(win.left, win.top + win.vpos, win.pos + 1, 1, win.paper); // clear line up to cursor (DC1)
-                    this.textCanvas.fillTextBox(win.left, win.top, win.right - win.left + 1, win.top - win.vpos, win.paper); // clear window up to cursor line -1
-                    this.textCanvas.fillTextBox(win.left, win.top + win.vpos, win.pos + 1, 1, win.paper); // clear line up to cursor (DC1)
                     break;
                 case 0x14: // DC4
                     this.vmMoveCursor2AllowedPos(stream);
                     this.canvas.fillTextBox(win.left + win.pos, win.top + win.vpos, win.right - win.left + 1 - win.pos, 1, win.paper); // clear line from cursor (DC2)
                     this.canvas.fillTextBox(win.left, win.top + win.vpos + 1, win.right - win.left + 1, win.bottom - win.top - win.vpos, win.paper); // clear window from cursor line +1
-                    this.textCanvas.fillTextBox(win.left + win.pos, win.top + win.vpos, win.right - win.left + 1 - win.pos, 1, win.paper); // clear line from cursor (DC2)
-                    this.textCanvas.fillTextBox(win.left, win.top + win.vpos + 1, win.right - win.left + 1, win.bottom - win.top - win.vpos, win.paper); // clear window from cursor line +1
                     break;
                 case 0x15: // NAK
                     win.cursorEnabled = false;
@@ -14453,7 +15775,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     this.vmLocate(stream, para.charCodeAt(0), para.charCodeAt(1));
                     break;
                 default:
-                    Utils_20.Utils.console.warn("vmHandleControlCode: Unknown control code:", code);
+                    Utils_21.Utils.console.warn("vmHandleControlCode: Unknown control code:", code);
                     break;
             }
             return out;
@@ -14532,7 +15854,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     }
                 }
                 else if (typeof arg === "number") {
-                    str = ((arg >= 0) ? " " : "") + Utils_20.Utils.toPrecision9(arg) + " ";
+                    str = ((arg >= 0) ? " " : "") + Utils_21.Utils.toPrecision9(arg) + " ";
                 }
                 else { // e.g. string
                     str = String(arg);
@@ -14560,12 +15882,11 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     else {
                         win.pos += str.length;
                     }
-                    if (str === "\r\n") { // for now we replace CRLF by LF
-                        str = "\n";
+                    if (str === "\r\n") {
                         win.pos = 0;
                     }
                     if (win.pos >= win.right) {
-                        str = "\n" + str; // e.g. after tab(256)
+                        str = "\r\n" + str; // e.g. after tab(256)
                         win.pos = 0;
                     }
                     buf += str;
@@ -14600,10 +15921,10 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             return hash;
         };
         CpcVm.prototype.vmRandomizeCallback = function () {
-            var inputParas = this.vmGetStopObject().paras, input = inputParas.input, value = CpcVm.vmVal(input); // convert to number (also binary, hex)
+            var inputParas = this.vmGetStopObject().paras, input = inputParas.input, value = this.vmVal(input); // convert to number (also binary, hex)
             var inputOk = true;
-            if (Utils_20.Utils.debug > 0) {
-                Utils_20.Utils.console.debug("vmRandomizeCallback:", input);
+            if (Utils_21.Utils.debug > 0) {
+                Utils_21.Utils.console.debug("vmRandomizeCallback:", input);
             }
             if (isNaN(value)) {
                 inputOk = false;
@@ -14625,7 +15946,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     command: "randomize",
                     stream: stream,
                     message: msg,
-                    fnInputCallback: this.vmRandomizeCallback.bind(this),
+                    fnInputCallback: this.fnRandomizeCallbackHandler,
                     input: "",
                     line: this.line // to repeat in case of break
                 };
@@ -14637,8 +15958,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 if (n === 0) {
                     n = rndInit;
                 }
-                if (Utils_20.Utils.debug > 1) {
-                    Utils_20.Utils.console.debug("randomize:", n);
+                if (Utils_21.Utils.debug > 1) {
+                    Utils_21.Utils.console.debug("randomize:", n);
                 }
                 this.random.init(n);
             }
@@ -14710,8 +16031,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 this.dataIndex = dataLineIndex[line];
             }
             else {
-                if (Utils_20.Utils.debug > 0) {
-                    Utils_20.Utils.console.debug("restore: search for dataLine >", line);
+                if (Utils_21.Utils.debug > 0) {
+                    Utils_21.Utils.console.debug("restore: search for dataLine >", line);
                 }
                 for (var dataLine in dataLineIndex) { // linear search a data line > line
                     if (dataLineIndex.hasOwnProperty(dataLine)) {
@@ -14725,8 +16046,8 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                     this.dataIndex = dataLineIndex[line];
                 }
                 else {
-                    if (Utils_20.Utils.debug > 0) {
-                        Utils_20.Utils.console.debug("restore", line + ": No DATA found starting at line");
+                    if (Utils_21.Utils.debug > 0) {
+                        Utils_21.Utils.console.debug("restore", line + ": No DATA found starting at line");
                     }
                     this.dataIndex = this.dataList.length;
                 }
@@ -14748,7 +16069,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             var resumeLineIndex = this.labelList.indexOf(this.errorResumeLine);
             if (resumeLineIndex < 0) {
-                Utils_20.Utils.console.error("resumeNext: line not found: " + this.errorResumeLine);
+                Utils_21.Utils.console.error("resumeNext: line not found: " + this.errorResumeLine);
                 this.errorResumeLine = 0;
                 return;
             }
@@ -14775,7 +16096,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.prototype.right$ = function (s, len) {
             this.vmAssertString(s, "RIGHT$");
             len = this.vmInRangeRound(len, 0, 255, "RIGHT$");
-            return s.slice(-len);
+            return s.substring(s.length - len);
         };
         CpcVm.prototype.rnd = function (n) {
             if (n !== undefined) {
@@ -14893,7 +16214,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         };
         CpcVm.prototype.sin = function (n) {
             this.vmAssertNumber(n, "SIN");
-            return Math.sin((this.degFlag) ? Utils_20.Utils.toRadians(n) : n);
+            return Math.sin((this.degFlag) ? Utils_21.Utils.toRadians(n) : n);
         };
         CpcVm.prototype.sound = function (state, period, duration, volume, volEnv, toneEnv, noise) {
             state = this.vmInRangeRound(state, 1, 255, "SOUND");
@@ -14937,7 +16258,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 str = " ".repeat(n);
             }
             else if (!this.quiet) {
-                Utils_20.Utils.console.log("SPC: negative number ignored:", n);
+                Utils_21.Utils.console.log("SPC: negative number ignored:", n);
             }
             return str;
         };
@@ -15004,11 +16325,14 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             char = this.vmInRangeRound(char, this.minCustomChar, 255, "SYMBOL");
             var charData = [];
-            for (var i = 0; i < args.length; i += 1) { // start with 1, get available args
+            for (var i = 0; i < args.length; i += 1) { // get available args
                 var bitMask = this.vmInRangeRound(args[i], 0, 255, "SYMBOL");
                 charData.push(bitMask);
             }
-            // Note: If there are less than 8 rows, the others are assumed as 0 (actually empty)
+            // Note: If there are less than 8 rows, set missing rows to 0 (needed for read char)
+            while (charData.length < 8) { // fill up with 0 (1xchar, 8xchardata)
+                charData.push(0);
+            }
             this.canvas.setCustomChar(char, charData);
         };
         CpcVm.prototype.symbolAfter = function (char) {
@@ -15054,7 +16378,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 str = " ".repeat(count);
             }
             else if (!this.quiet) {
-                Utils_20.Utils.console.log("TAB: no tab for value", n);
+                Utils_21.Utils.console.log("TAB: no tab for value", n);
             }
             return str;
         };
@@ -15070,7 +16394,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         };
         CpcVm.prototype.tan = function (n) {
             this.vmAssertNumber(n, "TAN");
-            return Math.tan((this.degFlag) ? Utils_20.Utils.toRadians(n) : n);
+            return Math.tan((this.degFlag) ? Utils_21.Utils.toRadians(n) : n);
         };
         CpcVm.prototype.test = function (x, y) {
             x = this.vmInRangeRound(x, -32768, 32767, "TEST");
@@ -15110,21 +16434,42 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             for (var _i = 1; _i < arguments.length; _i++) {
                 args[_i - 1] = arguments[_i];
             }
-            var reFormat = /(!|&|\\ *\\|(?:\*\*|\$\$|\*\*\$)?\+?(?:#|,)+\.?#*(?:\^\^\^\^)?[+-]?)/g, formatList = [];
+            var reFormat = /(_|!|&|\\ *\\|(?:\*\*|\$\$|\*\*\$)?\+?(?:#|,)+\.?#*(?:\^\^\^\^)?[+-]?)/g, formatList = [];
             this.vmAssertString(format, "USING");
             // We simulate format.split(reFormat) here since it does not work with IE8
             var index = 0, match;
             while ((match = reFormat.exec(format)) !== null) {
-                formatList.push(format.substring(index, match.index)); // non-format characters at the beginning
-                formatList.push(match[0]);
-                index = match.index + match[0].length;
+                var nonFormChars = format.substring(index, match.index); // non-format characters at the beginning
+                if (match[0] === "_") { // underscore "_" is escape character
+                    nonFormChars += format.charAt(match.index + 1) || "_"; // add escaped character
+                }
+                if (formatList.length % 2) { // odd?
+                    formatList[formatList.length - 1] += nonFormChars;
+                }
+                else {
+                    formatList.push(nonFormChars);
+                }
+                if (match[0] === "_") { // underscore "_" is escape character
+                    reFormat.lastIndex += 1;
+                    index = reFormat.lastIndex;
+                }
+                else {
+                    formatList.push(match[0]);
+                    index = match.index + match[0].length;
+                }
             }
             if (index < format.length) { // non-format characters at the end
-                formatList.push(format.substring(index));
+                var nonFormCharsEnd = format.substring(index);
+                if (formatList.length % 2) { // odd?
+                    formatList[formatList.length - 1] += nonFormCharsEnd;
+                }
+                else {
+                    formatList.push(nonFormCharsEnd);
+                }
             }
             if (formatList.length < 2) {
                 if (!this.quiet) {
-                    Utils_20.Utils.console.warn("USING: empty or invalid format:", format);
+                    Utils_21.Utils.console.warn("USING: empty or invalid format:", format);
                 }
                 throw this.vmComposeError(Error(), 5, "USING format " + format); // Improper argument
             }
@@ -15147,35 +16492,42 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             }
             return s;
         };
-        CpcVm.vmVal = function (s) {
+        CpcVm.prototype.vmVal = function (s) {
             var num = 0;
             s = s.trim().toLowerCase();
-            if (s.startsWith("&x")) { // binary &x
-                s = s.slice(2);
-                num = parseInt(s, 2);
-            }
-            else if (s.startsWith("&h")) { // hex &h
-                s = s.slice(2);
-                num = parseInt(s, 16);
-                if (num > 32767) { // two's complement
-                    num -= 65536;
+            if (s[0] === "&") {
+                if (s[1] === "x") { // binary &x
+                    num = parseInt(s.slice(2), 2);
                 }
-            }
-            else if (s.startsWith("&")) { // hex &
-                s = s.slice(1);
-                num = parseInt(s, 16);
-                if (num > 32767) { // two's complement
-                    num -= 65536;
+                else {
+                    if (s[1] === "h") { // hex &h
+                        num = parseInt(s.slice(2), 16);
+                    }
+                    else { // hex &
+                        num = parseInt(s.slice(1), 16);
+                    }
+                    if (num > 32767) { // two's complement
+                        num -= 65536;
+                    }
+                }
+                if (isNaN(num)) {
+                    throw this.vmComposeError(Error(), 13, "VAL " + s); // Type mismatch
                 }
             }
             else if (s !== "") { // not empty string?
                 num = parseFloat(s);
+                if (isNaN(num)) {
+                    if (s[0] === "-" || s[0] === ".") { // this characters must follow a valid number
+                        throw this.vmComposeError(Error(), 13, "VAL " + s); // Type mismatch
+                    }
+                }
             }
             return num;
         };
         CpcVm.prototype.val = function (s) {
             this.vmAssertString(s, "VAL");
-            var num = CpcVm.vmVal(s);
+            s = s.replace(/ /g, ""); // remove spaces
+            var num = this.vmVal(s);
             if (isNaN(num)) {
                 num = 0;
             }
@@ -15246,7 +16598,7 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
             for (var i = 0; i < args.length; i += 1) {
                 var arg = args[i];
                 if (typeof arg === "number") {
-                    str = Utils_20.Utils.toPrecision9(arg);
+                    str = Utils_21.Utils.toPrecision9(arg);
                 }
                 else {
                     str = '"' + String(arg) + '"';
@@ -15275,10 +16627,11 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
                 if (!this.outFile.open) {
                     throw this.vmComposeError(Error(), 31, "WRITE #" + stream); // File not open
                 }
-                this.outFile.fileData.push(str + "\n"); // real CPC would use CRLF, we use LF
+                this.outFile.fileData.push(str + "\r\n"); // real CPC use CRLF
                 // currently we print data also to console...
             }
         };
+        // xor
         CpcVm.prototype.xpos = function () {
             return this.canvas.getXpos();
         };
@@ -15302,6 +16655,20 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
         CpcVm.minHimem = 370;
         CpcVm.maxHimem = 42747; // high memory limit (42747 after symbol after 256)
         CpcVm.emptyParas = {};
+        CpcVm.modeData = [
+            {
+                pens: 16 // number of pens (see also Canvas: modeData)
+            },
+            {
+                pens: 4
+            },
+            {
+                pens: 2
+            },
+            {
+                pens: 16
+            }
+        ];
         CpcVm.winData = [
             {
                 left: 0,
@@ -15461,156 +16828,140 @@ define("CpcVm", ["require", "exports", "Utils", "Random"], function (require, ex
     }());
     exports.CpcVm = CpcVm;
 });
-// CpcVmRst.ts - CPC Virtual Machine: RSX
-// (c) Marco Vieth, 2020
+// Snapshot.ts - Snapshot
+// (c) Marco Vieth, 2023
 // https://benchmarko.github.io/CPCBasicTS/
-//
-define("CpcVmRsx", ["require", "exports", "Utils"], function (require, exports, Utils_21) {
+define("Snapshot", ["require", "exports", "Utils"], function (require, exports, Utils_22) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.CpcVmRsx = void 0;
-    var CpcVmRsx = /** @class */ (function () {
-        function CpcVmRsx(vm) {
-            this.vm = vm;
+    exports.Snapshot = void 0;
+    var Snapshot = /** @class */ (function () {
+        function Snapshot(options) {
+            this.pos = 0;
+            this.options = {
+                quiet: false
+            };
+            this.setOptions(options);
         }
-        CpcVmRsx.prototype.rsxIsAvailable = function (name) {
-            return name in this;
+        Snapshot.prototype.getOptions = function () {
+            return this.options;
         };
-        CpcVmRsx.prototype.rsxExec = function (name) {
-            var args = [];
-            for (var _i = 1; _i < arguments.length; _i++) {
-                args[_i - 1] = arguments[_i];
+        Snapshot.prototype.setOptions = function (options) {
+            Object.assign(this.options, options);
+        };
+        Snapshot.prototype.composeError = function (error, message, value, pos) {
+            var len = 0;
+            return Utils_22.Utils.composeError("DiskImage", error, this.options.name + ": " + message, value, pos || 0, len);
+        };
+        Snapshot.testSnapIdent = function (ident) {
+            return ident === "MV - SNA";
+        };
+        Snapshot.prototype.readUInt8 = function () {
+            var num = this.options.data.charCodeAt(this.pos);
+            if (isNaN(num)) {
+                throw this.composeError(new Error(), "End of File", String(num), this.pos);
             }
-            if (this.rsxIsAvailable(name)) {
-                this[name].apply(this, args);
+            this.pos += 1;
+            return num;
+        };
+        Snapshot.prototype.readUInt16 = function () {
+            return this.readUInt8() + this.readUInt8() * 256;
+        };
+        Snapshot.prototype.readUInt8Array = function (len) {
+            var arr = [];
+            for (var i = 0; i < len; i += 1) {
+                arr.push(this.readUInt8());
             }
-            else {
-                throw this.vm.vmComposeError(Error(), 28, "|" + name); // Unknown command
+            return arr;
+        };
+        Snapshot.prototype.readUtf = function (len) {
+            var out = this.options.data.substring(this.pos, this.pos + len);
+            if (out.length !== len) {
+                throw this.composeError(new Error(), "End of File", "", this.pos);
             }
+            this.pos += len;
+            return out;
         };
-        CpcVmRsx.prototype.a = function () {
-            this.vm.vmNotImplemented("|A");
-        };
-        CpcVmRsx.prototype.b = function () {
-            this.vm.vmNotImplemented("|B");
-        };
-        CpcVmRsx.prototype.basic = function () {
-            Utils_21.Utils.console.log("basic: |BASIC");
-            this.vm.vmStop("reset", 90);
-        };
-        CpcVmRsx.prototype.cpm = function () {
-            this.vm.vmNotImplemented("|CPM");
-        };
-        CpcVmRsx.prototype.fnGetVariableByAddress = function (index) {
-            return this.vm.variables.getVariableByIndex(index) || "";
-        };
-        CpcVmRsx.prototype.fnGetParameterAsString = function (stringOrAddress) {
-            var string = ""; // for undefined
-            if (typeof stringOrAddress === "number") { // assuming addressOf
-                string = String(this.fnGetVariableByAddress(stringOrAddress));
-            }
-            else if (typeof stringOrAddress === "string") {
-                string = stringOrAddress;
-            }
-            return string;
-        };
-        CpcVmRsx.prototype.dir = function (fileMask) {
-            var stream = 0;
-            var fileMaskString = this.fnGetParameterAsString(fileMask);
-            if (fileMaskString) {
-                fileMaskString = this.vm.vmAdaptFilename(fileMaskString, "|DIR");
-            }
-            var fileParas = {
-                stream: stream,
-                command: "|dir",
-                fileMask: fileMaskString,
-                line: this.vm.line
+        Snapshot.prototype.getSnapshotInfo = function () {
+            this.pos = 0;
+            var info = {
+                ident: this.readUtf(8),
+                unused1: this.readUtf(8),
+                version: this.readUInt8(),
+                z80: {
+                    AF: this.readUInt16(),
+                    BC: this.readUInt16(),
+                    DE: this.readUInt16(),
+                    HL: this.readUInt16(),
+                    IR: this.readUInt16(),
+                    IFF: this.readUInt16(),
+                    IX: this.readUInt16(),
+                    IY: this.readUInt16(),
+                    SP: this.readUInt16(),
+                    PC: this.readUInt16(),
+                    M: this.readUInt8(),
+                    AF2: this.readUInt16(),
+                    BC2: this.readUInt16(),
+                    DE2: this.readUInt16(),
+                    HL2: this.readUInt16()
+                },
+                ga: {
+                    inknum: this.readUInt8(),
+                    inkval: this.readUInt8Array(17),
+                    multi: this.readUInt8()
+                },
+                ramconf: this.readUInt8(),
+                crtc: {
+                    index: this.readUInt8(),
+                    reg: this.readUInt8Array(18)
+                },
+                romnum: this.readUInt8(),
+                ppi: {
+                    portA: this.readUInt8(),
+                    portB: this.readUInt8(),
+                    portC: this.readUInt8(),
+                    portCtl: this.readUInt8()
+                },
+                psg: {
+                    index: this.readUInt8(),
+                    reg: this.readUInt8Array(16)
+                },
+                memsize: this.readUInt8()
             };
-            this.vm.vmStop("fileDir", 45, false, fileParas);
+            return info;
         };
-        CpcVmRsx.prototype.disc = function () {
-            this.vm.vmNotImplemented("|DISC");
+        Snapshot.prototype.getMemory = function () {
+            return this.options.data.substring(0x100); // memory dump without snapshot header
         };
-        CpcVmRsx.prototype.disc_in = function () {
-            this.vm.vmNotImplemented("|DISC.IN");
-        };
-        CpcVmRsx.prototype.disc_out = function () {
-            this.vm.vmNotImplemented("|DISC.OUT");
-        };
-        CpcVmRsx.prototype.drive = function () {
-            this.vm.vmNotImplemented("|DRIVE");
-        };
-        CpcVmRsx.prototype.era = function (fileMask) {
-            var stream = 0;
-            var fileMaskString = this.fnGetParameterAsString(fileMask);
-            fileMaskString = this.vm.vmAdaptFilename(fileMaskString, "|ERA");
-            var fileParas = {
-                stream: stream,
-                command: "|era",
-                fileMask: fileMaskString,
-                line: this.vm.line
-            };
-            this.vm.vmStop("fileEra", 45, false, fileParas);
-        };
-        CpcVmRsx.prototype.ren = function (newName, oldName) {
-            var stream = 0;
-            var newName2 = this.fnGetParameterAsString(newName), oldName2 = this.fnGetParameterAsString(oldName);
-            newName2 = this.vm.vmAdaptFilename(newName2, "|REN");
-            oldName2 = this.vm.vmAdaptFilename(oldName2, "|REN");
-            var fileParas = {
-                stream: stream,
-                command: "|ren",
-                fileMask: "",
-                newName: newName2,
-                oldName: oldName2,
-                line: this.vm.line
-            };
-            this.vm.vmStop("fileRen", 45, false, fileParas);
-        };
-        CpcVmRsx.prototype.tape = function () {
-            this.vm.vmNotImplemented("|TAPE");
-        };
-        CpcVmRsx.prototype.tape_in = function () {
-            this.vm.vmNotImplemented("|TAPE.IN");
-        };
-        CpcVmRsx.prototype.tape_out = function () {
-            this.vm.vmNotImplemented("|TAPE.OUT");
-        };
-        CpcVmRsx.prototype.user = function () {
-            this.vm.vmNotImplemented("|USER");
-        };
-        CpcVmRsx.prototype.mode = function (mode) {
-            mode = this.vm.vmInRangeRound(mode, 0, 3, "|MODE");
-            this.vm.vmChangeMode(mode);
-        };
-        CpcVmRsx.prototype.renum = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            this.vm.renum.apply(this.vm, args); // execute in vm context
-        };
-        return CpcVmRsx;
+        return Snapshot;
     }());
-    exports.CpcVmRsx = CpcVmRsx;
+    exports.Snapshot = Snapshot;
 });
 // FileHandler.ts - FileHandler
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("FileHandler", ["require", "exports", "Utils", "DiskImage", "ZipFile"], function (require, exports, Utils_22, DiskImage_1, ZipFile_1) {
+define("FileHandler", ["require", "exports", "Utils", "DiskImage", "Snapshot", "ZipFile"], function (require, exports, Utils_23, DiskImage_1, Snapshot_1, ZipFile_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FileHandler = void 0;
     var FileHandler = /** @class */ (function () {
         function FileHandler(options) {
-            this.adaptFilename = {};
-            this.updateStorageDatabase = {};
-            this.outputError = {};
-            this.adaptFilename = options.adaptFilename;
-            this.updateStorageDatabase = options.updateStorageDatabase;
-            this.outputError = options.outputError;
+            this.processFileImports = true;
+            this.options = {};
+            this.setOptions(options);
         }
+        FileHandler.prototype.setOptions = function (options) {
+            Object.assign(this.options, options);
+        };
+        FileHandler.prototype.getDiskImage = function () {
+            if (!this.diskImage) {
+                this.diskImage = new DiskImage_1.DiskImage({
+                    data: "" // will be set later
+                });
+            }
+            return this.diskImage;
+        };
         FileHandler.fnLocalStorageName = function (name, defaultExtension) {
             // modify name so we do not clash with localstorage methods/properites
             if (name.indexOf(".") < 0) { // no dot inside name?
@@ -15618,12 +16969,8 @@ define("FileHandler", ["require", "exports", "Utils", "DiskImage", "ZipFile"], f
             }
             return name;
         };
-        FileHandler.createMinimalAmsdosHeader = function (type, start, length) {
-            return {
-                typeString: type,
-                start: start,
-                length: length
-            };
+        FileHandler.getMetaIdent = function () {
+            return FileHandler.metaIdent;
         };
         FileHandler.joinMeta = function (meta) {
             return [
@@ -15631,47 +16978,19 @@ define("FileHandler", ["require", "exports", "Utils", "DiskImage", "ZipFile"], f
                 meta.typeString,
                 meta.start,
                 meta.length,
-                meta.entry
+                meta.entry,
+                meta.encoding
             ].join(";");
         };
         // starting with (line) number, or 7 bit ASCII characters without control codes except \x1a=EOF
-        FileHandler.prototype.processZipFile = function (uint8Array, name, imported) {
-            var zip;
-            try {
-                zip = new ZipFile_1.ZipFile(uint8Array, name); // rather data
-            }
-            catch (e) {
-                Utils_22.Utils.console.error(e);
-                if (e instanceof Error) {
-                    this.outputError(e, true);
-                }
-            }
-            if (zip) {
-                var zipDirectory = zip.getZipDirectory(), entries = Object.keys(zipDirectory);
-                for (var i = 0; i < entries.length; i += 1) {
-                    var name2 = entries[i];
-                    var data2 = void 0;
-                    try {
-                        data2 = zip.readData(name2);
-                    }
-                    catch (e) {
-                        Utils_22.Utils.console.error(e);
-                        if (e instanceof Error) { // eslint-disable-line max-depth
-                            this.outputError(e, true);
-                        }
-                    }
-                    if (data2) {
-                        this.fnLoad2(data2, name2, "", imported); // type not known but without meta
-                    }
-                }
-            }
-        };
         FileHandler.prototype.processDskFile = function (data, name, imported) {
             try {
-                var dsk = new DiskImage_1.DiskImage({
+                var dsk = this.getDiskImage();
+                dsk.setOptions({
                     data: data,
                     diskName: name
-                }), dir = dsk.readDirectory(), diskFiles = Object.keys(dir);
+                });
+                var dir = dsk.readDirectory(), diskFiles = Object.keys(dir);
                 for (var i = 0; i < diskFiles.length; i += 1) {
                     var fileName = diskFiles[i];
                     try { // eslint-disable-line max-depth
@@ -15679,28 +16998,62 @@ define("FileHandler", ["require", "exports", "Utils", "DiskImage", "ZipFile"], f
                         this.fnLoad2(data, fileName, "", imported); // recursive
                     }
                     catch (e) {
-                        Utils_22.Utils.console.error(e);
+                        Utils_23.Utils.console.error(e);
                         if (e instanceof Error) { // eslint-disable-line max-depth
-                            this.outputError(e, true);
+                            this.options.outputError(e, true);
                         }
                     }
                 }
             }
             catch (e) {
-                Utils_22.Utils.console.error(e);
+                Utils_23.Utils.console.error(e);
                 if (e instanceof Error) {
-                    this.outputError(e, true);
+                    this.options.outputError(e, true);
+                }
+            }
+        };
+        FileHandler.prototype.processZipFile = function (uint8Array, name, imported) {
+            var zip;
+            try {
+                zip = new ZipFile_1.ZipFile({
+                    data: uint8Array,
+                    zipName: name
+                });
+            }
+            catch (e) {
+                Utils_23.Utils.console.error(e);
+                if (e instanceof Error) {
+                    this.options.outputError(e, true);
+                }
+            }
+            if (zip) {
+                var zipDirectory = zip.getZipDirectory(), entries = Object.keys(zipDirectory);
+                for (var i = 0; i < entries.length; i += 1) {
+                    var name2 = entries[i];
+                    if (name2.startsWith("__MACOSX/")) { // MacOS X creates some extra folder in ZIP files
+                        Utils_23.Utils.console.log("processZipFile: Ignoring file:", name2);
+                    }
+                    else {
+                        var data2 = void 0;
+                        try {
+                            data2 = zip.readData(name2);
+                        }
+                        catch (e) {
+                            Utils_23.Utils.console.error(e);
+                            if (e instanceof Error) { // eslint-disable-line max-depth
+                                this.options.outputError(e, true);
+                            }
+                        }
+                        if (data2) {
+                            this.fnLoad2(data2, name2, "", imported); // type not known but without meta
+                        }
+                    }
                 }
             }
         };
         FileHandler.prototype.fnLoad2 = function (data, name, type, imported) {
-            if (data instanceof Uint8Array) { // FileSelect filereader zip file?
-                this.processZipFile(data, name, imported);
-                return;
-            }
-            var header, storageName = this.adaptFilename(name, "FILE");
-            storageName = FileHandler.fnLocalStorageName(storageName);
-            if (type === "") { // detetermine type
+            var header;
+            if (type === "" && !(data instanceof Uint8Array)) { // detetermine type
                 header = DiskImage_1.DiskImage.parseAmsdosHeader(data);
                 if (header) {
                     type = "H"; // with header
@@ -15709,6 +17062,9 @@ define("FileHandler", ["require", "exports", "Utils", "DiskImage", "ZipFile"], f
                 else if (FileHandler.reRegExpIsText.test(data)) {
                     type = "A";
                 }
+                else if (Snapshot_1.Snapshot.testSnapIdent(data.substring(0, 8))) { // snapshot file?
+                    type = "S";
+                }
                 else if (DiskImage_1.DiskImage.testDiskIdent(data.substring(0, 8))) { // disk image file?
                     type = "X";
                 }
@@ -15716,36 +17072,64 @@ define("FileHandler", ["require", "exports", "Utils", "DiskImage", "ZipFile"], f
             switch (type) {
                 case "A": // "text/plain"
                 case "B": // binary?
-                    header = FileHandler.createMinimalAmsdosHeader(type, 0, data.length);
-                    break;
-                case "Z": // zip file?
-                    this.processZipFile(Utils_22.Utils.string2Uint8Array(data), name, imported);
-                    break;
-                case "X": // dsk file?
-                    this.processDskFile(data, name, imported);
+                    header = DiskImage_1.DiskImage.createAmsdosHeader({
+                        typeString: type,
+                        length: data.length
+                    });
                     break;
                 case "H": // with header?
                     break;
+                case "S": // sna file?
+                    header = DiskImage_1.DiskImage.createAmsdosHeader({
+                        typeString: type,
+                        length: data.length
+                    }); // currently we store it
+                    break;
+                case "X": // dsk file?
+                    if (this.processFileImports) {
+                        this.processDskFile(data, name, imported); // we know data is string
+                    }
+                    else {
+                        header = DiskImage_1.DiskImage.createAmsdosHeader({
+                            typeString: type,
+                            length: data.length
+                        });
+                    }
+                    break;
+                case "Z": // zip file?
+                    if (this.processFileImports) {
+                        this.processZipFile(data instanceof Uint8Array ? data : Utils_23.Utils.string2Uint8Array(data), name, imported);
+                    }
+                    else {
+                        header = DiskImage_1.DiskImage.createAmsdosHeader({
+                            typeString: type,
+                            length: data.length
+                        });
+                    }
+                    break;
                 default:
-                    Utils_22.Utils.console.warn("fnLoad2: " + name + ": Unknown file type: " + type + ", assuming B");
-                    header = FileHandler.createMinimalAmsdosHeader("B", 0, data.length);
+                    Utils_23.Utils.console.warn("fnLoad2: " + name + ": Unknown file type: " + type + ", assuming B");
+                    header = DiskImage_1.DiskImage.createAmsdosHeader({
+                        typeString: "B",
+                        length: data.length
+                    });
                     break;
             }
-            if (header) {
-                var meta = FileHandler.joinMeta(header);
+            if (header) { // do we have a header? (means we should store it as a file in storage...)
+                var storageName = FileHandler.fnLocalStorageName(this.options.adaptFilename(name, "FILE")), meta = FileHandler.joinMeta(header), dataAsString = data instanceof Uint8Array ? Utils_23.Utils.uint8Array2string(data) : data;
                 try {
-                    Utils_22.Utils.localStorage.setItem(storageName, meta + "," + data);
-                    this.updateStorageDatabase("set", storageName);
-                    Utils_22.Utils.console.log("fnOnLoad: file: " + storageName + " meta: " + meta + " imported");
+                    Utils_23.Utils.localStorage.setItem(storageName, meta + "," + dataAsString);
+                    this.options.updateStorageDatabase("set", storageName);
+                    Utils_23.Utils.console.log("fnOnLoad: file: " + storageName + " meta: " + meta + " imported");
                     imported.push(name);
                 }
                 catch (e) { // maybe quota exceeded
-                    Utils_22.Utils.console.error(e);
+                    Utils_23.Utils.console.error(e);
                     if (e instanceof Error) {
                         if (e.name === "QuotaExceededError") {
                             e.shortMessage = storageName + ": Quota exceeded";
                         }
-                        this.outputError(e, true);
+                        this.options.outputError(e, true);
                     }
                 }
             }
@@ -15760,32 +17144,37 @@ define("FileHandler", ["require", "exports", "Utils", "DiskImage", "ZipFile"], f
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("FileSelect", ["require", "exports", "Utils", "View"], function (require, exports, Utils_23, View_6) {
+define("FileSelect", ["require", "exports", "Utils", "View"], function (require, exports, Utils_24, View_6) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FileSelect = void 0;
     var FileSelect = /** @class */ (function () {
         function FileSelect(options) {
-            this.fnEndOfImport = {};
-            this.fnLoad2 = {};
-            this.files = {}; // = dataTransfer ? dataTransfer.files : ((event.target as any).files as FileList), // dataTransfer for drag&drop, target.files for file input
             this.fileIndex = 0;
             this.imported = []; // imported file names
-            this.file = {}; // current file
-            this.fnEndOfImport = options.fnEndOfImport;
-            this.fnLoad2 = options.fnLoad2;
+            this.fnOnLoadHandler = this.fnOnLoad.bind(this);
+            this.fnOnErrorHandler = this.fnOnError.bind(this);
+            this.fnOnFileSelectHandler = this.fnOnFileSelect.bind(this);
+            this.options = {};
+            this.setOptions(options);
         }
+        FileSelect.prototype.getOptions = function () {
+            return this.options;
+        };
+        FileSelect.prototype.setOptions = function (options) {
+            Object.assign(this.options, options);
+        };
         FileSelect.prototype.fnReadNextFile = function (reader) {
-            if (this.fileIndex < this.files.length) {
+            if (this.files && this.fileIndex < this.files.length) {
                 var file = this.files[this.fileIndex];
                 this.fileIndex += 1;
                 var lastModified = file.lastModified, lastModifiedDate = lastModified ? new Date(lastModified) : file.lastModifiedDate, // lastModifiedDate deprecated, but for old IE
                 text = file.name + " " + (file.type || "n/a") + " " + file.size + " " + (lastModifiedDate ? lastModifiedDate.toLocaleDateString() : "n/a");
-                Utils_23.Utils.console.log(text);
+                Utils_24.Utils.console.log(text);
                 if (file.type === "text/plain") {
                     reader.readAsText(file);
                 }
-                else if (file.type === "application/x-zip-compressed") {
+                else if (file.type === "application/x-zip-compressed" || file.type === "application/zip") { // on Mac OS it is "application/zip"
                     reader.readAsArrayBuffer(file);
                 }
                 else {
@@ -15794,15 +17183,19 @@ define("FileSelect", ["require", "exports", "Utils", "View"], function (require,
                 this.file = file;
             }
             else {
-                this.fnEndOfImport(this.imported);
+                this.options.fnEndOfImport(this.imported);
             }
         };
         FileSelect.prototype.fnOnLoad = function (event) {
-            var reader = event.target, file = this.file, name = file.name;
+            if (!this.file) {
+                Utils_24.Utils.console.error("fnOnLoad: Programming error: No file");
+                return;
+            }
+            var file = this.file, name = file.name, reader = event.target;
             var data = (reader && reader.result) || null, type = file.type;
-            if (type === "application/x-zip-compressed" && data instanceof ArrayBuffer) {
+            if ((type === "application/x-zip-compressed" || type === "application/zip") && data instanceof ArrayBuffer) { // on Mac OS it is "application/zip"
                 type = "Z";
-                this.fnLoad2(new Uint8Array(data), name, type, this.imported);
+                this.options.fnLoad2(new Uint8Array(data), name, type, this.imported);
             }
             else if (typeof data === "string") {
                 if (type === "text/plain") { // "text/plain"
@@ -15816,76 +17209,913 @@ define("FileSelect", ["require", "exports", "Utils", "View"], function (require,
                         // remove meta prefix
                         data = data.substring(index + 1);
                         if (info1.indexOf("base64") >= 0) {
-                            data = Utils_23.Utils.atob(data); // decode base64
+                            data = Utils_24.Utils.atob(data); // decode base64
                         }
                         if (info1.indexOf("text/") >= 0) {
                             type = "A";
                         }
                     }
                 }
-                this.fnLoad2(data, name, type, this.imported);
+                this.options.fnLoad2(data, name, type, this.imported);
             }
             else {
-                Utils_23.Utils.console.warn("Error loading file", name, "with type", type, " unexpected data:", data);
+                Utils_24.Utils.console.warn("Error loading file", name, "with type", type, " unexpected data:", data);
             }
             if (reader) {
                 this.fnReadNextFile(reader);
             }
         };
-        FileSelect.prototype.fnErrorHandler = function (event, file) {
-            var reader = event.target;
-            var msg = "fnErrorHandler: Error reading file " + file.name;
-            if (reader && reader.error !== null) {
-                if (reader.error.NOT_FOUND_ERR) {
-                    msg += ": File not found";
-                }
-                else if (reader.error.ABORT_ERR) {
-                    msg = ""; // nothing
-                }
+        FileSelect.prototype.fnOnError = function (event) {
+            var reader = event.target, filename = (this.file && this.file.name) || "unknown";
+            var msg = "fnOnError: " + filename;
+            if (reader && reader.error) {
+                msg += ": " + String(reader.error);
             }
-            if (msg) {
-                Utils_23.Utils.console.warn(msg);
-            }
+            Utils_24.Utils.console.error(msg);
             if (reader) {
                 this.fnReadNextFile(reader);
             }
         };
         // https://stackoverflow.com/questions/10261989/html5-javascript-drag-and-drop-file-from-external-window-windows-explorer
         // https://www.w3.org/TR/file-upload/#dfn-filereader
-        FileSelect.prototype.fnHandleFileSelect = function (event) {
+        FileSelect.prototype.fnOnFileSelect = function (event) {
             event.stopPropagation();
             event.preventDefault();
             var dataTransfer = event.dataTransfer, files = dataTransfer ? dataTransfer.files : View_6.View.getEventTarget(event).files; // dataTransfer for drag&drop, target.files for file input
             if (!files || !files.length) {
-                Utils_23.Utils.console.error("fnHandleFileSelect: No files!");
+                Utils_24.Utils.console.error("fnHandleFileSelect: No files!");
                 return;
             }
             this.files = files;
             this.fileIndex = 0;
             this.imported.length = 0;
             if (window.FileReader) {
-                var reader = new FileReader();
-                reader.onerror = this.fnErrorHandler.bind(this);
-                reader.onload = this.fnOnLoad.bind(this);
+                var reader = new window.FileReader();
+                reader.onerror = this.fnOnErrorHandler;
+                reader.onload = this.fnOnLoadHandler;
                 this.fnReadNextFile(reader);
             }
             else {
-                Utils_23.Utils.console.warn("fnHandleFileSelect: FileReader API not supported.");
+                Utils_24.Utils.console.warn("fnHandleFileSelect: FileReader API not supported.");
             }
         };
         //TODO: can we use View.attachEventHandler() somehow?
         FileSelect.prototype.addFileSelectHandler = function (element, type) {
-            element.addEventListener(type, this.fnHandleFileSelect.bind(this), false);
+            element.addEventListener(type, this.fnOnFileSelectHandler, false);
         };
         return FileSelect;
     }());
     exports.FileSelect = FileSelect;
 });
+// RsxAmsdos.ts - RSX Amsdos Commands
+// (c) Marco Vieth, 2023
+// https://benchmarko.github.io/CPCBasicTS/
+//
+define("RsxAmsdos", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.RsxAmsdos = void 0;
+    var RsxAmsdos = /** @class */ (function () {
+        function RsxAmsdos() {
+        }
+        RsxAmsdos.fnGetParameterAsString = function (vm, stringOrAddress) {
+            var string = ""; // for undefined
+            if (typeof stringOrAddress === "number") { // assuming addressOf
+                string = String(vm.vmGetVariableByIndex(stringOrAddress) || "");
+            }
+            else if (typeof stringOrAddress === "string") {
+                string = stringOrAddress;
+            }
+            return string;
+        };
+        RsxAmsdos.dir = function (fileMask) {
+            var stream = 0;
+            var fileMaskString = RsxAmsdos.fnGetParameterAsString(this, fileMask);
+            if (fileMaskString) {
+                fileMaskString = this.vmAdaptFilename(fileMaskString, "|DIR");
+            }
+            var fileParas = {
+                stream: stream,
+                command: "|dir",
+                fileMask: fileMaskString,
+                line: this.line
+            };
+            this.vmStop("fileDir", 45, false, fileParas);
+        };
+        RsxAmsdos.era = function (fileMask) {
+            var stream = 0;
+            var fileMaskString = RsxAmsdos.fnGetParameterAsString(this, fileMask);
+            fileMaskString = this.vmAdaptFilename(fileMaskString, "|ERA");
+            var fileParas = {
+                stream: stream,
+                command: "|era",
+                fileMask: fileMaskString,
+                line: this.line
+            };
+            this.vmStop("fileEra", 45, false, fileParas);
+        };
+        RsxAmsdos.ren = function (newName, oldName) {
+            var stream = 0;
+            var newName2 = RsxAmsdos.fnGetParameterAsString(this, newName), oldName2 = RsxAmsdos.fnGetParameterAsString(this, oldName);
+            newName2 = this.vmAdaptFilename(newName2, "|REN");
+            oldName2 = this.vmAdaptFilename(oldName2, "|REN");
+            var fileParas = {
+                stream: stream,
+                command: "|ren",
+                fileMask: "",
+                newName: newName2,
+                oldName: oldName2,
+                line: this.line
+            };
+            this.vmStop("fileRen", 45, false, fileParas);
+        };
+        RsxAmsdos.prototype.getRsxCommands = function () {
+            return RsxAmsdos.rsxCommands;
+        };
+        RsxAmsdos.rsxCommands = {
+            a: function () {
+                this.vmNotImplemented("|A");
+            },
+            b: function () {
+                this.vmNotImplemented("|B");
+            },
+            cpm: function () {
+                this.vmNotImplemented("|CPM");
+            },
+            dir: RsxAmsdos.dir,
+            disc: function () {
+                this.vmNotImplemented("|DISC");
+            },
+            "disc.in": function () {
+                this.vmNotImplemented("|DISC.IN");
+            },
+            "disc.out": function () {
+                this.vmNotImplemented("|DISC.OUT");
+            },
+            drive: function () {
+                this.vmNotImplemented("|DRIVE");
+            },
+            era: RsxAmsdos.era,
+            ren: RsxAmsdos.ren,
+            tape: function () {
+                this.vmNotImplemented("|TAPE");
+            },
+            "tape.in": function () {
+                this.vmNotImplemented("|TAPE.IN");
+            },
+            "tape.out": function () {
+                this.vmNotImplemented("|TAPE.OUT");
+            },
+            user: function () {
+                this.vmNotImplemented("|USER");
+            }
+        };
+        return RsxAmsdos;
+    }());
+    exports.RsxAmsdos = RsxAmsdos;
+});
+// RsxCpcBasic.ts - RSX CpcBasic
+// (c) Marco Vieth, 2023
+// https://benchmarko.github.io/CPCBasicTS/
+//
+define("RsxCpcBasic", ["require", "exports", "Utils"], function (require, exports, Utils_25) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.RsxCpcBasic = void 0;
+    var RsxCpcBasic = /** @class */ (function () {
+        function RsxCpcBasic() {
+        }
+        RsxCpcBasic.prototype.getRsxCommands = function () {
+            return RsxCpcBasic.rsxCommands;
+        };
+        RsxCpcBasic.rsxCommands = {
+            basic: function () {
+                Utils_25.Utils.console.log("basic: |BASIC");
+                this.vmStop("reset", 90);
+            },
+            mode: function (mode) {
+                mode = this.vmInRangeRound(Number(mode), 0, 3, "|MODE");
+                this.vmChangeMode(mode);
+            },
+            renum: function () {
+                var args = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    args[_i] = arguments[_i];
+                }
+                this.renum.apply(this, args);
+            }
+        };
+        return RsxCpcBasic;
+    }());
+    exports.RsxCpcBasic = RsxCpcBasic;
+});
+// Z80Disass.ts - Z80 Disassembler
+// (c) Marco Vieth, 1995-2023
+// based on Cpcemu: DISASS.CPP, CPCDIS.C
+//
+// https://benchmarko.github.io/CPCBasicTS/
+//
+define("Z80Disass", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.Z80Disass = void 0;
+    /* eslint-disable no-bitwise */
+    var Z80Disass = /** @class */ (function () {
+        function Z80Disass(options) {
+            this.dissOp = 0; // actual op-code
+            this.prefix = 0; // actual prefix: 0=none, 1=0xDD, 2=0xFD, 4=0xED
+            this.options = {
+                format: 7
+            };
+            this.setOptions(options);
+        }
+        Z80Disass.prototype.getOptions = function () {
+            return this.options;
+        };
+        Z80Disass.prototype.setOptions = function (options) {
+            Object.assign(this.options, options);
+        };
+        Z80Disass.prototype.readByte = function (i) {
+            var data = this.options.data;
+            return data[i] | 0;
+        };
+        Z80Disass.prototype.readWord = function (i) {
+            var data = this.options.data;
+            return data[i] | ((data[i + 1]) << 8);
+        };
+        Z80Disass.prototype.bget = function () {
+            var by = this.readByte(this.options.addr);
+            this.options.addr += 1;
+            return by;
+        };
+        // byte-out: returns byte xx at PC; PC++
+        Z80Disass.prototype.bout = function () {
+            var by = this.bget();
+            return Z80Disass.hexMark + by.toString(16).toUpperCase().padStart(2, "0");
+        };
+        // word-out: returns word xxyy from PC, PC+=2
+        Z80Disass.prototype.wout = function () {
+            var wo = this.readWord(this.options.addr);
+            this.options.addr += 2;
+            return Z80Disass.hexMark + wo.toString(16).toUpperCase().padStart(4, "0");
+        };
+        // relative-address-out : gets it from PC and returns PC+(signed)tt ; PC++
+        Z80Disass.prototype.radrout = function () {
+            var dis = this.bget(); // displacement, signed! (0= next instruction)
+            dis = dis << 24 >> 24; // convert to signed
+            // https://stackoverflow.com/questions/56577958/how-to-convert-one-byte-8-bit-to-signed-integer-in-javascript
+            var addr = this.options.addr + dis;
+            if (addr < 0) {
+                addr += 65536;
+            }
+            return Z80Disass.hexMark + addr.toString(16).toUpperCase().padStart(4, "0");
+        };
+        /* eslint-enable array-element-newline */
+        // byte-register-out : returns string to an 8-bit register
+        // handles prefix, special op-codes with IX,IY and h,l
+        Z80Disass.prototype.bregout = function (nr) {
+            var dissOp = this.dissOp;
+            nr &= 0x07; // only 3 bit
+            var prefix = this.prefix;
+            // special cases of op-codes with h,l and (ix) or (iy)
+            if (prefix === 4 || (this.prefix === 1 || this.prefix === 2) && (dissOp === 0x66 || dissOp === 0x6e || dissOp === 0x74 || dissOp === 0x75) && (nr !== 6)) {
+                prefix = 0;
+            }
+            return Z80Disass.bregtab[prefix][nr] + (prefix && (nr === 6) ? this.bout() + ")" : ""); // only 3 bit
+        };
+        /* eslint-enable array-element-newline */
+        // word-register-out : returns string to a 16-bit-register
+        // handles prefix
+        Z80Disass.prototype.wregout = function (nr) {
+            var prefix = (this.prefix === 1 || this.prefix === 2) ? this.prefix : 0;
+            return Z80Disass.wregtab[prefix][nr & 0x03]; // only 2 bit
+        };
+        // push-pop-register-out: like wregout, only SP substituted by AF
+        Z80Disass.prototype.pupoRegout = function (nr) {
+            nr &= 0x03; // only 2 bit
+            if (nr === 3) {
+                return "AF"; // replace SP by AF
+            }
+            return this.wregout(nr);
+        };
+        Z80Disass.prototype.onlyPrefix = function () {
+            var out = "";
+            if (this.prefix === 1) {
+                out = "[DD]-prefix";
+            }
+            else if (this.prefix === 2) { // prefix == 2
+                out = "[FD]-prefix";
+            }
+            else { // prefix === 4
+                out = "[ED]-prefix";
+            }
+            this.options.addr -= 1;
+            return out;
+        };
+        Z80Disass.prototype.operdisCB = function () {
+            // rlc,rrc,rl,rr,sla,sra,sls*,srl rrr [rrr=b,c,d,e,h,l,(hl),a]
+            // bit bbb,rrr; res bbb,rrr; set bbb,rrr [rrr=b,c,d,e,h,l,(hl),a]
+            var out = "", newop; // new op
+            if (this.prefix === 1 || this.prefix === 2) { // ix/iy-flag (ix or iy !)
+                newop = ((this.readByte(this.options.addr + 1) & 0xfe) | 0x06); // transform code x0..x7=>x6 , x8..xf=>xe  (always ix.., iy.. )
+            }
+            else {
+                newop = this.readByte(this.options.addr);
+            }
+            var b6b7 = newop >> 6, // test b6,7
+            b3b4b5 = (newop >> 3) & 0x07;
+            if (b6b7 === 0) { // 00-3f (rlc,rrc,rl,rr,sla,sra,sls*,srl rrr)
+                out = Z80Disass.rlcTable[b3b4b5] + " " + this.bregout(newop); // b3b4b5
+            }
+            else { // 40-7f: bit bbb,rrr; 80-bf: res bbb,rrr; c0-ff: set bbb,rrr
+                out = Z80Disass.bitResSetTable[b6b7 - 1] + " " + b3b4b5 + "," + this.bregout(newop);
+            }
+            if (this.prefix === 1 || this.prefix === 2) { // ix/iy-flag (ix or iy !)
+                if ((newop !== this.readByte(this.options.addr)) && ((newop >> 6) !== 0x01)) { // there was a transform; not bit-instruction
+                    var premem = this.prefix; // memorize prefix
+                    this.prefix = 0; // only h or l
+                    out += " & LD " + this.bregout(this.readByte(this.options.addr));
+                    this.prefix = premem; // old prefix
+                }
+            }
+            this.options.addr += 1;
+            return out;
+        };
+        Z80Disass.prototype.operdisEDpart40To7F = function (dissOp) {
+            var out = "";
+            switch (dissOp & 0x07) { // test b0,b1,b2
+                case 0: // in rrr,(c),
+                    if (dissOp === 0x70) {
+                        out = "*IN X,(C)"; // 70
+                    }
+                    else {
+                        out = "IN " + this.bregout(dissOp >> 3) + ",(C)";
+                    }
+                    break;
+                case 1: // out (c),rrr, *out (c),0
+                    if (dissOp === 0x71) {
+                        out = "*OUT (C),0"; // 71
+                    }
+                    else {
+                        out = "OUT (C)," + this.bregout(dissOp >> 3);
+                    }
+                    break;
+                case 2: // sbc hl,dd; add hl,dd [dd=bc,de,hl,sp]; not ix,iy!
+                    out = (dissOp & 0x08 ? "ADC" : "SBC") + " HL," + this.wregout(dissOp >> 4); // b3=1: adc, otherwise sbc
+                    break;
+                case 3: // ld (xxyy),dd! [dd=bc,de,hl,sp]
+                    if (dissOp & 0x08) { // b3=1  ld dd,(xxyy)
+                        out = "LD " + this.wregout(dissOp >> 4) + ",(" + this.wout() + ")"; // not ix,iy
+                    }
+                    else { // b3=0  ld (xxyy),dd
+                        out = "LD (" + this.wout() + ")," + this.wregout(dissOp >> 4);
+                    }
+                    break;
+                case 4: // neg
+                    out = dissOp === 0x44 ? "NEG" : "*NEG"; // 44: NEG; 4c,54,5c,64,6c,74,7c: *NEG
+                    break;
+                case 5: // retn, reti
+                    if (dissOp === 0x45) {
+                        out = "RETN";
+                    }
+                    else if (dissOp === 0x4d) {
+                        out = "RETI";
+                    }
+                    else if ((dissOp & 0x0f) === 0x05) {
+                        out = "*RETN"; // 55,65,75
+                    }
+                    else {
+                        out = "*RETI"; // 5d,6d,7d
+                    }
+                    break;
+                case 6: // im 0; im 1; im 2
+                    switch (dissOp) {
+                        case 0x46: // im 0
+                            out = "IM 0";
+                            break;
+                        case 0x56: // im 1
+                            out = "IM 1";
+                            break;
+                        case 0x5e: // im 2
+                            out = "IM 2";
+                            break;
+                        case 0x4e: // *im 0
+                        case 0x66:
+                        case 0x6e:
+                            out = "*IM 0";
+                            break;
+                        case 0x76:
+                            out = "*IM 1";
+                            break;
+                        case 0x7e:
+                            out = "*IM 2";
+                            break;
+                        default:
+                            // impossible
+                            break;
+                    }
+                    break;
+                case 7: // ld i,a; ld r,a;  ld a,i; ld a,r; rrd; rld
+                    out = Z80Disass.ldIaTable[(dissOp >> 3) & 0x07]; // b3,b4,b5
+                    break;
+                default:
+                    break;
+            }
+            return out;
+        };
+        /* eslint-enable array-element-newline */
+        Z80Disass.prototype.operdisED = function (dissOp) {
+            var out = "";
+            switch (dissOp >> 6) { // test b6,7
+                case 0: // 00-3f // missing
+                    out = Z80Disass.unknownOp;
+                    break;
+                case 1: // 40-7f // ...
+                    out = this.operdisEDpart40To7F(dissOp);
+                    break;
+                default:
+                    break;
+                case 2: // 80-bf
+                    if ((dissOp & 0x24) === 0x20) { // b5=1 and b2=0
+                        // ldi,ldd,ldir,lddr; cp,cpd,cpir,cpdr; ini,ind,inir,indr; outi,outd,otir,otdr
+                        out = Z80Disass.repeatTable[dissOp & 0x03][(dissOp >> 3) & 0x03]; // b0b1 and b3b4
+                    }
+                    else {
+                        out = Z80Disass.unknownOp;
+                    }
+                    break;
+                case 3: // c0-f8 // missing
+                    out = Z80Disass.unknownOp;
+                    break;
+            }
+            return out;
+        };
+        //
+        // Disassemble 00-3F
+        //
+        Z80Disass.prototype.operdis00To3Fpart00 = function (b3b4b5) {
+            // nop; ex af,af'; djnz; jr; jr nz,z,nc,c
+            var out = "";
+            switch (b3b4b5) { // test b3,b4,b5
+                case 0: // nop
+                    out = "NOP";
+                    break;
+                case 1: // ex af,af'
+                    out = "EX AF,AF'";
+                    break;
+                case 2: // djnz tt
+                    out = "DJNZ " + this.radrout();
+                    break;
+                case 3: // jr tt
+                    out = "JR " + this.radrout();
+                    break;
+                default: // 4-7 (b3=1, b4b5)
+                    out = "JR " + Z80Disass.conditionTable[b3b4b5 & 0x03] + "," + this.radrout();
+                    break;
+            }
+            return out;
+        };
+        Z80Disass.prototype.operdis00To3Fpart01 = function (dissOp) {
+            // ld dd,xxyy; add hl,dd [dd=bc,de,hl,sp]
+            var out = "";
+            if (dissOp & 0x08) { // b3=1  add hl,dd
+                out = "ADD " + this.wregout(2) + "," + this.wregout(dissOp >> 4); // hl maybe ix,iy
+            }
+            else {
+                out = "LD " + this.wregout(dissOp >> 4) + "," + this.wout();
+            }
+            return out;
+        };
+        Z80Disass.prototype.operdis00To3Fpart02 = function (b3b4b5) {
+            // ld (xxyy),a!; ld (bc de),a!; ld (xxyy),hl!
+            var out = "";
+            if (b3b4b5 & 0x04) { // b5=1  ld (xxyy),hl!; ld (xxyy),a!
+                switch (b3b4b5 & 0x03) { // test b3,b4
+                    case 0: // ld (xxyy),hl
+                        out = "LD (" + this.wout() + ")," + this.wregout(2);
+                        break;
+                    case 1: // ld hl,(xxyy)
+                        out = "LD " + this.wregout(2) + ",(" + this.wout() + ")";
+                        break;
+                    case 2: // ld (xxyy),a
+                        out = "LD (" + this.wout() + "),A";
+                        break;
+                    case 3: // ld a,(xxyy)
+                        out = "LD A,(" + this.wout() + ")";
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else { // b5=0  ld (bc de),a ld a,(bc de)
+                switch (b3b4b5 & 0x03) { // test b3,b4
+                    case 0:
+                        out = "LD (BC),A";
+                        break;
+                    case 1:
+                        out = "LD A,(BC)";
+                        break;
+                    case 2:
+                        out = "LD (DE),A";
+                        break;
+                    case 3:
+                        out = "LD A,(DE)";
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return out;
+        };
+        Z80Disass.prototype.operdis00To3F = function (dissOp) {
+            var out = "";
+            switch (dissOp & 0x07) { // test b0,b1,b2
+                case 0: // nop; ex af,af'; djnz; jr; jr nz,z,nc,c
+                    out = this.operdis00To3Fpart00((dissOp >> 3) & 0x07); // test b3,b4,b5
+                    break;
+                case 1: // ld dd,xxyy; add hl,dd
+                    out = this.operdis00To3Fpart01(dissOp);
+                    break;
+                case 2: // ld (xxyy),a; ld (bc de),a ld a,(bc de); ld (xxyy),hl
+                    out = this.operdis00To3Fpart02((dissOp >> 3) & 0x07); // test b3,b4,b5
+                    break;
+                case 3: // inc dd; dec dd; [dd=bc,de,hl,sp]; b3=1: dec
+                    out = (dissOp & 0x08 ? "DEC " : "INC ") + this.wregout(dissOp >> 4);
+                    break;
+                case 4: // inc rrr
+                    out = "INC " + this.bregout(dissOp >> 3);
+                    break;
+                case 5: // dec rrr
+                    out = "DEC " + this.bregout(dissOp >> 3);
+                    break;
+                case 6: // ld rrr,xx  [rrr=b,c,d,e,h,l,(hl)|(ix+d),a]
+                    out = "LD " + this.bregout(dissOp >> 3) + "," + this.bout();
+                    break;
+                case 7: // rlca,rrca,rla,rra; scf,ccf; daa,cpl
+                    out = Z80Disass.rlcaTable[(dissOp >> 3) & 0x07];
+                    break;
+                default:
+                    break;
+            }
+            return out;
+        };
+        //
+        // Disassemble C0-FF
+        //
+        Z80Disass.prototype.operdisC0ToFFpart01 = function (dissOp) {
+            // pop ee [ee=bc,de,hl,af]; ld sp,hl; jp (hl); ret; exx
+            var out = "";
+            var b4b5 = (dissOp >> 4) & 0x03; // test b4,b5
+            if (dissOp & 0x08) { // b3=1  ld sp,hl; jp (hl); ret; exx
+                switch (b4b5) { // test b4,b5
+                    case 0:
+                        out = "RET";
+                        break;
+                    case 1:
+                        out = "EXX";
+                        break;
+                    case 2:
+                        out = "JP (" + this.wregout(2) + ")"; // no displacement with ix,iy !!
+                        break;
+                    case 3:
+                        out = "LD SP," + this.wregout(2);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else { // b3=0  pop ee [ee=bc,de,hl,af]
+                out = "POP " + this.pupoRegout(b4b5); // b4,b5
+            }
+            return out;
+        };
+        Z80Disass.prototype.operdisC0ToFFpart03 = function (b3b4b5) {
+            // ex (sp),hl; out (xx),a; di,ei; jp xxyy; ex de,hl; CB
+            var out = "";
+            switch (b3b4b5) { // test b3,b4,b5
+                case 0: // jp xxyy
+                    out = "JP " + this.wout();
+                    break;
+                case 1: // CB
+                    out = this.operdisCB();
+                    break;
+                case 2: // out (xx),a
+                    out = "OUT (" + this.bout() + "),A";
+                    break;
+                case 3: // in a,(xx)
+                    out = "IN A,(" + this.bout() + ")";
+                    break;
+                case 4: // ex (sp),hl
+                    out = "EX (SP)," + this.wregout(2);
+                    break;
+                case 5: // ex de,hl
+                    out = "EX DE,HL"; // not IX,IY !!
+                    break;
+                case 6: // di
+                    out = "DI";
+                    break;
+                case 7: // ei
+                    out = "EI";
+                    break;
+                default:
+                    break;
+            }
+            return out;
+        };
+        Z80Disass.prototype.operdisC0ToFFpart05 = function (dissOp) {
+            // push ee; call xxyy; ED; [IX IY]
+            var out = "";
+            var b4b5 = (dissOp >> 4) & 0x03; // test b4,b5
+            if (dissOp & 0x08) { // b3=1  call xxyy; ED; [IX IY]
+                if (b4b5 === 0) { // test b4,b5
+                    out = "CALL " + this.wout();
+                }
+                else {
+                    out = this.onlyPrefix(); // [IX,IY] and another IX,ED or IY prefix
+                }
+            }
+            else { // b3=0  push ee [ee=bc,de,hl,af]
+                out = "PUSH " + this.pupoRegout(b4b5); // b4, b5
+            }
+            return out;
+        };
+        Z80Disass.prototype.operdisC0ToFF = function (dissOp) {
+            var out = "";
+            switch (dissOp & 0x07) { // test b0,b1,b2
+                case 0: // ret ccc [ccc=nz,z,nc,c,po,pe,p,m]
+                    out = "RET " + Z80Disass.conditionTable[(dissOp >> 3) & 0x07];
+                    break;
+                case 1: // pop ee; ld sp,hl; jp (hl); ret; exx
+                    out = this.operdisC0ToFFpart01(dissOp);
+                    break;
+                case 2: // jp ccc,xxyy [ccc=nz,z,nc,c,po,pe,p,m]
+                    out = "JP " + Z80Disass.conditionTable[(dissOp >> 3) & 0x07] + "," + this.wout();
+                    break;
+                case 3: // ex (sp),hl; out (xx),a; di,ei; jp xxyy; ex de,hl; CB
+                    out = this.operdisC0ToFFpart03((dissOp >> 3) & 0x07); // test b3,b4,b5
+                    break;
+                case 4: // call ccc,xxyy [ccc=nz,z,nc,c,po,pe,p,m]
+                    out = "CALL " + Z80Disass.conditionTable[(dissOp >> 3) & 0x07] + "," + this.wout();
+                    break;
+                case 5: // push ee; call xxyy; [ED; IX IY]
+                    out = this.operdisC0ToFFpart05(dissOp);
+                    break;
+                case 6: // add,adc,sub,sbc,and,xor,or,cp a, xx
+                    out = Z80Disass.arithMTab[(dissOp >> 3) & 0x07] + this.bout(); // arith depends on b3,b4,b5
+                    break;
+                case 7: // rst ppp*3
+                    out = "RST " + Z80Disass.hexMark + (dissOp & 0x38).toString(16).toUpperCase().padStart(2, "0"); // ppp at b5..b3
+                    break;
+                default:
+                    break;
+            }
+            return out;
+        };
+        // disassembles next instruction
+        Z80Disass.prototype.getNextLine = function () {
+            var dissOp = this.bget();
+            var prefix = Z80Disass.prefixMap[dissOp] || 0;
+            if (prefix) { // DD, FD, ED?
+                dissOp = this.bget();
+            }
+            this.prefix = prefix;
+            this.dissOp = dissOp;
+            var out = "";
+            if (prefix === 4) {
+                out = this.operdisED(dissOp);
+            }
+            else {
+                switch (dissOp >> 6) { // test b6,7
+                    case 0: // 00-3f
+                        out = this.operdis00To3F(dissOp);
+                        break;
+                    case 1: // 40-7f // halt; ld rrr,rrr2 [rrr,rr2=b,c,d,e,h,l,(hl),a]
+                        out = dissOp === 0x76 ? "HALT" : "LD " + this.bregout(dissOp >> 3) + "," + this.bregout(dissOp);
+                        break;
+                    case 2: // 80-bf // add,adc,sub,sbc,and,xor,or,cp a,rrr [rrr=b,c,d,e,h,l,(hl),a]
+                        out = Z80Disass.arithMTab[(dissOp >> 3) & 0x07] + this.bregout(dissOp);
+                        break;
+                    case 3: // c0-ff
+                        out = this.operdisC0ToFF(dissOp);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return out;
+        };
+        Z80Disass.prototype.disassLine = function () {
+            var _a;
+            var format = (_a = this.options.format) !== null && _a !== void 0 ? _a : 7, startAddr = this.options.addr, line = this.getNextLine();
+            var out = "";
+            if (format & 1) {
+                out += startAddr.toString(16).toUpperCase().padStart(4, "0");
+            }
+            if (format & 2) {
+                var byteHex = [];
+                if (out.length) {
+                    out += "  ";
+                }
+                for (var i = startAddr; i < this.options.addr; i += 1) {
+                    var byte = this.readByte(i) || 0;
+                    byteHex.push(byte.toString(16).toUpperCase().padStart(2, "0"));
+                }
+                while (byteHex.length < 4) {
+                    byteHex.push("  ");
+                }
+                out += byteHex.join(" ");
+            }
+            if (format & 4) {
+                if (out.length) {
+                    out += "  ";
+                }
+                out += line;
+            }
+            return out;
+        };
+        Z80Disass.hexMark = "&"; // hex-marker, "&" or "#" or ""
+        /* eslint-disable array-element-newline */
+        Z80Disass.bregtab = [
+            ["B", "C", "D", "E", "H", "L", "(HL)", "A"],
+            ["B", "C", "D", "E", "HX", "LX", "(IX+", "A"],
+            ["B", "C", "D", "E", "HY", "LY", "(IY+", "A"] // FD-Prefix
+        ];
+        /* eslint-disable array-element-newline */
+        Z80Disass.wregtab = [
+            ["BC", "DE", "HL", "SP"],
+            ["BC", "DE", "IX", "SP"],
+            ["BC", "DE", "IY", "SP"] // FD-Prefix
+        ];
+        Z80Disass.unknownOp = "unknown";
+        //
+        // Disassemble CB
+        //
+        Z80Disass.rlcTable = ["RLC", "RRC", "RL", "RR", "SLA", "SRA", "SLS*", "SRL"]; // eslint-disable-line array-element-newline
+        Z80Disass.bitResSetTable = ["BIT", "RES", "SET"]; // eslint-disable-line array-element-newline
+        //
+        // Disassemble ED
+        //
+        Z80Disass.ldIaTable = ["LD I,A", "LD R,A", "LD A,I", "LD A,R", "RRD", "RLD", Z80Disass.unknownOp, Z80Disass.unknownOp]; // eslint-disable-line array-element-newline
+        /* eslint-disable array-element-newline */
+        Z80Disass.repeatTable = [
+            ["LDI", "LDD", "LDIR", "LDDR"],
+            ["CPI", "CPD", "CPIR", "CPDR"],
+            ["INI", "IND", "INIR", "INDR"],
+            ["OUTI", "OUTD", "OTIR", "OTDR"]
+        ];
+        Z80Disass.conditionTable = ["NZ", "Z", "NC", "C", "PO", "PE", "P", "M"]; // eslint-disable-line array-element-newline
+        Z80Disass.rlcaTable = ["RLCA", "RRCA", "RLA", "RRA", "DAA", "CPL", "SCF", "CCF"]; // eslint-disable-line array-element-newline
+        Z80Disass.arithMTab = ["ADD A,", "ADC A,", "SUB ", "SBC A,", "AND ", "XOR ", "OR ", "CP "]; // eslint-disable-line array-element-newline
+        //
+        // Disassemble main
+        //
+        Z80Disass.prefixMap = {
+            0xDD: 1,
+            0xFD: 2,
+            0xED: 4
+        };
+        return Z80Disass;
+    }());
+    exports.Z80Disass = Z80Disass;
+});
+/* eslint-enable no-bitwise */
+// end
+// NoCanvas.ts - No Canvas
+// (c) Marco Vieth, 2023
+// https://benchmarko.github.io/CPCBasicTS/
+//
+define("NoCanvas", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.NoCanvas = void 0;
+    var NoCanvas = /** @class */ (function () {
+        function NoCanvas(options) {
+            this.options = {};
+            this.setOptions(options);
+            this.reset();
+        }
+        NoCanvas.prototype.getOptions = function () {
+            return this.options;
+        };
+        NoCanvas.prototype.setOptions = function (options) {
+            Object.assign(this.options, options);
+        };
+        NoCanvas.prototype.reset = function () {
+        };
+        NoCanvas.prototype.resetCustomChars = function () {
+        };
+        NoCanvas.prototype.setScreenOffset = function (_offset) {
+        };
+        NoCanvas.prototype.updateColorsAndCanvasImmediately = function (_inkList) {
+        };
+        NoCanvas.prototype.updateSpeedInk = function () {
+        };
+        NoCanvas.prototype.setCustomChar = function (_char, _charData) {
+        };
+        NoCanvas.prototype.getCharData = function (_char) {
+            return [];
+        };
+        NoCanvas.prototype.setDefaultInks = function () {
+        };
+        NoCanvas.prototype.onCanvasClick = function (_event) {
+        };
+        NoCanvas.prototype.getXpos = function () {
+            return 0;
+        };
+        NoCanvas.prototype.getYpos = function () {
+            return 0;
+        };
+        NoCanvas.prototype.getByte = function (_addr) {
+            return 0;
+        };
+        NoCanvas.prototype.setByte = function (_addr, _byte) {
+        };
+        NoCanvas.prototype.draw = function (_x, _y) {
+        };
+        NoCanvas.prototype.move = function (_x, _y) {
+        };
+        NoCanvas.prototype.plot = function (_x, _y) {
+        };
+        NoCanvas.prototype.test = function (_x, _y) {
+            return 0;
+        };
+        NoCanvas.prototype.setInk = function (_pen, _ink1, _ink2) {
+            return false;
+        };
+        NoCanvas.prototype.setBorder = function (_ink1, _ink2) {
+        };
+        NoCanvas.prototype.setGPen = function (_gPen) {
+        };
+        NoCanvas.prototype.setGPaper = function (_gPaper) {
+        };
+        NoCanvas.prototype.setGTransparentMode = function (_transparent) {
+        };
+        NoCanvas.prototype.printGChar = function (_char) {
+        };
+        NoCanvas.prototype.drawCursor = function (_x, _y, _pen, _paper) {
+        };
+        NoCanvas.prototype.fill = function (_fillPen) {
+        };
+        NoCanvas.prototype.setOrigin = function (_xOrig, _yOrig) {
+        };
+        NoCanvas.prototype.getXOrigin = function () {
+            return 0;
+        };
+        NoCanvas.prototype.getYOrigin = function () {
+            return 0;
+        };
+        NoCanvas.prototype.setGWindow = function (_xLeft, _xRight, _yTop, _yBottom) {
+        };
+        NoCanvas.prototype.setGColMode = function (_gColMode) {
+        };
+        NoCanvas.prototype.clearGraphicsWindow = function () {
+        };
+        NoCanvas.prototype.setSpeedInk = function (_time1, _time2) {
+        };
+        NoCanvas.prototype.setMask = function (_mask) {
+        };
+        NoCanvas.prototype.setMaskFirst = function (_maskFirst) {
+        };
+        NoCanvas.prototype.getMode = function () {
+            return 0;
+        };
+        NoCanvas.prototype.changeMode = function (_mode) {
+        };
+        NoCanvas.prototype.takeScreenShot = function () {
+            return "";
+        };
+        NoCanvas.prototype.startUpdateCanvas = function () {
+        };
+        NoCanvas.prototype.stopUpdateCanvas = function () {
+        };
+        NoCanvas.prototype.onWindowClick = function (_event) {
+        };
+        NoCanvas.prototype.fillTextBox = function (_left, _top, _width, _height, _paper) {
+        };
+        NoCanvas.prototype.printChar = function (_char, _x, _y, _pen, _paper, _transparent) {
+        };
+        NoCanvas.prototype.readChar = function (_x, _y, _pen, _paper) {
+            return 0;
+        };
+        NoCanvas.prototype.clearTextWindow = function (_left, _right, _top, _bottom, _paper) {
+        };
+        NoCanvas.prototype.setMode = function (_mode) {
+        };
+        NoCanvas.prototype.clearFullWindow = function () {
+        };
+        NoCanvas.prototype.windowScrollUp = function (_left, _right, _top, _bottom, _paper) {
+        };
+        NoCanvas.prototype.windowScrollDown = function (_left, _right, _top, _bottom, _paper) {
+        };
+        return NoCanvas;
+    }());
+    exports.NoCanvas = NoCanvas;
+});
 // Controller.ts - Controller
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLexer", "BasicParser", "BasicTokenizer", "Canvas", "CodeGeneratorBasic", "CodeGeneratorJs", "CodeGeneratorToken", "CommonEventHandler", "cpcCharset", "CpcVm", "CpcVmRsx", "Diff", "DiskImage", "FileHandler", "FileSelect", "InputStack", "Keyboard", "TextCanvas", "VirtualKeyboard", "Sound", "Variables", "View"], function (require, exports, Utils_24, BasicFormatter_1, BasicLexer_1, BasicParser_2, BasicTokenizer_1, Canvas_1, CodeGeneratorBasic_1, CodeGeneratorJs_1, CodeGeneratorToken_1, CommonEventHandler_1, cpcCharset_1, CpcVm_1, CpcVmRsx_1, Diff_1, DiskImage_2, FileHandler_1, FileSelect_1, InputStack_1, Keyboard_1, TextCanvas_1, VirtualKeyboard_1, Sound_1, Variables_1, View_7) {
+define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLexer", "BasicParser", "BasicTokenizer", "Canvas", "CodeGeneratorBasic", "CodeGeneratorJs", "CodeGeneratorToken", "CommonEventHandler", "cpcCharset", "CpcVm", "Diff", "DiskImage", "FileHandler", "FileSelect", "InputStack", "Keyboard", "NoCanvas", "TextCanvas", "VirtualKeyboard", "Snapshot", "Sound", "Variables", "View", "DragElement", "RsxAmsdos", "RsxCpcBasic", "Z80Disass"], function (require, exports, Utils_26, BasicFormatter_1, BasicLexer_1, BasicParser_1, BasicTokenizer_1, Canvas_1, CodeGeneratorBasic_1, CodeGeneratorJs_1, CodeGeneratorToken_1, CommonEventHandler_1, cpcCharset_1, CpcVm_1, Diff_1, DiskImage_2, FileHandler_1, FileSelect_1, InputStack_1, Keyboard_1, NoCanvas_1, TextCanvas_1, VirtualKeyboard_1, Snapshot_2, Sound_1, Variables_1, View_7, DragElement_1, RsxAmsdos_1, RsxCpcBasic_1, Z80Disass_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Controller = void 0;
@@ -15896,10 +18126,75 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.nextLoopTimeOut = 0; // next timeout for the main loop
             this.initialLoopTimeout = 0;
             this.inputSet = false;
+            this.canvases = {};
             this.inputStack = new InputStack_1.InputStack();
             this.sound = new Sound_1.Sound({
                 AudioContextConstructor: window.AudioContext
             });
+            this.dragElementsData = {
+                entries: {
+                    consoleLogArea: {
+                        itemId: "consoleLogArea" /* ViewID.consoleLogArea */,
+                        xOffset: 0,
+                        yOffset: 0,
+                        enabled: false
+                    },
+                    cpcArea: {
+                        itemId: "cpcArea" /* ViewID.cpcArea */,
+                        xOffset: 0,
+                        yOffset: 0,
+                        enabled: false
+                    },
+                    disassArea: {
+                        itemId: "disassArea" /* ViewID.disassArea */,
+                        xOffset: 0,
+                        yOffset: 0,
+                        enabled: false
+                    },
+                    inp2Area: {
+                        itemId: "inp2Area" /* ViewID.inp2Area */,
+                        xOffset: 0,
+                        yOffset: 0,
+                        enabled: false
+                    },
+                    inputArea: {
+                        itemId: "inputArea" /* ViewID.inputArea */,
+                        xOffset: 0,
+                        yOffset: 0,
+                        enabled: false
+                    },
+                    kbdArea: {
+                        itemId: "kbdArea" /* ViewID.kbdArea */,
+                        xOffset: 0,
+                        yOffset: 0,
+                        enabled: false
+                    },
+                    mainArea: {
+                        itemId: "mainArea" /* ViewID.mainArea */,
+                        xOffset: 0,
+                        yOffset: 0,
+                        enabled: false
+                    },
+                    outputArea: {
+                        itemId: "outputArea" /* ViewID.outputArea */,
+                        xOffset: 0,
+                        yOffset: 0,
+                        enabled: false
+                    },
+                    resultArea: {
+                        itemId: "resultArea" /* ViewID.resultArea */,
+                        xOffset: 0,
+                        yOffset: 0,
+                        enabled: false
+                    },
+                    variableArea: {
+                        itemId: "variableArea" /* ViewID.variableArea */,
+                        xOffset: 0,
+                        yOffset: 0,
+                        enabled: false
+                    }
+                }
+            };
             /* eslint-disable no-invalid-this */
             this.handlers = {
                 timer: this.fnTimer,
@@ -15935,56 +18230,44 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.fnOnEscapeHandler = this.fnOnEscape.bind(this);
             this.fnDirectInputHandler = this.fnDirectInput.bind(this);
             this.fnPutKeyInBufferHandler = this.fnPutKeysInBuffer.bind(this);
+            this.fnOnDragoverHandler = Controller.fnOnDragover;
+            this.fnOnUserActionHandler = this.onUserAction.bind(this);
+            this.fnWaitForContinueHandler = this.fnWaitForContinue.bind(this);
+            this.fnEditLineCallbackHandler = this.fnEditLineCallback.bind(this);
             this.model = model;
             this.view = view;
-            this.commonEventHandler = new CommonEventHandler_1.CommonEventHandler(model, view, this);
-            this.view.attachEventHandler("click", this.commonEventHandler);
-            this.view.attachEventHandler("change", this.commonEventHandler);
-            // unhide console box, if console should be shown
-            view.setHidden("consoleBox", !model.getProperty("showConsole"));
-            this.view.setInputChecked("consoleLogInput", model.getProperty("showConsole"));
-            this.textCanvas = new TextCanvas_1.TextCanvas({});
-            var palette = model.getProperty("palette");
-            view.setSelectValue("paletteSelect", palette);
-            view.setHidden("cpcArea", false); // make sure canvas area is not hidden when creating canvas object (allows to get width, height)
-            this.canvas = new Canvas_1.Canvas({
-                charset: cpcCharset_1.cpcCharset,
-                palette: palette === "green" || palette === "grey" ? palette : "color"
+            this.commonEventHandler = new CommonEventHandler_1.CommonEventHandler({
+                model: model,
+                view: view,
+                controller: this
             });
-            view.setHidden("kbdLayoutArea", model.getProperty("showKbd"), "inherit"); // kbd visible => kbdlayout invisible
-            this.initAreas();
-            view.setInputValue("debugInput", String(model.getProperty("debug")));
-            view.setInputChecked("implicitLinesInput", model.getProperty("implicitLines"));
-            view.setInputChecked("arrayBoundsInput", model.getProperty("arrayBounds"));
+            this.view.addEventListener("click", this.commonEventHandler);
+            this.view.addEventListener("change", this.commonEventHandler);
+            this.commonEventHandler.initToggles();
+            this.canvas = this.setCanvasType(model.getProperty("canvasType" /* ModelPropID.canvasType */));
             this.variables = new Variables_1.Variables({
-                arrayBounds: model.getProperty("arrayBounds")
+                arrayBounds: model.getProperty("arrayBounds" /* ModelPropID.arrayBounds */)
             });
-            view.setInputChecked("traceInput", model.getProperty("trace"));
-            view.setInputChecked("autorunInput", model.getProperty("autorun"));
-            view.setInputChecked("soundInput", model.getProperty("sound"));
-            view.setInputValue("speedInput", String(model.getProperty("speed")));
             this.fnSpeed();
-            var kbdLayout = model.getProperty("kbdLayout");
-            view.setSelectValue("kbdLayoutSelect", kbdLayout);
-            this.commonEventHandler.onKbdLayoutSelectChange();
+            this.commonEventHandler.onKbdLayoutSelectChange(this.commonEventHandler.getEventDefById("change", "kbdLayoutSelect" /* ViewID.kbdLayoutSelect */));
             this.keyboard = new Keyboard_1.Keyboard({
+                view: this.view,
                 fnOnEscapeHandler: this.fnOnEscapeHandler
             });
-            if (this.model.getProperty("showKbd")) { // maybe we need to draw virtual keyboard
-                this.virtualKeyboardCreate();
+            if (this.model.getProperty("showKbd" /* ModelPropID.showKbd */)) { // maybe we need to draw virtual keyboard
+                this.getVirtualKeyboard();
             }
-            this.commonEventHandler.fnSetUserAction(this.onUserAction.bind(this)); // check first user action, also if sound is not yet on
+            this.commonEventHandler.fnSetUserAction(this.fnOnUserActionHandler); // check first user action, also if sound is not yet on
             this.vm = new CpcVm_1.CpcVm({
                 canvas: this.canvas,
-                textCanvas: this.textCanvas,
                 keyboard: this.keyboard,
                 sound: this.sound,
                 variables: this.variables,
                 onClickKey: this.fnPutKeyInBufferHandler
             });
             this.vm.vmReset();
-            this.rsx = new CpcVmRsx_1.CpcVmRsx(this.vm);
-            this.vm.vmSetRsxClass(this.rsx);
+            this.vm.vmRegisterRsx(new RsxAmsdos_1.RsxAmsdos(), true);
+            this.vm.vmRegisterRsx(new RsxCpcBasic_1.RsxCpcBasic(), true);
             this.noStop = Object.assign({}, this.vm.vmGetStopObject());
             this.savedStop = {
                 reason: "",
@@ -15998,37 +18281,35 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 }
             }; // backup of stop object
             this.setStopObject(this.noStop);
-            this.codeGeneratorJs = new CodeGeneratorJs_1.CodeGeneratorJs({
-                lexer: new BasicLexer_1.BasicLexer({
-                    keywords: BasicParser_2.BasicParser.keywords
-                }),
-                parser: new BasicParser_2.BasicParser(),
-                trace: model.getProperty("trace"),
-                rsx: this.rsx,
-                implicitLines: model.getProperty("implicitLines")
+            this.basicParser = new BasicParser_1.BasicParser({
+                basicVersion: this.model.getProperty("basicVersion" /* ModelPropID.basicVersion */)
             });
-            if (model.getProperty("sound")) { // activate sound needs user action
+            this.basicLexer = new BasicLexer_1.BasicLexer({
+                keywords: this.basicParser.getKeywords()
+            });
+            this.codeGeneratorJs = new CodeGeneratorJs_1.CodeGeneratorJs({
+                lexer: this.basicLexer,
+                parser: this.basicParser,
+                trace: model.getProperty("trace" /* ModelPropID.trace */),
+                implicitLines: model.getProperty("implicitLines" /* ModelPropID.implicitLines */),
+                integerOverflow: model.getProperty("integerOverflow" /* ModelPropID.integerOverflow */)
+            });
+            if (model.getProperty("sound" /* ModelPropID.sound */)) { // activate sound needs user action
                 this.setSoundActive(); // activate in waiting state
             }
-            if (model.getProperty("showCpc")) {
+            this.initDropZone();
+            var example = model.getProperty("example" /* ModelPropID.example */);
+            view.setSelectValue("exampleSelect" /* ViewID.exampleSelect */, example);
+            this.hasStorageDatabase = this.initDatabases();
+            if (model.getProperty("showCpc" /* ModelPropID.showCpc */)) {
                 this.canvas.startUpdateCanvas();
             }
-            if (model.getProperty("showText")) {
-                this.textCanvas.startUpdateCanvas();
+            if (model.getProperty("dragElements" /* ModelPropID.dragElements */)) {
+                this.fnDragElementsActive(true);
             }
-            this.initDropZone();
-            var example = model.getProperty("example");
-            view.setSelectValue("exampleSelect", example);
-            this.hasStorageDatabase = this.initDatabases();
         }
-        Controller.prototype.initAreas = function () {
-            for (var id in Controller.areaDefinitions) { // eslint-disable-line guard-for-in
-                var propertyObject = Controller.areaDefinitions[id];
-                this.view.setHidden(id, !this.model.getProperty(propertyObject.property), propertyObject.display);
-            }
-        };
         Controller.prototype.initDatabases = function () {
-            var model = this.model, databases = {}, databaseDirs = model.getProperty("databaseDirs").split(",");
+            var model = this.model, databases = {}, databaseDirs = model.getProperty("databaseDirs" /* ModelPropID.databaseDirs */).split(",");
             var hasStorageDatabase = false;
             for (var i = 0; i < databaseDirs.length; i += 1) {
                 var databaseDir = databaseDirs[i], parts = databaseDir.split("/"), name_12 = parts[parts.length - 1];
@@ -16051,31 +18332,50 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.setSoundActive();
         };
         // Also called from index file 0index.js
-        Controller.prototype.addIndex = function (dir, input) {
-            input = input.trim();
-            var index = JSON.parse(input);
-            for (var i = 0; i < index.length; i += 1) {
-                index[i].dir = dir;
-                this.model.setExample(index[i]);
+        Controller.prototype.addIndex = function (_dir, input) {
+            for (var value in input) {
+                if (input.hasOwnProperty(value)) {
+                    var item = input[value];
+                    for (var i = 0; i < item.length; i += 1) {
+                        //item[i].dir = dir; // TTT to check
+                        this.model.setExample(item[i]);
+                    }
+                }
             }
         };
         // Also called from example files xxxxx.js
         Controller.prototype.addItem = function (key, input) {
             if (!key) { // maybe ""
-                key = (document.currentScript && document.currentScript.getAttribute("data-key")) || this.model.getProperty("example");
+                key = (document.currentScript && document.currentScript.getAttribute("data-key")) || this.model.getProperty("example" /* ModelPropID.example */);
                 // on IE we can just get the current example
             }
             input = input.replace(/^\n/, "").replace(/\n$/, ""); // remove preceding and trailing newlines
             // beware of data files ending with newlines! (do not use trimEnd)
+            var implicitLines = this.model.getProperty("implicitLines" /* ModelPropID.implicitLines */), linesOnLoad = this.model.getProperty("linesOnLoad" /* ModelPropID.linesOnLoad */);
+            if (input.startsWith("REM ") && !implicitLines && linesOnLoad) {
+                input = Controller.addLineNumbers(input);
+            }
             var example = this.model.getExample(key);
             example.key = key; // maybe changed
             example.script = input;
             example.loaded = true;
-            Utils_24.Utils.console.log("addItem:", key);
+            Utils_26.Utils.console.log("addItem:", key);
+            return key;
+        };
+        Controller.prototype.addRsx = function (key, RsxConstructor) {
+            if (!key) { // maybe ""
+                key = (document.currentScript && document.currentScript.getAttribute("data-key")) || this.model.getProperty("example" /* ModelPropID.example */);
+                // on IE we can just get the current example
+            }
+            var example = this.model.getExample(key);
+            example.key = key; // maybe changed
+            example.rsx = new RsxConstructor();
+            example.loaded = true;
+            Utils_26.Utils.console.log("addItem:", key);
             return key;
         };
         Controller.prototype.setDatabaseSelectOptions = function () {
-            var select = "databaseSelect", items = [], databases = this.model.getAllDatabases(), database = this.model.getProperty("database");
+            var items = [], databases = this.model.getAllDatabases(), database = this.model.getProperty("database" /* ModelPropID.database */);
             for (var value in databases) {
                 if (databases.hasOwnProperty(value)) {
                     var db = databases[value], item = {
@@ -16087,7 +18387,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     items.push(item);
                 }
             }
-            this.view.setSelectOptions(select, items);
+            this.view.setSelectOptions("databaseSelect" /* ViewID.databaseSelect */, items);
         };
         Controller.getPathFromExample = function (example) {
             var index = example.lastIndexOf("/");
@@ -16106,7 +18406,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             return name;
         };
         Controller.prototype.setDirectorySelectOptions = function () {
-            var select = "directorySelect", items = [], allExamples = this.model.getAllExamples(), examplePath = Controller.getPathFromExample(this.model.getProperty("example")), directorySeen = {};
+            var items = [], allExamples = this.model.getAllExamples(), examplePath = Controller.getPathFromExample(this.model.getProperty("example" /* ModelPropID.example */)), directorySeen = {};
             for (var key in allExamples) {
                 if (allExamples.hasOwnProperty(key)) {
                     var exampleEntry = allExamples[key], value = Controller.getPathFromExample(exampleEntry.key);
@@ -16122,16 +18422,16 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     }
                 }
             }
-            this.view.setSelectOptions(select, items);
+            this.view.setSelectOptions("directorySelect" /* ViewID.directorySelect */, items);
         };
         Controller.prototype.setExampleSelectOptions = function () {
             var maxTitleLength = 160, maxTextLength = 60, // (32 visible?)
-            select = "exampleSelect", items = [], exampleName = Controller.getNameFromExample(this.model.getProperty("example")), allExamples = this.model.getAllExamples(), directoryName = this.view.getSelectValue("directorySelect");
+            items = [], exampleName = Controller.getNameFromExample(this.model.getProperty("example" /* ModelPropID.example */)), allExamples = this.model.getAllExamples(), directoryName = this.view.getSelectValue("directorySelect" /* ViewID.directorySelect */), selectDataFiles = this.model.getProperty("selectDataFiles" /* ModelPropID.selectDataFiles */);
             var exampleSelected = false;
             for (var key in allExamples) {
                 if (allExamples.hasOwnProperty(key) && (Controller.getPathFromExample(key) === directoryName)) {
                     var exampleEntry = allExamples[key], exampleName2 = Controller.getNameFromExample(exampleEntry.key);
-                    if (exampleEntry.meta !== "D") { // skip data files
+                    if (selectDataFiles || (exampleEntry.meta !== "D")) { // skip data files
                         var title = (exampleName2 + ": " + exampleEntry.title).substring(0, maxTitleLength), item = {
                             value: exampleName2,
                             title: title,
@@ -16148,10 +18448,10 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             if (!exampleSelected && items.length) {
                 items[0].selected = true; // if example is not found, select first element
             }
-            this.view.setSelectOptions(select, items);
+            this.view.setSelectOptions("exampleSelect" /* ViewID.exampleSelect */, items);
         };
         Controller.prototype.setGalleryAreaInputs = function () {
-            var database = this.model.getDatabase(), directory = this.view.getSelectValue("directorySelect"), options = this.view.getSelectOptions("exampleSelect"), inputs = [];
+            var database = this.model.getDatabase(), directory = this.view.getSelectValue("directorySelect" /* ViewID.directorySelect */), options = this.view.getSelectOptions("exampleSelect" /* ViewID.exampleSelect */), inputs = [];
             for (var i = 0; i < options.length; i += 1) {
                 var item = options[i], input = {
                     value: item.value,
@@ -16161,19 +18461,20 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 };
                 inputs.push(input);
             }
-            this.view.setAreaInputList("galleryAreaItems", inputs);
+            this.view.setAreaInputList("galleryAreaItems" /* ViewID.galleryAreaItems */, inputs);
+        };
+        Controller.fnSortByStringProperties = function (a, b) {
+            var x = a.value, y = b.value;
+            if (x < y) {
+                return -1;
+            }
+            else if (x > y) {
+                return 1;
+            }
+            return 0;
         };
         Controller.prototype.setVarSelectOptions = function (select, variables) {
-            var maxVarLength = 35, varNames = variables.getAllVariableNames(), items = [], fnSortByStringProperties = function (a, b) {
-                var x = a.value, y = b.value;
-                if (x < y) {
-                    return -1;
-                }
-                else if (x > y) {
-                    return 1;
-                }
-                return 0;
-            };
+            var maxVarLength = 35, varNames = variables.getAllVariableNames(), items = [];
             for (var i = 0; i < varNames.length; i += 1) {
                 var key = varNames[i], value = variables.getVariable(key), title = key + "=" + value;
                 var strippedTitle = title.substring(0, maxVarLength); // limit length
@@ -16186,23 +18487,43 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     title: strippedTitle,
                     selected: false
                 };
-                item.text = item.title;
                 items.push(item);
             }
-            items.sort(fnSortByStringProperties);
+            items.sort(Controller.fnSortByStringProperties);
+            this.view.setSelectOptions(select, items);
+        };
+        Controller.prototype.setExportSelectOptions = function (select) {
+            var dirList = Controller.fnGetStorageDirectoryEntries(), items = [], editorText = Controller.exportEditorText;
+            dirList.sort(); // we sort keys without editorText
+            dirList.unshift(editorText);
+            for (var i = 0; i < dirList.length; i += 1) {
+                var key = dirList[i], title = key, item = {
+                    value: key,
+                    text: title,
+                    title: title,
+                    selected: title === editorText
+                };
+                items.push(item);
+            }
+            // sort already done
             this.view.setSelectOptions(select, items);
         };
         Controller.prototype.updateStorageDatabase = function (action, key) {
             if (!this.hasStorageDatabase) {
                 return;
             }
-            var database = this.model.getProperty("database"), storage = Utils_24.Utils.localStorage;
+            var database = this.model.getProperty("database" /* ModelPropID.database */), storage = Utils_26.Utils.localStorage;
+            var selectedExample = "", exampleChanged = false;
             if (database !== "storage") {
-                this.model.setProperty("database", "storage"); // switch to storage database
+                this.model.setProperty("database" /* ModelPropID.database */, "storage"); // switch to storage database
+            }
+            else {
+                selectedExample = this.view.getSelectValue("exampleSelect" /* ViewID.exampleSelect */);
             }
             var dir;
             if (!key) { // no key => get all
                 dir = Controller.fnGetStorageDirectoryEntries();
+                dir.sort();
             }
             else {
                 dir = [key];
@@ -16214,6 +18535,9 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 }
                 else if (action === "set") {
                     var example = this.model.getExample(key);
+                    if (selectedExample === "" || (selectedExample === key)) {
+                        exampleChanged = true;
+                    }
                     if (!example) {
                         var dataString = storage.getItem(key) || "", data = Controller.splitMeta(dataString);
                         example = {
@@ -16225,22 +18549,29 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     }
                 }
                 else {
-                    Utils_24.Utils.console.error("updateStorageDatabase: unknown action", action);
+                    Utils_26.Utils.console.error("updateStorageDatabase: unknown action", action);
                 }
             }
             if (database === "storage") {
                 this.setDirectorySelectOptions();
-                this.setExampleSelectOptions();
+                if (exampleChanged) {
+                    this.onDirectorySelectChange();
+                }
+                else {
+                    this.setExampleSelectOptions();
+                }
             }
             else {
-                this.model.setProperty("database", database); // restore database
+                this.model.setProperty("database" /* ModelPropID.database */, database); // restore database
             }
         };
         Controller.prototype.removeKeyBoardHandler = function () {
-            this.keyboard.setKeyDownHandler();
+            this.keyboard.setOptions({
+                fnOnKeyDown: undefined
+            });
         };
         Controller.prototype.setInputText = function (input, keepStack) {
-            this.view.setAreaValue("inputText", input);
+            this.view.setAreaValue("inputText" /* ViewID.inputText */, input);
             if (!keepStack) {
                 this.fnInitUndoRedoButtons();
             }
@@ -16272,7 +18603,9 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             else if (stop.reason !== "escape") { // first escape?
                 this.vm.cursor(stream, 1);
                 this.keyboard.clearInput();
-                this.keyboard.setKeyDownHandler(this.fnWaitForContinue.bind(this));
+                this.keyboard.setOptions({
+                    fnOnKeyDown: this.fnWaitForContinueHandler
+                });
                 this.setStopObject(stop);
                 this.vm.vmStop("escape", 85, false, {
                     command: "escape",
@@ -16321,13 +18654,16 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         Controller.prototype.fnWaitKey = function () {
             var key = this.keyboard.getKeyFromBuffer();
             if (key !== "") { // do we have a key from the buffer already?
-                Utils_24.Utils.console.log("Wait for key:", key);
+                Utils_26.Utils.console.log("Wait for key:", key);
                 this.vm.vmStop("", 0, true);
                 this.removeKeyBoardHandler();
             }
             else {
                 this.fnWaitSound(); // sound and blinking events
-                this.keyboard.setKeyDownHandler(this.fnWaitKeyHandler); // wait until keypress handler (for call &bb18)
+                // wait until keypress handler (for call &bb18)
+                this.keyboard.setOptions({
+                    fnOnKeyDown: this.fnWaitKeyHandler
+                });
             }
             return key;
         };
@@ -16438,7 +18774,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             inputParas.input = input;
             var inputOk = false;
             if (key === "\r") {
-                Utils_24.Utils.console.log("fnWaitInput:", input, "reason", stop.reason);
+                Utils_26.Utils.console.log("fnWaitInput:", input, "reason", stop.reason);
                 if (!inputParas.noCRLF) {
                     this.vm.print(stream, "\r\n");
                 }
@@ -16462,15 +18798,14 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 if (stop.reason === "waitInput") { // only for this reason
                     this.fnWaitSound(); // sound and blinking events
                 }
-                this.keyboard.setKeyDownHandler(this.fnWaitInputHandler); // make sure it is set
+                // make sure the handler is set
+                this.keyboard.setOptions({
+                    fnOnKeyDown: this.fnWaitInputHandler
+                });
             }
         };
         Controller.parseLineNumber = function (line) {
-            var lineNumber = parseInt(line, 10);
-            if (lineNumber < 0 || lineNumber > 65535) {
-                // we must not throw an error
-            }
-            return lineNumber;
+            return parseInt(line, 10); // we do not check for linenumber in range 0...65535
         };
         Controller.addLineNumbers = function (input) {
             var lineParts = input.split("\n");
@@ -16486,7 +18821,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             return lineParts.join("\n");
         };
         Controller.prototype.splitLines = function (input) {
-            if (this.model.getProperty("implicitLines")) {
+            if (this.model.getProperty("implicitLines" /* ModelPropID.implicitLines */)) {
                 input = Controller.addLineNumbers(input);
             }
             // get numbers starting at the beginning of a line (allows some simple multi line strings)
@@ -16506,7 +18841,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         };
         // merge two scripts with sorted line numbers, lines from script2 overwrite lines from script1
         Controller.prototype.mergeScripts = function (script1, script2) {
-            var lines1 = this.splitLines(Utils_24.Utils.stringTrimEnd(script1)), lines2 = this.splitLines(Utils_24.Utils.stringTrimEnd(script2));
+            var lines1 = this.splitLines(Utils_26.Utils.stringTrimEnd(script1)), lines2 = this.splitLines(Utils_26.Utils.stringTrimEnd(script2));
             var result = [], lineNumber1, lineNumber2;
             while (lines1.length && lines2.length) {
                 lineNumber1 = lineNumber1 || Controller.parseLineNumber(lines1[0]);
@@ -16538,13 +18873,13 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         // get line range from a script with sorted line numbers
         Controller.prototype.fnGetLinesInRange = function (script, firstLine, lastLine) {
             var lines = script ? this.splitLines(script) : [];
-            while (lines.length && parseInt(lines[0], 10) < firstLine) {
+            while (lines.length && Controller.parseLineNumber(lines[0]) < firstLine) {
                 lines.shift();
             }
             if (lines.length && lines[lines.length - 1] === "") { // trailing empty line?
                 lines.pop(); // remove
             }
-            while (lines.length && parseInt(lines[lines.length - 1], 10) > lastLine) {
+            while (lines.length && Controller.parseLineNumber(lines[lines.length - 1]) > lastLine) {
                 lines.pop();
             }
             return lines;
@@ -16572,15 +18907,16 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             return dir;
         };
         Controller.fnGetStorageDirectoryEntries = function (mask) {
-            var storage = Utils_24.Utils.localStorage, dir = [];
+            var storage = Utils_26.Utils.localStorage, metaIdent = FileHandler_1.FileHandler.getMetaIdent(), dir = [];
             var regExp;
             if (mask) {
                 regExp = Controller.fnPrepareMaskRegExp(mask);
             }
             for (var i = 0; i < storage.length; i += 1) {
                 var key = storage.key(i);
-                if (key !== null && storage[key].startsWith(this.metaIdent)) { // take only cpcBasic files
-                    if (!regExp || regExp.test(key)) {
+                if (key !== null && storage[key].startsWith(metaIdent)) { // take only cpcBasic files
+                    var keywithOutNl = key.replace(/[\n\r]/g, ""); // support also strange names; (newer browsers support also "s" regex modifier)
+                    if (!regExp || regExp.test(keywithOutNl)) {
                         dir.push(key);
                     }
                 }
@@ -16610,7 +18946,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.vm.vmStop("", 0, true);
         };
         Controller.prototype.fnFileDir = function (paras) {
-            var stream = paras.stream, example = this.model.getProperty("example"), lastSlash = example.lastIndexOf("/");
+            var stream = paras.stream, example = this.model.getProperty("example" /* ModelPropID.example */), lastSlash = example.lastIndexOf("/");
             var fileMask = paras.fileMask ? Controller.fnLocalStorageName(paras.fileMask) : "";
             var dirList = Controller.fnGetStorageDirectoryEntries(fileMask);
             var path = "";
@@ -16634,7 +18970,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.vm.vmStop("", 0, true);
         };
         Controller.prototype.fnFileEra = function (paras) {
-            var stream = paras.stream, storage = Utils_24.Utils.localStorage, fileMask = Controller.fnLocalStorageName(paras.fileMask || ""), dir = Controller.fnGetStorageDirectoryEntries(fileMask);
+            var stream = paras.stream, storage = Utils_26.Utils.localStorage, fileMask = Controller.fnLocalStorageName(paras.fileMask || ""), dir = Controller.fnGetStorageDirectoryEntries(fileMask);
             if (!dir.length) {
                 this.vm.print(stream, fileMask + " not found\r\n");
             }
@@ -16643,19 +18979,19 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 if (storage.getItem(name_13) !== null) {
                     storage.removeItem(name_13);
                     this.updateStorageDatabase("remove", name_13);
-                    if (Utils_24.Utils.debug > 0) {
-                        Utils_24.Utils.console.debug("fnEraseFile: name=" + name_13 + ": removed from localStorage");
+                    if (Utils_26.Utils.debug > 0) {
+                        Utils_26.Utils.console.debug("fnEraseFile: name=" + name_13 + ": removed from localStorage");
                     }
                 }
                 else {
                     this.vm.print(stream, name_13 + " not found\r\n");
-                    Utils_24.Utils.console.warn("fnEraseFile: file not found in localStorage:", name_13);
+                    Utils_26.Utils.console.warn("fnEraseFile: file not found in localStorage:", name_13);
                 }
             }
             this.vm.vmStop("", 0, true);
         };
         Controller.prototype.fnFileRen = function (paras) {
-            var stream = paras.stream, storage = Utils_24.Utils.localStorage, newName = Controller.fnLocalStorageName(paras.newName), oldName = Controller.fnLocalStorageName(paras.oldName), item = storage.getItem(oldName);
+            var stream = paras.stream, storage = Utils_26.Utils.localStorage, newName = Controller.fnLocalStorageName(paras.newName), oldName = Controller.fnLocalStorageName(paras.oldName), item = storage.getItem(oldName);
             if (item !== null) {
                 if (!storage.getItem(newName)) {
                     storage.setItem(newName, item);
@@ -16696,66 +19032,104 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             }
             return out;
         };
-        Controller.prototype.decodeTokenizedBasic = function (input) {
+        Controller.prototype.getBasicFormatter = function () {
+            if (!this.basicFormatter) {
+                this.basicFormatter = new BasicFormatter_1.BasicFormatter({
+                    lexer: this.basicLexer,
+                    parser: this.basicParser
+                });
+            }
+            return this.basicFormatter;
+        };
+        Controller.prototype.getBasicTokenizer = function () {
             if (!this.basicTokenizer) {
                 this.basicTokenizer = new BasicTokenizer_1.BasicTokenizer();
             }
-            return this.basicTokenizer.decode(input);
+            return this.basicTokenizer;
+        };
+        Controller.prototype.getCodeGeneratorBasic = function () {
+            if (!this.codeGeneratorBasic) {
+                this.codeGeneratorBasic = new CodeGeneratorBasic_1.CodeGeneratorBasic({
+                    lexer: this.basicLexer,
+                    parser: this.basicParser,
+                    lowercaseVars: this.model.getProperty("prettyLowercaseVars" /* ModelPropID.prettyLowercaseVars */)
+                });
+            }
+            return this.codeGeneratorBasic;
+        };
+        Controller.prototype.getCodeGeneratorToken = function () {
+            if (!this.codeGeneratorToken) {
+                this.codeGeneratorToken = new CodeGeneratorToken_1.CodeGeneratorToken({
+                    lexer: this.basicLexer,
+                    parser: this.basicParser,
+                    implicitLines: this.model.getProperty("implicitLines" /* ModelPropID.implicitLines */)
+                });
+            }
+            return this.codeGeneratorToken;
+        };
+        Controller.prototype.decodeTokenizedBasic = function (input) {
+            var basicTokenizer = this.getBasicTokenizer();
+            return basicTokenizer.decode(input);
         };
         Controller.prototype.encodeTokenizedBasic = function (input, name) {
             if (name === void 0) { name = "test"; }
-            if (!this.codeGeneratorToken) {
-                this.codeGeneratorToken = new CodeGeneratorToken_1.CodeGeneratorToken({
-                    lexer: new BasicLexer_1.BasicLexer({
-                        keywords: BasicParser_2.BasicParser.keywords,
-                        keepWhiteSpace: true
-                    }),
-                    parser: new BasicParser_2.BasicParser({
-                        keepTokens: true,
-                        keepBrackets: true,
-                        keepColons: true,
-                        keepDataComma: true
-                    }),
-                    implicitLines: this.model.getProperty("implicitLines")
-                });
-            }
-            var output = this.codeGeneratorToken.generate(input);
+            var codeGeneratorToken = this.getCodeGeneratorToken();
+            this.basicLexer.setOptions({
+                keepWhiteSpace: true
+            });
+            this.basicParser.setOptions(Controller.codeGenTokenBasicParserOptions);
+            var output = codeGeneratorToken.generate(input);
             if (output.error) {
                 this.outputError(output.error);
             }
-            else if (Utils_24.Utils.debug > 1) {
+            else if (Utils_26.Utils.debug > 1) {
                 var outputText = output.text, hex = outputText.split("").map(function (s) { return s.charCodeAt(0).toString(16).toUpperCase().padStart(2, "0"); }).join(","), decoded = this.decodeTokenizedBasic(outputText), diff = Diff_1.Diff.testDiff(input.toUpperCase(), decoded.toUpperCase()); // for testing
-                Utils_24.Utils.console.debug("TokenizerInput (" + name + "):\n" + input);
-                Utils_24.Utils.console.debug("TokenizerHex (" + name + "):\n" + hex);
-                Utils_24.Utils.console.debug("TokenizerDecoded (" + name + "):\n" + decoded);
-                Utils_24.Utils.console.debug("TokenizerDiff (" + name + "):\n" + diff);
+                Utils_26.Utils.console.debug("TokenizerInput (" + name + "):\n" + input);
+                Utils_26.Utils.console.debug("TokenizerHex (" + name + "):\n" + hex);
+                Utils_26.Utils.console.debug("TokenizerDecoded (" + name + "):\n" + decoded);
+                Utils_26.Utils.console.debug("TokenizerDiff (" + name + "):\n" + diff);
             }
             return output.text;
         };
         Controller.prototype.prettyPrintBasic = function (input, keepWhiteSpace, keepBrackets, keepColons) {
-            if (!this.codeGeneratorBasic) {
-                this.codeGeneratorBasic = new CodeGeneratorBasic_1.CodeGeneratorBasic({
-                    lexer: new BasicLexer_1.BasicLexer({
-                        keywords: BasicParser_2.BasicParser.keywords
-                    }),
-                    parser: new BasicParser_2.BasicParser()
-                });
-            }
-            var keepDataComma = true;
-            this.codeGeneratorBasic.getOptions().lexer.setOptions({
+            var codeGeneratorBasic = this.getCodeGeneratorBasic(), keepDataComma = true;
+            this.basicLexer.setOptions({
                 keepWhiteSpace: keepWhiteSpace
             });
-            this.codeGeneratorBasic.getOptions().parser.setOptions({
+            this.basicParser.setOptions({
                 keepTokens: true,
                 keepBrackets: keepBrackets,
                 keepColons: keepColons,
                 keepDataComma: keepDataComma
             });
-            var output = this.codeGeneratorBasic.generate(input);
+            var output = codeGeneratorBasic.generate(input);
             if (output.error) {
                 this.outputError(output.error);
             }
             return output.text;
+        };
+        Controller.prototype.applyGaInks = function (inkval) {
+            for (var i = 0; i < inkval.length - 1; i += 1) {
+                this.vm.ink(i, Controller.gaInk2Ink[inkval[i]]);
+            }
+            this.vm.border(Controller.gaInk2Ink[inkval[inkval.length - 1]]);
+        };
+        Controller.prototype.applyCrtcRegs = function (reg) {
+            for (var i = 0; i < reg.length; i += 1) {
+                this.vm.vmSetCrtcData(i, reg[i]);
+            }
+        };
+        Controller.prototype.applySnapshot = function (input) {
+            var snapshot = new Snapshot_2.Snapshot({
+                name: "",
+                data: input
+            }), info = snapshot.getSnapshotInfo(), mode = info.ga.multi & 0x03, // eslint-disable-line no-bitwise
+            mem = snapshot.getMemory();
+            this.vm.vmChangeMode(mode);
+            this.applyGaInks(info.ga.inkval);
+            this.vm.vmSetRamSelect(info.ramconf);
+            this.applyCrtcRegs(info.crtc.reg);
+            return mem;
         };
         Controller.prototype.loadFileContinue = function (input) {
             var inFile = this.vm.vmGetInFileObject();
@@ -16764,7 +19138,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 data = Controller.splitMeta(input);
                 input = data.data; // maybe changed
                 if (data.meta.encoding === "base64") {
-                    input = Utils_24.Utils.atob(input); // decode base64
+                    input = Utils_26.Utils.atob(input); // decode base64
                 }
                 var type = data.meta.typeString;
                 if (type === "T") { // tokenized basic?
@@ -16783,13 +19157,16 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 else if (type === "G") { // Hisoft Devpac GENA3 Z80 Assember
                     input = Controller.asmGena3Convert(input);
                 }
+                else if (type === "S") { // Snapshot
+                    input = this.applySnapshot(input);
+                }
                 else if (type === "X") { // (Extended) Disk image file
-                    var fileHandler = this.fileHandler || this.createFileHandler(), imported = [];
+                    var fileHandler = this.getFileHandler(), imported = [];
                     fileHandler.fnLoad2(input, inFile.name, type, imported); // no meta in data
                     input = "1 ' " + imported.join(", "); // imported files
                 }
                 else if (type === "Z") { // ZIP file
-                    var fileHandler = this.fileHandler || this.createFileHandler(), imported = [];
+                    var fileHandler = this.getFileHandler(), imported = [];
                     fileHandler.fnLoad2(input, inFile.name, type, imported);
                     input = "1 ' " + imported.join(", "); // imported files
                 }
@@ -16803,11 +19180,11 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     putInMemory = inFile.fnFileCallback(input, data && data.meta);
                 }
                 catch (e) {
-                    Utils_24.Utils.console.warn(e);
+                    Utils_26.Utils.console.warn(e);
                 }
             }
             if (input === undefined) {
-                Utils_24.Utils.console.error("loadFileContinue: File " + inFile.name + ": input undefined!");
+                Utils_26.Utils.console.error("loadFileContinue: File " + inFile.name + ": input undefined!");
                 this.vm.vmStop("stop", 60, true);
                 this.startMainLoop();
                 return;
@@ -16816,13 +19193,17 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 this.startMainLoop();
                 return;
             }
+            if (data && data.meta.typeString === "S" && putInMemory) { // fast hack
+                input = this.decodeTokenizedBasic(input.substring(0x170));
+                putInMemory = false; // put input in text box
+            }
             switch (command) {
                 case "openin":
                     break;
                 case "chainMerge":
-                    input = this.mergeScripts(this.view.getAreaValue("inputText"), input);
+                    input = this.mergeScripts(this.view.getAreaValue("inputText" /* ViewID.inputText */), input);
                     this.setInputText(input);
-                    this.view.setAreaValue("resultText", "");
+                    this.view.setAreaValue("resultText" /* ViewID.resultText */, "");
                     startLine = inFileLine;
                     this.invalidateScript();
                     this.fnParseChain();
@@ -16830,22 +19211,22 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 case "load":
                     if (!putInMemory) {
                         this.setInputText(input);
-                        this.view.setAreaValue("resultText", "");
+                        this.view.setAreaValue("resultText" /* ViewID.resultText */, "");
                         this.invalidateScript();
                         this.vm.vmStop("end", 90);
                     }
                     break;
                 case "merge":
-                    input = this.mergeScripts(this.view.getAreaValue("inputText"), input);
+                    input = this.mergeScripts(this.view.getAreaValue("inputText" /* ViewID.inputText */), input);
                     this.setInputText(input);
-                    this.view.setAreaValue("resultText", "");
+                    this.view.setAreaValue("resultText" /* ViewID.resultText */, "");
                     this.invalidateScript();
                     this.variables.removeAllVariables();
                     this.vm.vmStop("end", 90);
                     break;
                 case "chain": // TODO: if we have a line number, make sure it is not optimized away when compiling
                     this.setInputText(input);
-                    this.view.setAreaValue("resultText", "");
+                    this.view.setAreaValue("resultText" /* ViewID.resultText */, "");
                     startLine = inFileLine;
                     this.invalidateScript();
                     this.fnParseChain();
@@ -16853,9 +19234,11 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 case "run":
                     if (!putInMemory) {
                         this.setInputText(input);
-                        this.view.setAreaValue("resultText", "");
+                        this.view.setAreaValue("resultText" /* ViewID.resultText */, "");
                         startLine = inFileLine;
-                        this.fnReset();
+                        if (!data || data.meta.typeString !== "S") { // keep memory, config for snapshots
+                            this.fnReset();
+                        }
                         this.fnParseRun();
                     }
                     else {
@@ -16864,7 +19247,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     }
                     break;
                 default:
-                    Utils_24.Utils.console.error("loadExample: Unknown command:", command);
+                    Utils_26.Utils.console.error("loadExample: Unknown command:", command);
                     break;
             }
             this.vm.vmSetStartLine(startLine);
@@ -16874,23 +19257,26 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             var _this = this;
             return function (_sFullUrl, key, suppressLog) {
                 if (key !== example) {
-                    Utils_24.Utils.console.warn("fnExampleLoaded: Unexpected", key, "<>", example);
+                    Utils_26.Utils.console.warn("fnExampleLoaded: Unexpected", key, "<>", example);
                 }
                 var exampleEntry = _this.model.getExample(example);
                 if (!suppressLog) {
-                    Utils_24.Utils.console.log("Example", url, (exampleEntry.meta ? exampleEntry.meta + " " : "") + " loaded");
+                    Utils_26.Utils.console.log("Example", url, (exampleEntry.meta ? exampleEntry.meta + " " : "") + " loaded");
+                }
+                _this.model.setProperty("example" /* ModelPropID.example */, inFile.memorizedExample);
+                _this.vm.vmStop("", 0, true);
+                if (exampleEntry.rsx) {
+                    _this.vm.vmRegisterRsx(exampleEntry.rsx, false);
                 }
                 var input = exampleEntry.script;
-                _this.model.setProperty("example", inFile.memorizedExample);
-                _this.vm.vmStop("", 0, true);
                 _this.loadFileContinue(input);
             };
         };
         Controller.prototype.createFnExampleError = function (example, url, inFile) {
             var _this = this;
             return function () {
-                Utils_24.Utils.console.log("Example", url, "error");
-                _this.model.setProperty("example", inFile.memorizedExample);
+                Utils_26.Utils.console.log("Example", url, "error");
+                _this.model.setProperty("example" /* ModelPropID.example */, inFile.memorizedExample);
                 _this.vm.vmStop("", 0, true);
                 var error = _this.vm.vmComposeError(Error(), 32, example + " not found"); // TODO: set also derr=146 (xx not found)
                 // error or onError set
@@ -16902,7 +19288,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             };
         };
         Controller.prototype.loadExample = function () {
-            var inFile = this.vm.vmGetInFileObject(), key = this.model.getProperty("example");
+            var inFile = this.vm.vmGetInFileObject(), key = this.model.getProperty("example" /* ModelPropID.example */);
             var name = inFile.name;
             if (name.charAt(0) === "/") { // absolute path?
                 name = name.substring(1); // remove "/"
@@ -16918,32 +19304,32 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 }
             }
             var example = name;
-            if (Utils_24.Utils.debug > 0) {
-                Utils_24.Utils.console.debug("loadExample: name=" + name + " (current=" + key + ")");
+            if (Utils_26.Utils.debug > 0) {
+                Utils_26.Utils.console.debug("loadExample: name=" + name + " (current=" + key + ")");
             }
             var exampleEntry = this.model.getExample(example); // already loaded
             var url;
             if (exampleEntry && exampleEntry.loaded) {
-                this.model.setProperty("example", example);
+                this.model.setProperty("example" /* ModelPropID.example */, example);
                 url = example;
                 var fnExampleLoaded = this.createFnExampleLoaded(example, url, inFile);
                 fnExampleLoaded("", example, true);
             }
             else if (example && exampleEntry) { // need to load
-                this.model.setProperty("example", example);
+                this.model.setProperty("example" /* ModelPropID.example */, example);
                 var databaseDir = this.model.getDatabase().src;
                 url = databaseDir + "/" + example + ".js";
-                Utils_24.Utils.loadScript(url, this.createFnExampleLoaded(example, url, inFile), this.createFnExampleError(example, url, inFile), example);
+                Utils_26.Utils.loadScript(url, this.createFnExampleLoaded(example, url, inFile), this.createFnExampleError(example, url, inFile), example);
             }
             else { // keep original example in this error case
                 url = example;
                 if (example !== "") { // only if not empty
-                    Utils_24.Utils.console.warn("loadExample: Unknown file:", example);
+                    Utils_26.Utils.console.warn("loadExample: Unknown file:", example);
                     var fnExampleError = this.createFnExampleError(example, url, inFile);
                     fnExampleError();
                 }
                 else {
-                    this.model.setProperty("example", example);
+                    this.model.setProperty("example" /* ModelPropID.example */, example);
                     this.vm.vmStop("", 0, true);
                     this.loadFileContinue(""); // empty input?
                 }
@@ -16957,7 +19343,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             return name;
         };
         Controller.tryLoadingFromLocalStorage = function (name) {
-            var storage = Utils_24.Utils.localStorage;
+            var storage = Utils_26.Utils.localStorage;
             var input = null;
             if (name.indexOf(".") >= 0) { // extension specified?
                 input = storage.getItem(name);
@@ -16987,13 +19373,13 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     this.vm.vmStop("fileLoad", 90); // restore
                 }
                 var name_14 = inFile.name;
-                if (Utils_24.Utils.debug > 1) {
-                    Utils_24.Utils.console.debug("fnFileLoad:", inFile.command, name_14, "details:", inFile);
+                if (Utils_26.Utils.debug > 1) {
+                    Utils_26.Utils.console.debug("fnFileLoad:", inFile.command, name_14, "details:", inFile);
                 }
                 var input = Controller.tryLoadingFromLocalStorage(name_14);
                 if (input !== null) {
-                    if (Utils_24.Utils.debug > 0) {
-                        Utils_24.Utils.console.debug("fnFileLoad:", inFile.command, name_14, "from localStorage");
+                    if (Utils_26.Utils.debug > 0) {
+                        Utils_26.Utils.console.debug("fnFileLoad:", inFile.command, name_14, "from localStorage");
                     }
                     this.vm.vmStop("", 0, true);
                     this.loadFileContinue(input);
@@ -17003,22 +19389,13 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 }
             }
             else {
-                Utils_24.Utils.console.error("fnFileLoad:", inFile.name, "File not open!"); // hopefully isName is defined
+                Utils_26.Utils.console.error("fnFileLoad:", inFile.name, "File not open!"); // hopefully isName is defined
             }
             this.nextLoopTimeOut = this.vm.vmGetTimeUntilFrame(); // wait until next frame
         };
-        Controller.joinMeta = function (meta) {
-            return [
-                Controller.metaIdent,
-                meta.typeString,
-                meta.start,
-                meta.length,
-                meta.entry
-            ].join(";");
-        };
         Controller.splitMeta = function (input) {
             var fileMeta;
-            if (input.indexOf(Controller.metaIdent) === 0) { // starts with metaIdent?
+            if (input.indexOf(FileHandler_1.FileHandler.getMetaIdent()) === 0) { // starts with metaIdent?
                 var index = input.indexOf(","); // metadata separator
                 if (index >= 0) {
                     var metaString = input.substring(0, index);
@@ -17045,7 +19422,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             return metaAndData;
         };
         Controller.prototype.fnFileSave = function () {
-            var outFile = this.vm.vmGetOutFileObject(), storage = Utils_24.Utils.localStorage;
+            var outFile = this.vm.vmGetOutFileObject(), storage = Utils_26.Utils.localStorage;
             var defaultExtension = "";
             if (outFile.open) {
                 var type = outFile.typeString, name_15 = outFile.name;
@@ -17059,9 +19436,12 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 var fileData = void 0;
                 if (outFile.fileData.length || (type === "B") || (outFile.command === "openout")) { // type A(for openout) or B
                     fileData = outFile.fileData.join("");
+                    if (!outFile.length) { // not yet set, e.g. for ASCII? (or can we set it always?)
+                        outFile.length = fileData.length; // set length
+                    }
                 }
                 else { // no file data (assuming type A, P or T) => get text
-                    fileData = this.view.getAreaValue("inputText");
+                    fileData = this.view.getAreaValue("inputText" /* ViewID.inputText */);
                     if (type === "T" || type === "P") {
                         fileData = this.encodeTokenizedBasic(fileData, storageName);
                         if (fileData === "") {
@@ -17073,10 +19453,10 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     }
                     outFile.length = fileData.length; // set length
                 }
-                if (Utils_24.Utils.debug > 0) {
-                    Utils_24.Utils.console.debug("fnFileSave: name=" + name_15 + ": put into localStorage");
+                if (Utils_26.Utils.debug > 0) {
+                    Utils_26.Utils.console.debug("fnFileSave: name=" + name_15 + ": put into localStorage");
                 }
-                var meta = Controller.joinMeta(outFile);
+                var meta = FileHandler_1.FileHandler.joinMeta(outFile);
                 storage.setItem(storageName, meta + "," + fileData);
                 this.updateStorageDatabase("set", storageName);
                 if (outFile.fnFileCallback) {
@@ -17084,18 +19464,18 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                         outFile.fnFileCallback(fileData); // close file
                     }
                     catch (e) {
-                        Utils_24.Utils.console.warn(e);
+                        Utils_26.Utils.console.warn(e);
                     }
                 }
                 this.vm.vmResetOutFileHandling(); // make sure it is closed
             }
             else {
-                Utils_24.Utils.console.error("fnFileSave: file not open!");
+                Utils_26.Utils.console.error("fnFileSave: file not open!");
             }
             this.vm.vmStop("", 0, true); // continue
         };
         Controller.prototype.fnDeleteLines = function (paras) {
-            var inputText = this.view.getAreaValue("inputText"), lines = this.fnGetLinesInRange(inputText, paras.first || 0, paras.last || 65535);
+            var inputText = this.view.getAreaValue("inputText" /* ViewID.inputText */), lines = this.fnGetLinesInRange(inputText, paras.first || 0, paras.last || 65535);
             var error;
             if (lines.length) {
                 for (var i = 0; i < lines.length; i += 1) {
@@ -17125,7 +19505,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.invalidateScript();
         };
         Controller.prototype.fnList = function (paras) {
-            var input = this.view.getAreaValue("inputText"), stream = paras.stream, lines = this.fnGetLinesInRange(input, paras.first || 0, paras.last || 65535), regExp = new RegExp(/([\x00-\x1f])/g); // eslint-disable-line no-control-regex
+            var input = this.view.getAreaValue("inputText" /* ViewID.inputText */), stream = paras.stream, lines = this.fnGetLinesInRange(input, paras.first || 0, paras.last || 65535), regExp = new RegExp(/([\x00-\x1f])/g); // eslint-disable-line no-control-regex
             for (var i = 0; i < lines.length; i += 1) {
                 var line = lines[i];
                 if (stream !== 9) {
@@ -17144,18 +19524,17 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 this.virtualKeyboard.reset();
             }
             vm.vmStop("end", 0, true); // set "end" with priority 0, so that "compile only" still works
-            vm.outBuffer = "";
-            this.view.setAreaValue("outputText", "");
+            this.view.setAreaValue("outputText" /* ViewID.outputText */, "");
             this.invalidateScript();
         };
         Controller.prototype.outputError = function (error, noSelection) {
             var stream = 0;
             var shortError;
-            if (Utils_24.Utils.isCustomError(error)) {
+            if (Utils_26.Utils.isCustomError(error)) {
                 shortError = error.shortMessage || error.message;
                 if (!noSelection) {
                     var startPos = error.pos || 0, len = error.len || ((error.value !== undefined) ? String(error.value).length : 0), endPos = startPos + len;
-                    this.view.setAreaSelection("inputText", error.pos, endPos);
+                    this.view.setAreaSelection("inputText" /* ViewID.inputText */, error.pos, endPos);
                 }
             }
             else {
@@ -17165,22 +19544,15 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.vm.print(stream, escapedShortError + "\r\n");
             return shortError;
         };
-        Controller.createBasicFormatter = function () {
-            return new BasicFormatter_1.BasicFormatter({
-                lexer: new BasicLexer_1.BasicLexer({
-                    keywords: BasicParser_2.BasicParser.keywords
-                }),
-                parser: new BasicParser_2.BasicParser()
-            });
-        };
         Controller.prototype.fnRenumLines = function (paras) {
-            var vm = this.vm, input = this.view.getAreaValue("inputText");
-            if (!this.basicFormatter) {
-                this.basicFormatter = Controller.createBasicFormatter();
-            }
-            var output = this.basicFormatter.renumber(input, paras.newLine || 10, paras.oldLine || 1, paras.step || 10, paras.keep || 65535);
+            var vm = this.vm, input = this.view.getAreaValue("inputText" /* ViewID.inputText */), basicFormatter = this.getBasicFormatter();
+            this.basicLexer.setOptions({
+                keepWhiteSpace: false
+            });
+            this.basicParser.setOptions(Controller.formatterBasicParserOptions);
+            var output = basicFormatter.renumber(input, paras.newLine || 10, paras.oldLine || 1, paras.step || 10, paras.keep || 65535);
             if (output.error) {
-                Utils_24.Utils.console.warn(output.error);
+                Utils_26.Utils.console.warn(output.error);
                 this.outputError(output.error);
             }
             else {
@@ -17192,19 +19564,19 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             vm.vmStop("end", 0, true);
         };
         Controller.prototype.fnEditLineCallback = function () {
-            var inputParas = this.vm.vmGetStopObject().paras, inputText = this.view.getAreaValue("inputText");
+            var inputParas = this.vm.vmGetStopObject().paras, inputText = this.view.getAreaValue("inputText" /* ViewID.inputText */);
             var input = inputParas.input;
             input = this.mergeScripts(inputText, input);
             this.setInputText(input);
             this.vm.vmSetStartLine(0);
             this.vm.vmGoto(0); // to be sure
-            this.view.setDisabled("continueButton", true);
+            this.view.setDisabled("continueButton" /* ViewID.continueButton */, true);
             this.vm.cursor(inputParas.stream, 0);
             this.vm.vmStop("end", 90);
             return true;
         };
         Controller.prototype.fnEditLine = function (paras) {
-            var input = this.view.getAreaValue("inputText"), stream = paras.stream, lineNumber = paras.first || 0, lines = this.fnGetLinesInRange(input, lineNumber, lineNumber);
+            var input = this.view.getAreaValue("inputText" /* ViewID.inputText */), stream = paras.stream, lineNumber = paras.first || 0, lines = this.fnGetLinesInRange(input, lineNumber, lineNumber);
             if (lines.length) {
                 var lineString = lines[0];
                 this.vm.print(stream, lineString);
@@ -17214,7 +19586,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     line: paras.line,
                     stream: stream,
                     message: "",
-                    fnInputCallback: this.fnEditLineCallback.bind(this),
+                    fnInputCallback: this.fnEditLineCallbackHandler,
                     input: lineString
                 };
                 this.vm.vmStop("waitInput", 45, true, inputParas);
@@ -17232,7 +19604,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 var time = Date.now();
                 output = this.codeGeneratorJs.generate(input, this.variables);
                 time = Date.now() - time;
-                Utils_24.Utils.console.debug("bench size", input.length, "labels", this.codeGeneratorJs.debugGetLabelsCount(), "loop", i, ":", time, "ms");
+                Utils_26.Utils.console.debug("bench size", input.length, "labels", this.codeGeneratorJs.debugGetLabelsCount(), "loop", i, ":", time, "ms");
                 if (output.error) {
                     break;
                 }
@@ -17240,9 +19612,13 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             return output;
         };
         Controller.prototype.fnParse = function () {
-            var input = this.view.getAreaValue("inputText"), bench = this.model.getProperty("bench");
+            var input = this.view.getAreaValue("inputText" /* ViewID.inputText */), bench = this.model.getProperty("bench" /* ModelPropID.bench */);
             // keep variables; this.variables.removeAllVariables();
             var output;
+            this.basicLexer.setOptions({
+                keepWhiteSpace: false
+            });
+            this.basicParser.setOptions(Controller.codeGenJsBasicParserOptions);
             if (!bench) {
                 output = this.codeGeneratorJs.generate(input, this.variables);
             }
@@ -17261,7 +19637,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 for (var i = 0; i < tokens.length; i += 1) {
                     var code = tokens.charCodeAt(i);
                     if (code > 255) {
-                        Utils_24.Utils.console.warn("Put token in memory: addr=" + (addr + i) + ", code=" + code + ", char=" + tokens.charAt(i));
+                        Utils_26.Utils.console.warn("Put token in memory: addr=" + (addr + i) + ", code=" + code + ", char=" + tokens.charAt(i));
                         code = 0x20;
                     }
                     this.vm.poke(addr + i, code);
@@ -17270,25 +19646,25 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             if (outputString && outputString.length > 0) {
                 outputString += "\n";
             }
-            this.view.setAreaValue("outputText", outputString);
+            this.view.setAreaValue("outputText" /* ViewID.outputText */, outputString);
             this.invalidateScript();
-            this.setVarSelectOptions("varSelect", this.variables);
+            this.setVarSelectOptions("varSelect" /* ViewID.varSelect */, this.variables);
             this.commonEventHandler.onVarSelectChange();
             return output;
         };
         Controller.prototype.fnPretty = function () {
-            var input = this.view.getAreaValue("inputText"), keepWhiteSpace = this.view.getInputChecked("prettySpaceInput"), keepBrackets = this.view.getInputChecked("prettyBracketsInput"), keepColons = this.view.getInputChecked("prettyColonsInput"), output = this.prettyPrintBasic(input, keepWhiteSpace, keepBrackets, keepColons);
+            var input = this.view.getAreaValue("inputText" /* ViewID.inputText */), keepWhiteSpace = this.view.getInputChecked("prettySpaceInput" /* ViewID.prettySpaceInput */), keepBrackets = this.view.getInputChecked("prettyBracketsInput" /* ViewID.prettyBracketsInput */), keepColons = this.view.getInputChecked("prettyColonsInput" /* ViewID.prettyColonsInput */), output = this.prettyPrintBasic(input, keepWhiteSpace, keepBrackets, keepColons);
             if (output) {
                 this.fnPutChangedInputOnStack();
                 this.setInputText(output, true);
                 this.fnPutChangedInputOnStack();
                 // for testing:
                 var diff = Diff_1.Diff.testDiff(input.toUpperCase(), output.toUpperCase());
-                this.view.setAreaValue("outputText", diff);
+                this.view.setAreaValue("outputText" /* ViewID.outputText */, diff);
             }
         };
         Controller.prototype.fnAddLines = function () {
-            var input = this.view.getAreaValue("inputText"), output = Controller.addLineNumbers(input);
+            var input = this.view.getAreaValue("inputText" /* ViewID.inputText */), output = Controller.addLineNumbers(input);
             if (output) {
                 this.fnPutChangedInputOnStack();
                 this.setInputText(output, true);
@@ -17296,10 +19672,12 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             }
         };
         Controller.prototype.fnRemoveLines = function () {
-            if (!this.basicFormatter) {
-                this.basicFormatter = Controller.createBasicFormatter();
-            }
-            var input = this.view.getAreaValue("inputText"), output = this.basicFormatter.removeUnusedLines(input);
+            var basicFormatter = this.getBasicFormatter();
+            this.basicLexer.setOptions({
+                keepWhiteSpace: false
+            });
+            this.basicParser.setOptions(Controller.formatterBasicParserOptions);
+            var input = this.view.getAreaValue("inputText" /* ViewID.inputText */), output = basicFormatter.removeUnusedLines(input);
             if (output.error) {
                 this.outputError(output.error);
             }
@@ -17309,44 +19687,117 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 this.fnPutChangedInputOnStack();
             }
         };
-        // https://blog.logrocket.com/programmatic-file-downloads-in-the-browser-9a5186298d5c/
-        Controller.fnDownloadBlob = function (blob, filename) {
-            var url = URL.createObjectURL(blob), a = document.createElement("a"), clickHandler = function () {
-                setTimeout(function () {
-                    URL.revokeObjectURL(url);
-                    a.removeEventListener("click", clickHandler);
-                }, 150);
-            };
-            a.href = url;
-            a.download = filename || "download";
-            a.addEventListener("click", clickHandler, false);
-            a.click();
-            return a;
-        };
-        Controller.prototype.fnDownloadNewFile = function (data, fileName) {
-            var type = "octet/stream", buffer = new ArrayBuffer(data.length), data8 = new Uint8Array(buffer);
-            for (var i = 0; i < data.length; i += 1) {
-                data8[i] = data.charCodeAt(i);
-            }
-            if (typeof Blob === "undefined") {
-                Utils_24.Utils.console.warn("fnDownloadNewFile: Blob undefined");
-                return;
-            }
-            var blob = new Blob([data8.buffer], {
-                type: type
-            });
-            if (window.navigator && window.navigator.msSaveOrOpenBlob) { // IE11 support
-                window.navigator.msSaveOrOpenBlob(blob, fileName);
+        Controller.prototype.fnGetFilename = function (input) {
+            var name = "file";
+            var reRemMatcher = /^\d* ?(?:REM|rem) ([\w.]+)+/, matches = input.match(reRemMatcher);
+            if (matches !== null) {
+                name = matches[1];
             }
             else {
-                Controller.fnDownloadBlob(blob, fileName);
+                var example = this.model.getProperty("example" /* ModelPropID.example */);
+                if (example !== "") {
+                    name = example;
+                }
             }
+            if (name.indexOf(".") < 0) {
+                name += ".bas";
+            }
+            return name;
         };
+        // eslint-disable-next-line complexity
         Controller.prototype.fnDownload = function () {
-            var input = this.view.getAreaValue("inputText"), tokens = this.encodeTokenizedBasic(input);
-            if (tokens !== "") {
-                var header = FileHandler_1.FileHandler.createMinimalAmsdosHeader("T", 0x170, tokens.length), headerString = DiskImage_2.DiskImage.combineAmsdosHeader(header), data = headerString + tokens;
-                this.fnDownloadNewFile(data, "file.bas");
+            var options = this.view.getSelectOptions("exportFileSelect" /* ViewID.exportFileSelect */), exportTokenized = this.view.getInputChecked("exportTokenizedInput" /* ViewID.exportTokenizedInput */), exportDSK = this.view.getInputChecked("exportDSKInput" /* ViewID.exportDSKInput */), format = this.view.getSelectValue("exportDSKFormatSelect" /* ViewID.exportDSKFormatSelect */), stripEmpty = this.view.getInputChecked("exportDSKStripEmptyInput" /* ViewID.exportDSKStripEmptyInput */), exportBase64 = this.view.getInputChecked("exportBase64Input" /* ViewID.exportBase64Input */), editorText = Controller.exportEditorText, meta = {
+                typeString: "A",
+                start: 0x170,
+                length: 0,
+                entry: 0
+            };
+            var diskImage, name = "", data = "";
+            var fnExportBase64 = function () {
+                meta.encoding = "base64";
+                var metaString = FileHandler_1.FileHandler.joinMeta(meta);
+                data = metaString + "," + Utils_26.Utils.btoa(data);
+                name += ".b64.txt";
+            };
+            if (exportDSK) {
+                diskImage = this.getFileHandler().getDiskImage();
+                diskImage.setOptions({
+                    diskName: "test",
+                    data: diskImage.formatImage(format) // data or system
+                });
+            }
+            for (var i = 0; i < options.length; i += 1) {
+                var item = options[i];
+                if (item.selected) {
+                    if (item.value === editorText) {
+                        data = this.view.getAreaValue("inputText" /* ViewID.inputText */);
+                        name = this.fnGetFilename(data);
+                        var eolStr = data.indexOf("\r\n") > 0 ? "\r\n" : "\n"; // heuristic: if CRLF found, use it as split
+                        if (eolStr === "\n") {
+                            data = data.replace(/\n/g, "\r\n"); // replace LF by CRLF (not really needed if tokenized is used)
+                        }
+                        meta.typeString = "A"; // ASCII
+                        meta.start = 0x170;
+                        meta.length = data.length;
+                        meta.entry = 0;
+                    }
+                    else {
+                        name = item.value;
+                        data = Controller.tryLoadingFromLocalStorage(name) || "";
+                        var metaAndData = Controller.splitMeta(data);
+                        Object.assign(meta, metaAndData.meta); // copy meta info
+                        data = metaAndData.data;
+                    }
+                    if (exportTokenized && meta.typeString === "A") { // do we need to tokenize it?
+                        var tokens = this.encodeTokenizedBasic(data);
+                        if (tokens) { // successful?
+                            data = tokens;
+                            meta.typeString = "T";
+                            meta.start = 0x170;
+                            meta.length = data.length;
+                            meta.entry = 0;
+                        }
+                    }
+                    if (meta.typeString !== "A" && meta.typeString !== "X" && meta.typeString !== "Z") {
+                        var _a = DiskImage_2.DiskImage.getFilenameAndExtension(name), name1 = _a[0], ext1 = _a[1], // eslint-disable-line array-element-newline
+                        header = DiskImage_2.DiskImage.createAmsdosHeader({
+                            name: name1,
+                            ext: ext1,
+                            typeString: meta.typeString,
+                            start: meta.start,
+                            length: meta.length,
+                            entry: meta.entry
+                        }), headerString = DiskImage_2.DiskImage.combineAmsdosHeader(header);
+                        data = headerString + data;
+                    }
+                    if (diskImage) {
+                        diskImage.writeFile(name, data);
+                        var diskOptions = diskImage.getOptions();
+                        data = diskOptions.data; // we need the modified disk image with the file(s) inside
+                        name = name.substring(0, name.indexOf(".") + 1) + "dsk";
+                        meta.length = data.length;
+                        meta.typeString = "X"; // (extended) disk image
+                    }
+                    else {
+                        if (exportBase64) {
+                            fnExportBase64();
+                        }
+                        if (data) {
+                            this.view.fnDownloadBlob(data, name);
+                        }
+                    }
+                }
+            }
+            if (diskImage) {
+                if (stripEmpty) {
+                    data = diskImage.stripEmptyTracks();
+                }
+                if (exportBase64) {
+                    fnExportBase64();
+                }
+                if (data) {
+                    this.view.fnDownloadBlob(data, name);
+                }
             }
         };
         Controller.prototype.selectJsError = function (script, e) {
@@ -17360,12 +19811,12 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     line += 1;
                 }
                 pos += columnNumber;
-                Utils_24.Utils.console.warn("Info: JS Error occurred at line", lineNumber, "column", columnNumber, "pos", pos);
-                this.view.setAreaSelection("outputText", pos, pos + 1);
+                Utils_26.Utils.console.warn("Info: JS Error occurred at line", lineNumber, "column", columnNumber, "pos", pos);
+                this.view.setAreaSelection("outputText" /* ViewID.outputText */, pos, pos + 1);
             }
         };
         Controller.prototype.fnChain = function (paras) {
-            var script = this.view.getAreaValue("outputText"), vm = this.vm;
+            var script = this.view.getAreaValue("outputText" /* ViewID.outputText */), vm = this.vm;
             var line = paras && paras.first || 0;
             line = line || 0;
             if (line === 0) {
@@ -17379,7 +19830,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     this.fnScript = new Function("o", script); // eslint-disable-line no-new-func
                 }
                 catch (e) {
-                    Utils_24.Utils.console.error(e);
+                    Utils_26.Utils.console.error(e);
                     if (e instanceof Error) {
                         this.selectJsError(script, e);
                         e.shortMessage = "JS " + String(e);
@@ -17390,27 +19841,27 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             }
             vm.vmReset4Run();
             if (this.fnScript) {
-                vm.outBuffer = this.view.getAreaValue("resultText");
                 vm.vmStop("", 0, true);
                 vm.vmGoto(0); // to load DATA lines
                 this.vm.vmSetStartLine(line); // clear resets also startline
-                this.view.setDisabled("runButton", true);
-                this.view.setDisabled("stopButton", false);
-                this.view.setDisabled("continueButton", true);
+                this.view.setDisabled("runButton" /* ViewID.runButton */, true);
+                this.view.setDisabled("stopButton" /* ViewID.stopButton */, false);
+                this.view.setDisabled("continueButton" /* ViewID.continueButton */, true);
             }
             if (!this.inputSet) {
                 this.inputSet = true;
-                var input = this.model.getProperty("input");
+                var input = this.model.getProperty("input" /* ModelPropID.input */);
                 if (input !== "") {
-                    this.view.setAreaValue("inp2Text", input);
+                    this.view.setAreaValue("inp2Text" /* ViewID.inp2Text */, input);
                     var that_1 = this, timeout = 1;
                     setTimeout(function () {
                         that_1.startEnter();
+                        that_1.view.setAreaValue("inp2Text" /* ViewID.inp2Text */, ""); // delete input
                     }, timeout);
                 }
             }
-            if (Utils_24.Utils.debug > 1) {
-                Utils_24.Utils.console.debug("End of fnRun");
+            if (Utils_26.Utils.debug > 1) {
+                Utils_26.Utils.console.debug("End of fnRun");
             }
         };
         Controller.prototype.fnRun = function (paras) {
@@ -17441,22 +19892,22 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                             customError = this.vm.vmComposeError(customError, customError.errCode, customError.value);
                         }
                         if (!customError.hidden) {
-                            Utils_24.Utils.console.warn(customError);
+                            Utils_26.Utils.console.warn(customError);
                             this.outputError(customError, !customError.pos);
                         }
                         else {
-                            Utils_24.Utils.console.log(customError.message);
+                            Utils_26.Utils.console.log(customError.message);
                         }
                     }
                     else {
-                        Utils_24.Utils.console.error(e);
-                        this.selectJsError(this.view.getAreaValue("outputText"), e);
+                        Utils_26.Utils.console.error(e);
+                        this.selectJsError(this.view.getAreaValue("outputText" /* ViewID.outputText */), e);
                         this.vm.vmComposeError(e, 2, "JS " + String(e)); // generate Syntax Error, set also err and erl and set stop
                         this.outputError(e, true);
                     }
                 }
                 else {
-                    Utils_24.Utils.console.error(e);
+                    Utils_26.Utils.console.error(e);
                 }
             }
         };
@@ -17467,25 +19918,26 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             inputParas.input = "";
             if (input !== "") { // direct input
                 this.vm.cursor(stream, 0);
-                var inputText = this.view.getAreaValue("inputText");
+                var inputText = this.view.getAreaValue("inputText" /* ViewID.inputText */);
                 if ((/^\d+($| )/).test(input)) { // start with number?
-                    if (Utils_24.Utils.debug > 0) {
-                        Utils_24.Utils.console.debug("fnDirectInput: insert line=" + input);
+                    if (Utils_26.Utils.debug > 0) {
+                        Utils_26.Utils.console.debug("fnDirectInput: insert line=" + input);
                     }
                     input = this.mergeScripts(inputText, input);
                     this.setInputText(input, true);
                     this.vm.vmSetStartLine(0);
                     this.vm.vmGoto(0); // to be sure
-                    this.view.setDisabled("continueButton", true);
+                    this.view.setDisabled("continueButton" /* ViewID.continueButton */, true);
                     this.vm.cursor(stream, 1);
                     this.updateResultText();
                     return false; // continue direct input
                 }
-                Utils_24.Utils.console.log("fnDirectInput: execute:", input);
+                Utils_26.Utils.console.log("fnDirectInput: execute:", input);
                 var codeGeneratorJs = this.codeGeneratorJs;
                 var output = void 0, outputString = void 0;
-                if (inputText && ((/^\d+($| )/).test(inputText) || this.model.getProperty("implicitLines"))) { // do we have a program starting with a line number?
+                if (inputText && ((/^\d+($| )/).test(inputText) || this.model.getProperty("implicitLines" /* ModelPropID.implicitLines */))) { // do we have a program starting with a line number?
                     var separator = inputText.endsWith("\n") ? "" : "\n";
+                    this.basicParser.setOptions(Controller.codeGenJsBasicParserOptions);
                     output = codeGeneratorJs.generate(inputText + separator + input, this.variables, true); // compile both; allow direct command
                     if (output.error) {
                         var error = output.error;
@@ -17496,6 +19948,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     }
                 }
                 if (!output) {
+                    this.basicParser.setOptions(Controller.codeGenJsBasicParserOptions);
                     output = codeGeneratorJs.generate(input, this.variables, true); // compile direct input only
                 }
                 if (output.error) {
@@ -17507,7 +19960,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 if (outputString && outputString.length > 0) {
                     outputString += "\n";
                 }
-                this.view.setAreaValue("outputText", outputString);
+                this.view.setAreaValue("outputText" /* ViewID.outputText */, outputString);
                 if (!output.error) {
                     this.vm.vmSetStartLine(this.vm.line); // fast hack
                     this.vm.vmGoto("direct");
@@ -17517,7 +19970,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                         this.vm.vmSetSourceMap(codeGeneratorJs.getSourceMap());
                     }
                     catch (e) {
-                        Utils_24.Utils.console.error(e);
+                        Utils_26.Utils.console.error(e);
                         if (e instanceof Error) {
                             this.outputError(e, true);
                         }
@@ -17555,16 +20008,16 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.fnWaitInput();
         };
         Controller.prototype.updateResultText = function () {
-            this.view.setAreaValue("resultText", this.vm.outBuffer);
-            this.view.setAreaScrollTop("resultText"); // scroll to bottom
+            this.view.setAreaValue("resultText" /* ViewID.resultText */, this.vm.vmGetOutBuffer());
+            this.view.setAreaScrollTop("resultText" /* ViewID.resultText */); // scroll to bottom
         };
         Controller.prototype.exitLoop = function () {
             var stop = this.vm.vmGetStopObject(), reason = stop.reason;
             this.updateResultText();
-            this.view.setDisabled("runButton", reason === "reset");
-            this.view.setDisabled("stopButton", reason !== "fileLoad" && reason !== "fileSave");
-            this.view.setDisabled("continueButton", reason === "end" || reason === "fileLoad" || reason === "fileSave" || reason === "parse" || reason === "renumLines" || reason === "reset");
-            this.setVarSelectOptions("varSelect", this.variables);
+            this.view.setDisabled("runButton" /* ViewID.runButton */, reason === "reset");
+            this.view.setDisabled("stopButton" /* ViewID.stopButton */, reason !== "fileLoad" && reason !== "fileSave");
+            this.view.setDisabled("continueButton" /* ViewID.continueButton */, reason === "end" || reason === "fileLoad" || reason === "fileSave" || reason === "parse" || reason === "renumLines" || reason === "reset");
+            this.setVarSelectOptions("varSelect" /* ViewID.varSelect */, this.variables);
             this.commonEventHandler.onVarSelectChange();
             if (reason === "stop" || reason === "end" || reason === "error" || reason === "parse" || reason === "parseRun") {
                 this.startWithDirectInput();
@@ -17593,7 +20046,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 this.handlers[stop.reason].call(this, stop.paras);
             }
             else {
-                Utils_24.Utils.console.warn("runLoop: Unknown run mode:", stop.reason);
+                Utils_26.Utils.console.warn("runLoop: Unknown run mode:", stop.reason);
                 this.vm.vmStop("error", 50);
             }
             if (stop.reason && stop.reason !== "waitSound" && stop.reason !== "waitKey" && stop.reason !== "waitInput") {
@@ -17607,7 +20060,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         Controller.prototype.startMainLoop = function () {
             if (!this.timeoutHandlerActive) {
                 this.timeoutHandlerActive = true;
-                this.fnRunLoop();
+                setTimeout(this.fnRunLoopHandler, 0);
             }
         };
         Controller.prototype.setStopObject = function (stop) {
@@ -17626,10 +20079,10 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.vm.vmStop("renumLines", 85, false, {
                 command: "renum",
                 stream: 0,
-                newLine: Number(this.view.getInputValue("renumNewInput")),
-                oldLine: Number(this.view.getInputValue("renumStartInput")),
-                step: Number(this.view.getInputValue("renumStepInput")),
-                keep: Number(this.view.getInputValue("renumKeepInput")),
+                newLine: Number(this.view.getInputValue("renumNewInput" /* ViewID.renumNewInput */)),
+                oldLine: Number(this.view.getInputValue("renumStartInput" /* ViewID.renumStartInput */)),
+                step: Number(this.view.getInputValue("renumStepInput" /* ViewID.renumStepInput */)),
+                keep: Number(this.view.getInputValue("renumKeepInput" /* ViewID.renumKeepInput */)),
                 line: this.vm.line
             });
             if (this.vm.pos(stream) > 1) {
@@ -17659,9 +20112,9 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         };
         Controller.prototype.startContinue = function () {
             var vm = this.vm, stop = vm.vmGetStopObject(), savedStop = this.getStopObject();
-            this.view.setDisabled("runButton", true);
-            this.view.setDisabled("stopButton", false);
-            this.view.setDisabled("continueButton", true);
+            this.view.setDisabled("runButton" /* ViewID.runButton */, true);
+            this.view.setDisabled("stopButton" /* ViewID.stopButton */, false);
+            this.view.setDisabled("continueButton" /* ViewID.continueButton */, true);
             if (stop.reason === "break" || stop.reason === "escape" || stop.reason === "stop" || stop.reason === "direct") {
                 if (savedStop.paras && !savedStop.paras.fnInputCallback) { // no keyboard callback? make sure no handler is set (especially for direct->continue)
                     this.removeKeyBoardHandler();
@@ -17681,27 +20134,21 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.startMainLoop();
         };
         Controller.prototype.startScreenshot = function () {
-            var canvas = this.canvas.getCanvasElement();
-            if (canvas.toDataURL) {
-                return canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // here is the most important part because if you do not replace you will get a DOM 18 exception.
-            }
-            Utils_24.Utils.console.warn("Screenshot not available");
-            return "";
+            return this.canvas.takeScreenShot();
         };
         Controller.prototype.fnPutKeysInBuffer = function (keys) {
             for (var i = 0; i < keys.length; i += 1) {
                 this.keyboard.putKeyInBuffer(keys.charAt(i));
             }
-            var keyDownHandler = this.keyboard.getKeyDownHandler();
+            var options = this.keyboard.getOptions(), keyDownHandler = options.fnOnKeyDown;
             if (keyDownHandler) {
                 keyDownHandler();
             }
         };
         Controller.prototype.startEnter = function () {
-            var input = this.view.getAreaValue("inp2Text");
+            var input = this.view.getAreaValue("inp2Text" /* ViewID.inp2Text */);
             input = input.replace(/\n/g, "\r"); // LF => CR
             this.fnPutKeysInBuffer(input);
-            this.view.setAreaValue("inp2Text", "");
         };
         Controller.generateFunction = function (par, functionString) {
             if (functionString.startsWith("function anonymous(")) { // already a modified function (inside an anonymous function)?
@@ -17718,34 +20165,8 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             // we support at most 5 arguments
             return fnFunction;
         };
-        Controller.prototype.setPopoversHiddenExcept = function (exceptId) {
-            var areaDefinitions = Controller.areaDefinitions;
-            for (var id in areaDefinitions) {
-                if (id !== exceptId) {
-                    var propertyObject = areaDefinitions[id];
-                    if (propertyObject.isPopover && !this.view.getHidden(id)) {
-                        // we cannot use toggleAreaHidden becasue it would be recursive
-                        this.model.setProperty(propertyObject.property, false);
-                        this.view.setHidden(id, true, propertyObject.display);
-                    }
-                }
-            }
-        };
-        Controller.prototype.toggleAreaHidden = function (id) {
-            var propertyObject = Controller.areaDefinitions[id], propertyName = propertyObject.property, visible = !this.model.getProperty(propertyName);
-            this.model.setProperty(propertyName, visible);
-            this.view.setHidden(id, !visible, propertyObject.display);
-            // on old browsers display "flex" is not available, so set default "" (="block"), if still hidden
-            if (visible && propertyObject.display === "flex" && this.view.getHidden(id)) {
-                this.view.setHidden(id, !visible);
-            }
-            if (visible && propertyObject.isPopover) {
-                this.setPopoversHiddenExcept(id);
-            }
-            return visible;
-        };
         Controller.prototype.changeVariable = function () {
-            var par = this.view.getSelectValue("varSelect"), valueString = this.view.getSelectValue("varText"), variables = this.variables;
+            var par = this.view.getSelectValue("varSelect" /* ViewID.varSelect */), valueString = this.view.getSelectValue("varText" /* ViewID.varText */), variables = this.variables;
             var value = variables.getVariable(par);
             if (typeof value === "function") {
                 value = Controller.generateFunction(par, valueString);
@@ -17762,29 +20183,96 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 try {
                     var value2 = this.vm.vmAssign(varType, value);
                     variables.setVariable(par, value2);
-                    Utils_24.Utils.console.log("Variable", par, "changed:", variables.getVariable(par), "=>", value);
+                    Utils_26.Utils.console.log("Variable", par, "changed:", variables.getVariable(par), "=>", value);
                 }
                 catch (e) {
-                    Utils_24.Utils.console.warn(e);
+                    Utils_26.Utils.console.warn(e);
                 }
             }
-            this.setVarSelectOptions("varSelect", variables);
+            this.setVarSelectOptions("varSelect" /* ViewID.varSelect */, variables);
             this.commonEventHandler.onVarSelectChange(); // title change?
         };
+        Controller.prototype.setBasicVersion = function (basicVersion) {
+            this.basicParser.setOptions({
+                basicVersion: basicVersion
+            });
+            this.basicLexer.setOptions({
+                keywords: this.basicParser.getKeywords()
+            });
+            this.invalidateScript();
+        };
         Controller.prototype.setPalette = function (palette) {
-            this.canvas.setPalette(palette === "green" || palette === "grey" ? palette : "color");
+            var validPalette = palette === "green" || palette === "grey" ? palette : "color";
+            this.canvas.setOptions({
+                palette: validPalette
+            });
+        };
+        Controller.prototype.setCanvasType = function (canvasType) {
+            var canvas = this.canvas;
+            if (canvas) {
+                canvas.stopUpdateCanvas(); // stop updates on current canvas
+                var canvasID = canvas.getOptions().canvasID;
+                this.view.setHidden(canvasID, true);
+            }
+            else if (canvasType !== "graphics") {
+                // initially graphics canvas is not hidden, but we must hide it, if other canvas should be shown
+                this.view.setHidden("cpcCanvas" /* ViewID.cpcCanvas */, true);
+            }
+            var palette = this.model.getProperty("palette" /* ModelPropID.palette */);
+            if (this.canvases[canvasType]) {
+                canvas = this.canvases[canvasType];
+                this.canvas = canvas;
+                this.setPalette(palette);
+            }
+            else {
+                var validPalette = palette === "green" || palette === "grey" ? palette : "color";
+                if (canvasType === "text") {
+                    canvas = new TextCanvas_1.TextCanvas({
+                        canvasID: "textText" /* ViewID.textText */,
+                        charset: cpcCharset_1.cpcCharset,
+                        palette: validPalette
+                    });
+                }
+                else if (canvasType === "none") {
+                    canvas = new NoCanvas_1.NoCanvas({
+                        canvasID: "noCanvas" /* ViewID.noCanvas */,
+                        charset: cpcCharset_1.cpcCharset,
+                        palette: validPalette
+                    });
+                }
+                else { // "graphics"
+                    var isAreaHidden = this.view.getHidden("cpcArea" /* ViewID.cpcArea */);
+                    // make sure canvas area is not hidden when creating canvas object (allows to get width, height)
+                    if (isAreaHidden) {
+                        this.commonEventHandler.toggleAreaHiddenById("change", "showCpcInput" /* ViewID.showCpcInput */); // show: ViewID.cpcArea
+                    }
+                    this.view.setHidden("cpcCanvas" /* ViewID.cpcCanvas */, false);
+                    canvas = new Canvas_1.Canvas({
+                        canvasID: "cpcCanvas" /* ViewID.cpcCanvas */,
+                        charset: cpcCharset_1.cpcCharset,
+                        palette: validPalette
+                    });
+                    if (isAreaHidden) {
+                        this.commonEventHandler.toggleAreaHiddenById("change", "showCpcInput" /* ViewID.showCpcInput */); // hide again: ViewID.cpcArea
+                    }
+                }
+                this.canvases[canvasType] = canvas;
+                this.canvas = canvas;
+            }
+            if (this.vm) {
+                this.vm.setCanvas(canvas);
+            }
+            var canvasId = canvas.getOptions().canvasID;
+            this.view.setHidden(canvasId, false);
+            if (this.model.getProperty("showCpc" /* ModelPropID.showCpc */)) {
+                this.canvas.startUpdateCanvas();
+            }
+            return canvas;
         };
         Controller.prototype.setSoundActive = function () {
-            var sound = this.sound, soundLabel = View_7.View.getElementById1("soundLabel"), active = this.model.getProperty("sound");
-            var text = "";
+            var sound = this.sound, active = this.model.getProperty("sound" /* ModelPropID.sound */);
             if (active) {
-                try {
-                    sound.soundOn();
-                }
-                catch (e) {
-                    Utils_24.Utils.console.warn("soundOn:", e);
-                    text = "Sound (unavailable)";
-                }
+                sound.soundOn();
             }
             else {
                 sound.soundOff();
@@ -17793,9 +20281,38 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                     this.vm.vmStop("", 0, true); // do not wait
                 }
             }
-            if (text) {
-                soundLabel.innerText = text;
+        };
+        Controller.prototype.getZ80Disass = function () {
+            if (!this.z80Disass) {
+                var dataArr = this.vm.vmGetMem(), data = dataArr; // fast hack: we take number array as Uint8Array
+                this.z80Disass = new Z80Disass_1.Z80Disass({
+                    data: data,
+                    addr: 0
+                });
             }
+            return this.z80Disass;
+        };
+        Controller.prototype.setDisassAddr = function (addr, endAddr) {
+            var z80Disass = this.getZ80Disass();
+            if (endAddr === undefined) {
+                endAddr = addr + 0x100;
+            }
+            z80Disass.setOptions({
+                addr: addr
+            });
+            var opts = z80Disass.getOptions(), lines = [];
+            while (addr < endAddr) { // currently not limited to < 0x10000
+                lines.push(z80Disass.disassLine());
+                if (opts.addr > addr) {
+                    addr = opts.addr;
+                }
+                else {
+                    Utils_26.Utils.console.error("setDisassAddr: Not increasing:", addr, opts.addr);
+                    break;
+                }
+            }
+            var out = lines.join("\n") + "\n";
+            this.view.setAreaValue("disassText" /* ViewID.disassText */, out);
         };
         Controller.prototype.fnEndOfImport = function (imported) {
             var stream = 0, vm = this.vm;
@@ -17805,7 +20322,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             vm.print(stream, "\r\n", imported.length + " file" + (imported.length !== 1 ? "s" : "") + " imported.\r\n");
             this.updateResultText();
         };
-        Controller.fnHandleDragOver = function (evt) {
+        Controller.fnOnDragover = function (evt) {
             evt.stopPropagation();
             evt.preventDefault();
             if (evt.dataTransfer !== null) {
@@ -17815,43 +20332,46 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         Controller.prototype.adaptFilename = function (name, err) {
             return this.vm.vmAdaptFilename(name, err);
         };
-        Controller.prototype.createFileHandler = function () {
+        Controller.prototype.getFileHandler = function () {
             if (!this.fileHandler) {
                 this.fileHandler = new FileHandler_1.FileHandler({
                     adaptFilename: this.adaptFilename.bind(this),
                     updateStorageDatabase: this.updateStorageDatabase.bind(this),
-                    outputError: this.outputError.bind(this)
+                    outputError: this.outputError.bind(this),
+                    processFileImports: this.model.getProperty("processFileImports" /* ModelPropID.processFileImports */)
                 });
             }
             return this.fileHandler;
         };
-        Controller.prototype.initDropZone = function () {
-            var fileHandler = this.fileHandler || this.createFileHandler();
+        Controller.prototype.getFileSelect = function (fileHandler) {
             if (!this.fileSelect) {
                 this.fileSelect = new FileSelect_1.FileSelect({
                     fnEndOfImport: this.fnEndOfImport.bind(this),
                     fnLoad2: fileHandler.fnLoad2.bind(fileHandler)
                 });
             }
-            var dropZone = View_7.View.getElementById1("dropZone");
-            dropZone.addEventListener("dragover", Controller.fnHandleDragOver.bind(this), false);
-            this.fileSelect.addFileSelectHandler(dropZone, "drop");
-            var canvasElement = this.canvas.getCanvasElement();
-            canvasElement.addEventListener("dragover", Controller.fnHandleDragOver.bind(this), false);
-            this.fileSelect.addFileSelectHandler(canvasElement, "drop");
-            var fileInput = View_7.View.getElementById1("fileInput");
-            this.fileSelect.addFileSelectHandler(fileInput, "change");
+            return this.fileSelect;
+        };
+        Controller.prototype.initDropZone = function () {
+            var fileHandler = this.getFileHandler(), fileSelect = this.getFileSelect(fileHandler), dropZone = View_7.View.getElementById1("dropZone" /* ViewID.dropZone */);
+            dropZone.addEventListener("dragover", this.fnOnDragoverHandler, false);
+            fileSelect.addFileSelectHandler(dropZone, "drop");
+            var canvasID = this.canvas.getOptions().canvasID, canvasElement = View_7.View.getElementById1(canvasID);
+            canvasElement.addEventListener("dragover", this.fnOnDragoverHandler, false);
+            fileSelect.addFileSelectHandler(canvasElement, "drop");
+            var fileInput = View_7.View.getElementById1("fileInput" /* ViewID.fileInput */);
+            fileSelect.addFileSelectHandler(fileInput, "change");
         };
         Controller.prototype.fnUpdateUndoRedoButtons = function () {
-            this.view.setDisabled("undoButton", !this.inputStack.canUndoKeepOne());
-            this.view.setDisabled("redoButton", !this.inputStack.canRedo());
+            this.view.setDisabled("undoButton" /* ViewID.undoButton */, !this.inputStack.canUndoKeepOne());
+            this.view.setDisabled("redoButton" /* ViewID.redoButton */, !this.inputStack.canRedo());
         };
         Controller.prototype.fnInitUndoRedoButtons = function () {
             this.inputStack.reset();
             this.fnUpdateUndoRedoButtons();
         };
         Controller.prototype.fnPutChangedInputOnStack = function () {
-            var input = this.view.getAreaValue("inputText"), stackInput = this.inputStack.getInput();
+            var input = this.view.getAreaValue("inputText" /* ViewID.inputText */), stackInput = this.inputStack.getInput();
             if (stackInput !== input) {
                 this.inputStack.save(input);
                 this.fnUpdateUndoRedoButtons();
@@ -17860,22 +20380,36 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         Controller.prototype.startUpdateCanvas = function () {
             this.canvas.startUpdateCanvas();
         };
-        Controller.prototype.startUpdateTextCanvas = function () {
-            this.textCanvas.startUpdateCanvas();
-        };
         Controller.prototype.stopUpdateCanvas = function () {
             this.canvas.stopUpdateCanvas();
         };
-        Controller.prototype.stopUpdateTextCanvas = function () {
-            this.textCanvas.stopUpdateCanvas();
+        Controller.prototype.getDragElement = function () {
+            if (!this.dragElement) {
+                this.dragElement = new DragElement_1.DragElement({
+                    view: this.view,
+                    entries: {}
+                });
+            }
+            return this.dragElement;
         };
-        Controller.prototype.virtualKeyboardCreate = function () {
+        Controller.prototype.getVirtualKeyboard = function () {
             if (!this.virtualKeyboard) {
                 this.virtualKeyboard = new VirtualKeyboard_1.VirtualKeyboard({
+                    view: this.view,
                     fnPressCpcKey: this.keyboard.fnPressCpcKey.bind(this.keyboard),
                     fnReleaseCpcKey: this.keyboard.fnReleaseCpcKey.bind(this.keyboard)
                 });
             }
+            return this.virtualKeyboard;
+        };
+        Controller.prototype.fnDragElementsActive = function (enabled) {
+            var dragElement = this.getDragElement(), dragElementsData = this.dragElementsData;
+            for (var entry in dragElementsData.entries) {
+                if (dragElementsData.entries.hasOwnProperty(entry)) {
+                    dragElementsData.entries[entry].enabled = enabled;
+                }
+            }
+            dragElement.setOptions(this.dragElementsData);
         };
         Controller.prototype.getVariable = function (par) {
             return this.variables.getVariable(par);
@@ -17889,20 +20423,20 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         Controller.prototype.createFnDatabaseLoaded = function (url) {
             var _this = this;
             return function (_sFullUrl, key) {
-                var selectedName = _this.model.getProperty("database");
+                var selectedName = _this.model.getProperty("database" /* ModelPropID.database */);
                 if (selectedName === key) {
                     _this.model.getDatabase().loaded = true;
                 }
                 else { // should not occur
-                    Utils_24.Utils.console.warn("databaseLoaded: name changed: " + key + " => " + selectedName);
-                    _this.model.setProperty("database", key);
+                    Utils_26.Utils.console.warn("databaseLoaded: name changed: " + key + " => " + selectedName);
+                    _this.model.setProperty("database" /* ModelPropID.database */, key);
                     var database = _this.model.getDatabase();
                     if (database) {
                         database.loaded = true;
                     }
-                    _this.model.setProperty("database", selectedName);
+                    _this.model.setProperty("database" /* ModelPropID.database */, selectedName);
                 }
-                Utils_24.Utils.console.log("fnDatabaseLoaded: database loaded: " + key + ": " + url);
+                Utils_26.Utils.console.log("fnDatabaseLoaded: database loaded: " + key + ": " + url);
                 _this.setDirectorySelectOptions();
                 _this.onDirectorySelectChange();
             };
@@ -17910,23 +20444,23 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
         Controller.prototype.createFnDatabaseError = function (url) {
             var _this = this;
             return function (_sFullUrl, key) {
-                Utils_24.Utils.console.error("fnDatabaseError: database error: " + key + ": " + url);
+                Utils_26.Utils.console.error("fnDatabaseError: database error: " + key + ": " + url);
                 _this.setDirectorySelectOptions();
                 _this.onDirectorySelectChange();
                 _this.setInputText("");
-                _this.view.setAreaValue("resultText", "Cannot load database: " + key);
+                _this.view.setAreaValue("resultText" /* ViewID.resultText */, "Cannot load database: " + key);
             };
         };
         Controller.prototype.onDatabaseSelectChange = function () {
-            var databaseName = this.view.getSelectValue("databaseSelect");
-            this.model.setProperty("database", databaseName);
-            this.view.setSelectTitleFromSelectedOption("databaseSelect");
+            var databaseName = this.view.getSelectValue("databaseSelect" /* ViewID.databaseSelect */);
+            this.model.setProperty("database" /* ModelPropID.database */, databaseName);
+            this.view.setSelectTitleFromSelectedOption("databaseSelect" /* ViewID.databaseSelect */);
             var database = this.model.getDatabase();
             if (!database) {
-                Utils_24.Utils.console.error("onDatabaseSelectChange: database not available:", databaseName);
+                Utils_26.Utils.console.error("onDatabaseSelectChange: database not available:", databaseName);
                 return;
             }
-            if (database.text === "storage") { // sepcial handling: browser localStorage
+            if (database.text === "storage") { // special handling: browser localStorage
                 this.updateStorageDatabase("set", ""); // set all
                 database.loaded = true;
             }
@@ -17936,8 +20470,8 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             }
             else {
                 this.setInputText("#loading database " + databaseName + "...");
-                var exampleIndex = this.model.getProperty("exampleIndex"), url = database.src + "/" + exampleIndex;
-                Utils_24.Utils.loadScript(url, this.createFnDatabaseLoaded(url), this.createFnDatabaseError(url), databaseName);
+                var exampleIndex = this.model.getProperty("exampleIndex" /* ModelPropID.exampleIndex */), url = database.src + "/" + exampleIndex;
+                Utils_26.Utils.loadScript(url, this.createFnDatabaseLoaded(url), this.createFnDatabaseError(url), databaseName);
             }
         };
         Controller.prototype.onDirectorySelectChange = function () {
@@ -17945,16 +20479,16 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.onExampleSelectChange();
         };
         Controller.prototype.onExampleSelectChange = function () {
-            var vm = this.vm, inFile = vm.vmGetInFileObject(), dataBaseName = this.model.getProperty("database"), directoryName = this.view.getSelectValue("directorySelect");
+            var vm = this.vm, inFile = vm.vmGetInFileObject(), dataBaseName = this.model.getProperty("database" /* ModelPropID.database */), directoryName = this.view.getSelectValue("directorySelect" /* ViewID.directorySelect */);
             vm.closein();
-            this.setPopoversHiddenExcept(""); // hide all popovers, especially the gallery
+            this.commonEventHandler.setPopoversHiddenExcept(); // hide all popovers, especially the gallery
             inFile.open = true;
-            var exampleName = this.view.getSelectValue("exampleSelect");
+            var exampleName = this.view.getSelectValue("exampleSelect" /* ViewID.exampleSelect */);
             if (directoryName) {
                 exampleName = directoryName + "/" + exampleName;
             }
             var exampleEntry = this.model.getExample(exampleName);
-            var autorun = this.model.getProperty("autorun");
+            var autorun = this.model.getProperty("autorun" /* ModelPropID.autorun */);
             if (exampleEntry && exampleEntry.meta) { // TTT TODO: this is just a workaround, meta is in input now; should change command after loading!
                 var type = exampleEntry.meta.charAt(0);
                 if (type === "B" || type === "D" || type === "G") { // binary, data only, Gena Assembler?
@@ -17966,52 +20500,45 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 exampleName = "/" + exampleName; // load absolute
             }
             else {
-                this.model.setProperty("example", exampleName);
+                this.model.setProperty("example" /* ModelPropID.example */, exampleName);
             }
             inFile.name = exampleName;
             inFile.start = undefined;
-            inFile.fnFileCallback = vm.fnLoadHandler;
+            inFile.fnFileCallback = vm.vmGetLoadHandler();
             vm.vmStop("fileLoad", 90);
             this.startMainLoop();
         };
         // currently not used. Can be called manually: cpcBasic.controller.exportAsBase64(file);
         Controller.prototype.exportAsBase64 = function (storageName) {
-            var storage = Utils_24.Utils.localStorage;
+            var storage = Utils_26.Utils.localStorage;
             var data = storage.getItem(storageName), out = "";
             if (data !== null) {
                 var index = data.indexOf(","); // metadata separator
                 if (index >= 0) {
                     var meta = data.substring(0, index);
                     data = data.substring(index + 1);
-                    data = Utils_24.Utils.btoa(data);
+                    data = Utils_26.Utils.btoa(data);
                     out = meta + ";base64," + data;
                 }
                 else { // hmm, no meta info
-                    data = Utils_24.Utils.btoa(data);
+                    data = Utils_26.Utils.btoa(data);
                     out = "base64," + data;
                 }
             }
-            Utils_24.Utils.console.log(out);
+            Utils_26.Utils.console.log(out);
             return out;
         };
         Controller.prototype.onCpcCanvasClick = function (event) {
-            this.setPopoversHiddenExcept(""); // hide all popovers
-            this.canvas.onCpcCanvasClick(event);
-            this.textCanvas.onWindowClick(event);
+            this.commonEventHandler.setPopoversHiddenExcept(); // hide all popovers
+            this.canvas.onCanvasClick(event);
             this.keyboard.setActive(true);
         };
         Controller.prototype.onWindowClick = function (event) {
             this.canvas.onWindowClick(event);
-            this.textCanvas.onWindowClick(event);
             this.keyboard.setActive(false);
         };
-        Controller.prototype.onTextTextClick = function (event) {
-            this.textCanvas.onTextCanvasClick(event);
-            this.canvas.onWindowClick(event);
-            this.keyboard.setActive(true);
-        };
         Controller.prototype.fnArrayBounds = function () {
-            var arrayBounds = this.model.getProperty("arrayBounds");
+            var arrayBounds = this.model.getProperty("arrayBounds" /* ModelPropID.arrayBounds */);
             this.variables.setOptions({
                 arrayBounds: arrayBounds
             });
@@ -18020,7 +20547,7 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
             this.variables.removeAllVariables();
         };
         Controller.prototype.fnImplicitLines = function () {
-            var implicitLines = this.model.getProperty("implicitLines");
+            var implicitLines = this.model.getProperty("implicitLines" /* ModelPropID.implicitLines */);
             this.codeGeneratorJs.setOptions({
                 implicitLines: implicitLines
             });
@@ -18030,67 +20557,82 @@ define("Controller", ["require", "exports", "Utils", "BasicFormatter", "BasicLex
                 });
             }
         };
+        Controller.prototype.fnPrettyLowercaseVars = function () {
+            var prettyLowercaseVars = this.model.getProperty("prettyLowercaseVars" /* ModelPropID.prettyLowercaseVars */);
+            this.getCodeGeneratorBasic().setOptions({
+                lowercaseVars: prettyLowercaseVars
+            });
+        };
+        Controller.prototype.fnIntegerOverflow = function () {
+            var integerOverflow = this.model.getProperty("integerOverflow" /* ModelPropID.integerOverflow */);
+            this.codeGeneratorJs.setOptions({
+                integerOverflow: integerOverflow
+            });
+        };
         Controller.prototype.fnTrace = function () {
-            var trace = this.model.getProperty("trace");
+            var trace = this.model.getProperty("trace" /* ModelPropID.trace */);
             this.codeGeneratorJs.setOptions({
                 trace: trace
             });
         };
         Controller.prototype.fnSpeed = function () {
-            var speed = this.model.getProperty("speed");
+            var speed = this.model.getProperty("speed" /* ModelPropID.speed */);
             this.initialLoopTimeout = 1000 - speed * 10;
         };
-        Controller.metaIdent = "CPCBasic";
-        Controller.areaDefinitions = {
-            consoleArea: {
-                property: "showConsole"
-            },
-            convertArea: {
-                property: "showConvert",
-                display: "flex",
-                isPopover: true
-            },
-            cpcArea: {
-                property: "showCpc"
-            },
-            galleryArea: {
-                property: "showGallery",
-                display: "flex",
-                isPopover: true
-            },
-            inp2Area: {
-                property: "showInp2"
-            },
-            inputArea: {
-                property: "showInput"
-            },
-            kbdArea: {
-                property: "showKbd",
-                display: "flex"
-            },
-            moreArea: {
-                property: "showMore",
-                display: "flex",
-                isPopover: true
-            },
-            outputArea: {
-                property: "showOutput"
-            },
-            resultArea: {
-                property: "showResult"
-            },
-            settingsArea: {
-                property: "showSettings",
-                display: "flex",
-                isPopover: true
-            },
-            textArea: {
-                property: "showText"
-            },
-            variableArea: {
-                property: "showVariable"
-            }
+        Controller.codeGenJsBasicParserOptions = {
+            keepBrackets: false,
+            keepColons: false,
+            keepDataComma: false,
+            keepTokens: false
         };
+        Controller.codeGenTokenBasicParserOptions = {
+            keepTokens: true,
+            keepBrackets: true,
+            keepColons: true,
+            keepDataComma: true
+        };
+        Controller.formatterBasicParserOptions = {
+            keepBrackets: false,
+            keepColons: false,
+            keepDataComma: false,
+            keepTokens: false
+        };
+        Controller.exportEditorText = "<editor>";
+        // gate array ink to basic ink
+        Controller.gaInk2Ink = [
+            13,
+            27,
+            19,
+            25,
+            1,
+            7,
+            10,
+            16,
+            28,
+            29,
+            24,
+            26,
+            6,
+            8,
+            15,
+            17,
+            30,
+            31,
+            18,
+            20,
+            0,
+            2,
+            9,
+            11,
+            4,
+            22,
+            21,
+            23,
+            3,
+            5,
+            12,
+            14
+        ];
         Controller.defaultExtensions = [
             "",
             "bas",
@@ -18106,8 +20648,8 @@ define("cpcconfig", ["require", "exports"], function (require, exports) {
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.cpcconfig = void 0;
     exports.cpcconfig = {
-        databaseDirs: "./examples,https://benchmarko.github.io/CPCBasicApps/apps,storage",
-        //databaseDirs: "./examples,../../CPCBasicApps/apps,storage", // local test
+        databaseDirs: "./examples,https://benchmarko.github.io/CPCBasicApps/apps,https://benchmarko.github.io/CPCBasicApps/rosetta,storage",
+        //databaseDirs: "./examples,../../CPCBasicApps/apps,../../CPCBasicApps/rosetta,storage", // local test
         // just an example, not the full list of moved examples...
         redirectExamples: {
             "examples/art": {
@@ -18125,7 +20667,7 @@ define("cpcconfig", ["require", "exports"], function (require, exports) {
 // (c) Marco Vieth, 2019
 // https://benchmarko.github.io/CPCBasicTS/
 //
-define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "Model", "View", "NodeAdapt"], function (require, exports, Utils_25, Controller_1, cpcconfig_1, Model_1, View_8, NodeAdapt_1) {
+define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "Model", "View", "NodeAdapt"], function (require, exports, Utils_27, Controller_1, cpcconfig_1, Model_1, View_8, NodeAdapt_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var cpcBasic = /** @class */ (function () {
@@ -18137,8 +20679,11 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
                 replace(/\*\/[^/]+$/, "");
         };
         cpcBasic.addIndex = function (dir, input) {
-            if (typeof input !== "string") {
-                input = this.fnHereDoc(input);
+            var _a;
+            if (typeof input === "function") {
+                input = (_a = {},
+                    _a[dir] = JSON.parse(this.fnHereDoc(input).trim()),
+                    _a);
             }
             return cpcBasic.controller.addIndex(dir, input);
         };
@@ -18146,10 +20691,13 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
             var inputString = (typeof input !== "string") ? this.fnHereDoc(input) : input;
             return cpcBasic.controller.addItem(key, inputString);
         };
+        cpcBasic.addRsx = function (key, RsxConstructor) {
+            return cpcBasic.controller.addRsx(key, RsxConstructor);
+        };
         // can be used for nodeJS
         cpcBasic.fnParseArgs = function (args, config) {
             for (var i = 0; i < args.length; i += 1) {
-                var nameValue = args[i], nameValueList = Utils_25.Utils.split2(nameValue, "="), name_16 = nameValueList[0];
+                var nameValue = args[i], nameValueList = Utils_27.Utils.split2(nameValue, "="), name_16 = nameValueList[0];
                 if (config.hasOwnProperty(name_16)) {
                     var value = nameValueList[1]; // string|number|boolean
                     if (value !== undefined && config.hasOwnProperty(name_16)) {
@@ -18181,7 +20729,7 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
             }
             catch (err) {
                 err.message += ": " + s;
-                Utils_25.Utils.console.error(err);
+                Utils_27.Utils.console.error(err);
             }
             return decoded;
         };
@@ -18212,7 +20760,7 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
             return arg;
         };
         cpcBasic.createDebugUtilsConsole = function (cpcBasicLog) {
-            var currentConsole = Utils_25.Utils.console;
+            var currentConsole = Utils_27.Utils.console;
             return {
                 consoleLog: {
                     value: cpcBasicLog || "" // already something collected?
@@ -18256,10 +20804,10 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
             };
         };
         cpcBasic.fnRedirectExamples = function (redirectExamples) {
-            var name = this.model.getProperty("database") + "/" + this.model.getProperty("example");
+            var name = this.model.getProperty("database" /* ModelPropID.database */) + "/" + this.model.getProperty("example" /* ModelPropID.example */);
             if (redirectExamples[name]) {
-                this.model.setProperty("database", redirectExamples[name].database);
-                this.model.setProperty("example", redirectExamples[name].example);
+                this.model.setProperty("database" /* ModelPropID.database */, redirectExamples[name].database);
+                this.model.setProperty("example" /* ModelPropID.example */, redirectExamples[name].example);
             }
         };
         cpcBasic.fnDoStart = function () {
@@ -18277,18 +20825,18 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
                 cpcBasic.fnParseArgs(myGlobalThis.process.argv.slice(2), startConfig);
             }
             cpcBasic.view = new View_8.View();
-            var debug = Number(cpcBasic.model.getProperty("debug"));
-            Utils_25.Utils.debug = debug;
-            var UtilsConsole = Utils_25.Utils.console, cpcBasicLog = "";
+            var debug = Number(cpcBasic.model.getProperty("debug" /* ModelPropID.debug */));
+            Utils_27.Utils.debug = debug;
+            var UtilsConsole = Utils_27.Utils.console, cpcBasicLog = "";
             if (UtilsConsole.cpcBasicLog) {
                 cpcBasicLog = UtilsConsole.cpcBasicLog;
                 UtilsConsole.cpcBasicLog = undefined; // do not log any more to dummy console
             }
-            if (Utils_25.Utils.debug > 0 && cpcBasic.model.getProperty("showConsole")) { // console log window?
+            if (Utils_27.Utils.debug > 0 && cpcBasic.model.getProperty("showConsoleLog" /* ModelPropID.showConsoleLog */)) { // console log window?
                 UtilsConsole = cpcBasic.createDebugUtilsConsole(cpcBasicLog);
-                Utils_25.Utils.console = UtilsConsole;
-                Utils_25.Utils.console.log("CPCBasic log started at", Utils_25.Utils.dateFormat(new Date()));
-                UtilsConsole.changeLog(View_8.View.getElementById1("consoleText"));
+                Utils_27.Utils.console = UtilsConsole;
+                Utils_27.Utils.console.log("CPCBasic log started at", Utils_27.Utils.dateFormat(new Date()));
+                UtilsConsole.changeLog(View_8.View.getElementById1("consoleLogText" /* ViewID.consoleLogText */));
             }
             if (redirectExamples) {
                 this.fnRedirectExamples(redirectExamples);
@@ -18297,13 +20845,15 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
             cpcBasic.controller.onDatabaseSelectChange(); // trigger loading example
         };
         cpcBasic.fnOnLoad = function () {
-            Utils_25.Utils.console.log("CPCBasic started at", Utils_25.Utils.dateFormat(new Date()));
+            Utils_27.Utils.console.log("CPCBasic started at", Utils_27.Utils.dateFormat(new Date()));
             cpcBasic.fnDoStart();
         };
         cpcBasic.config = {
             arrayBounds: false,
             autorun: true,
+            basicVersion: "1.1",
             bench: 0,
+            canvasType: "graphics",
             databaseDirs: "examples",
             database: "examples",
             debug: 0,
@@ -18311,21 +20861,33 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
             exampleIndex: "0index.js",
             implicitLines: false,
             input: "",
+            integerOverflow: false,
             kbdLayout: "alphanum",
+            linesOnLoad: true,
+            dragElements: false,
             palette: "color",
-            showConsole: false,
+            prettyBrackets: true,
+            prettyColons: true,
+            prettyLowercaseVars: false,
+            prettySpace: false,
+            processFileImports: true,
+            selectDataFiles: false,
+            showConsoleLog: false,
             showConvert: false,
             showCpc: true,
+            showDisass: false,
+            showExport: false,
             showGallery: false,
             showInput: true,
             showInp2: false,
             showKbd: false,
+            showKbdSettings: false,
             showMore: false,
             showOutput: false,
             showResult: false,
-            showText: false,
-            showVariable: false,
             showSettings: false,
+            showVariable: false,
+            showView: false,
             sound: true,
             speed: 100,
             trace: false // trace code
@@ -18339,7 +20901,7 @@ define("cpcbasic", ["require", "exports", "Utils", "Controller", "cpcconfig", "M
     if (window.Polyfills.isNodeAvailable) {
         NodeAdapt_1.NodeAdapt.doAdapt();
         cpcBasic.fnOnLoad();
-        Utils_25.Utils.console.debug("End of main.");
+        Utils_27.Utils.console.debug("End of main.");
     }
 });
 //# sourceMappingURL=cpcbasicts.js.map

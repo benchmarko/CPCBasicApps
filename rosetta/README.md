@@ -18,265 +18,265 @@ see also [Rosetta_Code: Copyrights](https://rosettacode.org/wiki/Rosetta_Code:Co
 
 ### 24game - The 24 Game {#24game}
 
-[![The 24 Game](./img/24game.png)](../../dist/index.html?database=apps&example=rosetta/24game)
+[![The 24 Game](./img/24game.png)](../dist/index.html?database=rosetta&example=24game)
 
 Taken from [Rosetta Code: The 24 Game](https://rosettacode.org/wiki/24_game#Locomotive_Basic).
 
 ### abelian - Abelian sandpile model {#abelian}
 
-[![Abelian sandpile model](./img/abelian.png)](../../dist/index.html?database=apps&example=rosetta/abelian)
+[![Abelian sandpile model](./img/abelian.png)](../dist/index.html?database=rosetta&example=abelian)
 
 Taken from [Rosetta Code: Abelian sandpile model](https://rosettacode.org/wiki/Abelian_sandpile_model#Locomotive_Basic).
 
 ### animate - Animate a pendulum {#animate}
 
-[![Animate a pendulum](./img/animate.png)](../../dist/index.html?database=apps&example=rosetta/animate)
+[![Animate a pendulum](./img/animate.png)](../dist/index.html?database=rosetta&example=animate)
 
 Taken from [Rosetta Code: Animate a pendulum](https://rosettacode.org/wiki/Animate_a_pendulum#Locomotive_Basic).
 
 ### archimed - Archimedean spiral {#archimed}
 
-[![Archimedean spiral](./img/archimed.png)](../../dist/index.html?database=apps&example=rosetta/archimed)
+[![Archimedean spiral](./img/archimed.png)](../dist/index.html?database=rosetta&example=archimed)
 
 Taken from [Rosetta Code: Archimedean spiral](https://rosettacode.org/wiki/Archimedean_spiral#Locomotive_Basic).
 
 ### audiofre - Audio frequency generator {#audiofre}
 
-[![Audio frequency generator](./img/audiofre.png)](../../dist/index.html?database=apps&example=rosetta/audiofre)
+[![Audio frequency generator](./img/audiofre.png)](../dist/index.html?database=rosetta&example=audiofre)
 
 Taken from [Rosetta Code: Audio frequency generator](https://rosettacode.org/wiki/Audio_frequency_generator#Locomotive_Basic).
 
 ### barnsley - Barnsley fern {#barnsley}
 
-[![Barnsley fern](./img/barnsley.png)](../../dist/index.html?database=apps&example=rosetta/barnsley)
+[![Barnsley fern](./img/barnsley.png)](../dist/index.html?database=rosetta&example=barnsley)
 
 Taken from [Rosetta Code: Barnsley fern](https://rosettacode.org/wiki/Barnsley_fern#Locomotive_Basic).
 
 ### binary - Binary digits {#binary}
 
-[![Binary digits](./img/binary.png)](../../dist/index.html?database=apps&example=rosetta/binary)
+[![Binary digits](./img/binary.png)](../dist/index.html?database=rosetta&example=binary)
 
 Taken from [Rosetta Code: Binary digits](https://rosettacode.org/wiki/Binary_digits#Locomotive_Basic).
 
 ### biorhyth - Biorhythms {#biorhyth}
 
-[![Biorhythms](./img/biorhyth.png)](../../dist/index.html?database=apps&example=rosetta/biorhyth)
+[![Biorhythms](./img/biorhyth.png)](../dist/index.html?database=rosetta&example=biorhyth)
 
 Taken from [Rosetta Code: Biorhythms](https://rosettacode.org/wiki/Biorhythms#Locomotive_Basic).
 
 ### brownian - Brownian tree {#brownian}
 
-[![Brownian tree](./img/brownian.png)](../../dist/index.html?database=apps&example=rosetta/brownian)
+[![Brownian tree](./img/brownian.png)](../dist/index.html?database=rosetta&example=brownian)
 
 Taken from [Rosetta Code: Brownian tree](https://rosettacode.org/wiki/Brownian_tree#Locomotive_Basic).
 
 ### callfor - Call a foreign-language function {#callfor}
 
-[![Call a foreign-language function](./img/callfor.png)](../../dist/index.html?database=apps&example=rosetta/callfor)
+[![Call a foreign-language function](./img/callfor.png)](../dist/index.html?database=rosetta&example=callfor)
 
 Taken from [Rosetta Code: Call a foreign-language function](https://rosettacode.org/wiki/Call_a_foreign-language_function#Locomotive_Basic).
 
 ### chaos - Chaos game {#chaos}
 
-[![Chaos game](./img/chaos.png)](../../dist/index.html?database=apps&example=rosetta/chaos)
+[![Chaos game](./img/chaos.png)](../dist/index.html?database=rosetta&example=chaos)
 
 Taken from [Rosetta Code: Chaos game](https://rosettacode.org/wiki/Chaos_game#Locomotive_Basic).
 
 ### colorbar - Colour bars/Display {#colorbar}
 
-[![Colour bars/Display](./img/colorbar.png)](../../dist/index.html?database=apps&example=rosetta/colorbar)
+[![Colour bars/Display](./img/colorbar.png)](../dist/index.html?database=rosetta&example=colorbar)
 
 Taken from [Rosetta Code: Colour bars/Display](https://rosettacode.org/wiki/Colour_bars/Display#Locomotive_Basic).
 
 ### colorscr - Color of a screen pixel {#colorscr}
 
-[![Color of a screen pixel](./img/colorscr.png)](../../dist/index.html?database=apps&example=rosetta/colorscr)
+[![Color of a screen pixel](./img/colorscr.png)](../dist/index.html?database=rosetta&example=colorscr)
 
 Taken from [Rosetta Code: Color of a screen pixel](https://rosettacode.org/wiki/Color_of_a_screen_pixel#Locomotive_Basic).
 
 ### constrpo - Constrained random points on a circle {#constrpo}
 
-[![Constrained random points on a circle](./img/constrpo.png)](../../dist/index.html?database=apps&example=rosetta/constrpo)
+[![Constrained random points on a circle](./img/constrpo.png)](../dist/index.html?database=rosetta&example=constrpo)
 
 Taken from [Rosetta Code: Constrained random points on a circle](https://rosettacode.org/wiki/Constrained_random_points_on_a_circle#Locomotive_Basic).
 
 ### deletefi - Delete a file {#deletefi}
 
-[![Delete a file](./img/deletefi.png)](../../dist/index.html?database=apps&example=rosetta/deletefi)
+[![Delete a file](./img/deletefi.png)](../dist/index.html?database=rosetta&example=deletefi)
 
 Taken from [Rosetta Code: Delete a file](https://rosettacode.org/wiki/Delete_a_file#Locomotive_Basic).
 
 ### detectdi - Detect division by zero {#detectdi}
 
-[![Detect division by zero](./img/detectdi.png)](../../dist/index.html?database=apps&example=rosetta/detectdi)
+[![Detect division by zero](./img/detectdi.png)](../dist/index.html?database=rosetta&example=detectdi)
 
 Taken from [Rosetta Code: Detect division by zero](https://rosettacode.org/wiki/Detect_division_by_zero#Locomotive_Basic).
 
 ### drawclk - Draw a clock {#drawclk}
 
-[![Draw a clock](./img/drawclk.png)](../../dist/index.html?database=apps&example=rosetta/drawclk)
+[![Draw a clock](./img/drawclk.png)](../dist/index.html?database=rosetta&example=drawclk)
 
 Taken from [Rosetta Code: Draw a clock](https://rosettacode.org/wiki/Draw_a_clock#Locomotive_Basic).
 
 ### drawcub - Draw a cuboid {#drawcub}
 
-[![Draw a cuboid](./img/drawcub.png)](../../dist/index.html?database=apps&example=rosetta/drawcub)
+[![Draw a cuboid](./img/drawcub.png)](../dist/index.html?database=rosetta&example=drawcub)
 
 Taken from [Rosetta Code:  Draw a cuboid](https://rosettacode.org/wiki/Draw_a_cuboid#Locomotive_Basic).
 
 ### drawsp - Draw a sphere (ASCII) {#drawsp}
 
-[![Draw a sphere (ASCII)](./img/drawsp.png)](../../dist/index.html?database=apps&example=rosetta/drawsp)
+[![Draw a sphere (ASCII)](./img/drawsp.png)](../dist/index.html?database=rosetta&example=drawsp)
 
 Taken from [Rosetta Code: Draw a sphere](https://rosettacode.org/wiki/Draw_a_sphere#Locomotive_Basic).
 
 ### drawsp2 - Draw a sphere {#drawsp2}
 
-[![Draw a sphere](./img/drawsp2.png)](../../dist/index.html?database=apps&example=rosetta/drawsp2)
+[![Draw a sphere](./img/drawsp2.png)](../dist/index.html?database=rosetta&example=drawsp2)
 
 Taken from [Rosetta Code: Draw a sphere](https://rosettacode.org/wiki/Draw_a_sphere#Locomotive_Basic).
 
 ### ethiopia - Ethiopian multiplication {#ethiopia}
 
-[![Ethiopian multiplication](./img/ethiopia.png)](../../dist/index.html?database=apps&example=rosetta/ethiopia)
+[![Ethiopian multiplication](./img/ethiopia.png)](../dist/index.html?database=rosetta&example=ethiopia)
 
 Taken from [Rosetta Code: Ethiopian multiplication](https://rosettacode.org/wiki/Ethiopian_multiplication#Locomotive_Basic).
 
 ### execute - Execute a system command {#execute}
 
-[![Execute a system command](./img/execute.png)](../../dist/index.html?database=apps&example=rosetta/execute)
+[![Execute a system command](./img/execute.png)](../dist/index.html?database=rosetta&example=execute)
 
 Taken from [Rosetta Code: Execute a system command](https://rosettacode.org/wiki/Execute_a_system_command#Locomotive_Basic).
 
 ### forest - Forest fire {#forest}
 
-[![Forest fire](./img/forest.png)](../../dist/index.html?database=apps&example=rosetta/forest)
+[![Forest fire](./img/forest.png)](../dist/index.html?database=rosetta&example=forest)
 
 Taken from [Rosetta Code: Forest fire](https://rosettacode.org/wiki/Forest_fire#Locomotive_Basic).
 
 ### function - Function definition {#function}
 
-[![Function definition](./img/function.png)](../../dist/index.html?database=apps&example=rosetta/function)
+[![Function definition](./img/function.png)](../dist/index.html?database=rosetta&example=function)
 
 Taken from [Rosetta Code: Function definition](https://rosettacode.org/wiki/Function_definition#Locomotive_Basic).
 
 ### gofish - Go Fish {#gofish}
 
-[![Go Fish](./img/gofish.png)](../../dist/index.html?database=apps&example=rosetta/gofish)
+[![Go Fish](./img/gofish.png)](../dist/index.html?database=rosetta&example=gofish)
 
 Taken from [Rosetta Code: Go Fish](https://rosettacode.org/wiki/Go_Fish#Locomotive_Basic).
 
 ### guessnfb - Guess the number with feedback {#guessnfb}
 
-[![Guess the number with feedback](./img/guessnfb.png)](../../dist/index.html?database=apps&example=rosetta/guessnfb)
+[![Guess the number with feedback](./img/guessnfb.png)](../dist/index.html?database=rosetta&example=guessnfb)
 
 Taken from [Rosetta Code: Guess the number with feedback](https://rosettacode.org/wiki/Guess_the_number/With_feedback#Locomotive_Basic).
 
 ### guessnum - Guess the number {#guessnum}
 
-[![Guess the number](./img/guessnum.png)](../../dist/index.html?database=apps&example=rosetta/guessnum)
+[![Guess the number](./img/guessnum.png)](../dist/index.html?database=rosetta&example=guessnum)
 
 Taken from [Rosetta Code: Guess the number](https://rosettacode.org/wiki/Guess_the_number#Locomotive_Basic).
 
 ### happynum - Happy numbers {#happynum}
 
-[![Happy numbers](./img/happynum.png)](../../dist/index.html?database=apps&example=rosetta/happynum)
+[![Happy numbers](./img/happynum.png)](../dist/index.html?database=rosetta&example=happynum)
 
 Taken from [Rosetta Code: Happy numbers](https://rosettacode.org/wiki/Happy_numbers#Locomotive_Basic).
 
 ### hellolp - Hello world (Line printer) {#hellolp}
 
-[![Hello world (Line printer)](./img/hellolp.png)](../../dist/index.html?database=apps&example=rosetta/hellolp)
+[![Hello world (Line printer)](./img/hellolp.png)](../dist/index.html?database=rosetta&example=hellolp)
 
 Taken from [Rosetta Code: Hello world (Line printer)](https://rosettacode.org/wiki/Hello_world/Line_printer#Locomotive_Basic).
 
 ### hellonb - Hello world (Newbie) {#hellonb}
 
-[![Hello world (Newbie)](./img/hellonb.png)](../../dist/index.html?database=apps&example=rosetta/hellonb)
+[![Hello world (Newbie)](./img/hellonb.png)](../dist/index.html?database=rosetta&example=hellonb)
 
 Taken from [Rosetta Code: Hello world (Newbie)](https://rosettacode.org/wiki/Hello_world/Newbie#Locomotive_Basic).
 
 ### introspe - Introspection {#introspe}
 
-[![Introspection](./img/introspe.png)](../../dist/index.html?database=apps&example=rosetta/introspe)
+[![Introspection](./img/introspe.png)](../dist/index.html?database=rosetta&example=introspe)
 
 Taken from [Rosetta Code: Introspection](https://rosettacode.org/wiki/Introspection#Locomotive_Basic).
 
 ### joystick - Joystick position {#joystick}
 
-[![Joystick position](./img/joystick.png)](../../dist/index.html?database=apps&example=rosetta/joystick)
+[![Joystick position](./img/joystick.png)](../dist/index.html?database=rosetta&example=joystick)
 
 Taken from [Rosetta Code: Joystick position](https://rosettacode.org/wiki/Joystick_position#Locomotive_Basic).
 
 ### juliaset - Julia set {#juliaset}
 
-[![Julia set](./img/juliaset.png)](../../dist/index.html?database=apps&example=rosetta/juliaset)
+[![Julia set](./img/juliaset.png)](../dist/index.html?database=rosetta&example=juliaset)
 
 Taken from [Rosetta Code: Julia set](https://rosettacode.org/wiki/Julia_set#Locomotive_Basic).
 
 ### keybofl - Keyboard input: Flush the keyboard buffer {#keybofl}
 
-[![Keyboard input: Flush the keyboard buffer](./img/keybofl.png)](../../dist/index.html?database=apps&example=rosetta/keybofl)
+[![Keyboard input: Flush the keyboard buffer](./img/keybofl.png)](../dist/index.html?database=rosetta&example=keybofl)
 
 Taken from [Rosetta Code: Keyboard input: Flush the keyboard buffer](https://rosettacode.org/wiki/Keyboard_input/Flush_the_keyboard_buffer#Locomotive_Basic).
 
 ### keyboyn - Keyboard input: Obtain a Y or N response {#keyboyn}
 
-[![Keyboard input: Obtain a Y or N response](./img/keyboyn.png)](../../dist/index.html?database=apps&example=rosetta/keyboyn)
+[![Keyboard input: Obtain a Y or N response](./img/keyboyn.png)](../dist/index.html?database=rosetta&example=keyboyn)
 
 Taken from [Rosetta Code: Keyboard input: Obtain a Y or N response](https://rosettacode.org/wiki/Keyboard_input/Obtain_a_Y_or_N_response#Locomotive_Basic).
 
 ### knights - Knight's tour {#knights}
 
-[![Knight's tour](./img/knights.png)](../../dist/index.html?database=apps&example=rosetta/knights)
+[![Knight's tour](./img/knights.png)](../dist/index.html?database=rosetta&example=knights)
 
 Taken from [Rosetta Code: Knight's tour](https://rosettacode.org/wiki/Knight%27s_tour#Locomotive_Basic).
 
 ### langtons - Langton's ant {#langtons}
 
-[![Langton's ant](./img/langtons.png)](../../dist/index.html?database=apps&example=rosetta/langtons)
+[![Langton's ant](./img/langtons.png)](../dist/index.html?database=rosetta&example=langtons)
 
 Taken from [Rosetta Code: Langton's ant](https://rosettacode.org/wiki/Langton%27s_ant#Locomotive_Basic).
 
 ### magic8 - Magic 8-ball {#magic8}
 
-[![Magic 8-ball](./img/magic8.png)](../../dist/index.html?database=apps&example=rosetta/magic8)
+[![Magic 8-ball](./img/magic8.png)](../dist/index.html?database=rosetta&example=magic8)
 
 Taken from [Rosetta Code: Magic 8-ball](https://rosettacode.org/wiki/Magic_8-ball#Locomotive_Basic).
 
 ### makeback - Make a backup file {#makeback}
 
-[![Make a backup file](./img/makeback.png)](../../dist/index.html?database=apps&example=rosetta/makeback)
+[![Make a backup file](./img/makeback.png)](../dist/index.html?database=rosetta&example=makeback)
 
 Taken from [Rosetta Code: Make a backup file](https://rosettacode.org/wiki/Make_a_backup_file#Locomotive_Basic).
 
 ### mandelbr - Mandelbrot set {#mandelbr}
 
-[![Mandelbrot set](./img/mandelbr.png)](../../dist/index.html?database=apps&example=rosetta/mandelbr)
+[![Mandelbrot set](./img/mandelbr.png)](../dist/index.html?database=rosetta&example=mandelbr)
 
 Taken from [Rosetta Code: Mandelbrot set](https://rosettacode.org/wiki/Mandelbrot_set#Locomotive_Basic).
 
 ### matrixra - Matrix digital rain {#matrixra}
 
-[![Matrix digital rain](./img/matrixra.png)](../../dist/index.html?database=apps&example=rosetta/matrixra)
+[![Matrix digital rain](./img/matrixra.png)](../dist/index.html?database=rosetta&example=matrixra)
 
 Taken from [Rosetta Code: Matrix digital rain](https://rosettacode.org/wiki/Matrix_digital_rain#Locomotive_Basic).
 
 ### mcnugget - McNuggets problem {#mcnugget}
 
-[![McNuggets problem](./img/mcnugget.png)](../../dist/index.html?database=apps&example=rosetta/mcnugget)
+[![McNuggets problem](./img/mcnugget.png)](../dist/index.html?database=rosetta&example=mcnugget)
 
 Taken from [Rosetta Code: McNuggets problem](https://rosettacode.org/wiki/McNuggets_problem#Locomotive_Basic).
 
 ### metronom - Metronome {#metronom}
 
-[![Metronome](./img/metronom.png)](../../dist/index.html?database=apps&example=rosetta/metronom)
+[![Metronome](./img/metronom.png)](../dist/index.html?database=rosetta&example=metronom)
 
 Taken from [Rosetta Code: Metronome](https://rosettacode.org/wiki/Metronome#Locomotive_Basic).
 
 ### mineswee - Minesweeper game {#mineswee}
 
-[![Minesweeper game](./img/mineswee.png)](../../dist/index.html?database=apps&example=rosetta/mineswee)
+[![Minesweeper game](./img/mineswee.png)](../dist/index.html?database=rosetta&example=mineswee)
 
 Taken from [Rosetta Code: Minesweeper game](https://rosettacode.org/wiki/Minesweeper_game#Locomotive_Basic).
 
