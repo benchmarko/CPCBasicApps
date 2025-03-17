@@ -16,7 +16,7 @@ The examples from Rosetta Code are are available under the GNU Free Documentatio
 version 1.2: [GNU FDL 1.2](https://www.gnu.org/licenses/fdl-1.2.html),
 see also [Rosetta_Code: Copyrights](https://rosettacode.org/wiki/Rosetta_Code:Copyrights).
 
-### 24game - The 24 Game {#24game}
+### 24game - The 24 Game {#the24game}
 
 [![The 24 Game](./img/24game.png)](../dist/index.html?database=rosetta&example=24game)
 
@@ -280,6 +280,202 @@ Taken from [Rosetta Code: Metronome](https://rosettacode.org/wiki/Metronome#Loco
 
 Taken from [Rosetta Code: Minesweeper game](https://rosettacode.org/wiki/Minesweeper_game#Locomotive_Basic).
 
-(to be continued)
+### montecar - Monte Carlo methods {#montecar}
+
+[![Monte Carlo methods](./img/montecar.png)](../dist/index.html?database=rosetta&example=montecar)
+
+Taken from [Rosetta Code: Monte Carlo methods](https://rosettacode.org/wiki/Monte_Carlo_methods#Locomotive_Basic).
+
+### musscale - Musical scale {#musscale}
+
+[![Musical scale](./img/musscale.png)](../dist/index.html?database=rosetta&example=musscale)
+
+Taken from [Rosetta Code: Musical scale](https://rosettacode.org/wiki/Musical_scale#Locomotive_Basic).
+
+### nqueens - N-queens problem {#nqueens}
+
+[![N-queens problem](./img/nqueens.png)](../dist/index.html?database=rosetta&example=nqueens)
+
+Taken from [Rosetta Code: N-queens problem](https://rosettacode.org/wiki/N-queens_problem#Locomotive_Basic).
+
+### nondecra - Non-decimal radices {#nondecra}
+
+[![Non-decimal radices](./img/nondecra.png)](../dist/index.html?database=rosetta&example=nondecra)
+
+Taken from [Rosetta Code: Non-decimal radices](https://rosettacode.org/wiki/Non-decimal_radices/Output#Locomotive_Basic).
+
+### onedimca - One-dimensional cellular automata {#onedimca}
+
+[![One-dimensional cellular automata](./img/onedimca.png)](../dist/index.html?database=rosetta&example=onedimca)
+
+Taken from [Rosetta Code: One-dimensional cellular automata](https://rosettacode.org/wiki/One-dimensional_cellular_automata#Locomotive_Basic).
+
+### pascaltr - Pascal's triangle {#pascaltr}
+
+[![Pascal's triangle](./img/pascaltr.png)](../dist/index.html?database=rosetta&example=pascaltr)
+
+Taken from [Rosetta Code: Pascal's triangle](https://rosettacode.org/wiki/Pascal%27s_triangle#Locomotive_Basic).
+
+### pinstrip - Pinstripe: Display {#pinstrip}
+
+[![Pinstripe: Display](./img/pinstrip.png)](../dist/index.html?database=rosetta&example=pinstrip)
+
+Taken from [Rosetta Code: Pinstripe: Display](https://rosettacode.org/wiki/Pinstripe/Display#Locomotive_Basic).
+
+### progterm - Program termination {#progterm}
+
+[![Program termination](./img/progterm.png)](../dist/index.html?database=rosetta&example=progterm)
+
+Taken from [Rosetta Code: Program termination](https://rosettacode.org/wiki/Program_termination#Locomotive_Basic).
+
+### rainbow - Rainbow {#rainbow}
+
+[![Rainbow](./img/rainbow.png)](../dist/index.html?database=rosetta&example=rainbow)
+
+Taken from [Rosetta Code: Rainbow](https://rosettacode.org/wiki/Rainbow#Locomotive_Basic).
+
+### random - Random number generator (included) {#random}
+
+No code.
+
+See: [Rosetta Code: Random number generator (included)](https://rosettacode.org/wiki/Random_number_generator_(included)#Locomotive_Basic).
+
+### readfile - Read a file line by line {#readfile}
+
+[![Read a file line by line](./img/readfile.png)](../dist/index.html?database=rosetta&example=readfile)
+
+Taken from [Rosetta Code: Read a file line by line](https://rosettacode.org/wiki/Read_a_file_line_by_line#Locomotive_Basic).
+
+### renfile - Rename a file {#renfile}
+
+[![Rename a file](./img/renfile.png)](../dist/index.html?database=rosetta&example=renfile)
+
+Taken from [Rosetta Code: Rename a file](https://rosettacode.org/wiki/Rename_a_file#Locomotive_Basic).
+
+### rockpap - Rock-paper-scissors {#rockpap}
+
+[![Rock-paper-scissors](./img/rockpap.png)](../dist/index.html?database=rosetta&example=rockpap)
+
+Taken from [Rosetta Code: Rock-paper-scissors](https://rosettacode.org/wiki/Rock-paper-scissors#Locomotive_Basic).
+
+### rot13 - Rot-13 {#rot13}
+
+[![Rot-13](./img/rot13.png)](../dist/index.html?database=rosetta&example=rot13)
+
+Taken from [Rosetta Code: Rot-13](https://rosettacode.org/wiki/Rot-13#Locomotive_Basic).
+
+### showasc - Show ASCII table {#showasc}
+
+[![Show ASCII table](./img/showasc.png)](../dist/index.html?database=rosetta&example=showasc)
+
+Taken from [Rosetta Code: Show ASCII table](https://rosettacode.org/wiki/Show_ASCII_table#Locomotive_Basic).
+
+### sieveera - Sieve of Eratosthenes {#sieveera}
+
+[![Sieve of Eratosthenes](./img/sieveera.png)](../dist/index.html?database=rosetta&example=sieveera)
+
+Taken from [Rosetta Code: Sieve of Eratosthenes](https://rosettacode.org/wiki/Sieve_of_Eratosthenes#Locomotive_Basic).
+
+### snake - Snake {#snake}
+
+[![Snake](./img/snake.png)](../dist/index.html?database=rosetta&example=snake)
+
+Taken from [Rosetta Code: Snake](https://rosettacode.org/wiki/Snake#Locomotive_Basic).
+
+### speech - Speech synthesis {#speech}
+
+[![Speech](./img/speech.png)](../dist/index.html?database=rosetta&example=speech)
+
+Taken from [Rosetta Code: Speech synthesis](https://rosettacode.org/wiki/Speech_synthesis#Locomotive_Basic).
+
+### substr - Substring: Top and tail {#substr}
+
+[![Substring: Top and tail](./img/substr.png)](../dist/index.html?database=rosetta&example=substr)
+
+Taken from [Rosetta Code: Substring: Top and tail](https://rosettacode.org/wiki/Substring/Top_and_tail#Locomotive_Basic).
+
+### systime - System time {#systime}
+
+[![System time](./img/systime.png)](../dist/index.html?database=rosetta&example=systime)
+
+Taken from [Rosetta Code: System time](https://rosettacode.org/wiki/System_time#Locomotive_Basic).
+
+### termct1 - Terminal control: Coloured text {#termct1}
+
+[![Terminal control: Coloured text](./img/termct1.png)](../dist/index.html?database=rosetta&example=termct1)
+
+Taken from [Rosetta Code: Terminal control: Coloured text](https://rosettacode.org/wiki/Terminal_control/Coloured_text#Locomotive_Basic).
+
+### termct2 - Terminal control: Cursor positioning {#termct2}
+
+[![Terminal control: Cursor positioning](./img/termct2.png)](../dist/index.html?database=rosetta&example=termct2)
+
+Taken from [Rosetta Code: Terminal control: Cursor positioning](https://rosettacode.org/wiki/Terminal_control/Cursor_positioning#Locomotive_Basic).
+
+### termct3 - Terminal control: Dimensions {#termct3}
+
+[![Terminal control: Dimensions](./img/termct3.png)](../dist/index.html?database=rosetta&example=termct3)
+
+Taken from [Rosetta Code: Terminal control: Dimensions](https://rosettacode.org/wiki/Terminal_control/Dimensions#Locomotive_Basic).
+
+### termct4 - Terminal control: Display an extended character {#termct4}
+
+[![Terminal control: Display an extended character](./img/termct4.png)](../dist/index.html?database=rosetta&example=termct4)
+
+Taken from [Rosetta Code: Terminal control: Display an extended character](https://rosettacode.org/wiki/Terminal_control/Display_an_extended_character#Locomotive_Basic).
+
+### termct5 - Terminal control: Hiding the cursor {#termct5}
+
+[![Terminal control: Hiding the cursor](./img/termct5.png)](../dist/index.html?database=rosetta&example=termct5)
+
+Taken from [Rosetta Code: Terminal control: Hiding the cursor](https://rosettacode.org/wiki/Terminal_control/Hiding_the_cursor#Locomotive_Basic).
+
+### termct6 - Terminal control: Inverse video {#termct6}
+
+[![Terminal control: Inverse video](./img/termct6.png)](../dist/index.html?database=rosetta&example=termct6)
+
+Taken from [Rosetta Code: Terminal control: Inverse video](https://rosettacode.org/wiki/Terminal_control/Inverse_video#Locomotive_Basic).
+
+### termct7 - Terminal control: Positional read {#termct7}
+
+[![Terminal control: Positional read](./img/termct7.png)](../dist/index.html?database=rosetta&example=termct7)
+
+Taken from [Rosetta Code: Terminal control: Positional read](https://rosettacode.org/wiki/Terminal_control/Positional_read#Locomotive_Basic).
+
+### termct8 - Terminal control: Ringing the terminal bell {#termct8}
+
+[![Terminal control: Ringing the terminal bell](./img/termct8.png)](../dist/index.html?database=rosetta&example=termct8)
+
+Taken from [Rosetta Code: Terminal control: Ringing the terminal bell](https://rosettacode.org/wiki/Terminal_control/Ringing_the_terminal_bell#Locomotive_Basic).
+
+### unicode - Unicode strings {#unicode}
+
+[![Unicode strings](./img/unicode.png)](../dist/index.html?database=rosetta&example=unicode)
+
+Taken from [Rosetta Code: Unicode strings](https://rosettacode.org/wiki/Unicode_strings#Locomotive_Basic).
+
+### videomod - Video display modes {#videomod}
+
+[![Video display modes](./img/videomod.png)](../dist/index.html?database=rosetta&example=videomod)
+
+Taken from [Rosetta Code: Video display modes](https://rosettacode.org/wiki/Video_display_modes#Locomotive_Basic).
+
+### write3d - Write language name in 3D ASCII {#write3d}
+
+[![Write language name in 3D ASCII](./img/write3d.png)](../dist/index.html?database=rosetta&example=write3d)
+
+Taken from [Rosetta Code: Write language name in 3D ASCII](https://rosettacode.org/wiki/Write_language_name_in_3D_ASCII#Locomotive_Basic).
+
+### yinyang - Yin and yang {#yinyang}
+
+[![Yin and yang](./img/yinyang.png)](../dist/index.html?database=rosetta&example=yinyang)
+
+Taken from [Rosetta Code: Yin and yang](https://rosettacode.org/wiki/Yin_and_yang#Locomotive_Basic).
+
+### zeropow - Zero to the zero power {#zeropow}
+
+[![Zero to the zero power](./img/zeropow.png)](../dist/index.html?database=rosetta&example=zeropow)
+
+Taken from [Rosetta Code: Zero to the zero power](https://rosettacode.org/wiki/Zero_to_the_zero_power#Locomotive_Basic).
 
 ### **mv, 03/2025**

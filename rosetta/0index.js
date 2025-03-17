@@ -61,7 +61,7 @@ cpcBasic.addIndex("rosetta", {
 		},
 		{
 			"key": "constrpo",
-			"title": "Constrained random points on a circle"
+			"title": "Constrained random points on circle"
 		},
 		{
 			"key": "deletefi",
@@ -141,11 +141,11 @@ cpcBasic.addIndex("rosetta", {
 		},
 		{
 			"key": "keybofl",
-			"title": "Keyboard input: Flush the keyboard buffer"
+			"title": "Keyboard input: Flush keyboard buffer"
 		},
 		{
 			"key": "keyboyn",
-			"title": "Keyboard input: Obtain a Y or N response"
+			"title": "Keyboard input: Obtain Y/N response"
 		},
 		{
 			"key": "knights",
@@ -182,6 +182,139 @@ cpcBasic.addIndex("rosetta", {
 		{
 			"key": "mineswee",
 			"title": "Minesweeper game"
+		},
+		{
+			"key": "montecar",
+			"title": "Monte Carlo methods"
+		},
+		{
+			"key": "musscale",
+			"title": "Musical scale"
+		},
+		{
+			"key": "nqueens",
+			"title": "N-queens problem"
+		},
+		{
+			"key": "nondecra",
+			"title": "Non-decimal radices"
+		},
+		{
+			"key": "onedimca",
+			"title": "One-dimensional cellular automata"
+		},
+		{
+			"key": "pascaltr",
+			"title": "Pascal's triangle"
+		},
+		{
+			"key": "pinstrip",
+			"title": "Pinstripe: Display"
+		},
+		{
+			"key": "progterm",
+			"title": "Program termination"
+		},
+		{
+			"key": "rainbow",
+			"title": "Rainbow"
+		},
+		{
+			"key": "readfile",
+			"title": "Read a file line by line"
+		},
+		{
+			"key": "renfile",
+			"title": "Rename a file"
+		},
+		{
+			"key": "rockpap",
+			"title": "Rock-paper-scissors"
+		},
+		{
+			"key": "rot13",
+			"title": "Rot-13"
+		},
+		{
+			"key": "showasc",
+			"title": "Show ASCII table"
+		},
+		{
+			"key": "sieveera",
+			"title": "Sieve of Eratosthenes"
+		},
+		{
+			"key": "snake",
+			"title": "Snake"
+		},
+		{
+			"key": "speech",
+			"title": "Speech"
+		},
+		{
+			"key": "speech.rsx",
+			"title": "Speech RSX: JS module",
+			"meta": "D"
+		},
+		{
+			"key": "substr",
+			"title": "Substring: Top and tail"
+		},
+		{
+			"key": "systime",
+			"title": "System time"
+		},
+		{
+			"key": "termct1",
+			"title": "Terminal control: Coloured text"
+		},
+		{
+			"key": "termct2",
+			"title": "Terminal control: Cursor positioning"
+		},
+		{
+			"key": "termct3",
+			"title": "Terminal control: Dimensions"
+		},
+		{
+			"key": "termct4",
+			"title": "Terminal control: Display extended char"
+		},
+		{
+			"key": "termct5",
+			"title": "Terminal control: Hiding the cursor"
+		},
+		{
+			"key": "termct6",
+			"title": "Terminal control: Inverse video"
+		},
+		{
+			"key": "termct7",
+			"title": "Terminal control: Positional read"
+		},
+		{
+			"key": "termct8",
+			"title": "Terminal control: Ringing terminal bell"
+		},
+		{
+			"key": "unicode",
+			"title": "Unicode strings"
+		},
+		{
+			"key": "videomod",
+			"title": "Video display modes"
+		},
+		{
+			"key": "write3d",
+			"title": "Write language name in 3D ASCII"
+		},
+		{
+			"key": "yinyang",
+			"title": "Yin and yang"
+		},
+		{
+			"key": "zeropow",
+			"title": "Zero to the zero power"
 		}
 	]
 });
