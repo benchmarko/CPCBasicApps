@@ -167,6 +167,10 @@ The [Can-Can sound](../../dist/index.html?database=apps&example=music/cancan) ca
 
 [![Serpent](./img/serpent.png)](../../dist/index.html?database=apps&example=demo/serpent) (c) T Magee, 1987
 
+### xmastree - Xmas Tree {#xmastree}
+
+[![Xmas Tree](./img/xmastree.png)](../../dist/index.html?database=apps&example=demo/xmastree) (c)
+
 --
 
 ### **mv, 11/2020**

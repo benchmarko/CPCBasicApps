@@ -445,6 +445,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Sultan's Maze Demo Screen"
 	},
 	{
+		"key": "demo/xmastree",
+		"title": "Xmas Tree"
+	},
+	{
 		"key": "games/3dfour",
 		"title": "3D-Four In A Row"
 	},
