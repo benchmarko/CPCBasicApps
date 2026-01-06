@@ -167,6 +167,13 @@ The [Can-Can sound](../../dist/index.html?database=apps&example=music/cancan) ca
 
 [![Serpent](./img/serpent.png)](../../dist/index.html?database=apps&example=demo/serpent) (c) T Magee, 1987
 
+### snowflak - Snowflake {#snowflak}
+
+[![Snowflake](./img/snowflak.png)](../../dist/index.html?database=apps&example=demo/snowflak) (c) Various
+
+Some examples from the [Vintage Computing Christmas Challenge 2025 (VC³ 2025)](https://logiker.com/Vintage-Computing-Christmas-Challenge-2025).
+Most of them are optimized.
+
 ### xmastree - Xmas Tree {#xmastree}
 
 [![Xmas Tree](./img/xmastree.png)](../../dist/index.html?database=apps&example=demo/xmastree) (c)

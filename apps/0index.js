@@ -441,6 +441,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Serpent"
 	},
 	{
+		"key": "demo/snowflak",
+		"title": "Snowflake"
+	},
+	{
 		"key": "demo/sultan",
 		"title": "Sultan's Maze Demo Screen"
 	},
