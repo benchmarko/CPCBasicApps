@@ -32,7 +32,8 @@ cpcBasic.addRsx("", function () {
                     msg.pitch = pitch; //0 to 2
 
                     msg.onend = function(e) {
-                        cpcVm.keyboard.putKeyInBuffer(".", true); // TODO: can we wait for sound, key or need a new event type?
+                        const keyboard = cpcVm.vmGetKeyboard(); // || cpcVm.keyboard; // CPCBasicTS compatibility
+                        keyboard.putKeyInBuffer(".", true); // TODO: can we wait for sound, key or need a new event type?
                     };
                     window.speechSynthesis.speak(msg);
                     this.vmStop("waitKey", 30);
