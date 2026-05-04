@@ -478,6 +478,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"meta": "D"
 	},
 	{
+		"key": "games/ascminer",
+		"title": "ASCII Miner"
+	},
+	{
 		"key": "games/assess",
 		"title": "Assessment"
 	},

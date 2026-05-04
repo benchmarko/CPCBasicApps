@@ -30,6 +30,10 @@ Links:
 [![Art War](./img/artwar.png)](../../dist/index.html?database=apps&example=games/artwar)
 [![Art War](./img/artwar2.png)](../../dist/index.html?database=apps&example=games/artwar) (c) Sakis Kaffesakis, 2021
 
+### ascminer - ASCII Miner {#ascminer}
+
+[![ASCII Miner](./img/ascminer.png)](../../dist/index.html?database=apps&example=games/ascminer) (c) IndyUK, 2022
+
 ### assess - Assessment (Idiotentest) {#assess}
 
 [![Assessment](./img/assess.png)](../../dist/index.html?database=apps&example=games/assess) (c) Marco Vieth, 198x
