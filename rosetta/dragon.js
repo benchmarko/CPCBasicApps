@@ -1,0 +1,39 @@
+/* globals cpcBasic */
+
+"use strict";
+
+cpcBasic.addItem("", function () { /*
+1 REM dragon - Dragon curve
+5 REM https://rosettacode.org/wiki/Dragon_curve#Locomotive_Basic
+6 REM Based on: https://rosettacode.org/wiki/Dragon_curve#Commodore_BASIC
+7 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
+100 MODE 2
+110 DIM s(7),c(7)
+120 qpi=ATN(1):sq2=SQR(2)
+130 FOR i=0 TO 7
+140 s(i)=SIN(i*qpi)
+150 c(i)=COS(i*qpi)
+160 NEXT
+170 level=11
+180 DIM r(level)
+190 insize=128*2
+200 MOVE 200,150
+210 rotqpi=0:rq=1
+220 GOSUB 250
+230 END
+240 '
+250 IF level=1 THEN DRAWR c(rotqpi)*insize,s(rotqpi)*insize:RETURN
+260 insize=insize*sq2/2
+270 rotqpi=(rotqpi+rq) AND 7
+280 level=level-1
+290 r(level)=rq:rq=1
+300 GOSUB 250
+310 rotqpi=(rotqpi-r(level)*2) AND 7
+320 rq=-1
+330 GOSUB 250
+340 rq=r(level)
+350 rotqpi=(rotqpi+rq) AND 7
+360 level=level+1
+370 insize=insize*sq2
+380 RETURN
+*/ });

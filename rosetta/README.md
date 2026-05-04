@@ -112,6 +112,13 @@ Taken from [Rosetta Code: Delete a file](https://rosettacode.org/wiki/Delete_a_f
 
 Taken from [Rosetta Code: Detect division by zero](https://rosettacode.org/wiki/Detect_division_by_zero#Locomotive_Basic).
 
+### dragon - Dragon curve {#dragon}
+
+[![Dragon curve](./img/dragon.png)](../dist/index.html?database=rosetta&example=dragon)
+
+Taken from [Rosetta Code: Dragon curve](https://rosettacode.org/wiki/Dragon_curve#Locomotive_Basic).
+
+
 ### drawclk - Draw a clock {#drawclk}
 
 [![Draw a clock](./img/drawclk.png)](../dist/index.html?database=rosetta&example=drawclk)
@@ -196,6 +203,12 @@ Taken from [Rosetta Code: Hello world (Line printer)](https://rosettacode.org/wi
 
 Taken from [Rosetta Code: Hello world (Newbie)](https://rosettacode.org/wiki/Hello_world/Newbie#Locomotive_Basic).
 
+### hilbert - Hilbert curve {#hilbert}
+
+[![Hilbert curve](./img/hilbert.png)](../dist/index.html?database=rosetta&example=hilbert)
+
+Taken from [Rosetta Code: Hilbert curve](https://rosettacode.org/wiki/Hilbert_curve#Locomotive_Basic).
+
 ### introspe - Introspection {#introspe}
 
 [![Introspection](./img/introspe.png)](../dist/index.html?database=rosetta&example=introspe)
@@ -231,6 +244,12 @@ Taken from [Rosetta Code: Keyboard input: Obtain a Y or N response](https://rose
 [![Knight's tour](./img/knights.png)](../dist/index.html?database=rosetta&example=knights)
 
 Taken from [Rosetta Code: Knight's tour](https://rosettacode.org/wiki/Knight%27s_tour#Locomotive_Basic).
+
+### kochcur - Koch curve {#kochcur}
+
+[![Koch curve](./img/kochcur.png)](../dist/index.html?database=rosetta&example=kochcur)
+
+Taken from [Rosetta Code: Koch curve](https://rosettacode.org/wiki/Koch_curve#Locomotive_Basic).
 
 ### langtons - Langton's ant {#langtons}
 
@@ -321,6 +340,12 @@ Taken from [Rosetta Code: Pascal's triangle](https://rosettacode.org/wiki/Pascal
 [![Pinstripe: Display](./img/pinstrip.png)](../dist/index.html?database=rosetta&example=pinstrip)
 
 Taken from [Rosetta Code: Pinstripe: Display](https://rosettacode.org/wiki/Pinstripe/Display#Locomotive_Basic).
+
+### primali - Primality by trial division {#primali}
+
+[![Primality by trial division](./img/primali.png)](../dist/index.html?database=rosetta&example=primali)
+
+Taken from [Rosetta Code: Primality by trial division](https://rosettacode.org/wiki/Program_termination#Locomotive_Basic).
 
 ### progterm - Program termination {#progterm}
 
@@ -448,6 +473,24 @@ Taken from [Rosetta Code: Terminal control: Positional read](https://rosettacode
 
 Taken from [Rosetta Code: Terminal control: Ringing the terminal bell](https://rosettacode.org/wiki/Terminal_control/Ringing_the_terminal_bell#Locomotive_Basic).
 
+### timefunc - Time a function {#timefunc}
+
+[![Time a function](./img/timefunc.png)](../dist/index.html?database=rosetta&example=timefunc)
+
+Taken from [Rosetta Code: Time a function](https://rosettacode.org/wiki/Time_a_function#Locomotive_Basic).
+
+### towers1 - Towers of Hanoi (GOSUBs) {#towers1}
+
+[![Towers of Hanoi (GOSUBs)](./img/towers1.png)](../dist/index.html?database=rosetta&example=towers1)
+
+Taken from [Rosetta Code: Towers of Hanoi (GOSUBs)](https://rosettacode.org/wiki/Towers_of_Hanoi#Using_GOSUBs).
+
+### towers2 - Towers of Hanoi (Binary method) {#towers2}
+
+[![Towers of Hanoi (Binary method)](./img/towers2.png)](../dist/index.html?database=rosetta&example=towers2)
+
+Taken from [Rosetta Code: Towers of Hanoi (Binary method)](https://rosettacode.org/wiki/Towers_of_Hanoi#Using_binary_method).
+
 ### unicode - Unicode strings {#unicode}
 
 [![Unicode strings](./img/unicode.png)](../dist/index.html?database=rosetta&example=unicode)
@@ -472,10 +515,16 @@ Taken from [Rosetta Code: Write language name in 3D ASCII](https://rosettacode.o
 
 Taken from [Rosetta Code: Yin and yang](https://rosettacode.org/wiki/Yin_and_yang#Locomotive_Basic).
 
+### zebrapu - Zebra puzzle {#zebrapu}
+
+[![Zebra puzzle](./img/zebrapu.png)](../dist/index.html?database=rosetta&example=zebrapu)
+
+Taken from [Rosetta Code: Zebra puzzle](https://rosettacode.org/wiki/Zebra_puzzle#Locomotive_Basic).
+
 ### zeropow - Zero to the zero power {#zeropow}
 
 [![Zero to the zero power](./img/zeropow.png)](../dist/index.html?database=rosetta&example=zeropow)
 
 Taken from [Rosetta Code: Zero to the zero power](https://rosettacode.org/wiki/Zero_to_the_zero_power#Locomotive_Basic).
 
-### **mv, 03/2025**
+### **mv, 05/2026**

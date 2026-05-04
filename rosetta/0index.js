@@ -72,6 +72,10 @@ cpcBasic.addIndex("rosetta", {
 			"title": "Detect division by zero"
 		},
 		{
+			"key": "dragon",
+			"title": "Dragon curve"
+		},	
+		{
 			"key": "drawclk",
 			"title": "Draw a clock"
 		},
@@ -128,6 +132,10 @@ cpcBasic.addIndex("rosetta", {
 			"title": "Hello world (Newbie)"
 		},
 		{
+			"key": "hilbert",
+			"title": "Hilbert curve"
+		},
+		{
 			"key": "introspe",
 			"title": "Introspection"
 		},
@@ -150,6 +158,10 @@ cpcBasic.addIndex("rosetta", {
 		{
 			"key": "knights",
 			"title": "Knight's tour"
+		},
+		{
+			"key": "kochcur",
+			"title": "Koch curve"
 		},
 		{
 			"key": "langtons",
@@ -210,6 +222,10 @@ cpcBasic.addIndex("rosetta", {
 		{
 			"key": "pinstrip",
 			"title": "Pinstripe: Display"
+		},
+		{
+			"key": "primali",
+			"title": "Primality by trial division"
 		},
 		{
 			"key": "progterm",
@@ -297,6 +313,18 @@ cpcBasic.addIndex("rosetta", {
 			"title": "Terminal control: Ringing terminal bell"
 		},
 		{
+			"key": "timefunc",
+			"title": "Time a function"
+		},
+		{
+			"key": "towers1",
+			"title": "Towers of Hanoi (GOSUBs)"
+		},
+		{
+			"key": "towers2",
+			"title": "Towers of Hanoi (Binary method)"
+		},
+		{
 			"key": "unicode",
 			"title": "Unicode strings"
 		},
@@ -311,6 +339,10 @@ cpcBasic.addIndex("rosetta", {
 		{
 			"key": "yinyang",
 			"title": "Yin and yang"
+		},
+		{
+			"key": "zebrapu",
+			"title": "Zebra puzzle"
 		},
 		{
 			"key": "zeropow",
