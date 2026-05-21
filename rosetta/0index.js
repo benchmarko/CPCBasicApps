@@ -236,6 +236,10 @@ cpcBasic.addIndex("rosetta", {
 			"title": "Rainbow"
 		},
 		{
+			"key": "random",
+			"title": "Random number generator"
+		},
+		{
 			"key": "readfile",
 			"title": "Read a file line by line"
 		},
@@ -323,6 +327,10 @@ cpcBasic.addIndex("rosetta", {
 		{
 			"key": "towers2",
 			"title": "Towers of Hanoi (Binary method)"
+		},
+		{
+			"key": "unbias",
+			"title": "Unbias a random generator"
 		},
 		{
 			"key": "unicode",

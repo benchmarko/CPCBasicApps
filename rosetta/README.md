@@ -361,6 +361,8 @@ Taken from [Rosetta Code: Rainbow](https://rosettacode.org/wiki/Rainbow#Locomoti
 
 ### random - Random number generator (included) {#random}
 
+[![Random](./img/random.png)](../dist/index.html?database=rosetta&example=random)
+
 No code.
 
 See: [Rosetta Code: Random number generator (included)](https://rosettacode.org/wiki/Random_number_generator_(included)#Locomotive_Basic).
@@ -490,6 +492,12 @@ Taken from [Rosetta Code: Towers of Hanoi (GOSUBs)](https://rosettacode.org/wiki
 [![Towers of Hanoi (Binary method)](./img/towers2.png)](../dist/index.html?database=rosetta&example=towers2)
 
 Taken from [Rosetta Code: Towers of Hanoi (Binary method)](https://rosettacode.org/wiki/Towers_of_Hanoi#Using_binary_method).
+
+### unbias - Unbias a random generator {#unbias}
+
+[![Unbias a random generator](./img/unbias.png)](../dist/index.html?database=rosetta&example=unbias)
+
+Taken from [Rosetta Code: Unbias a random generator](https://rosettacode.org/wiki/Unbias_a_random_generator#Locomotive_Basic).
 
 ### unicode - Unicode strings {#unicode}
 
