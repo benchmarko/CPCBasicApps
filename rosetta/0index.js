@@ -220,12 +220,20 @@ cpcBasic.addIndex("rosetta", {
 			"title": "Pascal's triangle"
 		},
 		{
+			"key": "permuta",
+			"title": "Permutation test"
+		},
+		{
 			"key": "pinstrip",
 			"title": "Pinstripe: Display"
 		},
 		{
 			"key": "primali",
 			"title": "Primality by trial division"
+		},
+		{
+			"key": "primali0",
+			"title": "Primality by trial division (GW-BASIC)"
 		},
 		{
 			"key": "progterm",

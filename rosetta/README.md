@@ -335,6 +335,12 @@ Taken from [Rosetta Code: One-dimensional cellular automata](https://rosettacode
 
 Taken from [Rosetta Code: Pascal's triangle](https://rosettacode.org/wiki/Pascal%27s_triangle#Locomotive_Basic).
 
+### permuta - Permutation test {#permuta}
+
+[![Permutation test](./img/permuta.png)](../dist/index.html?database=rosetta&example=permuta)
+
+Taken from [Rosetta Code: Permutation test](https://rosettacode.org/wiki/Permutation_test#Locomotive_Basic).
+
 ### pinstrip - Pinstripe: Display {#pinstrip}
 
 [![Pinstripe: Display](./img/pinstrip.png)](../dist/index.html?database=rosetta&example=pinstrip)
