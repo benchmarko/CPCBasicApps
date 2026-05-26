@@ -20,43 +20,44 @@ cpcBasic.addItem("", function () { /*
 210 FOR i=0 TO ntreated-1
 220   sel(i)=i
 230 NEXT
-240 GOSUB 310
+240 GOSUB 320
 250 percent=100*greater/groups
-260 PRINT "Percentage groupings: actual experiment"
-270 PRINT "<= :";100-percent
-280 PRINT ">  :";percent
-290 END
-300 '
-310 greater=0
-320 groups=0
-330 total=0
-340 FOR i=0 TO n-1
-350   total=total+results(i)
-360 NEXT
-370 GOSUB 560
-380 actual=meandiff
-390 WHILE 1
-400   GOSUB 560
-410   groups=groups+1
-420   IF meandiff>actual THEN greater=greater+1
-430   i=ntreated-1
-440   WHILE sel(i)=n-ntreated+i
-450     i=i-1
-460     IF i<0 THEN RETURN
-470   WEND
-480   sel(i)=sel(i)+1
-490   FOR i=i+1 TO ntreated-1
-500     sel(i)=sel(i-1)+1
-510   NEXT
-520 WEND
-530 RETURN
-540 '
-550 ' evaluate selected group
-560 tsum=0
-570 FOR i=0 TO ntreated-1
-580   tsum=tsum+results(sel(i))
-590 NEXT
-600 psum=total-tsum
-610 meandiff=tsum/ntreated-psum/nplacebo
-620 RETURN
+260 PRINT "Groupings compared to actual experiment"
+270 PRINT "     Percentage  Count"
+280 PRINT "<= :";100-percent;groups-greater
+290 PRINT ">  :";percent;greater
+300 END
+310 '
+320 greater=0
+330 groups=0
+340 total=0
+350 FOR i=0 TO n-1
+360   total=total+results(i)
+370 NEXT
+380 GOSUB 570
+390 actual=meandiff
+400 WHILE 1
+410   GOSUB 570
+420   groups=groups+1
+430   IF meandiff>actual THEN greater=greater+1
+440   i=ntreated-1
+450   WHILE sel(i)=n-ntreated+i
+460     i=i-1
+470     IF i<0 THEN RETURN
+480   WEND
+490   sel(i)=sel(i)+1
+500   FOR i=i+1 TO ntreated-1
+510     sel(i)=sel(i-1)+1
+520   NEXT
+530 WEND
+540 RETURN
+550 '
+560 ' evaluate selected group
+570 tsum=0
+580 FOR i=0 TO ntreated-1
+590   tsum=tsum+results(sel(i))
+600 NEXT
+610 psum=total-tsum
+620 meandiff=tsum/ntreated-psum/nplacebo
+630 RETURN
 */ });
