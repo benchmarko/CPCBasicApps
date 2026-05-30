@@ -46,6 +46,18 @@ Taken from [Rosetta Code: Archimedean spiral](https://rosettacode.org/wiki/Archi
 
 Taken from [Rosetta Code: Audio frequency generator](https://rosettacode.org/wiki/Audio_frequency_generator#Locomotive_Basic).
 
+### babbage - Babbage problem {#babbage}
+
+[![Babbage problem](./img/babbage.png)](../dist/index.html?database=rosetta&example=babbage)
+
+Taken from [Rosetta Code: Barnsley fern](https://rosettacode.org/wiki/Babbage_problem#Locomotive_Basic).
+
+### babbage2 - Babbage problem (Filtering) {#babbage2}
+
+[![Babbage problem (Filtering)](./img/babbage2.png)](../dist/index.html?database=rosetta&example=babbage2)
+
+Taken from [Rosetta Code: Barnsley fern](https://rosettacode.org/wiki/Babbage_problem#Locomotive_Basic).
+
 ### barnsley - Barnsley fern {#barnsley}
 
 [![Barnsley fern](./img/barnsley.png)](../dist/index.html?database=rosetta&example=barnsley)
@@ -117,7 +129,6 @@ Taken from [Rosetta Code: Detect division by zero](https://rosettacode.org/wiki/
 [![Dragon curve](./img/dragon.png)](../dist/index.html?database=rosetta&example=dragon)
 
 Taken from [Rosetta Code: Dragon curve](https://rosettacode.org/wiki/Dragon_curve#Locomotive_Basic).
-
 
 ### drawclk - Draw a clock {#drawclk}
 
@@ -402,6 +413,12 @@ Taken from [Rosetta Code: Rot-13](https://rosettacode.org/wiki/Rot-13#Locomotive
 [![Show ASCII table](./img/showasc.png)](../dist/index.html?database=rosetta&example=showasc)
 
 Taken from [Rosetta Code: Show ASCII table](https://rosettacode.org/wiki/Show_ASCII_table#Locomotive_Basic).
+
+### sierpin - Sierpinski triangle {#sierpin}
+
+[![Sierpinski triangle](./img/sierpin.png)](../dist/index.html?database=rosetta&example=sierpin)
+
+Taken from [Rosetta Code: Sierpinski triangle](https://rosettacode.org/wiki/Sierpinski_triangle#Locomotive_Basic).
 
 ### sieveera - Sieve of Eratosthenes {#sieveera}
 

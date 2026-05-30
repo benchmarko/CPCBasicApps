@@ -28,6 +28,14 @@ cpcBasic.addIndex("rosetta", {
 			"title": "Audio frequency generator"
 		},
 		{
+			"key": "babbage",
+			"title": "Babbage problem"
+		},
+		{
+			"key": "babbage2",
+			"title": "Babbage problem (Filtering)"
+		},
+		{
 			"key": "barnsley",
 			"title": "Barnsley fern"
 		},
@@ -266,6 +274,10 @@ cpcBasic.addIndex("rosetta", {
 		{
 			"key": "showasc",
 			"title": "Show ASCII table"
+		},
+		{
+			"key": "sierpin",
+			"title": "Sierpinski triangle"
 		},
 		{
 			"key": "sieveera",
