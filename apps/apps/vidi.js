@@ -3,18 +3,20 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-1 rem vidi - VIDI: Der Videofilmverwalter
-2 rem (c) Marco Vieth, 1988
-3 rem
+1 REM vidi - VIDI: Der Videofilmverwalter
+2 REM (c) Marco Vieth, 1988
+3 REM modifications: add shell sort; same indices for search and sort
+4 REM
 100 rem
 110 rem VIDI - Der Videofilmverwalter (v2.0)
 120 'Marco Vieth, Juli 1988  (29.8.1989 / 17.7.1988)
 130 '
 135 ON z GOTO 260,370
-140 IF PEEK(&30)=&C7 THEN SYMBOL AFTER 245:MEMORY &A5FF:|TAPE:OPENOUT"!S":MEMORY HIMEM-1:CLOSEOUT:|DISC:POKE &30,&F3
+140 'IF PEEK(&30)=&C7 THEN SYMBOL AFTER 245:MEMORY &A5FF:|TAPE:OPENOUT"!S":MEMORY HIMEM-1:CLOSEOUT:|DISC:POKE &30,&F3
 150 CLEAR
 160 KEY 159,"goto 100"+CHR$(13):KEY DEF 68,0,159
 170 DEFSTR a-f:DEFINT g-z
+175 GOSUB 3100
 180 n=355
 190 DIM f(n):'Filmarray
 200 p=0:'Anz.Filme
@@ -24,6 +26,7 @@ cpcBasic.addItem("", function () { /*
 230 ON BREAK GOSUB 2740
 240 ret=&AC18:IF PEEK(6)=&80 THEN ret=&AC32:'CPC 464
 250 '
+255 a="VIDI_VHS.FIL":GOSUB 1730: 'preload
 260 GOSUB 430
 270 PRINT#1,"3Hauptmenue:   2( Filme:"p")3
 280 PRINT"21)1  Filme auflisten"
@@ -85,7 +88,11 @@ cpcBasic.addItem("", function () { /*
 810 GOSUB 2230
 820 IF m=8 THEN RETURN
 830 CLS:d=""
-840 ON m GOSUB 1040,1050,1060,1070,1080,1090,1100
+840 'ON m GOSUB 1040,1050,1060,1070,1080,1090,1100
+841 mi=sp(m): h=lg(m): b=feld(m)+":"
+842 IF m=2 THEN h=h-2 'hack for "Kennbuchstabe"
+843 ma=mi+h-1: 
+844 GOSUB 2550
 850 GOSUB 670
 860 '
 870 h1=0
@@ -105,13 +112,13 @@ cpcBasic.addItem("", function () { /*
 1010 GOSUB 2430
 1020 GOSUB 430:GOTO 780
 1030 '
-1040 mi=1:ma=3:b="Filmnummer :":h=3:GOTO 2550
-1050 mi=7:ma=9:b="Kassettennummer :":h=3:GOTO 2550
-1060 mi=16:ma=45:b="Filmname :":h=30:GOTO 2550
-1070 mi=49:ma=55:b="Filmart :":h=7:GOTO 2550
-1080 mi=59:ma=62:b="Bandzeit Anfang :":h=4:GOTO 2550
-1090 mi=66:ma=69:b="Bandzeit Ende :":h=4:GOTO 2550
-1100 mi=73:ma=75:b="Filmlaenge:":h=3:GOTO 2550
+1040 'mi=1:ma=3:b="Filmnummer :":h=3:GOTO 2550
+1050 'mi=7:ma=9:b="Kassettennummer :":h=3:GOTO 2550
+1060 'mi=16:ma=45:b="Filmname :":h=30:GOTO 2550
+1070 'mi=49:ma=55:b="Filmart :":h=7:GOTO 2550
+1080 'mi=59:ma=62:b="Bandzeit Anfang :":h=4:GOTO 2550
+1090 'mi=66:ma=69:b="Bandzeit Ende :":h=4:GOTO 2550
+1100 'mi=73:ma=75:b="Filmlaenge:":h=3:GOTO 2550
 1110 '
 1120 CLS:CLS#1
 1130 PRINT#1,"Filme aendern :"
@@ -141,13 +148,13 @@ cpcBasic.addItem("", function () { /*
 1360 a=STR$(h1):a=RIGHT$(a,LEN(a)-1)
 1370 h=3:GOSUB 2650:c=a+"   "
 1380 IF m=9 THEN IF LEFT$(f(h1),h)<>a THEN h1=1:WHILE LEFT$(f(h1),h)<>a AND h1<=p:h1=h1+1:WEND:PRINT"Film an Position"h1
-1390 GOSUB 1050:GOSUB 2650:c=c+a+" "
+1390 mi=sp(2):h=lg(2):h=h-2:b=feld(2):ma=mi+h-1:GOSUB 2550:GOSUB 2650:c=c+a+" ": 'GOSUB 1050:GOSUB 2650:c=c+a+" "
 1400 mi=11:ma=11:h=1:b="Kennbuchstabe :"
 1410 GOSUB 2550:c=c+a+"    "
-1420 GOSUB 1060:GOSUB 2670:c=c+a+"   "
-1430 GOSUB 1070:GOSUB 2670:c=c+a+"   "
-1440 GOSUB 1080:c=c+a+"   "
-1450 GOSUB 1090:c=c+a+"   "
+1420 mi=sp(3):h=lg(3):b=feld(3):ma=mi+h-1:GOSUB 2550:GOSUB 2670:c=c+a+"   ": 'GOSUB 1060:GOSUB 2670:c=c+a+"   "
+1430 mi=sp(4):h=lg(4):b=feld(4):ma=mi+h-1:GOSUB 2550:GOSUB 2670:c=c+a+"   ": 'GOSUB 1070:GOSUB 2670:c=c+a+"   "
+1440 mi=sp(5):h=lg(5):b=feld(5):ma=mi+h-1:GOSUB 2550:c=c+a+"   ": 'GOSUB 1080:c=c+a+"   "
+1450 mi=sp(6):h=lg(6):b=feld(6):ma=mi+h-1:GOSUB 2550:c=c+a+"   ": 'GOSUB 1090:c=c+a+"   "
 1460 'GOSUB 2620:GOSUB 8500:c=c+a
 1470 f(h1)=c
 1480 GOSUB 2700
@@ -199,22 +206,42 @@ cpcBasic.addItem("", function () { /*
 1870 a="Filme sortieren :":b="Sortieren nach:"
 1880 GOSUB 2230
 1890 IF m=8 THEN RETURN
-1900 CLS:IF PEEK(&A600)<>254 THEN PRINT"VIDISORT nachladen ...":LOAD"!VIDISOR.BIN",&A600
-1910 ON m GOSUB 1990,2000,2010,2020,2030,2040,2050
-1920 POKE &A6A1,mi:POKE &A6A2,h
-1930 PRINT:PRINT"Ich sortiere ...":PRINT
-1940 CALL &A600,f(1),f(p)
+1900 CLS
+1901 'IF PEEK(&A600)<>254 THEN PRINT"VIDISORT nachladen ...":LOAD"!VIDISOR.BIN",&A600
+1902 'ON m GOSUB 1990,2000,2010,2020,2030,2040,2050
+1903 'POKE &A6A1,mi:POKE &A6A2,h
+1910 PRINT:PRINT"Ich sortiere ...":PRINT
+1911 t!=TIME
+1912 'CALL &A600,f(1),f(p)
+1920 DIM k$(p)
+1923 sp1=sp(m):lg1=lg(m)
+1924 FOR i=1 TO p
+1925   k$(i)=MID$(f(i),sp1,lg1)
+1926 NEXT
+1927 gap=INT(p/2)
+1928 WHILE gap>0
+1929   FOR i=gap+1 TO p
+1930     j=i
+1931     WHILE j>gap 
+1932      IF k$(j-gap)<=k$(j) THEN 1940
+1935      tempk$=k$(j): k$(j)=k$(j-gap): k$(j-gap)=tempk$: temp$=f(j): f(j)=f(j-gap): f(j-gap)=temp$: j=j-gap
+1936     WEND
+1940   NEXT
+1941   gap=INT(gap/2)
+1942 WEND
+1943 ERASE k$
 1950 IF m=1 THEN a="V2000" ELSE IF m=2 THEN a="VHS"
-1960 PRINT"Schon erledigt ."
+1955 t!=TIME-t!
+1960 PRINT"Erledingt in";t!/300;"Sekunden."
 1970 GOTO 2430
 1980 '
-1990 mi=0:h=3:RETURN
-2000 mi=6:h=5:RETURN
-2010 mi=15:h=30:RETURN
-2020 mi=48:h=7:RETURN
-2030 mi=58:h=4:RETURN
-2040 mi=65:h=4:RETURN
-2050 mi=72:h=3:RETURN
+1990 'mi=0:h=3:RETURN
+2000 'mi=6:h=5:RETURN
+2010 'mi=15:h=30:RETURN
+2020 'mi=48:h=7:RETURN
+2030 'mi=58:h=4:RETURN
+2040 'mi=65:h=4:RETURN
+2050 'mi=72:h=3:RETURN
 2060 '
 2070 CLS#1:CLS
 2080 PRINT#1,"Ausgabemedium:
@@ -312,4 +339,21 @@ cpcBasic.addItem("", function () { /*
 2970 IF g=20 THEN PRINT"Ihre Diskette ist voll!"
 2980 GOSUB 2430
 2990 RESUME 1530
+3000 '
+3100 RESTORE 3180
+3110 DIM sp(7),lg(7),feld(7)
+3120 FOR i=1 TO 7
+3130 READ sp(i),lg(i),feld(i)
+3140 NEXT
+3150 RETURN
+3160 '
+3170 ' Spalte, Laenge, Feldname (zum Suchen, Sortieren)
+3180 DATA 1,3, "Filmnummer"
+3190 DATA 7,5, "Kassettennummer"
+3192 '"Kassettennummer" includes length of "Kennbuchstabe" (not so nice)
+3200 DATA 16,30, "Filmname"
+3210 DATA 49,7, "Filmart"
+3220 DATA 59,4, "Bandzeit Anfang"
+3230 DATA 66,4, "Bandzeit Ende"
+3240 DATA 73,3, "Filmlaenge"
 */ });
