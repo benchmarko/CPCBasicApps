@@ -3,7 +3,7 @@
 "use strict";
 
 cpcBasic.addItem("", function () { /*
-1 REM mandelbr - Mandelbrot set
+1 REM mandelb1 - Mandelbrot set
 5 REM https://rosettacode.org/wiki/Mandelbrot_set#Locomotive_Basic
 6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 MODE 3    ' Note the CPCBasic-only screen mode!

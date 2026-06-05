@@ -280,9 +280,15 @@ Taken from [Rosetta Code: Magic 8-ball](https://rosettacode.org/wiki/Magic_8-bal
 
 Taken from [Rosetta Code: Make a backup file](https://rosettacode.org/wiki/Make_a_backup_file#Locomotive_Basic).
 
-### mandelbr - Mandelbrot set {#mandelbr}
+### mandelb1 - Mandelbrot set {#mandelb1}
 
-[![Mandelbrot set](./img/mandelbr.png)](../dist/index.html?database=rosetta&example=mandelbr)
+[![Mandelbrot set](./img/mandelb1.png)](../dist/index.html?database=rosetta&example=mandelb1)
+
+Taken from [Rosetta Code: Mandelbrot set](https://rosettacode.org/wiki/Mandelbrot_set#Locomotive_Basic).
+
+### mandelb2 - Mandelbrot set (low res) {#mandelb2}
+
+[![Mandelbrot set](./img/mandelb2.png)](../dist/index.html?database=rosetta&example=mandelb2)
 
 Taken from [Rosetta Code: Mandelbrot set](https://rosettacode.org/wiki/Mandelbrot_set#Locomotive_Basic).
 

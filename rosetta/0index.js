@@ -184,8 +184,12 @@ cpcBasic.addIndex("rosetta", {
 			"title": "Make a backup file"
 		},
 		{
-			"key": "mandelbr",
+			"key": "mandelb1",
 			"title": "Mandelbrot set"
+		},
+		{
+			"key": "mandelb2",
+			"title": "Mandelbrot set (low res)"
 		},
 		{
 			"key": "matrixra",
