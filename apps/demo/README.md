@@ -55,7 +55,7 @@ Title screen of an unfinished game with a nice tune.
 
 ### blitter - Blitter {#blitter}
 
-[![Blitter](./img/blitter.png)](../../dist/index.html?database=apps&example=demo/blitter) (c) Paul Bond
+[![Blitter](./img/blitter.png)](../../dist/index.html?database=apps&example=demo/blitter) (c) Paul Bond, 1986
 
 ### boogle - Boogle {#boogle}
 
@@ -70,7 +70,7 @@ Check [Rob Manuel’s British Council Tile / Bus Fabric Sim](https://scruss.com/
 
 ### circlewr - Circle Writer {#circlewr}
 
-[![Circle Writer](./img/circlewr.png)](../../dist/index.html?database=apps&example=demo/circlewr) (c) COMTEC, 19xx
+[![Circle Writer](./img/circlewr.png)](../../dist/index.html?database=apps&example=demo/circlewr) (c) M. Foster (COMTEC), 1990
 
 ### flags - Flags {#flags}
 
@@ -96,6 +96,10 @@ Here we have "Windows" and "Pac-Man".
 
 Some more nice graphics and animations, mainly done by changing colors.
 Here we have "Blinker" and "R2D2".
+
+### gdemo3 - Graphics Demo 3 {#gdemo3}
+
+[![Graphics Demo 3](./img/gdemo3.png)](../../dist/index.html?database=apps&example=demo/gdemo3) (c) David Wild, Alan Scully
 
 ### grafix - Grafix Demo {#grafix}
 
@@ -173,6 +177,10 @@ The [Can-Can sound](../../dist/index.html?database=apps&example=music/cancan) ca
 
 Some examples from the [Vintage Computing Christmas Challenge 2025 (VC³ 2025)](https://logiker.com/Vintage-Computing-Christmas-Challenge-2025).
 Most of them are optimized.
+
+### swtunnel - Spiders-Web Tunnel {#swtunnel}
+
+[![Spiders-Web Tunnel](./img/swtunnel.png)](../../dist/index.html?database=apps&example=demo/swtunnel) (c) Dino
 
 ### xmastree - Xmas Tree {#xmastree}
 

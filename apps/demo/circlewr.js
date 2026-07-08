@@ -4,10 +4,10 @@
 
 cpcBasic.addItem("", function () { /*
 1 rem circlewr - Circle Writer
-2 rem (c) COMTEC, 19xx (Amstrad Computer User)
-3 rem https://cpcrulez.fr/coding_src-list-graphic-circle_writer__ACU.htm
-4 rem
-10 MODE 1:mo=16:INK 0,0:INK 1,26:INK 2,6:INK 3,24:BORDER 0:PAPER 0:PEN 1:TEXT$="CIRCLE WRITEr by COMTEC"
+2 rem (c) M. Foster (COMTEC), 1990 (Amstrad Computer User)
+3 rem https://www.cpc-power.com/index.php?page=detail&num=9441
+4 rem https://cpcrulez.fr/demostestDO_circle_writer__ACU.htm
+10 MODE 1:mo=16:INK 0,0:INK 1,26:INK 2,6:INK 3,24:BORDER 0:PAPER 0:PEN 1:TEXT$="CIRCLE WRITER by COMTEC"
 20 le=120:he=120:th=64:x=320:y=200:col=1
 30 length=LEN(text$):steps=360/length:sti=steps/mo:thi=th/mo
 40 LOCATE 1,25:PRINT TEXT$

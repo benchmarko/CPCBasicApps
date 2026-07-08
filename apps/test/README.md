@@ -51,6 +51,13 @@ Links:
 
 [![Drawing circles](./img/circles.png)](../../dist/index.html?database=apps&example=test/circles) (c) Marco Vieth
 
+### circlewr - Circle Writer {#circlewr}
+
+[![Circle Writer](./img/circlewr.png)](../../dist/index.html?database=apps&example=test/circlewr) (c) M. Foster (COMTEC), 1990
+
+Modified text.
+See also: [Circle Writer in demo]](../../dist/index.html?database=apps&example=demo/circlewr)
+
 ### colors - Colors CPC Demo {#colors}
 
 [![Colors CPC Demo](./img/colors.png)](../../dist/index.html?database=apps&example=test/colors) (c)

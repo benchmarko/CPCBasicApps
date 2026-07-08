@@ -4,7 +4,7 @@
 
 cpcBasic.addItem("", function () { /*
 1 rem blitter - Blitter
-2 rem (c) Paul Bond
+2 rem (c) Paul Bond, 1986
 3 rem https://www.cpcwiki.eu/index.php/Amstrad_Action_July_1986_Type-Ins
 4 rem https://www.cpc-power.com/index.php?page=detail&num=9154
 5 rem

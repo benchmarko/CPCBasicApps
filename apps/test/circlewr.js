@@ -4,11 +4,10 @@
 
 cpcBasic.addItem("", function () { /*
 1 rem circlewr - Circle Writer
-3 rem https://cpcrulez.fr/coding_src-list-graphic-circle_writer__ACU.htm
-4 rem
-5 ' Comment by notevenodd on 28 Dec 2020: CIRCLE WRITER... by "COMTEC", found in an old CPC Magazine
-6 ' and (very slightly modified). Very slow on a real CPC, but
-7 ' now ultra fast with *CPC Basic* on a modern computer.  ;-D
+2 rem (c) M. Foster (COMTEC), 1990 (Amstrad Computer User)
+3 rem https://www.cpc-power.com/index.php?page=detail&num=9441
+4 rem https://cpcrulez.fr/demostestDO_circle_writer__ACU.htm
+5 rem Modifications: text
 8 for m=0 to 3:gosub 9:next:goto 8
 9 if m=0 then text$="CPC BASIC is AWESOME" else text$="CPC BASIC is SUPER AWESOME"
 10 MODE m:xd=2^(2-min(m,2)):yd=((m=3)+2):rows=50/((m=3)+2):xd2=xd/2:yd2=yd/2
@@ -22,4 +21,9 @@ cpcBasic.addItem("", function () { /*
 80 NEXT o,i,nu:WHILE INKEY$<>"":WEND:CALL &BB18:return: 'END
 90 de=-(nu*steps)-sti*i-180:th=thi*o:DEG
 100 PLOT x+(le+th)*COS(de),y+(he+th)*SIN(de),col:GOTO 80
+199 '
+200 ' Comment by notevenodd on 28 Dec 2020: CIRCLE WRITER... by "COMTEC", found in an old CPC Magazine
+210 ' and (very slightly modified). Very slow on a real CPC, but
+220 ' now ultra fast with *CPC Basic* on a modern computer.  ;-D
+230 ' See also: circlewr in apps/demo: database=apps&example=demo/circlewr
 */ });

@@ -379,6 +379,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "Graphics Demo 2"
 	},
 	{
+		"key": "demo/gdemo3",
+		"title": "Graphics Demo"
+	},
+	{
 		"key": "demo/grafix",
 		"title": "Grafix Demo"
 	},
@@ -447,6 +451,10 @@ cpcBasic.addIndex("apps", function () { /*
 	{
 		"key": "demo/sultan",
 		"title": "Sultan's Maze Demo Screen"
+	},
+	{
+		"key": "demo/swtunnel",
+		"title": "Spiders-Web Tunnel"
 	},
 	{
 		"key": "demo/xmastree",
