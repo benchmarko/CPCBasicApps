@@ -6,6 +6,7 @@ cpcBasic.addItem("", function () { /*
 1 REM knights - Knight's tour
 5 REM https://rosettacode.org/wiki/Knight%27s_tour#Locomotive_Basic
 6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
+7 REM Modificatons: line 335: delay to show the progress
 10 mode 1:defint a-z
 20 input "Board size: ",size
 30 input "Start position: ",a$
@@ -39,6 +40,7 @@ cpcBasic.addItem("", function () { /*
 310 next
 320 x=x+dx(qm)
 330 y=y+dy(qm)
+335 WHILE TIME<t!:FRAME:WEND:t!=TIME+50
 340 goto 200
 350 ' find moves
 360 if xc<1 or yc<1 or xc>size or yc>size then nm=1000:return

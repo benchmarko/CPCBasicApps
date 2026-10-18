@@ -4,7 +4,7 @@
 
 cpcBasic.addItem("", function () { /*
 1 REM rockpap - Rock-paper-scissors
-5 REM https://rosettacode.org/wiki/Rock-paper-scissorse#Locomotive_Basic
+5 REM https://rosettacode.org/wiki/Rock-paper-scissors#Locomotive_Basic
 6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
 10 mode 1:defint a-z:randomize time
 20 rps$="rps"
