@@ -309,10 +309,6 @@ cpcBasic.addIndex("rosetta", {
 			"title": "System time"
 		},
 		{
-			"key": "tetris",
-			"title": "Tetris"
-		},
-		{
 			"key": "termct1",
 			"title": "Terminal control: Coloured text"
 		},
@@ -343,6 +339,10 @@ cpcBasic.addIndex("rosetta", {
 		{
 			"key": "termct8",
 			"title": "Terminal control: Ringing terminal bell"
+		},
+		{
+			"key": "tetris",
+			"title": "Tetris"
 		},
 		{
 			"key": "timefunc",
