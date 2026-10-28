@@ -770,6 +770,15 @@ cpcBasic.addIndex("apps", function () { /*
 		"meta": "D"
 	},
 	{
+		"key": "games/sudoku",
+		"title": "Sudoku CPC"
+	},
+	{
+		"key": "games/sudoku.zip",
+		"title": "Sudoku (Screens)",
+		"meta": "D"
+	},
+	{
 		"key": "games/sultan",
 		"title": "Sultan's Maze: Amsoft Logo"
 	},

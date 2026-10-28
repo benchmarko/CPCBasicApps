@@ -326,6 +326,10 @@ Additional files:
 
 - statesfx - States of the Earth (Data)
 
+### sudoku - Sudoku CPC {#sudoku}
+
+[![Sudoku CPC](./img/sudoku.png)](../../dist/index.html?database=apps&example=games/sudoku) (c) Adam Ioannides, 2026
+
 ### sultan - Sultan's Maze {#sultan}
 
 [![Sultan's Maze](./img/sultan.png)](../../dist/index.html?database=apps&example=games/sultan)
