@@ -50,13 +50,13 @@ Taken from [Rosetta Code: Audio frequency generator](https://rosettacode.org/wik
 
 [![Babbage problem](./img/babbage.png)](../dist/index.html?database=rosetta&example=babbage)
 
-Taken from [Rosetta Code: Barnsley fern](https://rosettacode.org/wiki/Babbage_problem#Locomotive_Basic).
+Taken from [Rosetta Code: Babbage problem](https://rosettacode.org/wiki/Babbage_problem#Locomotive_Basic).
 
 ### babbage2 - Babbage problem (Filtering) {#babbage2}
 
 [![Babbage problem (Filtering)](./img/babbage2.png)](../dist/index.html?database=rosetta&example=babbage2)
 
-Taken from [Rosetta Code: Barnsley fern](https://rosettacode.org/wiki/Babbage_problem#Locomotive_Basic).
+Taken from [Rosetta Code: Babbage problem](https://rosettacode.org/wiki/Babbage_problem#Locomotive_Basic).
 
 ### barnsley - Barnsley fern {#barnsley}
 
@@ -340,6 +340,12 @@ Taken from [Rosetta Code: N-queens problem](https://rosettacode.org/wiki/N-queen
 
 Taken from [Rosetta Code: Non-decimal radices](https://rosettacode.org/wiki/Non-decimal_radices/Output#Locomotive_Basic).
 
+### nthwday - Nth Particular Weekday of the Month {#nthwday}
+
+[![Nth Particular Weekday of the Month](./img/nthwday.png)](../dist/index.html?database=rosetta&example=nthwday)
+
+Taken from [Rosetta Code: Nth Particular Weekday of the Month](https://rosettacode.org/wiki/Nth_Particular_Weekday_of_the_Month#Locomotive_Basic).
+
 ### onedimca - One-dimensional cellular automata {#onedimca}
 
 [![One-dimensional cellular automata](./img/onedimca.png)](../dist/index.html?database=rosetta&example=onedimca)
@@ -384,11 +390,9 @@ Taken from [Rosetta Code: Rainbow](https://rosettacode.org/wiki/Rainbow#Locomoti
 
 ### random - Random number generator (included) {#random}
 
-[![Random](./img/random.png)](../dist/index.html?database=rosetta&example=random)
+[![Random number generator (included](./img/random.png)](../dist/index.html?database=rosetta&example=random)
 
-No code.
-
-See: [Rosetta Code: Random number generator (included)](https://rosettacode.org/wiki/Random_number_generator_(included)#Locomotive_Basic).
+Taken from [Rosetta Code: Random number generator (included)](https://rosettacode.org/wiki/Random_number_generator_(included)#Locomotive_Basic).
 
 ### readfile - Read a file line by line {#readfile}
 
@@ -440,7 +444,7 @@ Taken from [Rosetta Code: Snake](https://rosettacode.org/wiki/Snake#Locomotive_B
 
 ### speech - Speech synthesis {#speech}
 
-[![Speech](./img/speech.png)](../dist/index.html?database=rosetta&example=speech)
+[![Speech synthesis](./img/speech.png)](../dist/index.html?database=rosetta&example=speech)
 
 Taken from [Rosetta Code: Speech synthesis](https://rosettacode.org/wiki/Speech_synthesis#Locomotive_Basic).
 
@@ -503,6 +507,12 @@ Taken from [Rosetta Code: Terminal control: Positional read](https://rosettacode
 [![Terminal control: Ringing the terminal bell](./img/termct8.png)](../dist/index.html?database=rosetta&example=termct8)
 
 Taken from [Rosetta Code: Terminal control: Ringing the terminal bell](https://rosettacode.org/wiki/Terminal_control/Ringing_the_terminal_bell#Locomotive_Basic).
+
+### tetris - Tetris {#tetris}
+
+[![Time a function](./img/tetris.png)](../dist/index.html?database=rosetta&example=tetris)
+
+Taken from [Rosetta Code: Tetris](https://rosettacode.org/wiki/Tetris#Locomotive_Basic).
 
 ### timefunc - Time a function {#timefunc}
 

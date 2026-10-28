@@ -224,6 +224,10 @@ cpcBasic.addIndex("rosetta", {
 			"title": "Non-decimal radices"
 		},
 		{
+			"key": "nthwday",
+			"title": "Nth Particular Weekday of the Month"
+		},
+		{
 			"key": "onedimca",
 			"title": "One-dimensional cellular automata"
 		},
