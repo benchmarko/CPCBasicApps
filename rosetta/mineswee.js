@@ -6,6 +6,7 @@ cpcBasic.addItem("", function () { /*
 1 REM mineswee - Minesweeper game
 5 REM https://rosettacode.org/wiki/Minesweeper_game#Locomotive_Basic
 6 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
+8 REM CPCBasic-keys: ["q","\u2191","a","\u2193","o","\u2190","p","\u2192",32,"Clear","m","Mark"]
 10 mode 1:randomize time
 20 defint a-z
 30 boardx=6:boardy=4

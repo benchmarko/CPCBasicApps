@@ -5,10 +5,12 @@
 cpcBasic.addItem("", function () { /*
 1 rem 3heaps - 3 Heaps (3 Haufen)
 2 rem (c) Jens Uwe Timm, 1985
-3 rem
+3 rem modifications: CALL &BD19
+4 REM CPCBasic-keys: ["A","","B","","C","","1","","2","","3","","4","","5","","6","","7","","8","","9","",13,"Enter",127,"Del"]
 10 GOTO 4000 ' DREI HAUFEN  c1985 by Jens Uwe Timm , Hannover 
 100 '*****  Computerzugberechnung 
 110 lauf=0:LOCATE 9,25:PRINT"Bitte warten,ich denke nach !";CHR$(20)
+115 t!=TIME+300
 120 lauf=lauf+1:rst(1)=stap(1):rst(2)=stap(2):rst(3)=stap(3)
 130 csta=INT(RND*3)+1:IF stap(csta)=0 THEN 130
 140 sub=INT(RND*stap(csta))+1:rst(csta)=rst(csta)-sub:r1$=BIN$(rst(1),5)
@@ -17,6 +19,7 @@ cpcBasic.addItem("", function () { /*
 170 IF z=3 OR z=1 AND lauf<120 THEN 120 ELSE NEXT x
 180 PEN 2:stap(csta)=stap(csta)-sub:LOCATE csta*10+1,23
 190 PRINT USING"##";stap(csta):x=csta:GOSUB 8000
+195 WHILE TIME<t!:CALL &BD19:WEND
 200 IF stap(1)+stap(2)+stap(3)<>0 THEN 2000 ELSE LOCATE 9,25:PEN 1
 210 PRINT"   Ich habe gewonnen !";CHR$(20):GOSUB 7000:sieg=-1:com=com+1
 220 LOCATE 9,25:PRINT"Es steht";spi;"zu";com;
@@ -94,9 +97,9 @@ cpcBasic.addItem("", function () { /*
 5130 DATA 106,54,26, 112,56,16 
 6000 '*****  UP waag. Linie zeichnen
 6010 FOR l=1 TO bis:READ ax,az,bx:MOVE ax,az:DRAWR bx,0
-6020 FOR w=1 TO 20:NEXT w:NEXT l:RETURN
+6020 FOR w=1 TO 20/20:CALL &BD19:NEXT w:NEXT l:RETURN
 7000 '***** UP Warteschleife
-7010 call &bb18:return: 'FOR w=1 TO 1800:w$=INKEY$:NEXT w:RETURN 
+7010 FOR w=1 TO 1800/25:w$=INKEY$:CALL &BD19:NEXT w:RETURN 
 8000 '***** UP Stapel zeichnen
 8010 PEN 2:FOR i=1 TO 20:LOCATE x*10-2,i
 8020 IF ABS(i-21)<=stap(x) THEN PRINT z$ ELSE PRINT l$

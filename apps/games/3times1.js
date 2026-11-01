@@ -5,7 +5,8 @@
 cpcBasic.addItem("", function () { /*
 1 rem 3times1 - 3 Times 1 (3 mal 1)
 2 rem (c) Jens Uwe Timm, 1985
-5 rem
+3 rem modifications: CALL &BD19
+4 REM CPCBasic-keys: ["A","","B","","C","","1","","2","","3","",32,"Space"]
 10 GOTO 3000 ' dreimal eins  Copyright 1985 by Jens Uwe Timm Hannover
 1000 '****** Compzug SETZEN 
 1010 IF zug=0 THEN x=2:z=2:GOTO 1620
@@ -199,13 +200,13 @@ cpcBasic.addItem("", function () { /*
 6080 PRINT CHR$(164);"1985 by Jens Uwe Timm , Hannover":GOSUB 7010:LOCATE 8,25
 6090 PEN 2:PRINT"Weiter mit jeder Taste ...":CALL &BB18:INK 2,9:RETURN
 7000 '*****  UP Warteschleife
-7010 call &bb18:return: 'FOR w=1 TO 2000:i$=INKEY$:NEXT w:RETURN 
+7010 FOR w=1 TO 2000/25:i$=INKEY$:CALL &BD19:NEXT w:RETURN 
 8000 '*****  Titelbild
 8010 MODE 1:BORDER 2:INK 3,15:PEN 1
 8020 LOCATE 4,23:PRINT CHR$(164);" 1985 by Jens Uwe Timm ,";
 8030 PRINT" HANNOVER":LOCATE 14,25:PRINT"Tel. 79 53 96":PEN 3
 8040 ax=4:az=3:RESTORE 8070:FOR y=1 TO 151:READ x,z:LOCATE x+ax,z+az
-8050 PRINT CHR$(231):FOR w=1 TO 30:NEXT w:NEXT y
+8050 PRINT CHR$(231):FOR w=1 TO 30/25:CALL &BD19:NEXT w:NEXT y
 8060 GOSUB 7010:GOSUB 7010:BORDER 1:INK 3,14:RETURN 
 8070 DATA 1,3,2,4,2,3,2,2,3,3,3,2,3,1,4,2,4,1,5,1,5,2,6,1,6,2,7,1,7,2,8,1,8,2
 8080 DATA 9,2,8,3,9,3,10,3,9,4,10,4,9,5,10,5,9,6,10,6,9,7,8,7,7,7,7,8,8,8,9,8

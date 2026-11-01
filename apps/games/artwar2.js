@@ -8,7 +8,8 @@ cpcBasic.addItem("", function () { /*
 3 rem Modifications: Unknown line 2500 in 2090; delays
 4 SYMBOL AFTER 256:MEMORY &6FFF: SYMBOL AFTER n
 5 REM ART WAR COPYRIGHT BY SAKIS KAFFESAKIS 2021 - MUSIC BY MANOSSG 
-6 re=0
+6 REM CPCBasic-keys: ["1","","2","","3","","4","","5","","6","","7","","0",""]
+7 re=0
 8 SONG$="MUSIC1.AKG":GOSUB 9500
 9 REM GOTO 498
 10 MODE 1:CLS:MODE 1:BORDER 11:PEN 3:INK 3,20:INK 0,0

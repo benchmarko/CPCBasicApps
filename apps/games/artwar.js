@@ -6,7 +6,7 @@ cpcBasic.addItem("", function () { /*
 1 rem artwar - Art War (Loader)
 2 rem (c) Sakis Kaffesakis, 2021
 3 rem https://amstradsakis.blogspot.com/2021/12/art-war.html
-4 rem
+6 REM CPCBasic-keys: [32,"Space"]
 10 REM START SCREEN
 20 BORDER 0:MODE 1:PEN 1:INK 0,13:INK 1,14:INK 2,16:INK 3,23:f$="artwar13.scr":gosub 13000
 30 GOTO 70

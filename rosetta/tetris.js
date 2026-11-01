@@ -6,6 +6,7 @@ cpcBasic.addItem("", function () { /*
 1 REM tetris - Tetris
 2 REM https://rosettacode.org/wiki/Tetris#Locomotive_Basic
 3 REM GNU FDL 1.2 (https://www.gnu.org/licenses/fdl-1.2.html)
+4 REM CPCBasic-keys: ["a","\u2190","d","\u2192","q","\u21ba","w","\u21bb",32,"\u2913","s","\u2193","x","Exit","y","Yes","n","No"]
 100 REM arrows or numpad or A/D/Q/W/S; Space drops; X Exit
 110 DEFINT a-z
 120 RANDOMIZE TIME

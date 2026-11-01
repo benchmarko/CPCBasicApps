@@ -7,6 +7,7 @@ cpcBasic.addItem("", function () { /*
 20 rem (c) Marco Vieth
 30 rem CALL &BD25 and OUT &BD00 adapted
 40 rem
+50 REM CPCBasic-keys: ["1","1","2","2","3","3","4","4","5","5","E","Ende","J","Ja","N","Nein",13,"Enter"]
 90 REM Der Schwarze Joker
 100 CLEAR:GOSUB 10000
 110 MODE 1:INK 1,24:INK 2,7:INK 3,6,12:PEN 1:PAPER 0
