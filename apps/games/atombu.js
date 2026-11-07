@@ -7,7 +7,10 @@ cpcBasic.addItem("", function () { /*
 2 rem (c) Marco Vieth, 1986
 3 rem 
 5 rem Modification: replaced RSX by BASIC
-6 rem
+6 REM CPCBasic-keys: [240,"\u2191",241,"\u2193",242,"\u2190",243,"\u2192",224,"Copy"]
+7 REM CPCBasic-keys: ["1","","2","","3","","4","","5","","6","","7","","8","","9","","0","","C","","S",""]
+8 REM Switching room needs 2 players on the field and a Joystick to press fire+direction
+9 REM
 100 REM Atombunker.Basic (v6.1)
 110 IF PEEK(&A500)<>1 THEN MODE 1:SYMBOL AFTER 256:PRINT"ATOMBUNKER.BIN laden ...":MEMORY &88FB:poke &a500,1:GOTO 1520: 'LOAD"ATOMBU6.BIN",&A500:CALL &A500:GOTO 1520
 120 CLEAR:GOTO 1390
@@ -56,7 +59,8 @@ Meldung:";
 400 FOR i=3 TO 4
 410 x(i)=RND*7:y(i)=RND*6+1:IF MID$(h$(y(i)),x(i)+2,1)="1" THEN 410
 420 x(i)=x(i)*8:y(i)=y(i)*24:w=i:GOSUB 850:NEXT i
-430 CALL &BB03:while time<t!:call &bd19:wend:j(1)=0:j(2)=0:WHILE j(1)=0 AND j(2)=0:call &bd19:j(1)=JOY(0):j(2)=JOY(1)
+430 CALL &BB03:while time<t!:call &bd19:wend:j(1)=0:j(2)=0:WHILE j(1)=0 AND j(2)=0:j(1)=JOY(0):j(2)=JOY(1)
+435 IF j(1)=0 AND j(2)=0 THEN t$=INKEY$:IF t$=CHR$(240) THEN j(1)=1 ELSE IF t$=CHR$(241) THEN j(1)=2 ELSE IF t$=CHR$(242) THEN j(1)=4 ELSE IF t$=CHR$(243) THEN j(1)=8 ELSE IF t$=CHR$(224) THEN j(1)=16
 440 IF PEEK(&A6B0)<>255 THEN 470
 450 IF x(2)=x(w) THEN IF y(2)+24=y(w)THEN j(1)=0:GOSUB 1010:GOTO 470
 460 IF RND*10<PEEK(&A6B1) OR j(1)=0 THEN GOSUB 1010

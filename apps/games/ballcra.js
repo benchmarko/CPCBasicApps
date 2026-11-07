@@ -6,7 +6,10 @@ cpcBasic.addItem("", function () { /*
 1 REM ballcra - Ball Cracker
 2 REM (c) Andres Gebhardt, 08/1998
 3 REM Modifications: some delay (2540, 3360,...)
-4 REM
+4 REM 
+5 REM Needs Joystick left/right: INKEY 74/75 (CHR 8/9)
+6 REM CPCBasic-keys: ["1","","2","","3","","4","","5","","6","","7","","8","","9","","0","",13,"Enter"]
+7 REM
 10 ' ****************************
 20 ' **                        **
 30 ' **      BALL CRACKER      **
@@ -390,5 +393,5 @@ cpcBasic.addItem("", function () { /*
 3800 FOR x=1 TO z/18:call &bd19:NEXT
 3810 z=z-10    
 3820 NEXT n,U:RETURN
-3830 q$=INKEY$:IF q$=" " THEN GOTO 320 ELSE RETURN
+3830 q$=INKEY$:IF q$=" " OR q$=CHR$(13) THEN GOTO 320 ELSE RETURN
 */ });

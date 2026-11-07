@@ -7,7 +7,9 @@ cpcBasic.addItem("", function () { /*
 2 rem (c) Marco Vieth, 1986
 3 rem 
 5 rem Modification: replaced RSX by BASIC
-6 rem
+6 REM CPCBasic-keys: [240,"\u2191",241,"\u2193",242,"\u2190",243,"\u2192",224,"Copy",13,"Enter","F",""]
+7 REM CPCBasic-keys: ["1","","2","","3","","4","","5","","6","","7","","8","","9","","0",""]
+8 REM
 5000 REM EDITOR (v6.1)
 5010 CLEAR:DEFINT a-y:GOTO 6020
 5020 REM Uebersicht
@@ -144,7 +146,10 @@ ENTER
 5890 REM Tastatur
 5900 j=0:t$=""
 5910 j=JOY(0):t$=INKEY$:IF j=0 AND t$="" THEN 5910
-5920 IF j<>0 THEN RETURN ELSE t$=UPPER$(t$):IF t$="S" THEN STOP
+5920 IF j<>0 THEN RETURN
+5922 IF t$=CHR$(240) THEN j=1 ELSE IF t$=CHR$(241) THEN j=2 ELSE IF t$=CHR$(242) THEN j=4 ELSE IF t$=CHR$(243) THEN j=8 ELSE IF t$=CHR$(224) THEN j=16
+5924 IF j<>0 THEN RETURN
+5926 t$=UPPER$(t$):IF t$="S" THEN STOP
 5930 RETURN
 5940 MODE 1:LOCATE 5,5:PRINT"Reaktorbild definiert.
 

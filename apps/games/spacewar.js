@@ -8,9 +8,9 @@ cpcBasic.addItem("", function () { /*
 3 rem https://www.codeproject.com/Articles/25069/JSBasic-A-BASIC-to-JavaScript-Compiler
 4 rem "I wrote this game, calling it 'Space War', when I was nine, and spent hours on it."
 5 rem http://jsbasic.apphb.com/default.aspx?sourceCode=SpaceWar
-6 rem
-7 rem Adapted for CPC by mv: keyboard controls; no "$" for numerical variables; coordinates for LOCATE swapped; delay loop
-8 rem 
+6 rem Adapted for CPC by mv: keyboard controls; no "$" for numerical variables; coordinates for LOCATE swapped; delay loop
+7 REM CPCBasic-keys: [240,"\u2191",241,"\u2193",32,"Space","q",""]
+8 REM 
 10 cls
 20 locate 8, 5
 30 print " S P A C E   W A R"

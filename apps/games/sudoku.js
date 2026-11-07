@@ -7,8 +7,10 @@ cpcBasic.addItem("", function () { /*
 2 REM (c) Adam Ioannides, 2026
 3 REM https://bitbucket.org/adamioan/amstrad-programming/src/master/Plain%20Basic/SudokuCPC/
 4 REM https://forum.cpcwiki.eu/t/sudoku-cpc-in-pure-basic/
-5 REM Modifications: screen loading; delay with CALL &BD19
-6 REM
+5 REM Modifications: screen loading; CALL &BD19
+6 REM CPCBasic-keys: [240,"\u2191",241,"\u2193",242,"\u2190",243,"\u2192"]
+7 REM CPCBasic-keys: ["1","","2","","3","","4","","5","","6","","7","","8","","9","",32,"Space"]
+8 REM
 10 ' Sudoku CPC by Adam Ioannides (c)2026
 20 ON BREAK GOSUB 2250
 30 ' Loading screen
@@ -144,6 +146,7 @@ cpcBasic.addItem("", function () { /*
 1330 IF a$=" " THEN GOTO 1370
 1340 IF curpen=1 THEN curpen=3  ELSE curpen=1
 1350 LOCATE 15,21:PEN curpen:PRINT"SPACE to start":PEN 2
+1355 WHILE TIME<t!:CALL &BD19:WEND:t!=TIME+50
 1360 GOTO 1260
 1370 ' Create puzzle
 1380 GOSUB 1750
@@ -232,7 +235,7 @@ cpcBasic.addItem("", function () { /*
 2210 ' Clear stage
 2220 PAPER 0:FOR n=1 TO 10:LOCATE 12,5+n:PRINT SPACE$(19):LOCATE 12,25-n:PRINT SPACE$(19):NEXT n:RETURN
 2230 ' Wait routine
-2240 startwait=TIME:WHILE TIME-startwait<waitfor*300:call &bd19:WEND:RETURN
+2240 startwait=TIME:WHILE TIME-startwait<waitfor*300 AND INKEY$<>" ":call &bd19:WEND:RETURN
 2250 ' Break routine
 2260 MODE 2:INK 0,1:INK 1,24:PEN 1:PAPER 0:BORDER 1:LIST
 2290 END
