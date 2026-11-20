@@ -8,7 +8,7 @@ cpcBasic.addItem("", function () { /*
 3 REM Modifications: some delay (2540, 3360,...)
 4 REM 
 5 REM Needs Joystick left/right: INKEY 74/75 (CHR 8/9)
-6 REM CPCBasic-keys: ["1","","2","","3","","4","","5","","6","","7","","8","","9","","0","",13,"Enter"]
+6 REM CPCBasic-keys: [8,"\u2190",9,"\u2192","1","","2","","3","","4","","5","","6","","7","","8","","9","","0","",13,"Enter"]
 7 REM
 10 ' ****************************
 20 ' **                        **

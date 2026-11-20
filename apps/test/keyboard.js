@@ -5,6 +5,9 @@
 cpcBasic.addItem("", function () { /*
 100 REM keyboard - Keyboard Test
 110 REM Marco Vieth, 2019
+112 REM CPCBasic-keys: ["1","","2","","3",""]
+113 REM CPCBasic-keys: ["a","","A","","b",""]
+114 REM CPCBasic-keys: [44,"",32," ",127,"Del",13,"Ret"]
 120 mode 2:defint a-z
 130 dim keys(79),joys(1)
 140 for i=0 to 79: keys(i)=-1:next

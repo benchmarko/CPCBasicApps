@@ -2,11 +2,21 @@
 
 "use strict";
 
-cpcBasic.addItem("", function () { /*
-1 rem Tanks Alot!
-2 rem (c) Ross "Out Bush" Simpson
-3 rem https://gkanold.wixsite.com/homeputerium/kopie-von-games-list-2019-2 ; https://www.dropbox.com/sh/zj7u96etduyq6bv/AAB1167CjKZhbIT_UJmBaK0ia/CPC/72 Tanks Alot
-4 rem Modifications:
+cpcBasic.addItem("", {
+	defaultImplementation: "extended",
+	implementations: [
+		{
+			id: "extended",
+			title: "Extended",
+			source: function () { /*
+1 REM tanks - Tanks Alot!
+2 REM (c) Ross "Out Bush" Simpson
+3 REM https://gkanold.wixsite.com/homeputerium/gameslist2019
+4 REM https://www.dropbox.com/scl/fo/1uvwplshoe5zj53qnscgi/AEajsmKeP9g2mjgfyDXAQSs/CPC/72%20Tanks%20Alot?rlkey=wbax4xvajvvkvabjbwkj104ru&st=32555m4y&dl=0
+5 REM BASIC 10-Liner Contest 2019, Category: EXTREM-256
+6 REM Modifications: call &bd19
+7 REM CPCBasic-keys: [242,"\u2190",243,"\u2192"," ","Space"]
+8 REM
 10 ' Tanks Alot! Extended Version
 20 ' ----- ----- -------- -------
 30 ' Setup Screen Mode, Border, Inks and Playing Screen
@@ -112,16 +122,32 @@ cpcBasic.addItem("", function () { /*
 1010 PRINT#1,CHR$(241);
 1020 PRINT CHR$(22);CHR$(0); ' Transparent Mode Off
 1030 RETURN
-1999 '
-2000 '*** And the program in 10 lines of code...
-2001 MODE 0:BORDER 24:INK 0,25:INK 1,15:INK 2,18:INK 3,9:INK 4,13:WINDOW#1,5,15,5,19:WINDOW#2,5,15,20,20:PAPER#1,1:CLS#1
-2002 PAPER#2,1:CLS#2:DEFINT a-m,o-z:PEN 3:LOCATE 5,1:PRINT"Tanks Alot!":LOCATE 6,3:PEN 1:q=1:PRINT"Stage ";q:RANDOMIZE TIME:RANDOMIZE RND
-2003 SYMBOL 240,60,129,36,129,36,129,24,24:SYMBOL 241,0,126,219,102,219,126,0,0:SYMBOL 242,24,24,60,102,195,195,102,60
-2004 t=1:x=5:d=0:l=6:s=0:WHILE d=0:n=RND(1):WHILE (t MOD l=0):t=1:WHILE n<0.4:GOSUB 2010:n=0.5:WEND:LOCATE#1,1,1:PRINT#1,CHR$(11):WEND:t=t+1
-2005 CALL &BD19:CALL &BD19:IF INKEY(8)=0 AND x>1 THEN CALL &BB03:LOCATE#2,x,1:PRINT#2," ";:x=x-1 ELSE IF INKEY(1)=0 AND x<11 THEN CALL &BB03:LOCATE#2,x,1:PRINT#2," ";:x=x+1
-2006 IF INKEY(47)=0 THEN v=(x+3)*32+14:b=96:p=17:WHILE (TEST(v,398-(p*16+2))=1):p=p-1:WEND:SOUND 2,20,6,7,,,10:FOR c=0 TO 1:PLOT v,b,c:y=398-((p+1)*16)+2:DRAW v,y:FOR a=1 TO 3:CALL &BD19:NEXT a:NEXT c:PLOT v,y,0
-2007 CALL &BD19:LOCATE#2,x,1:PEN#2,4:PRINT#2,CHR$(242);:IF p>3 THEN s=s+1:SOUND 2,3995,10,7,,,31:LOCATE#1,x,p-3:PRINT#1,CHR$(22);CHR$(0);" ";CHR$(22);CHR$(1);:p=0
-2008 WHILE s=10:l=l-1:q=q+1:LOCATE 12,3:PEN 1:PRINT q;:s=0:CLS#1:WHILE l=1:d=2:l=0:LOCATE 6,3:PRINT SPACE$(8):WEND:WEND:FOR z=144 TO 464 STEP 32:IF TEST(z,96)=2 THEN d=1
-2009 NEXT z:WEND:IF d=2 THEN LOCATE 4,21:PRINT"You Have Won!":WHILE INKEY(18)=-1:call &bd19:WEND:RUN ELSE IF d=1 THEN SOUND 1,0,10,15,,,31:LOCATE#2,x,1:PEN#2,0:PRINT#2,CHR$(238);:LOCATE 5,21:PRINT"Game  Over!":WHILE INKEY(18)=-1:CALL &BD19:WEND:RUN
-2010 PRINT#1,CHR$(22);CHR$(1);:w=(RND*10)+1:LOCATE#1,w,1:PEN#1,2:PRINT#1,CHR$(240);:PEN#1,3:LOCATE#1,w,1:PRINT#1,CHR$(241);:PRINT CHR$(22);CHR$(0);:RETURN
-*/ });
+*/ }
+		},
+		{
+			id: "10-line",
+			title: "10-line",
+			source: function () { /*
+1 REM tanks - Tanks Alot!
+2 REM (c) Ross "Out Bush" Simpson
+3 REM https://gkanold.wixsite.com/homeputerium/gameslist2019
+4 REM https://www.dropbox.com/scl/fo/1uvwplshoe5zj53qnscgi/AEajsmKeP9g2mjgfyDXAQSs/CPC/72%20Tanks%20Alot?rlkey=wbax4xvajvvkvabjbwkj104ru&st=32555m4y&dl=0
+5 REM BASIC 10-Liner Contest 2019, Category: EXTREM-256
+6 REM Modifications: call &bd19
+7 REM CPCBasic-keys: [242,"\u2190",243,"\u2192"," ","Space"]
+8 REM *** And the program in 10 lines of code...
+9 REM
+10 MODE 0:BORDER 24:INK 0,25:INK 1,15:INK 2,18:INK 3,9:INK 4,13:WINDOW#1,5,15,5,19:WINDOW#2,5,15,20,20:PAPER#1,1:CLS#1
+20 PAPER#2,1:CLS#2:DEFINT a-m,o-z:PEN 3:LOCATE 5,1:PRINT"Tanks Alot!":LOCATE 6,3:PEN 1:q=1:PRINT"Stage ";q:RANDOMIZE TIME:RANDOMIZE RND
+30 SYMBOL 240,60,129,36,129,36,129,24,24:SYMBOL 241,0,126,219,102,219,126,0,0:SYMBOL 242,24,24,60,102,195,195,102,60
+40 t=1:x=5:d=0:l=6:s=0:WHILE d=0:n=RND(1):WHILE (t MOD l=0):t=1:WHILE n<0.4:GOSUB 100:n=0.5:WEND:LOCATE#1,1,1:PRINT#1,CHR$(11):WEND:t=t+1
+50 CALL &BD19:CALL &BD19:IF INKEY(8)=0 AND x>1 THEN CALL &BB03:LOCATE#2,x,1:PRINT#2," ";:x=x-1 ELSE IF INKEY(1)=0 AND x<11 THEN CALL &BB03:LOCATE#2,x,1:PRINT#2," ";:x=x+1
+60 IF INKEY(47)=0 THEN v=(x+3)*32+14:b=96:p=17:WHILE (TEST(v,398-(p*16+2))=1):p=p-1:WEND:SOUND 2,20,6,7,,,10:FOR c=0 TO 1:PLOT v,b,c:y=398-((p+1)*16)+2:DRAW v,y:FOR a=1 TO 3:CALL &BD19:NEXT a:NEXT c:PLOT v,y,0
+70 CALL &BD19:LOCATE#2,x,1:PEN#2,4:PRINT#2,CHR$(242);:IF p>3 THEN s=s+1:SOUND 2,3995,10,7,,,31:LOCATE#1,x,p-3:PRINT#1,CHR$(22);CHR$(0);" ";CHR$(22);CHR$(1);:p=0
+80 WHILE s=10:l=l-1:q=q+1:LOCATE 12,3:PEN 1:PRINT q;:s=0:CLS#1:WHILE l=1:d=2:l=0:LOCATE 6,3:PRINT SPACE$(8):WEND:WEND:FOR z=144 TO 464 STEP 32:IF TEST(z,96)=2 THEN d=1
+90 NEXT z:while time<t1!:call &bd19:wend:t1!=time+40:WEND:IF d=2 THEN LOCATE 4,21:PRINT"You Have Won!":WHILE INKEY(18)=-1:call &bd19:WEND:RUN ELSE IF d=1 THEN SOUND 1,0,10,15,,,31:LOCATE#2,x,1:PEN#2,0:PRINT#2,CHR$(238);:LOCATE 5,21:PRINT"Game  Over!":WHILE INKEY(18)=-1:CALL &BD19:WEND:RUN
+100 PRINT#1,CHR$(22);CHR$(1);:w=(RND*10)+1:LOCATE#1,w,1:PEN#1,2:PRINT#1,CHR$(240);:PEN#1,3:LOCATE#1,w,1:PRINT#1,CHR$(241);:PRINT CHR$(22);CHR$(0);:RETURN
+*/ }
+		}
+	]
+});

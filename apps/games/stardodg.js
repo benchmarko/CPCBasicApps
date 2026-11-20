@@ -9,7 +9,7 @@ cpcBasic.addItem("", function () { /*
 4 rem https://scruss.com/wordpress/wp-content/uploads/2012/09/AmstradComputerUser198809-StarDodger1-BASIC.pdf
 5 rem Amstrad User, September 1988
 6 rem Modifications: Use space key; delay with call &bd19
-7 rem
+7 REM CPCBasic-keys: [32,"Space"]
 8 ' Basic Stardodger by SCR.
 9 '
 10 ' ** Initialise **

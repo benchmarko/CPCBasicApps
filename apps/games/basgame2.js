@@ -7,7 +7,8 @@ cpcBasic.addItem("", function () { /*
 2 rem (c) Roald (Mr.Lou) Strauss
 3 rem https://www.cpcwiki.eu/forum/programming/another-unfinished-basic-game-project/
 4 rem adapted by AMSDOS, mv
-5 rem 
+5 REM CPCBasic-keys: [8,"\u2190",9,"\u2192",332,"Fire",32,"Space"]
+6 REM
 100 KEY 0,"ink 0,11:border 11:ink 1,26:pen 1:paper 0:mode 2"+CHR$(13)
 110 ENV 1,15,-1,1:ENV 2,15,-1,5:ENT 2,40,2,1:ENV 3,15,-1,10:ENT 3,100,2,2:ENV 4,15,1,1:ENT 4,100,-5,1
 120 SYMBOL 249,0,0,0,0,0,0,56,0

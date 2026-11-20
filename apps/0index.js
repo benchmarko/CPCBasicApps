@@ -473,6 +473,10 @@ cpcBasic.addIndex("apps", function () { /*
 		"title": "3 Times 1 (3 mal 1)"
 	},
 	{
+		"key": "games/aliens",
+		"title": "Aliens Attack"
+	},
+	{
 		"key": "games/artwar",
 		"title": "Art War (Loader)"
 	},

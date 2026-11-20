@@ -6,7 +6,7 @@ cpcBasic.addItem("", function () { /*
 1 rem budrumi - Budrumi
 2 rem (c) Sakis Kaffesakis, 2021
 3 rem https://amstradsakis.blogspot.com/2021/05/budrumi.html
-4 rem
+4 REM CPCBasic-keys: ["1","","2","","3","","4","","5","","0","",32,"Space","R",""]
 5 REM BUDRUMI COPYRIGHT BY SAKIS KAFFESAKIS 2021 - MUSIC BY MANOSSG 
 6 CHECK=0
 8 SONG$="MUSIC1.AKG":GOSUB 9500

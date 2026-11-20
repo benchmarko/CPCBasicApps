@@ -5,7 +5,8 @@
 cpcBasic.addItem("", function () { /*
 1 rem cardrive - Car Drive (Autofahren)
 2 rem (c)
-3 rem
+3 REM
+4 REM CPCBasic-keys: [8,"\u2190",9,"\u2192",332,"Fire","1","","2","","3",""]
 60 MODE 1
 90 'PRINT"Bitte beliebige Taste druecken"
 130 'CALL &BB18

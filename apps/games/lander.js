@@ -6,7 +6,9 @@ cpcBasic.addItem("", function () { /*
 1 rem lander - Lander
 2 rem (c) Georg Huonker
 6 rem Modifications: Delay
-7 rem
+7 REM CPCBasic-keys: [11,"\u2191",10,"\u2193",8,"\u2190",9,"\u2192",332,"Fire"]
+8 REM CPCBasic-keys: ["1","","2","","3","","4","","5","","6",""]
+9 REM
 100 '..................................
 110 '........L..A..N..D..E..R..........
 120 '..................................
